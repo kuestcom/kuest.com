@@ -1,33 +1,41 @@
-# Kuest Launchpad
+# Kuest Launch
 
-Three-step guided flow for fork owners:
+Open-source launch flow for Kuest white-label prediction markets.
 
-1. Connect wallet and sign to generate `KUEST_*`
-2. Connect Vercel OAuth (default) or use Access Token fallback, then select Supabase database
-3. Launch and follow timeline until success
+Public demo domain: `https://launch.kuest.com`
 
-## Vercel auth mode
+Main goal of this repo:
 
-`launch` now supports both:
+- Let people review and audit the full launch code
+- Keep a guided path for non-developers when needed
+- Support OAuth-first auth with token fallback
 
-- `OAuth` as default (recommended UX for end users)
-- `Access Token` as fallback
+## User flow
 
-Control it in `.env.local`:
+1. Set market site name and connect wallet
+2. Connect Vercel + set Reown project id + choose/create Supabase database
+3. Deploy and track timeline logs
 
-- `NEXT_PUBLIC_VERCEL_AUTH_MODE=oauth` (default) or `token`
+## Vercel auth modes
+
+- `OAuth` is the default UX
+- `Access Token` is available as fallback
+
+Configure in `.env.local`:
+
+- `NEXT_PUBLIC_VERCEL_AUTH_MODE=oauth` or `token`
 - `NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK=true|false`
 
-If you use OAuth mode, also set:
+If OAuth is enabled, set:
 
 - `VERCEL_OAUTH_CLIENT_ID`
 - `VERCEL_OAUTH_CLIENT_SECRET`
 
-## Setup
+## Local setup
 
 1. Copy `.env.example` to `.env.local`
-2. Fill `NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID` in `.env.local`
-3. If OAuth mode is enabled, fill `VERCEL_OAUTH_CLIENT_ID` and `VERCEL_OAUTH_CLIENT_SECRET`
+2. Fill `NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID`
+3. If using OAuth mode, fill Vercel OAuth client id/secret
 4. Run:
 
 ```bash
@@ -35,17 +43,25 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Local URL: `http://localhost:3000`
 
-## What launch does
+## Production notes
 
-- Validates Supabase integration in Vercel
-- Reuses project when slug already exists
-- Imports configured repo to Vercel
-- Connects existing Supabase or creates new database
-- Sets env vars and triggers deployment
-- Returns final URL and full logs
+- Set `NEXT_PUBLIC_APP_URL` to your deployed domain (for example `https://launch.kuest.com`)
+- OAuth callbacks are generated from request origin:
+  - `/api/oauth/vercel/callback`
+  - `/api/oauth/supabase/callback`
+- For Vercel project/deploy automation, Access Token mode is the stable path until broader OAuth API permissions are available
 
-## Route
+## What the API launch does
+
+- Validates Supabase integration availability in Vercel
+- Reuses existing Vercel project when slug already exists
+- Imports repository/branch into Vercel
+- Attaches existing Supabase or creates a new one via Vercel integration
+- Sets environment variables and triggers deployment
+- Returns deployment URL and timeline logs
+
+## Main route
 
 - `POST /api/launch`
