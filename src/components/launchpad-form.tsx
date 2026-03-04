@@ -2,12 +2,15 @@
 
 import { useWalletInfo } from "@reown/appkit/react";
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
   CheckIcon,
   ChevronDownIcon,
   CircleCheckIcon,
   CircleIcon,
   InfoIcon,
   Loader2Icon,
+  RocketIcon,
   WalletIcon,
   XIcon,
 } from "lucide-react";
@@ -104,6 +107,7 @@ const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod =
   process.env.NEXT_PUBLIC_VERCEL_AUTH_MODE?.trim().toLowerCase() === "token" ? "token" : "oauth";
 const ALLOW_VERCEL_TOKEN_FALLBACK =
   process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== "false";
+const FOOTER_BRAND_NAME = "Kuest";
 
 const BASE_TIMELINE: Array<{ id: string; label: string }> = [
   { id: "validation", label: "Validate launch settings" },
@@ -357,6 +361,15 @@ function ActionPromptWalletIcon({
       }`}
       onError={() => setFailedIconUrl(walletIconUrl)}
     />
+  );
+}
+
+function StepFooterBrand() {
+  return (
+    <span className="launch-footer-brand" aria-hidden="true">
+      <span className="launch-footer-brand-logo" />
+      <span className="launch-footer-brand-text">{FOOTER_BRAND_NAME}</span>
+    </span>
   );
 }
 
@@ -744,7 +757,12 @@ export default function LaunchpadForm() {
         ADMIN_WALLETS: mergeAdminWallets(previous.env.ADMIN_WALLETS, input.address),
       },
     }));
-    setActiveStep(2);
+
+    const hasBrandName = Boolean(form.brandName.trim());
+    if (hasBrandName) {
+      setActiveStep(2);
+    }
+    return hasBrandName;
   }
 
   async function saveContactEmailForKey(apiKey: string) {
@@ -819,9 +837,13 @@ export default function LaunchpadForm() {
           setWalletInfo(message);
         },
       });
-      applyGeneratedCredentials(generated);
+      const advancedToStep2 = applyGeneratedCredentials(generated);
       void saveContactEmailForKey(generated.apiKey);
-      setWalletInfo(null);
+      if (advancedToStep2) {
+        setWalletInfo(null);
+      } else {
+        setWalletInfo("Wallet connected. Enter your site name to continue.");
+      }
     } catch (error) {
       setWalletError(
         error instanceof Error ? error.message : "Failed to generate credentials with browser wallet.",
@@ -941,9 +963,13 @@ export default function LaunchpadForm() {
         nonce,
       });
 
-      applyGeneratedCredentials(generated);
+      const advancedToStep2 = applyGeneratedCredentials(generated);
       void saveContactEmailForKey(generated.apiKey);
-      setWalletInfo(null);
+      if (advancedToStep2) {
+        setWalletInfo(null);
+      } else {
+        setWalletInfo("Wallet connected. Enter your site name to continue.");
+      }
     } catch (error) {
       setWalletError(error instanceof Error ? error.message : "Unable to sign and generate keys.");
     } finally {
@@ -1169,13 +1195,13 @@ export default function LaunchpadForm() {
   const stepItems = [
     {
       number: 1,
-      title: "Site + Wallet",
+      title: "Site + Admin wallet",
       done: step1Complete && Boolean(form.brandName.trim()),
       active: activeStep === 1,
     },
     {
       number: 2,
-      title: "Vercel + DB",
+      title: "Host + Database",
       done: step2VercelReady && step2ReownReady,
       active: activeStep === 2,
     },
@@ -1242,18 +1268,13 @@ export default function LaunchpadForm() {
       </div>
 
       {activeStep === 1 && (
-        <section className="launch-island">
-          <div className="launch-title-row">
-            <h2 className="launch-title">Step 1. Site + Wallet</h2>
-          </div>
-          <p className="launch-caption">
-            Name your site and connect the admin wallet.
-          </p>
+        <section className="launch-island launch-step1-island">
+          <h2 className="sr-only">Step 1. Site + Admin wallet</h2>
 
-          <div className="mt-5 launch-grid">
-            <label className="launch-field sm:col-span-2">
+          <div className="mt-5 launch-grid launch-step1-brand-grid">
+            <label className="launch-field launch-step1-brand-field">
               <span className="launch-field-label">
-                <span>Your prediction market site name</span>
+                <span>Site name</span>
                 <InfoTip text="This is your brand name." />
               </span>
               <input
@@ -1270,26 +1291,30 @@ export default function LaunchpadForm() {
             </label>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-border/70 px-5 py-5">
+          <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 px-5 py-5">
             <div className="mb-2 flex items-center gap-2">
               <h3 className="text-sm font-semibold text-foreground">Admin wallet</h3>
               <InfoTip text="One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin." />
             </div>
-            <p className="text-xs text-muted-foreground">
-              For the simplest setup, use{" "}
-              <a
-                className="launch-link"
-                href="https://metamask.io/download"
-                target="_blank"
-                rel="noreferrer"
-              >
-                MetaMask browser extension
-              </a>
-              . No balance required, no funds moved, no gas fees.
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              We try to switch to Polygon Amoy automatically and add the network when needed.
-            </p>
+            {!isConnected && (
+              <>
+                <p className="text-xs text-muted-foreground">
+                  For the simplest setup, use{" "}
+                  <a
+                    className="launch-link"
+                    href="https://metamask.io/download"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    MetaMask browser extension
+                  </a>
+                  . No balance required, no funds moved, no gas fees.
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  We try to switch to Polygon Amoy automatically and add the network when needed.
+                </p>
+              </>
+            )}
 
             {showSignedWalletState ? (
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -1397,30 +1422,35 @@ export default function LaunchpadForm() {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-end">
-            <button
-              type="button"
-              className="launch-cta"
-              disabled={!canContinueStep2}
-              onClick={() => setActiveStep(2)}
-            >
-              Continue
-            </button>
+          <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">
+            <span className="launch-step-footer-spacer" aria-hidden="true" />
+            <StepFooterBrand />
+            <div className="launch-step-footer-control launch-binary-nav">
+              <span className="launch-binary-label">Continue</span>
+              <button type="button" className="launch-choice-button launch-choice-no" disabled>
+                <ArrowLeftIcon className="size-3.5" />
+                No
+              </button>
+              <button
+                type="button"
+                className="launch-choice-button launch-choice-yes"
+                disabled={!canContinueStep2}
+                onClick={() => setActiveStep(2)}
+              >
+                Yes
+                <ArrowRightIcon className="size-3.5" />
+              </button>
+            </div>
           </div>
         </section>
       )}
 
       {activeStep === 2 && (
-        <section className="launch-island">
-          <div className="launch-title-row">
-            <h2 className="launch-title">Step 2. Vercel + Reown + Database</h2>
-          </div>
-          <p className="launch-caption">
-            Connect Vercel, add Reown Project ID, and choose the database.
-          </p>
+        <section className="launch-island launch-step2-island">
+          <h2 className="sr-only">Step 2. Host + Database</h2>
 
-          <div className="mt-5 space-y-3">
-            <div className="rounded-2xl border border-border/70 px-5 py-4">
+          <div className="launch-stack mt-5 space-y-3">
+            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">Vercel authentication</h3>
@@ -1567,7 +1597,7 @@ export default function LaunchpadForm() {
               )}
             </div>
 
-            <div className="rounded-2xl border border-border/70 px-5 py-4">
+            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">Reown Project ID</h3>
@@ -1610,7 +1640,7 @@ export default function LaunchpadForm() {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-border/70 px-5 py-4">
+            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">Supabase database</h3>
@@ -1658,7 +1688,7 @@ export default function LaunchpadForm() {
             </div>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-border/70 px-5 py-4">
+          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-4">
             <button
               type="button"
               className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
@@ -1842,30 +1872,38 @@ export default function LaunchpadForm() {
             )}
           </div>
 
-          <div className="mt-6 flex flex-wrap justify-between gap-3">
-            <button type="button" className="launch-plain-button" onClick={() => setActiveStep(1)}>
-              Previous
-            </button>
-            <button
-              type="button"
-              className="launch-cta"
-              disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
-              onClick={() => setActiveStep(3)}
-            >
-              Continue
-            </button>
+          <div className="launch-step-actions launch-step-footer mt-6">
+            <span className="launch-step-footer-spacer" aria-hidden="true" />
+            <StepFooterBrand />
+            <div className="launch-step-footer-control launch-binary-nav">
+              <span className="launch-binary-label">Continue</span>
+              <button
+                type="button"
+                className="launch-choice-button launch-choice-no"
+                onClick={() => setActiveStep(1)}
+              >
+                <ArrowLeftIcon className="size-3.5" />
+                No
+              </button>
+              <button
+                type="button"
+                className="launch-choice-button launch-choice-yes"
+                disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
+                onClick={() => setActiveStep(3)}
+              >
+                Yes
+                <ArrowRightIcon className="size-3.5" />
+              </button>
+            </div>
           </div>
         </section>
       )}
 
       {activeStep === 3 && (
-        <section className="launch-island">
-          <div className="launch-title-row">
-            <h2 className="launch-title">Step 3. Deploy</h2>
-          </div>
-          <p className="launch-caption">Track each step until your market is live.</p>
+        <section className="launch-island launch-step3-island">
+          <h2 className="sr-only">Step 3. Deploy</h2>
 
-          <div className="mt-5 rounded-2xl border border-border/70 px-5 py-5">
+          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-5">
             <div className="space-y-3">
               {timeline.map((entry) => (
                 <div key={entry.id} className="flex items-center gap-3 text-sm">
@@ -1897,28 +1935,41 @@ export default function LaunchpadForm() {
               ))}
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-              <button type="button" className="launch-plain-button" onClick={() => setActiveStep(2)}>
-                Previous
-              </button>
-              <button
-                type="submit"
-                className="launch-cta"
-                disabled={
-                  isLaunching ||
-                  !canContinueStep3 ||
-                  !form.env.REOWN_APPKIT_PROJECT_ID.trim()
-                }
-              >
-                {isLaunching ? (
-                  <span className="inline-flex items-center gap-2">
-                    <Loader2Icon className="size-4 animate-spin" />
-                    Deploying...
-                  </span>
-                ) : (
-                  "Create your Prediction Market"
-                )}
-              </button>
+            <div className="launch-step-actions launch-step-footer mt-6">
+              <span className="launch-step-footer-spacer" aria-hidden="true" />
+              <StepFooterBrand />
+              <div className="launch-step-footer-control launch-binary-nav">
+                <span className="launch-binary-label">Deploy</span>
+                <button
+                  type="button"
+                  className="launch-choice-button launch-choice-no"
+                  onClick={() => setActiveStep(2)}
+                >
+                  <ArrowLeftIcon className="size-3.5" />
+                  No
+                </button>
+                <button
+                  type="submit"
+                  className="launch-choice-button launch-choice-yes"
+                  disabled={
+                    isLaunching ||
+                    !canContinueStep3 ||
+                    !form.env.REOWN_APPKIT_PROJECT_ID.trim()
+                  }
+                >
+                  {isLaunching ? (
+                    <span className="inline-flex items-center gap-2">
+                      <Loader2Icon className="size-4 animate-spin" />
+                      Yes
+                    </span>
+                  ) : (
+                    <>
+                      <RocketIcon className="size-3.5" />
+                      Yes
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1929,7 +1980,7 @@ export default function LaunchpadForm() {
           )}
 
           {result && (
-            <section className="mt-5 rounded-2xl border border-border/70 p-5">
+            <section className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
               <h3 className="text-base font-semibold text-foreground">Result</h3>
               <div className="mt-3 space-y-2 text-sm text-muted-foreground">
                 <div>
@@ -1985,7 +2036,7 @@ export default function LaunchpadForm() {
               </div>
 
               {result.ok && result.projectName && (
-                <div className="mt-5 rounded-xl border border-border/70 p-4">
+                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-semibold text-foreground">Custom domain (optional)</h4>
@@ -2033,7 +2084,7 @@ export default function LaunchpadForm() {
                     <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
                   )}
                   {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
-                    <div className="mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
+                    <div className="launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
                       <p className="font-semibold text-foreground">Nameservers to set at your registrar:</p>
                       <div className="mt-1 space-y-1">
                         {domainState.nameservers.map((nameServer) => (
@@ -2049,7 +2100,7 @@ export default function LaunchpadForm() {
                       {domainState.verification.map((record, index) => (
                         <div
                           key={`${record.type ?? "record"}-${record.domain ?? "domain"}-${index}`}
-                          className="rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
+                          className="launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
                         >
                           <span className="font-semibold text-foreground">
                             {record.type || "DNS"}:
