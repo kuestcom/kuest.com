@@ -1238,7 +1238,7 @@ export default function LaunchpadForm() {
 
   return (
     <form onSubmit={onSubmit} className="launch-shell">
-      <div className="launch-stepper">
+      <div className={`launch-stepper launch-stepper-active-${activeStep}`}>
         {stepItems.map((step) => (
           <button
             key={step.number}
@@ -1306,7 +1306,8 @@ export default function LaunchpadForm() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    MetaMask browser extension
+                    <span className="hidden sm:inline">MetaMask browser extension</span>
+                    <span className="sm:hidden">MetaMask app</span>
                   </a>
                   . No balance required, no funds moved, no gas fees.
                 </p>
