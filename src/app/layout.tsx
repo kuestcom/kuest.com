@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { openSauceOne } from "@/lib/fonts";
+import { geistMono, openSauceOne } from "@/lib/fonts";
 import { AppProviders } from "@/providers/app-providers";
 import "./globals.css";
 
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={openSauceOne.variable}
+      className={`${openSauceOne.variable} ${geistMono.variable}`}
       data-theme-mode="dark"
       suppressHydrationWarning
     >

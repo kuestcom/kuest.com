@@ -3,7 +3,7 @@
 import type { AppKit } from "@reown/appkit/react";
 import type { ReactNode } from "react";
 import { createAppKit } from "@reown/appkit/react";
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { WagmiProvider } from "wagmi";
 import { AppKitContext, defaultAppKitValue } from "@/hooks/use-app-kit";
 import {
@@ -48,8 +48,21 @@ function getOrCreateAppKit() {
   return appKitInstance;
 }
 
+const noopSubscribe = () => () => {};
+
 export default function AppKitProvider({ children }: { children: ReactNode }) {
+  // Hydration-safe: false on server and first hydration pass, true right after client mounts.
+  const isHydrated = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+
   const appKitValue = useMemo(() => {
+    if (!isHydrated) {
+      return defaultAppKitValue;
+    }
+
     if (!projectId) {
       return {
         ...defaultAppKitValue,
@@ -80,7 +93,7 @@ export default function AppKitProvider({ children }: { children: ReactNode }) {
         error: error instanceof Error ? error.message : "Failed to initialize wallet modal.",
       };
     }
-  }, []);
+  }, [isHydrated]);
 
   return (
     <WagmiProvider config={wagmiConfig}>
