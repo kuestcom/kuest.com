@@ -797,8 +797,13 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
   }
 
   function sanitizeImageSrc(src){
-    return typeof src==='string'&&/^\/assets\/images\/[\w./-]+$/.test(src)
-      ? src
+    const prefix='/assets/images/';
+    if(typeof src!=='string'||!src.startsWith(prefix))return '/assets/images/bitcoin-150k.png';
+    const relative=src.slice(prefix.length);
+    if(!relative)return '/assets/images/bitcoin-150k.png';
+    const segments=relative.split('/');
+    return segments.every(segment=>segment&&segment!=='.'&&segment!=='..'&&/^[\w.-]+$/.test(segment))
+      ? prefix+segments.join('/')
       : '/assets/images/bitcoin-150k.png';
   }
 
