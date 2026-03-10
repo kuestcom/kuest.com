@@ -418,9 +418,17 @@ if(feed){
 
 /* ── PROTOCOL CANVAS ── */
 let protoRAF=null;
+let protoVisible=false;
+function stopProto(){
+  if(protoRAF){
+    cancelAnimationFrame(protoRAF);
+    protoRAF=null;
+  }
+}
 function initProto(){
   const cv=document.getElementById('protoCanvas');if(!cv)return;
-  if(protoRAF){cancelAnimationFrame(protoRAF);protoRAF=null;}
+  if(!protoVisible)return;
+  stopProto();
   const W=cv.parentElement.offsetWidth||900;
   const H=W<700?Math.max(440,W*.88):Math.max(420,W*.46);
   const dpr=window.devicePixelRatio||1;
@@ -659,9 +667,16 @@ function initProto(){
   }
   loop();
 }
-const protoObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)initProto();}),{threshold:.1});
-const pEl=document.getElementById('protoCanvas');if(pEl)protoObs.observe(pEl.parentElement);
-window.addEventListener('resize',initProto);
+const protoObs=new IntersectionObserver(es=>es.forEach(e=>{
+  protoVisible=e.isIntersecting;
+  if(protoVisible){
+    initProto();
+  }else{
+    stopProto();
+  }
+}),{threshold:.1});
+const pEl=document.getElementById('protoCanvas');if(pEl)protoObs.observe(pEl.parentElement||pEl);
+window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 
 /* ── FEE REVENUE ESTIMATOR ── */
 (function(){
@@ -991,14 +1006,23 @@ window.addEventListener('resize',initProto);
     document.body.classList.remove('modal-open');
   };
 
+  const getSafeSourceUrl=href=>{
+    if(typeof href!=='string'||!href.trim())return null;
+    try{
+      const url=new URL(href,window.location.origin);
+      return url.protocol==='https:'||url.protocol==='http:'?url:null;
+    }catch{
+      return null;
+    }
+  };
+
   const open=link=>{
-    const href=link.getAttribute('href')||'#';
+    const safeUrl=getSafeSourceUrl(link.getAttribute('href')||'');
+    if(!safeUrl)return;
+    const href=safeUrl.href;
     const outlet=link.dataset.sourceOutlet||'Source';
     const title=link.dataset.sourceTitle||link.textContent.trim();
-    let domain=href;
-    try{
-      domain=new URL(href).hostname.replace(/^www\./,'');
-    }catch{}
+    const domain=safeUrl.hostname.replace(/^www\./,'');
     clearLoading();
     outletEl.textContent=outlet;
     titleEl.textContent=title;

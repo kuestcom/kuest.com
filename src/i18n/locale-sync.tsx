@@ -12,8 +12,12 @@ export function persistLocalePreference(locale: SiteLocale) {
     return;
   }
 
-  window.localStorage.setItem(LANDING_STORAGE_KEY, locale);
-  window.localStorage.setItem(LAUNCH_STORAGE_KEY, locale);
+  try {
+    window.localStorage.setItem(LANDING_STORAGE_KEY, locale);
+    window.localStorage.setItem(LAUNCH_STORAGE_KEY, locale);
+  } catch {
+    // localStorage can be unavailable in private mode or restricted contexts
+  }
   document.documentElement.lang = locale;
 }
 

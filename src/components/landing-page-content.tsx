@@ -12,6 +12,15 @@ import {
   renderLandingMarkup,
 } from "@/lib/landing/render-landing";
 
+function serializeJsonForHtmlScript(value: unknown) {
+  return JSON.stringify(value)
+    .replaceAll("<", "\\u003C")
+    .replaceAll(">", "\\u003E")
+    .replaceAll("&", "\\u0026")
+    .replaceAll("\u2028", "\\u2028")
+    .replaceAll("\u2029", "\\u2029");
+}
+
 export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata> {
   const bundle = await getLandingMessages(locale);
   const siteOrigin = getSiteOrigin();
@@ -69,7 +78,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         type="application/ld+json"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: serializeJsonForHtmlScript({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             name: "Kuest",
