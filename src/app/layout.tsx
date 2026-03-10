@@ -10,9 +10,9 @@ export const metadata: Metadata = {
   description:
     "Guided Kuest launch flow with wallet, Vercel, and Supabase integration.",
   icons: {
-    icon: "/kuest-logo.svg",
-    shortcut: "/kuest-logo.svg",
-    apple: "/kuest-logo.svg",
+    icon: "/images/kuest-logo.svg",
+    shortcut: "/images/kuest-logo.svg",
+    apple: "/images/kuest-logo.svg",
   },
 };
 

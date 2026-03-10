@@ -1,7 +1,7 @@
 import BackgroundParticles from "@/components/background-particles";
 import LaunchpadForm from "@/components/launchpad-form";
 
-export default function Home() {
+export default function LaunchPage() {
   return (
     <main className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-8 sm:py-16">
       <BackgroundParticles />

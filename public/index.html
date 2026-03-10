@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e1117">
+<meta name="description" content="Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="keywords" content="create your prediction market, white label prediction market, prediction market whitelabel, launch your own prediction market, no-code prediction market, branded prediction market, shared liquidity">
+<meta name="author" content="Kuest">
+<link rel="canonical" href="https://kuest.com/">
+<link rel="alternate" hreflang="x-default" href="https://kuest.com/">
+<link rel="alternate" hreflang="en" href="https://kuest.com/?lang=en">
+<link rel="alternate" hreflang="de" href="https://kuest.com/?lang=de">
+<link rel="alternate" hreflang="es" href="https://kuest.com/?lang=es">
+<link rel="alternate" hreflang="pt" href="https://kuest.com/?lang=pt">
+<link rel="alternate" hreflang="fr" href="https://kuest.com/?lang=fr">
+<link rel="alternate" hreflang="zh" href="https://kuest.com/?lang=zh">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kuest">
+<meta property="og:title" content="Kuest — Create Your Own White-Label Prediction Market">
+<meta property="og:description" content="Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.">
+<meta property="og:url" content="https://kuest.com/">
+<meta property="og:image" content="https://kuest.com/assets/images/your-predictoin-market-500mi-vol.png">
+<meta property="og:image:alt" content="Kuest prediction market preview">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kuest — Create Your Own White-Label Prediction Market">
+<meta name="twitter:description" content="Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.">
+<meta name="twitter:image" content="https://kuest.com/assets/images/your-predictoin-market-500mi-vol.png">
+<meta name="twitter:image:alt" content="Kuest prediction market preview">
+
+<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+<title>Kuest — Create Your Own White-Label Prediction Market</title>
+<link rel="stylesheet" href="./assets/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Kuest",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://kuest.com/",
+  "description": "Create your own white-label prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "White-label prediction market platform",
+    "Custom domain and branding",
+    "Shared liquidity from day one",
+    "Configurable trading fees",
+    "No-code launch"
+  ]
+}
+</script>
+<script>
+if (new URLSearchParams(window.location.search).has('embed-preview')) {
+  document.documentElement.classList.add('embed-preview');
+}
+</script>
+</head>
+<body>
+
+<!-- BACKGROUND PARTICLE CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- TIMELINE SPINE -->
+<div class="tl-spine" id="tlSpine">
+  <div class="tl-dot a" data-p="0"></div>
+  <div class="tl-dot" data-p="1"></div>
+  <div class="tl-dot" data-p="2"></div>
+  <div class="tl-dot" data-p="3"></div>
+  <div class="tl-dot" data-p="4"></div>
+  <div class="tl-dot" data-p="5"></div>
+  <div class="tl-dot" data-p="6"></div>
+  <div class="tl-dot" data-p="7"></div>
+  <div class="tl-dot" data-p="8"></div>
+  <div class="tl-dot" data-p="9"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
+    Kuest
+  </a>
+  <div class="nav-r">
+    <div class="site-language-control">
+      <select id="siteLanguageSelect" class="site-language-select" aria-label="Change site language">
+        <option value="en">🇺🇸 English</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="es">🇪🇸 Spanish</option>
+        <option value="pt">🇧🇷 Português</option>
+        <option value="fr">🇫🇷 French</option>
+        <option value="zh">🇨🇳 中文</option>
+      </select>
+      <span class="site-language-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+    </div>
+    <a href="/launch" class="nb nb-solid">Start your prediction market →</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ═══ PANEL 0 — HERO ═══ -->
+  <div class="panel-wrap panel-static hero-stack-panel" id="p0">
+    <div class="panel-sticky">
+      <div class="panel-inner hero-stack">
+        <div class="r hero-copy">
+          <div class="hero-kicker !mb-5 !gap-3 !opacity-100 !animate-none">The Shopify for Prediction Markets</div>
+          <h1 class="hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
+            <span class="hero-title-line">Your own Polymarket.</span>
+            <span class="hero-title-line">Live in 15 minutes. Free.</span>
+          </h1>
+          <p class="hero-copy-sub mt-6 text-[clamp(17px,1.75vw,20px)] leading-[1.55] text-muted">Your audience already predicts things every day. Launch your own market for any niche — crypto, sports, politics, anything — and earn a fee on every trade.</p>
+          <div class="hero-copy-actions mt-8 flex flex-wrap gap-3">
+            <a href="/launch" class="btn-cta btn-cta-primary">Start your prediction market →</a>
+          </div>
+          <div class="hero-copy-proof mt-4 font-mono text-[11px] uppercase tracking-[.16em] text-faint">Free launch • No code • Live in minutes</div>
+        </div>
+        <div class="r rd hero-preview-wide">
+          <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
+            <div class="site-preview-head">
+              <div class="site-preview-dots" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
+              <span class="site-preview-live">
+                <span class="site-preview-live-dot"></span>
+                Live Demo
+              </span>
+              <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
+                <i data-lucide="monitor-smartphone"></i>
+              </button>
+            </div>
+            <div class="site-preview-body">
+              <iframe
+                id="sitePreviewFrame"
+                class="site-preview-frame"
+                title="Kuest live site preview"
+                loading="lazy"
+                src="https://demo.kuest.com/?embed-preview=1"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 1 — PAIN ═══ -->
+  <div class="panel-wrap panel-static" id="p1">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
+
+        <div class="r text-center">
+          <div class="slbl justify-center">Sound familiar?</div>
+          <h2 class="sh">You have an audience. You just can't make it pay.</h2>
+          <p class="bt section-copy-center">Ads pay pennies. Sponsors are unpredictable. Courses take months to build. Meanwhile your audience argues, predicts, debates every day — and none of that energy earns you a cent.</p>
+        </div>
+
+        <!-- 3 creator pain tiles -->
+        <div class="r mini-cards-grid">
+          <div class="mini-card mini-card-compact">
+            <div class="mini-card-head">
+              <span class="mini-card-icon"><i data-lucide="banknote"></i></span>
+              <div class="mini-card-title">Every revenue model you know already has a hard ceiling</div>
+            </div>
+            <div class="mini-card-copy">Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade — 24/7, with no effort from you after launch.</div>
+          </div>
+          <div class="mini-card mini-card-compact">
+            <div class="mini-card-head">
+              <span class="mini-card-icon"><i data-lucide="target"></i></span>
+              <div class="mini-card-title">Your audience already predicts — you just don't own it</div>
+            </div>
+            <div class="mini-card-copy">They debate outcomes in your comments, in your DMs, in your community. Kuest turns that energy into a market where every trade pays you.</div>
+          </div>
+          <div class="mini-card mini-card-compact">
+            <div class="mini-card-head">
+              <span class="mini-card-icon"><i data-lucide="zap"></i></span>
+              <div class="mini-card-title">You don't need to understand prediction markets to launch one</div>
+            </div>
+            <div class="mini-card-copy">No trading knowledge. No crypto background. No dev team. Just your niche, your questions, and 15 minutes to go live.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 2 — SOCIAL PROOF ═══ -->
+  <div class="panel-wrap panel-static" id="p2">
+    <div class="panel-sticky">
+      <div class="panel-inner market-focus max-w-[1120px] grid-cols-1 gap-8">
+        <div class="r text-center" id="p1-text">
+          <div class="slbl justify-center">The wave is already here</div>
+          <h2 class="sh">The demand is already there. The infrastructure to claim your slice wasn't — until now.</h2>
+          <p class="bt mx-auto max-w-[760px] text-center">Polymarket covers elections. Kalshi covers macro. Your niche? Still wide open.</p>
+          <div class="live-badge mx-auto"><div class="live-dot"></div>Billions are already trading</div>
+        </div>
+        <div class="r rd market-proof-grid">
+          <div class="market-numbers market-numbers-4">
+            <article class="mn">
+              <div class="mn-label">2025 volume</div>
+              <div class="mn-num">$<span class="counter" data-to="63.5" data-decimals="1">0</span>B</div>
+              <div class="mn-sub">Prediction market volume hit $63.5B in 2025, according to <a href="https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf" class="source-link" data-source-outlet="CertiK Research" data-source-title="2025 Skynet Prediction Markets Report" data-source-summary="CertiK Research reported that prediction market trading volume rose from $15.8B in 2024 to $63.5B in 2025.">CertiK</a>.</div>
+            </article>
+            <article class="mn">
+              <div class="mn-label">Polymarket talks</div>
+              <div class="mn-num">~$<span class="counter" data-to="15">0</span>B</div>
+              <div class="mn-sub">Bloomberg put Polymarket talks near $15B, via <a href="https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg" class="source-link" data-source-outlet="CoinDesk" data-source-title="Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg" data-source-summary="CoinDesk, citing Bloomberg, reported that Polymarket was seeking investment at a valuation between $12B and $15B.">CoinDesk</a>.</div>
+            </article>
+            <article class="mn">
+              <div class="mn-label">Kalshi valuation</div>
+              <div class="mn-num">$<span class="counter" data-to="11">0</span>B</div>
+              <div class="mn-sub">Kalshi raised $1B at an $11B valuation, according to <a href="https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/" class="source-link" data-source-outlet="TechCrunch" data-source-title="Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round" data-source-summary="TechCrunch reported that Kalshi raised a $1B round that lifted its valuation to roughly $11B.">TechCrunch</a>.</div>
+            </article>
+            <article class="mn">
+              <div class="mn-label">Weekly volume</div>
+              <div class="mn-num">$<span class="counter" data-to="2">0</span>B+</div>
+              <div class="mn-sub">Weekly volume moved past $2B at the cycle peak, according to <a href="https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume" class="source-link" data-source-outlet="Decrypt" data-source-title="Prediction Market Trading Volume Hits All-Time High" data-source-summary="Decrypt reported that weekly prediction market trading volume pushed past $2B as the category hit a new record.">Decrypt</a>.</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 3 — SOLUTIONS ═══ -->
+  <div class="panel-wrap panel-static" id="p3">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10">
+        <div class="solution-split r">
+          <div class="solution-head">
+            <div class="slbl">How Kuest solves it</div>
+            <h2 class="sh">Launch today. We handle everything else.</h2>
+            <p class="bt">Full trading infrastructure, shared liquidity, your brand — ready in 15 minutes.</p>
+          </div>
+          <div class="solution-copy-pane">
+            <div class="solution-point-list">
+              <article class="solution-point">
+                <span class="solution-point-icon solution-point-step" aria-hidden="true">1</span>
+                <div class="solution-point-body">
+                  <h3>Pick your niche and write your questions</h3>
+                  <p>Sports, crypto, politics, memes — anything your audience already argues about. You set the questions, the fee rate, and your brand.</p>
+                </div>
+              </article>
+              <article class="solution-point">
+                <span class="solution-point-icon solution-point-step" aria-hidden="true">2</span>
+                <div class="solution-point-body">
+                  <h3>Go live — we handle the infrastructure</h3>
+                  <p>Settlement, wallets, liquidity, blockchain — all running before you finish setup. Your market is live in under 15 minutes with no code.</p>
+                </div>
+              </article>
+              <article class="solution-point">
+                <span class="solution-point-icon solution-point-step" aria-hidden="true">3</span>
+                <div class="solution-point-body">
+                  <h3>Every trade pays you directly</h3>
+                  <p>Your audience bets. The fee goes straight to your wallet. No intermediary, no revenue share, no waiting.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="solution-visual-pane">
+            <div class="solution-visual-stack">
+            <!-- Kuest-style market mock -->
+            <div class="market-mock">
+              <!-- Market event page mock — no header bar, logo inline -->
+              <div class="market-mock-head">
+                <img src="./assets/images/your-predictoin-market-500mi-vol.png"
+                     alt="" class="market-mock-thumb">
+                <div class="market-mock-body">
+                    <div id="marketMockTitle" class="market-mock-title">Will your prediction market hit $500M in volume by January 2027?</div>
+                    <div class="market-mock-summary">
+                      <div class="market-mock-chance-wrap">
+                        <span class="market-mock-chance">67% <span id="marketMockChanceSuffix">chance</span></span>
+                        <span class="market-mock-delta">▲ 2%</span>
+                      </div>
+                      <div class="market-mock-brand">
+                        <span class="market-mock-brand-icon"><i data-lucide="hexagon"></i></span>
+                        <span id="marketMockLogoLabel" class="market-mock-brand-label">Your Logo</span>
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+              <!-- SVG chart — smooth rounded line -->
+              <div class="market-mock-chart-wrap">
+                <svg viewBox="0 0 388 90" fill="none" class="market-mock-chart" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.18"/>
+                      <stop offset="100%" stop-color="#4f8ef7" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- fill area -->
+                  <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18 L382,90 L0,90 Z" fill="url(#chartGrad)"/>
+                  <!-- line -->
+                  <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18"
+                        stroke="#4f8ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- dot at end -->
+                  <circle cx="382" cy="18" r="4" fill="#4f8ef7"/>
+                </svg>
+                <!-- x axis labels -->
+                <div class="market-mock-axis">
+                  <span class="market-mock-axis-label">Feb 1</span>
+                  <span class="market-mock-axis-label">Feb 15</span>
+                  <span class="market-mock-axis-label">Mar 1</span>
+                  <span class="market-mock-axis-label">Mar 9</span>
+                </div>
+              </div>
+
+              <!-- Volume row -->
+              <div id="marketMockMeta" class="market-mock-meta">
+                $4,679.80 Vol. &nbsp;·&nbsp; Closes Jan 01, 2027
+              </div>
+
+              <!-- Trade panel -->
+              <div class="market-mock-trade-panel">
+                <div class="market-mock-actions">
+                  <button id="marketMockYesBtn" class="market-mock-btn market-mock-btn-yes">Yes 67¢</button>
+                  <button id="marketMockNoBtn" class="market-mock-btn market-mock-btn-no">No 33¢</button>
+                </div>
+              </div>
+            </div>
+              <div class="solution-cta-wrap solution-cta-wrap-visual">
+                <div class="solution-cta-block">
+                  <a href="/launch" class="btn-cta btn-cta-primary" id="solutionCtaBtn">Start your prediction market →</a>
+                  <div class="solution-cta-note" id="solutionCtaNote">Free launch • No code • Live in minutes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 4 — HOW IT WORKS ═══ -->
+  <div class="panel-wrap panel-static" id="p4">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
+
+        <div class="r text-center">
+          <div class="slbl justify-center">What's included</div>
+          <h2 class="sh">Three things that would take a team months. Done in 15 minutes.</h2>
+          <p class="bt section-copy-center">No engineers. No blockchain knowledge. No cold start.</p>
+        </div>
+
+        <div class="r mini-cards-grid mini-cards-grid-feature">
+
+          <!-- Tile 1 -->
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="globe-2"></i></span>
+                <div class="mini-card-title">Your site. Your language. Your niche.</div>
+              </div>
+              <div class="mini-card-copy">Custom domain, logo, and colors. Create markets in any language and build around your local sports team, regional politics, or community events.</div>
+            </div>
+            <div class="feature-demo-box">
+              <div class="feature-demo-head">
+                <div class="feature-demo-domain">YOURMARKET.COM</div>
+                <div class="language-demo-select-wrap">
+                  <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
+                    <option value="en" selected>🇺🇸 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="es">🇪🇸 Spanish</option>
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="fr">🇫🇷 French</option>
+                    <option value="zh">🇨🇳 中文</option>
+                  </select>
+                  <span class="language-demo-select-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+                </div>
+              </div>
+              <div class="language-demo-chips" id="languageDemoChips">
+                <span data-lang-chip="0" class="language-demo-chip">Futebol</span>
+                <span data-lang-chip="1" class="language-demo-chip">Política</span>
+                <span data-lang-chip="2" class="language-demo-chip">Cripto</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tile 2 (highlighted) -->
+          <div class="mini-card mini-card-feature mini-card-accent">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="square-pen"></i></span>
+                <div class="mini-card-title">Ask anything. Your audience decides.</div>
+              </div>
+              <div class="mini-card-copy">You write the question — about anything you cover. Your audience bets yes or no. Every trade earns you a fee, straight to your wallet with no intermediary.</div>
+            </div>
+            <div class="mini-vote-demo">
+              <div class="mini-fee-burst" aria-hidden="true">
+                <span class="mini-fee-icon mini-fee-icon-a"><i data-lucide="circle-dollar-sign"></i></span>
+                <span class="mini-fee-icon mini-fee-icon-b"><i data-lucide="circle-dollar-sign"></i></span>
+                <span class="mini-fee-icon mini-fee-icon-c"><i data-lucide="circle-dollar-sign"></i></span>
+              </div>
+              <div class="mini-vote-question">"Will GTA 6 launch before July 2025?"</div>
+              <div class="mini-vote-actions">
+                <button type="button" class="mini-vote-btn is-yes" data-fee-trigger>Yes</button>
+                <button type="button" class="mini-vote-btn is-no" data-fee-trigger>No</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tile 3 -->
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="activity"></i></span>
+                <div class="mini-card-title">Alive from day one. No empty market problem.</div>
+              </div>
+                <div class="mini-card-copy">Shared liquidity via mirrored markets gives your market activity before the first visitor arrives. The cold start problem that kills most platforms doesn't exist here.</div>
+            </div>
+            <div class="mini-trade-feed">
+              <div class="mini-trade-head">
+                <span class="mini-trade-label">Day 1</span>
+                <span class="mini-trade-status"><span class="mini-trade-status-dot"></span>Live activity</span>
+              </div>
+              <div class="mini-trade-viewport" aria-hidden="true">
+                <div class="mini-trade-track">
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">J</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">John</span> <span class="mini-trade-verb is-buy">bought</span> <strong class="mini-trade-outcome is-no">No</strong> <span class="mini-trade-entry-price is-buy">at 72¢ ($4)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">M</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">Maria</span> <span class="mini-trade-verb is-sell">sold</span> <strong class="mini-trade-outcome is-yes">Yes</strong> <span class="mini-trade-entry-price is-sell">at 41¢ ($9)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">S</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">Steve</span> <span class="mini-trade-verb is-buy">bought</span> <strong class="mini-trade-outcome is-yes">Yes</strong> <span class="mini-trade-entry-price is-buy">at 18¢ ($2)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">N</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">Nina</span> <span class="mini-trade-verb is-sell">sold</span> <strong class="mini-trade-outcome is-no">No</strong> <span class="mini-trade-entry-price is-sell">at 63¢ ($11)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">A</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">Alex</span> <span class="mini-trade-verb is-buy">bought</span> <strong class="mini-trade-outcome is-yes">Yes</strong> <span class="mini-trade-entry-price is-buy">at 81¢ ($7)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">J</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">John</span> <span class="mini-trade-verb is-buy">bought</span> <strong class="mini-trade-outcome is-no">No</strong> <span class="mini-trade-entry-price is-buy">at 72¢ ($4)</span></span>
+                  </div>
+                  <div class="mini-trade-row">
+                    <span class="mini-trade-avatar">M</span>
+                    <span class="mini-trade-text"><span class="mini-trade-name">Maria</span> <span class="mini-trade-verb is-sell">sold</span> <strong class="mini-trade-outcome is-yes">Yes</strong> <span class="mini-trade-entry-price is-sell">at 41¢ ($9)</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 5 — REVENUE CALCULATOR ═══ -->
+  <div class="panel-wrap panel-static panel-compact" id="p5">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[980px] grid-cols-1 gap-8">
+        <div class="r text-center">
+          <div class="slbl justify-center">Run the numbers</div>
+          <h2 class="sh">How much could your market earn?</h2>
+        </div>
+        <div class="r rd calc-stage">
+          <div class="calc-row">
+            <div class="calc-label-wrap">
+              <span class="calc-icon" aria-hidden="true"><i data-lucide="chart-column-increasing"></i></span>
+              <div class="calc-label">Daily trading volume</div>
+            </div>
+            <div class="calc-value" id="feeVol">$500,000</div>
+          </div>
+          <div class="fee-slider-wrap">
+            <input type="range" class="fee-slider" id="feeSlider" min="1" max="7" step="1" value="3" aria-label="Daily trading volume">
+            <div class="calc-scale-track" aria-hidden="true"></div>
+            <div class="calc-scale-dots" aria-hidden="true">
+              <span class="calc-scale-dot" data-step="1" style="--pos:0"></span><span class="calc-scale-dot" data-step="2" style="--pos:1"></span><span class="calc-scale-dot" data-step="3" style="--pos:2"></span><span class="calc-scale-dot" data-step="4" style="--pos:3"></span><span class="calc-scale-dot" data-step="5" style="--pos:4"></span><span class="calc-scale-dot" data-step="6" style="--pos:5"></span><span class="calc-scale-dot" data-step="7" style="--pos:6"></span>
+            </div>
+            <div class="fee-steps-label calc-scale">
+              <span class="calc-scale-item" data-step="1" style="--pos:0">$10K</span><span class="calc-scale-item" data-step="2" style="--pos:1">$100K</span><span class="calc-scale-item" data-step="3" style="--pos:2">$500K</span><span class="calc-scale-item" data-step="4" style="--pos:3">$1M</span><span class="calc-scale-item" data-step="5" style="--pos:4">$5M</span><span class="calc-scale-item" data-step="6" style="--pos:5">$10M</span><span class="calc-scale-item" data-step="7" style="--pos:6">$50M</span>
+            </div>
+          </div>
+          <div class="calc-row calc-row-fee">
+            <div class="calc-label-wrap">
+              <span class="calc-icon" aria-hidden="true"><i data-lucide="sliders-horizontal"></i></span>
+              <div class="calc-label">Trading fee</div>
+            </div>
+            <div class="fee-rate-controls calc-rate-controls">
+              <button type="button" class="fee-rate-btn" id="feeRateDown" aria-label="Decrease fee rate">-</button>
+              <div class="fee-val fee-rate-val">1%</div>
+              <button type="button" class="fee-rate-btn" id="feeRateUp" aria-label="Increase fee rate">+</button>
+            </div>
+          </div>
+          <div class="calc-divider"></div>
+          <div class="calc-row calc-row-result">
+            <div class="calc-result-label-wrap">
+              <span class="calc-icon" aria-hidden="true"><i data-lucide="dollar-sign"></i></span>
+              <div class="calc-result-label">Estimated monthly fee revenue</div>
+            </div>
+            <div class="calc-result" id="feeResult">$150,000</div>
+          </div>
+          <div class="calc-note">Example estimate using the selected daily volume over 30 days. Actual revenue varies with volume, pricing, referrals and VIP discounts.</div>
+        </div>
+        <div class="r panel-cta-stack panel-cta-stack-compact">
+          <p class="bt panel-cta-prompt" id="calculatorCtaPrompt">Convinced? Your market could be live before you finish your next coffee.</p>
+          <a href="/launch" class="btn-cta btn-cta-primary" id="calculatorCtaBtn">Start your prediction market →</a>
+          <div id="calculatorCtaNote" class="panel-cta-note">Free launch · No code · Live in minutes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 6 — WHY NOW ═══ -->
+  <div class="panel-wrap panel-static" id="p6">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
+        <div class="r">
+          <div class="r text-center why-now-head">
+            <div class="slbl justify-center">Why now</div>
+            <h2 class="sh">Most niches still have no prediction market. Yours could be first.</h2>
+            <p class="bt section-copy-center mx-auto max-w-[760px] text-center">Polymarket covers elections. Kalshi covers macro. Your niche? Still open.</p>
+          </div>
+          <div class="rd market-proof-grid">
+            <div class="market-numbers market-numbers-4">
+              <article class="mn">
+                <div class="mn-label">Verticals with no dominant player yet</div>
+                <div class="mn-num">100s</div>
+                <div class="mn-sub">No one is earning fees from your audience yet. That's the gap.</div>
+              </article>
+              <article class="mn">
+                <div class="mn-label">Time to launch with Kuest</div>
+                <div class="mn-num">&lt;15min</div>
+                <div class="mn-sub">From signup to live market. No engineering required.</div>
+              </article>
+              <article class="mn">
+                <div class="mn-label">Cost to start your own prediction market</div>
+                <div class="mn-num">$0</div>
+                <div class="mn-sub">Launch free. Pay only when you scale.</div>
+              </article>
+              <article class="mn">
+                <div class="mn-label">How your market generates revenue</div>
+                <div class="mn-num">% / trade</div>
+                <div class="mn-sub">Every trade earns a fee. Volume grows, cost stays flat.</div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- ═══ PANEL 7 — WHO IT'S FOR ═══ -->
+  <div class="panel-wrap panel-static" id="p7">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1160px] grid-cols-1 gap-10">
+
+        <div class="r text-center">
+          <div class="slbl justify-center">Pick your niche</div>
+          <h2 class="sh">If your audience has opinions, you can build a market around it.</h2>
+        </div>
+
+        <!-- Niche tabs -->
+        <div class="r niche-tabs-wrap" id="nicheTabs">
+          <button class="niche-tab is-active" data-niche="0">
+            <i data-lucide="bitcoin"></i> Crypto &amp; Finance
+          </button>
+          <button class="niche-tab" data-niche="1">
+            <i data-lucide="trophy"></i> Sports
+          </button>
+          <button class="niche-tab" data-niche="2">
+            <i data-lucide="landmark"></i> Politics
+          </button>
+          <button class="niche-tab" data-niche="3">
+            <i data-lucide="clapperboard"></i> Entertainment
+          </button>
+          <button class="niche-tab" data-niche="4">
+            <i data-lucide="users"></i> Communities
+          </button>
+          <button class="niche-tab" data-niche="5">
+            <i data-lucide="flame"></i> Memes &amp; Others
+          </button>
+        </div>
+
+        <!-- Niche tagline -->
+        <div class="r text-center niche-tagline-wrap">
+          <p class="bt text-center mx-auto max-w-[760px]" id="nicheTagline"></p>
+        </div>
+
+        <!-- Cards grid -->
+        <div class="r rd niche-cards-grid" id="nicheCardsGrid"></div>
+
+        <div class="r panel-cta-stack panel-cta-stack-niche">
+          <p class="bt panel-cta-prompt" id="nichesCtaPrompt">Your niche. Your brand. Your cut of every trade.</p>
+          <a href="/launch" class="btn-cta btn-cta-primary" id="nichesCtaBtn">Start your prediction market →</a>
+          <div id="nichesCtaNote" class="panel-cta-note">Free launch · No code · Live in minutes</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var NICHE_DATA = [
+    {
+      tag: "Crypto & Finance",
+      accent: "#f7931a",
+      accentRgb: "247,147,26",
+      tagline: "Your own Polymarket for your community.",
+      cards: [
+        { type:"single", img:"./assets/images/bitcoin-150k.png", title:"Will Bitcoin trade above $150K before Q3?", pct:61, vol:"$42k Vol.", cat:"Crypto" },
+        { type:"single", img:"./assets/images/ethereum-flippening.png", title:"Will Ethereum flip Bitcoin's market cap in 2025?", pct:18, vol:"$29k Vol.", cat:"Crypto" },
+        { type:"multi",  img:"./assets/images/fed-rate-move.png", title:"Next Fed rate move", rows:[{label:"Cut",pct:42},{label:"Hold",pct:51},{label:"Hike",pct:7}], vol:"$31k Vol.", cat:"Finance" }
+      ]
+    },
+    {
+      tag: "Sports",
+      accent: "#34d07f",
+      accentRgb: "52,208,127",
+      tagline: "Bet on any game. Keep the fees.",
+      cards: [
+        { type:"multi", img:"./assets/images/champions-league-top-scorer.png", title:"Top scorer — Champions League final", rows:[{label:"Mbappé",pct:34},{label:"Vinicius",pct:28},{label:"Bellingham",pct:19}], vol:"$18k Vol.", cat:"Soccer" },
+        { type:"single", img:"./assets/images/warriors-playoffs.png", title:"Will the Warriors make the 2025 playoffs?", pct:55, vol:"$11k Vol.", cat:"NBA" },
+        { type:"single", img:"./assets/images/daniel-negranu-wsop.png", title:"Will Daniel Negreanu make the final table of the 2026 WSOP Main Event?", pct:38, vol:"$8k Vol.", cat:"Poker" }
+      ]
+    },
+    {
+      tag: "Politics",
+      accent: "#8b5cf6",
+      accentRgb: "139,92,246",
+      tagline: "Your audience predicts. You get paid.",
+      cards: [
+        { type:"single", img:"./assets/images/elon-usa-election.png", title:"Will Elon Musk win the 2028 U.S. election?", pct:42, vol:"$331k Vol.", cat:"Politics" },
+        { type:"single", img:"./assets/images/russia-x-ukraine.png", title:"Will Russia and Ukraine reach a ceasefire by December 31, 2026?", pct:34, vol:"$22k Vol.", cat:"Geopolitics" },
+        { type:"multi", img:"./assets/images/uk-general-election.png", title:"Who wins the UK general election?", rows:[{label:"Labour",pct:58},{label:"Conservatives",pct:28},{label:"Other",pct:14}], vol:"$19k Vol.", cat:"UK" }
+      ]
+    },
+    {
+      tag: "Entertainment",
+      accent: "#f43f5e",
+      accentRgb: "244,63,94",
+      tagline: "If they argue about it, they'll trade it.",
+      cards: [
+        { type:"single", img:"./assets/images/marvel-opening-weekend.png", title:"Will the new Marvel film open above $200M?", pct:70, vol:"$9k Vol.", cat:"Film" },
+        { type:"multi", img:"./assets/images/big-brother-brasil.png", title:"Who wins Big Brother Brasil 2025?", rows:[{label:"Beatriz",pct:41},{label:"Davi",pct:33},{label:"Others",pct:26}], vol:"$14k Vol.", cat:"Reality TV" },
+        { type:"single", img:"./assets/images/taylor-swift-album.png", title:"Will Taylor Swift announce a new album in 2025?", pct:55, vol:"$6k Vol.", cat:"Music" }
+      ]
+    },
+    {
+      tag: "Communities & DAOs",
+      accent: "#4f8ef7",
+      accentRgb: "79,142,247",
+      tagline: "Turn your Discord into a prediction market.",
+      cards: [
+        { type:"single", img:"./assets/images/uniswap-v4-mainnet.png", title:"Will Uniswap v4 launch on mainnet before Q2?", pct:73, vol:"$7k Vol.", cat:"DeFi" },
+        { type:"multi", img:"./assets/images/governance-vote-chain.png", title:"Which chain will host the next governance vote?", rows:[{label:"Ethereum",pct:55},{label:"Arbitrum",pct:30},{label:"Polygon",pct:15}], vol:"$5k Vol.", cat:"DAO" },
+        { type:"single", img:"./assets/images/discord-50k-members.png", title:"Will our Discord hit 50K members this month?", pct:44, vol:"$3k Vol.", cat:"Community" }
+      ]
+    },
+    {
+      tag: "Memes & Others",
+      accent: "#f5c842",
+      accentRgb: "245,200,66",
+      tagline: "If the internet argues about it, it's a market.",
+      cards: [
+        { type:"single", img:"./assets/images/mrbeast-vs-tseries.png", title:"Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?", pct:67, vol:"$21k Vol.", cat:"Internet" },
+        { type:"single", img:"./assets/images/elon-500b-net-worth.png", title:"Will Elon Musk be worth over $500B before end of 2025?", pct:38, vol:"$15k Vol.", cat:"Billionaires" },
+        { type:"single", img:"./assets/images/pop-star-arrest.png", title:"Will any U.S. singer with 10M+ followers be arrested by December 2026?", pct:12, vol:"$9k Vol.", cat:"Wildcard" }
+      ]
+    }
+  ];
+
+  function buildCard(c) {
+    var gauge = '';
+    if (c.type === 'single') {
+      var arcLen = 62.8;
+      var offset = arcLen - (arcLen * c.pct / 100);
+      gauge = '<div class="niche-market-gauge">'
+        + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '</svg>'
+        + '<div class="niche-market-gauge-value">' + c.pct + '%</div>'
+        + '<div class="niche-market-gauge-label">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.chance) || 'chance') + '</div>'
+        + '</div>';
+    }
+
+    var btns = '';
+    if (c.type === 'single') {
+      btns = '<div class="niche-market-body niche-market-body-single">'
+        + '<div class="niche-market-actions">'
+        + '<button class="niche-market-btn niche-market-btn-yes">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.yes) || 'Yes') + '</button>'
+        + '<button class="niche-market-btn niche-market-btn-no">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.no) || 'No') + '</button>'
+        + '</div></div>';
+    } else {
+      btns = '<div class="niche-market-body niche-market-body-multi"><div class="niche-market-list">'
+        + c.rows.map(function(r) {
+            return '<div class="niche-market-list-row">'
+              + '<span class="niche-market-row-label">' + r.label + '</span>'
+              + '<div class="niche-market-row-actions">'
+              + '<span class="niche-market-row-pct">' + r.pct + '%</span>'
+              + '<button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.yes) || 'Yes') + '</button>'
+              + '<button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.no) || 'No') + '</button>'
+              + '</div></div>';
+          }).join('')
+        + '</div></div>';
+    }
+
+    return '<div class="niche-market-card">'
+      + '<div class="niche-market-head">'
+      + '<img src="' + c.img + '" alt="" class="niche-market-thumb">'
+      + '<div class="niche-market-title-wrap"><div class="niche-market-title">' + c.title + '</div></div>'
+      + gauge
+      + '</div>'
+      + btns
+      + '<div class="niche-market-footer">'
+      + '<span class="niche-market-volume">' + c.vol + '</span>'
+      + '<span class="niche-market-category">' + c.cat + '</span>'
+      + '</div></div>';
+  }
+
+  var nicheTimer;
+  var currentNiche = 0;
+  var nicheHovered = false;
+  var nicheGrid = document.getElementById('nicheCardsGrid');
+  var nicheTabs = document.getElementById('nicheTabs');
+
+  function setNicheHoverState(nextHovered) {
+    nicheHovered = nextHovered;
+    if (nicheHovered) {
+      clearInterval(nicheTimer);
+    } else {
+      restartNicheTimer();
+    }
+  }
+
+  if (nicheGrid) {
+    nicheGrid.addEventListener('mouseenter', function() { setNicheHoverState(true); });
+    nicheGrid.addEventListener('mouseleave', function() { setNicheHoverState(false); });
+  }
+  if (nicheTabs) {
+    nicheTabs.addEventListener('mouseenter', function() { setNicheHoverState(true); });
+    nicheTabs.addEventListener('mouseleave', function() { setNicheHoverState(false); });
+  }
+
+  function showNiche(i) {
+    currentNiche = i;
+    var data = NICHE_DATA[i];
+    var tagline = document.getElementById('nicheTagline');
+    var grid = document.getElementById('nicheCardsGrid');
+
+    tagline.textContent = data.tagline;
+    tagline.style.color = 'rgba(' + data.accentRgb + ',0.88)';
+
+    grid.style.opacity = '0';
+    grid.style.transition = 'opacity .25s';
+    setTimeout(function() {
+      grid.innerHTML = data.cards.map(buildCard).join('');
+      grid.style.opacity = '1';
+      if (window.lucide) window.lucide.createIcons();
+    }, 250);
+
+    document.querySelectorAll('.niche-tab').forEach(function(tab, idx) {
+      var tabData = NICHE_DATA[idx];
+      if (idx === i) {
+        tab.classList.add('is-active');
+        tab.style.borderColor = 'rgba(' + tabData.accentRgb + ',0.46)';
+        tab.style.background = 'rgba(' + tabData.accentRgb + ',0.12)';
+        tab.style.color = tabData.accent;
+        tab.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+      } else {
+        tab.classList.remove('is-active');
+        tab.style.borderColor = 'rgba(255,255,255,0.08)';
+        tab.style.background = 'transparent';
+        tab.style.color = '#6b7585';
+        tab.style.boxShadow = 'none';
+      }
+    });
+  }
+
+  function restartNicheTimer() {
+    clearInterval(nicheTimer);
+    if (nicheHovered) return;
+    nicheTimer = setInterval(function() {
+      showNiche((currentNiche + 1) % NICHE_DATA.length);
+    }, 7000);
+  }
+
+  document.querySelectorAll('.niche-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      showNiche(parseInt(tab.dataset.niche, 10));
+      restartNicheTimer();
+    });
+  });
+
+  showNiche(0);
+  restartNicheTimer();
+  </script>
+
+  <script>
+  (function () {
+    var select = document.getElementById('languageDemoSelect');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('[data-lang-chip]'));
+    if (!select || chips.length !== 3) return;
+
+    var labels = {
+      en: ['Soccer', 'Politics', 'Crypto'],
+      de: ['Fußball', 'Politik', 'Krypto'],
+      es: ['Fútbol', 'Política', 'Cripto'],
+      pt: ['Futebol', 'Política', 'Cripto'],
+      fr: ['Football', 'Politique', 'Crypto'],
+      zh: ['足球', '政治', '加密']
+    };
+
+    function renderLanguageChips() {
+      var values = labels[select.value] || labels.pt;
+      chips.forEach(function (chip, index) {
+        chip.textContent = values[index] || '';
+      });
+    }
+
+    select.addEventListener('change', renderLanguageChips);
+    renderLanguageChips();
+  })();
+  </script>
+
+    <!-- ═══ PANEL 8 — FAQ ═══ -->
+  <div class="panel-wrap panel-static" id="p8">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[820px] grid-cols-1 items-start">
+        <div class="r text-center">
+          <div class="slbl justify-center">Before you ask</div>
+          <h2 class="sh">Common questions, <em>answered.</em></h2>
+        </div>
+        <div class="r rd faq-list">
+          <details class="faq-item">
+            <summary class="faq-q">How long does it take, and do I need technical skills?</summary>
+            <div class="faq-a">Most markets go live in under 15 minutes. You launch from <a href="/launch">/launch</a> with a guided setup — no code, no contract deployment, no DevOps. If you can set up a Shopify store, you can launch a Kuest market.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Can I show Polymarket markets on my site?</summary>
+            <div class="faq-a">Yes. You can mirror active markets from Polymarket — either all categories or only the ones relevant to your niche (crypto, sports, politics, etc.). These mirrored markets come with shared liquidity from day one, so your site feels live from the moment it's published.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Can I create my own markets? Who provides the liquidity?</summary>
+            <div class="faq-a">Yes. You can create custom markets around any question you choose. Mirrored Polymarket markets have shared liquidity built in. Markets you create yourself depend on your audience trading — so your own content and community drive the volume there. You can also opt into cross-market liquidity sharing for creator markets.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">How do I make money, and can I set my own fees?</summary>
+            <div class="faq-a">You set a trading fee rate on your market — typically between 0.5% and 3%. Every time someone trades, that fee goes directly to your wallet. No revenue share, no intermediary, no waiting. You control the rate and can change it at any time.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Can I use my own domain and branding?</summary>
+            <div class="faq-a">Yes. You can launch with your own domain, logo, colors, and category structure so the market feels entirely native to your brand — not a Kuest white-label.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">How are markets resolved?</summary>
+            <div class="faq-a">Kuest uses UMA-based resolution rails for transparent, verifiable settlement. The smart contracts are derived from Polymarket's — audited by OpenZeppelin — and adapted to support shared liquidity across markets. You don't need to understand any of this to use it, but it means the financial infrastructure under your market is the same stack that's processed billions in volume.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Is there a cost to launch?</summary>
+            <div class="faq-a">The launch flow is free to start. Production infrastructure pricing is usage-based — you pay when you scale, not before.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">Can I self-host Kuest?</summary>
+            <div class="faq-a">The codebase is open source under the <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">Kuest MIT+Commons license</a>. Forks for branding, frontend changes, and custom UX are welcome. Production deployments, however, must use Kuest infrastructure. Running an independent trading stack requires a separate <a href="mailto:hello@kuest.com">commercial agreement</a>.</div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 9 — FINAL CTA ═══ -->
+  <div class="panel-wrap panel-static panel-compact" id="p9">
+    <div class="panel-sticky">
+      <div class="cta-content r py-12">
+        <div class="slbl justify-center">Your niche is waiting</div>
+        <h2 class="cta-h">Launch your own prediction market today.</h2>
+        <p class="cta-sub">Free to start. Live in 15 minutes. Your brand, your questions, your revenue.</p>
+        <div class="cta-btns">
+          <a href="/launch" class="btn-cta btn-cta-primary">Start your prediction market →</a>
+        </div>
+        <div class="cta-note">Free launch · No code · Live in minutes</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<div class="source-modal" id="sourceModal" hidden aria-hidden="true">
+  <div class="source-modal-backdrop" data-source-close></div>
+  <div class="source-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="sourceModalTitle">
+    <button type="button" class="source-modal-close" aria-label="Close source modal" data-source-close>&times;</button>
+    <div class="source-modal-kicker" id="sourceModalOutlet">Source</div>
+    <h3 class="source-modal-title" id="sourceModalTitle">Source title</h3>
+    <div class="source-modal-url" id="sourceModalUrl">source-url.com</div>
+    <div class="source-modal-frame-wrap is-loading" id="sourceModalFrameWrap">
+      <div class="source-modal-frame-loading" id="sourceModalLoading">Loading source…</div>
+      <iframe
+        id="sourceModalFrame"
+        class="source-modal-frame"
+        title="Source preview"
+        src="about:blank"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="source-modal-note" id="sourceModalNote">If this publisher blocks embeds, use the external link below.</p>
+    <div class="source-modal-actions">
+      <a href="#" id="sourceModalExternal" target="_blank" rel="noopener noreferrer" class="btn-cta btn-cta-secondary">Open source in new tab</a>
+      <button type="button" class="btn-cta btn-cta-secondary" data-source-close>Back to page</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-brand">
+    <div class="nav-logo gap-2 font-sans text-[15px] font-bold text-muted">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
+      Kuest
+    </div>
+    <div class="foot-note">Built on Polymarket-derived contracts, audited by OpenZeppelin</div>
+  </div>
+  <div class="foot-links">
+    <a href="/launch">Launch</a>
+    <a href="#sitePreview">Demo</a>
+    <a href="https://kuest.com/docs/owners">Docs</a>
+    <a href="https://x.com/kuest">X</a>
+    <a href="https://discord.gg/kuest">Discord</a>
+    <a href="/cdn-cgi/l/email-protection#3c54595050537c5749594f48125f5351">Contact</a>
+  </div>
+  <div class="foot-live"><div class="live-dot"></div><span id="footerLiveText">Polygon Mainnet — Live</span></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+<script src="./assets/vendor/i18next.min.js"></script>
+<script src="./assets/vendor/i18nextHttpBackend.min.js"></script>
+<script src="./assets/vendor/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="./assets/i18n.js"></script>
+<script src="./assets/app.js"></script>
+<script>
+window.lucide && window.lucide.createIcons();
+</script>
+</body>
+</html>

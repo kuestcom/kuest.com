@@ -1,0 +1,413 @@
+{
+  "meta": {
+    "title": "Kuest — Créez votre marché de prédiction white-label",
+    "description": "Créez votre propre marché de prédiction white-label en 15 minutes. Lancez avec votre marque, votre domaine, vos frais et une liquidité partagée dès le premier jour.",
+    "ogTitle": "Kuest — Créez votre marché de prédiction white-label",
+    "ogDescription": "Créez votre propre marché de prédiction en 15 minutes, avec liquidité partagée, marque propre et frais qui restent chez vous.",
+    "twitterTitle": "Kuest — Créez votre marché de prédiction white-label",
+    "twitterDescription": "Créez votre propre marché de prédiction en 15 minutes, avec liquidité partagée, marque propre et frais qui restent chez vous."
+  },
+  "languageSelector": {
+    "ariaLabel": "Changer la langue du site"
+  },
+  "preview": {
+    "switchToDesktop": "Passer à la vue desktop",
+    "switchToMobile": "Passer à la vue mobile"
+  },
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "chance": "de chances"
+  },
+  "nav": {
+    "cta": "Lancez votre marché →"
+  },
+  "hero": {
+    "kicker": "Le Shopify des marchés de prédiction",
+    "titleLine1": "Votre propre Polymarket.",
+    "titleLine2": "En ligne en 15 minutes. Gratuit.",
+    "subtitle": "Votre audience commente, anticipe et prend position tous les jours. Lancez un marché à votre marque pour la crypto, le sport, la politique ou n’importe quelle niche, et touchez une commission sur chaque transaction.",
+    "cta": "Lancez votre marché →",
+    "proof": "Lancement gratuit • Sans code • En ligne en quelques minutes",
+    "previewUrl": "demo.kuest.com"
+  },
+  "social": {
+    "eyebrow": "La vague est déjà là",
+    "title": "La demande existe déjà. Ce qui manquait, c’était l’infrastructure pour en faire un revenu qui vous appartient.",
+    "subtitle": "Polymarket occupe les élections. Kalshi occupe le macro. Votre niche reste à prendre.",
+    "badge": "Des milliards sont déjà échangés",
+    "cards": [
+      {
+        "label": "Volume en 2025",
+        "subHtml": "Les marchés de prédiction ont atteint $63.5B de volume en 2025, selon <a href=\"https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf\" class=\"source-link\" data-source-outlet=\"CertiK Research\" data-source-title=\"2025 Skynet Prediction Markets Report\">CertiK</a>."
+      },
+      {
+        "label": "Valorisation de Polymarket",
+        "subHtml": "Bloomberg situait Polymarket autour de $15B, via <a href=\"https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg\" class=\"source-link\" data-source-outlet=\"CoinDesk\" data-source-title=\"Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg\">CoinDesk</a>."
+      },
+      {
+        "label": "Valorisation de Kalshi",
+        "subHtml": "Kalshi a levé $1B sur une valorisation de $11B, selon <a href=\"https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/\" class=\"source-link\" data-source-outlet=\"TechCrunch\" data-source-title=\"Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round\">TechCrunch</a>."
+      },
+      {
+        "label": "Volume hebdomadaire",
+        "subHtml": "Au pic du cycle, le volume hebdomadaire a dépassé $2B, selon <a href=\"https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume\" class=\"source-link\" data-source-outlet=\"Decrypt\" data-source-title=\"Prediction Market Trading Volume Hits All-Time High\">Decrypt</a>."
+      }
+    ]
+  },
+  "problems": {
+    "eyebrow": "Ça vous parle ?",
+    "title": "Vous avez l’audience. Ce qu’il manque, c’est un levier de monétisation qui passe à l’échelle.",
+    "subtitle": "La pub rapporte peu. Les sponsors vont et viennent. Les formations prennent des mois. Pendant ce temps, votre audience commente, débat et anticipe chaque jour — sans que cette énergie vous rapporte vraiment.",
+    "cards": [
+      {
+        "title": "Chaque modèle de monétisation finit par plafonner",
+        "copy": "Les pubs paient au clic. Les sponsors paient à la campagne. Un marché de prédiction prélève une commission sur chaque transaction, 24/7, même après le lancement."
+      },
+      {
+        "title": "Votre audience anticipe déjà. Simplement, pas chez vous",
+        "copy": "Elle débat des résultats dans vos commentaires, vos groupes et sur X. Kuest transforme cette énergie en marché où chaque transaction peut vous rémunérer."
+      },
+      {
+        "title": "Pas besoin d’être trader pour lancer",
+        "copy": "Pas de bagage crypto. Pas d’équipe technique. Pas des mois à construire l’infra. Juste votre niche, vos questions et quelques minutes pour être en ligne."
+      }
+    ]
+  },
+  "solution": {
+    "eyebrow": "Comment Kuest règle le problème",
+    "title": "Lancez aujourd’hui. L’infrastructure compliquée est déjà prête.",
+    "subtitle": "Trading, liquidité partagée et votre marque : tout est prêt en 15 minutes.",
+    "points": [
+      {
+        "title": "Choisissez votre niche et rédigez vos questions",
+        "copy": "Sport, crypto, politique, memes : tout ce dont votre audience débat déjà. Vous définissez les questions, la commission et votre marque."
+      },
+      {
+        "title": "Passez en ligne — on gère l'infrastructure",
+        "copy": "Settlement, wallets, liquidité, blockchain : tout tourne avant même que vous ayez fini le setup. Votre marché est en ligne en moins de 15 minutes, sans code."
+      },
+      {
+        "title": "Chaque trade vous paie directement",
+        "copy": "Votre audience trade. La commission arrive directement dans votre portefeuille. Sans intermédiaire, sans partage de revenus, sans attente."
+      }
+    ],
+    "mock": {
+      "title": "Votre marché de prédiction peut-il atteindre $500M de volume avant janvier 2027 ?",
+      "chanceSuffix": "de chances",
+      "logoLabel": "Votre logo",
+      "metaHtml": "Volume $4,679.80 &nbsp;·&nbsp; Clôture le 1 janv. 2027",
+      "yesButton": "Oui 67¢",
+      "noButton": "Non 33¢"
+    }
+  },
+  "features": {
+    "eyebrow": "Ce qui est déjà inclus",
+    "title": "Trois choses qui prendraient des mois à une équipe. Ici, vous les lancez en 15 minutes.",
+    "subtitle": "Pas d’équipe tech. Pas besoin de maîtriser la blockchain. Pas de marché vide au départ.",
+    "cards": [
+      {
+        "title": "Votre site. Votre langue. Votre niche.",
+        "copy": "Domaine, logo, couleurs et contexte local. Lancez en français, en anglais ou dans la langue de votre audience."
+      },
+      {
+        "title": "Posez les questions qui comptent pour votre audience.",
+        "copy": "Vous rédigez la question. Votre audience se positionne sur Oui ou Non. Et chaque transaction peut générer une commission directement dans votre portefeuille.",
+        "question": "\"GTA 6 sortira-t-il avant juillet 2025 ?\""
+      },
+      {
+        "title": "Vivant dès le jour 1. Pas de carnet vide.",
+        "copy": "Avec la liquidité partagée via des marchés miroir, votre marché démarre déjà avec de l’activité. Le problème du carnet d’ordres vide disparaît.",
+        "feedLabel": "Activité en direct",
+        "feedStatus": "Jour 1",
+        "trades": [
+          {
+            "avatar": "J",
+            "name": "John",
+            "action": "a acheté",
+            "side": "Non",
+            "sideClass": "no",
+            "entry": "à 72¢ ($4)"
+          },
+          {
+            "avatar": "M",
+            "name": "Maria",
+            "action": "a vendu",
+            "side": "Oui",
+            "sideClass": "yes",
+            "entry": "à 41¢ ($9)"
+          },
+          {
+            "avatar": "S",
+            "name": "Steve",
+            "action": "a acheté",
+            "side": "Oui",
+            "sideClass": "yes",
+            "entry": "à 18¢ ($2)"
+          },
+          {
+            "avatar": "N",
+            "name": "Nina",
+            "action": "a vendu",
+            "side": "Non",
+            "sideClass": "no",
+            "entry": "à 63¢ ($11)"
+          },
+          {
+            "avatar": "A",
+            "name": "Alex",
+            "action": "a acheté",
+            "side": "Oui",
+            "sideClass": "yes",
+            "entry": "à 81¢ ($7)"
+          }
+        ]
+      }
+    ]
+  },
+  "calculator": {
+    "eyebrow": "Faites le calcul",
+    "title": "Combien votre marché peut-il générer ?",
+    "dailyVolumeLabel": "Volume de trading quotidien",
+    "dailyVolumeAriaLabel": "Volume de trading quotidien",
+    "feeLabel": "Commission de trading",
+    "decreaseFeeAriaLabel": "Réduire la commission",
+    "increaseFeeAriaLabel": "Augmenter la commission",
+    "resultLabel": "Revenu mensuel estimé en commissions",
+    "note": "Estimation basée sur le volume quotidien sélectionné sur 30 jours. Le revenu réel varie selon le volume, la tarification, les parrainages et les remises VIP.",
+    "ctaPrompt": "Convaincu ? Votre marché pourrait être en ligne avant même la fin de votre prochain café."
+  },
+  "whyNow": {
+    "eyebrow": "Pourquoi maintenant",
+    "title": "La plupart des niches n’ont toujours pas de marché de prédiction. La vôtre peut prendre de l’avance.",
+    "subtitle": "Polymarket occupe les élections. Kalshi occupe le macro. Votre niche reste à prendre.",
+    "cards": [
+      {
+        "label": "Des verticales encore ouvertes",
+        "sub": "Personne ne monétise encore votre audience avec des frais. C'est l'ouverture à prendre."
+      },
+      {
+        "label": "Temps de lancement avec Kuest",
+        "sub": "De l’inscription au marché live, sans dépendre d’une équipe d’ingénierie."
+      },
+      {
+        "label": "Coût pour démarrer",
+        "sub": "Vous lancez gratuitement et vous payez seulement quand le volume monte."
+      },
+      {
+        "label": "Comment le marché génère du revenu",
+        "sub": "Chaque transaction produit une commission. Le volume grandit, les coûts restent maîtrisés."
+      }
+    ]
+  },
+  "niches": {
+    "eyebrow": "Choisissez votre niche",
+    "title": "Si votre audience a des opinions, vous pouvez en faire un marché.",
+    "ctaPrompt": "Votre niche. Votre marque. Votre part sur chaque trade.",
+    "volumeSuffix": "Vol.",
+    "tabs": [
+      "Crypto & finance",
+      "Sport",
+      "Politique",
+      "Divertissement",
+      "Communautés",
+      "Memes & autres"
+    ],
+    "data": [
+      {
+        "tag": "Crypto & finance",
+        "tagline": "Votre propre Polymarket pour votre communauté.",
+        "cards": [
+          {
+            "title": "Le Bitcoin passe-t-il au-dessus de $150K avant le T3 ?",
+            "cat": "Crypto"
+          },
+          {
+            "title": "Ethereum dépassera-t-il la capitalisation de Bitcoin en 2025 ?",
+            "cat": "Crypto"
+          },
+          {
+            "title": "Prochaine décision de la Fed sur les taux",
+            "cat": "Finance",
+            "rows": [
+              "Baisse",
+              "Statu quo",
+              "Hausse"
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Sport",
+        "tagline": "Pariez sur n’importe quel match. Gardez les frais.",
+        "cards": [
+          {
+            "title": "Meilleur buteur de la finale de Ligue des champions",
+            "cat": "Sport",
+            "rows": [
+              "Mbappé",
+              "Vinicius",
+              "Bellingham"
+            ]
+          },
+          {
+            "title": "Les Warriors iront-ils en playoffs en 2025 ?",
+            "cat": "NBA"
+          },
+          {
+            "title": "Daniel Negreanu atteint-il la table finale du Main Event des WSOP 2026 ?",
+            "cat": "Poker"
+          }
+        ]
+      },
+      {
+        "tag": "Politique",
+        "tagline": "Votre audience prédit. Vous encaissez.",
+        "cards": [
+          {
+            "title": "Elon Musk remporte-t-il l'élection présidentielle américaine de 2028 ?",
+            "cat": "Politique"
+          },
+          {
+            "title": "La Russie et l’Ukraine parviendront-elles à un cessez-le-feu d’ici le 31 décembre 2026 ?",
+            "cat": "Géopolitique"
+          },
+          {
+            "title": "Qui gagne les élections générales au Royaume-Uni ?",
+            "cat": "Royaume-Uni",
+            "rows": [
+              "Labour",
+              "Conservateurs",
+              "Autre"
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Divertissement",
+        "tagline": "S’il y a du débat, il y a un marché.",
+        "cards": [
+          {
+            "title": "Le nouveau film Marvel ouvre-t-il au-dessus de $200M ?",
+            "cat": "Cinéma"
+          },
+          {
+            "title": "Qui gagne Big Brother Brasil 2025 ?",
+            "cat": "Téléréalité",
+            "rows": [
+              "Beatriz",
+              "Davi",
+              "Autres"
+            ]
+          },
+          {
+            "title": "Taylor Swift annonce-t-elle un nouvel album en 2025 ?",
+            "cat": "Musique"
+          }
+        ]
+      },
+      {
+        "tag": "Communautés & DAOs",
+        "tagline": "Transformez votre Discord en marché de prédiction.",
+        "cards": [
+          {
+            "title": "Uniswap v4 arrive-t-il sur mainnet avant le T2 ?",
+            "cat": "DeFi"
+          },
+          {
+            "title": "Sur quelle chain aura lieu le prochain vote de gouvernance ?",
+            "cat": "DAO",
+            "rows": [
+              "Ethereum",
+              "Arbitrum",
+              "Polygon"
+            ]
+          },
+          {
+            "title": "Notre Discord atteindra-t-il 50 000 membres ce mois-ci ?",
+            "cat": "Communauté"
+          }
+        ]
+      },
+      {
+        "tag": "Memes & autres",
+        "tagline": "Si internet en débat, cela peut devenir un marché.",
+        "cards": [
+          {
+            "title": "MrBeast dépasse-t-il T-Series pour devenir la chaîne YouTube #1 avant juillet 2025 ?",
+            "cat": "Internet"
+          },
+          {
+            "title": "Elon Musk vaudra-t-il plus de $500B avant fin 2025 ?",
+            "cat": "Milliardaires"
+          },
+          {
+            "title": "Un chanteur américain avec 10M+ abonnés sera-t-il arrêté d'ici décembre 2026 ?",
+            "cat": "Divers"
+          }
+        ]
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Avant que vous ne demandiez",
+    "titleHtml": "Questions fréquentes, <em>réponses claires.</em>",
+    "items": [
+      {
+        "q": "Combien de temps cela prend-il, et faut-il des compétences techniques ?",
+        "aHtml": "La plupart des marchés sont en ligne en moins de 15 minutes. Vous lancez depuis <a href=\"/launch\">/launch</a> avec un parcours guidé — sans code, sans déploiement de contrat et sans DevOps. Si vous savez configurer une boutique Shopify, vous pouvez lancer un marché Kuest."
+      },
+      {
+        "q": "Puis-je afficher des marchés Polymarket sur mon site ?",
+        "aHtml": "Oui. Vous pouvez miroiter des marchés actifs de Polymarket — toutes les catégories ou seulement celles qui correspondent à votre niche, comme la crypto, le sport ou la politique. Ces marchés miroirs arrivent avec une liquidité partagée dès le premier jour, donc votre site semble vivant dès sa mise en ligne."
+      },
+      {
+        "q": "Puis-je créer mes propres marchés ? Qui fournit la liquidité ?",
+        "aHtml": "Oui. Vous pouvez créer des marchés personnalisés sur n’importe quelle question. Les marchés miroirs de Polymarket intègrent déjà une liquidité partagée. Les marchés que vous créez vous-même dépendent ensuite du trading de votre audience — votre contenu et votre communauté en portent donc le volume. Vous pouvez aussi activer une liquidité croisée entre marchés de créateurs."
+      },
+      {
+        "q": "Comment est-ce que je gagne de l’argent, et puis-je fixer mes propres commissions ?",
+        "aHtml": "Vous définissez la commission de trading de votre marché — généralement entre 0,5 % et 3 %. Chaque fois que quelqu’un passe un ordre, cette commission va directement dans votre portefeuille. Pas de partage de revenus, pas d’intermédiaire, pas d’attente. Vous gardez la main sur le taux et pouvez le modifier à tout moment."
+      },
+      {
+        "q": "Puis-je utiliser mon propre domaine et mon propre branding ?",
+        "aHtml": "Oui. Vous pouvez lancer avec votre domaine, votre logo, vos couleurs et votre structure de catégories pour que le marché paraisse entièrement natif à votre marque — pas comme une simple marque blanche générique."
+      },
+      {
+        "q": "Comment les marchés sont-ils résolus ?",
+        "aHtml": "Kuest utilise des rails de résolution basés sur UMA pour un règlement transparent et vérifiable. Les smart contracts dérivent de la stack de Polymarket — auditée par OpenZeppelin — et ont été adaptés pour prendre en charge une liquidité partagée entre marchés. Vous n'avez pas besoin de comprendre tout cela pour l'utiliser, mais cela signifie que l'infrastructure financière sous votre marché repose sur la même stack qui a déjà traité des milliards de volume."
+      },
+      {
+        "q": "Y a-t-il un coût pour lancer ?",
+        "aHtml": "Le flux de lancement est gratuit pour commencer. L’infrastructure de production est facturée à l’usage : vous payez quand vous montez en puissance, pas avant."
+      },
+      {
+        "q": "Puis-je auto-héberger Kuest ?",
+        "aHtml": "La base de code est open source sous la <a href=\"https://github.com/kuestcom/prediction-market/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">licence Kuest MIT+Commons</a>. Les forks pour le branding, le frontend et les UX personnalisées sont bienvenus. En revanche, les déploiements de production doivent utiliser l’infrastructure Kuest. Faire tourner une stack de trading indépendante nécessite un <a href=\"mailto:hello@kuest.com\">accord commercial séparé</a>."
+      }
+    ]
+  },
+  "finalCta": {
+    "eyebrow": "Votre niche vous attend",
+    "title": "Lancez votre propre marché de prédiction dès aujourd’hui.",
+    "subtitle": "Gratuit pour commencer. En ligne en 15 minutes. Votre marque, vos questions et vos revenus.",
+    "cta": "Lancez votre marché →",
+    "note": "Lancement gratuit · Sans code · En ligne en quelques minutes"
+  },
+  "footer": {
+    "launch": "Lancer",
+    "demo": "Demo",
+    "docs": "Docs",
+    "contact": "Contact",
+    "live": "Polygon"
+  },
+  "sourceModal": {
+    "outlet": "Source",
+    "title": "Titre de la source",
+    "loading": "Chargement de la source…",
+    "note": "Si ce média bloque les intégrations, utilisez le lien externe ci-dessous.",
+    "external": "Ouvrir la source dans un nouvel onglet",
+    "back": "Retour à la page",
+    "dynamicNote": "Aperçu intégré pour {{domain}}. Si ce média bloque les intégrations, utilisez le lien externe ci-dessous."
+  }
+}

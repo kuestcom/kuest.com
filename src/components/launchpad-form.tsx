@@ -601,7 +601,7 @@ export default function LaunchpadForm() {
     if (typeof window === "undefined") {
       return;
     }
-    const returnTo = encodeURIComponent("/");
+    const returnTo = encodeURIComponent("/launch");
     window.location.assign(`/api/oauth/vercel/start?return_to=${returnTo}`);
   }
 
@@ -1489,7 +1489,7 @@ export default function LaunchpadForm() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
                       <Image
-                        src="/vercel.svg"
+                        src="/images/vercel.svg"
                         alt="Vercel"
                         width={14}
                         height={14}
@@ -1537,7 +1537,7 @@ export default function LaunchpadForm() {
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
                         <Image
-                          src="/vercel.svg"
+                          src="/images/vercel.svg"
                           alt="Vercel"
                           width={14}
                           height={14}

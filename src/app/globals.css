@@ -870,11 +870,11 @@
   flex-shrink: 0;
   background: var(--muted-foreground);
   opacity: 0.92;
-  mask-image: url("/kuest-logo.svg");
+  mask-image: url("/images/kuest-logo.svg");
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
-  -webkit-mask-image: url("/kuest-logo.svg");
+  -webkit-mask-image: url("/images/kuest-logo.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
   -webkit-mask-size: contain;

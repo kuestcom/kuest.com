@@ -6,8 +6,9 @@ export const projectId = process.env.NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID?.trim()
 
 const fallbackProjectId = "missing-reown-project-id";
 const resolvedProjectId = projectId || fallbackProjectId;
-const defaultAppUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://launch.kuest.com";
-const appIconUrl = process.env.NEXT_PUBLIC_APP_ICON ?? `${defaultAppUrl}/kuest-logo.svg`;
+const defaultAppUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://kuest.com/launch";
+const appIconUrl =
+  process.env.NEXT_PUBLIC_APP_ICON ?? new URL("/images/kuest-logo.svg", defaultAppUrl).toString();
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Kuest";
 const metamaskWalletId = "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96";
 

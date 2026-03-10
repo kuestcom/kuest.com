@@ -64,7 +64,7 @@ export async function GET(request: Request) {
     await clearCookie(OAUTH_COOKIE_NAMES.supabaseState);
     const message = error instanceof Error ? error.message : "OAuth callback failed.";
     return NextResponse.redirect(
-      new URL(`/?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
+      new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
     );
   }
 }

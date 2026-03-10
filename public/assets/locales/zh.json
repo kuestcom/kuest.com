@@ -1,0 +1,413 @@
+{
+  "meta": {
+    "title": "Kuest — 创建你自己的白标预测市场",
+    "description": "15 分钟创建你自己的白标预测市场：用你的品牌、你的域名、你的手续费，并从第一天开始接入共享流动性。",
+    "ogTitle": "Kuest — 创建你自己的白标预测市场",
+    "ogDescription": "15 分钟创建你自己的预测市场，拥有共享流动性、专属品牌，以及归你所有的手续费收入。",
+    "twitterTitle": "Kuest — 创建你自己的白标预测市场",
+    "twitterDescription": "15 分钟创建你自己的预测市场，拥有共享流动性、专属品牌，以及归你所有的手续费收入。"
+  },
+  "languageSelector": {
+    "ariaLabel": "切换站点语言"
+  },
+  "preview": {
+    "switchToDesktop": "切换到桌面预览",
+    "switchToMobile": "切换到手机预览"
+  },
+  "common": {
+    "yes": "是",
+    "no": "否",
+    "chance": "的概率"
+  },
+  "nav": {
+    "cta": "启动你的预测市场 →"
+  },
+  "hero": {
+    "kicker": "预测市场版 Shopify",
+    "titleLine1": "你的专属 Polymarket。",
+    "titleLine2": "15 分钟上线，免费开始。",
+    "subtitle": "你的受众每天都在表达观点、预测结果。现在你可以为加密、体育、政治或任何垂直赛道搭一个属于自己的预测市场，并从每笔交易里收取手续费。",
+    "cta": "启动你的预测市场 →",
+    "proof": "免费启动 • 无需代码 • 几分钟上线",
+    "previewUrl": "demo.kuest.com"
+  },
+  "social": {
+    "eyebrow": "浪潮已经来了",
+    "title": "需求早就在那里。此前缺的，只是让你把这部分价值真正收回来的基础设施。",
+    "subtitle": "Polymarket 做大选，Kalshi 做宏观。你的垂直赛道，仍然空着。",
+    "badge": "市场里早已有数十亿美元在流动",
+    "cards": [
+      {
+        "label": "2025 年成交量",
+        "subHtml": "根据 <a href=\"https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf\" class=\"source-link\" data-source-outlet=\"CertiK Research\" data-source-title=\"2025 Skynet Prediction Markets Report\">CertiK</a>，2025 年预测市场成交量达到 $63.5B。"
+      },
+      {
+        "label": "Polymarket 估值",
+        "subHtml": "据 <a href=\"https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg\" class=\"source-link\" data-source-outlet=\"CoinDesk\" data-source-title=\"Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg\">CoinDesk</a> 援引 Bloomberg 报道，Polymarket 的估值讨论接近 $15B。"
+      },
+      {
+        "label": "Kalshi 估值",
+        "subHtml": "根据 <a href=\"https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/\" class=\"source-link\" data-source-outlet=\"TechCrunch\" data-source-title=\"Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round\">TechCrunch</a>，Kalshi 以 $11B 估值完成了 $1B 融资。"
+      },
+      {
+        "label": "周成交量",
+        "subHtml": "据 <a href=\"https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume\" class=\"source-link\" data-source-outlet=\"Decrypt\" data-source-title=\"Prediction Market Trading Volume Hits All-Time High\">Decrypt</a> 报道，在周期高点时周成交量已超过 $2B。"
+      }
+    ]
+  },
+  "problems": {
+    "eyebrow": "是不是很熟悉？",
+    "title": "你有受众，缺的是一个能规模化变现的方式。",
+    "subtitle": "广告赚不了多少，赞助也不稳定，课程产品又要做很久。与此同时，你的受众每天都在讨论、判断和预测，但这些热度并没有真正变成你的收入。",
+    "cards": [
+      {
+        "title": "你熟悉的每种变现方式都有天花板",
+        "copy": "广告按点击计费，赞助按内容付费。预测市场则会在每一笔交易中持续产生手续费——7x24 小时运转，上线后也不用你不断追加投入。"
+      },
+      {
+        "title": "你的受众本来就在预测，只是不是发生在你的品牌里",
+        "copy": "他们在评论区、社群和 X 上讨论结果。Kuest 把这股注意力变成一个市场，让每一笔交易都有机会为你带来收入。"
+      },
+      {
+        "title": "你不用懂交易，也能把市场搭起来",
+        "copy": "不需要加密背景，不需要技术团队，也不用花几个月搭基础设施。你只需要自己的赛道、自己的问题，以及 15 分钟。"
+      }
+    ]
+  },
+  "solution": {
+    "eyebrow": "Kuest 如何解决",
+    "title": "今天就上线，复杂的基础设施已经替你准备好了。",
+    "subtitle": "交易、共享流动性和你的品牌，15 分钟即可就绪。",
+    "points": [
+      {
+        "title": "选定你的赛道，写下你的问题",
+        "copy": "体育、加密、政治、梗图：只要是你的受众本来就在争论的话题都可以。问题、费率和品牌都由你来定。"
+      },
+      {
+        "title": "直接上线，基础设施由我们来搞定",
+        "copy": "结算、钱包、流动性、区块链这些底层能力，在你完成设置之前就已经准备好。你的市场无需代码，15 分钟内即可上线。"
+      },
+      {
+        "title": "每一笔交易都直接给你带来收入",
+        "copy": "你的受众下注，手续费直接进你的钱包。没有中间商，没有分成，也不用等待。"
+      }
+    ],
+    "mock": {
+      "title": "你的预测市场能在 2027 年 1 月前做到 $500M 成交量吗？",
+      "chanceSuffix": "概率",
+      "logoLabel": "你的 Logo",
+      "metaHtml": "成交量 $4,679.80 &nbsp;·&nbsp; 截止于 2027 年 1 月 1 日",
+      "yesButton": "是 67¢",
+      "noButton": "否 33¢"
+    }
+  },
+  "features": {
+    "eyebrow": "你已经拥有的能力",
+    "title": "团队要花几个月做的三件事，你 15 分钟就能完成。",
+    "subtitle": "不用工程师。不用懂区块链。不用从空市场开始。",
+    "cards": [
+      {
+        "title": "你的网站。你的语言。你的赛道。",
+        "copy": "自定义域名、Logo、配色和本地化语境。可以用中文、英文，或你的受众最熟悉的语言上线。"
+      },
+      {
+        "title": "问你的受众最在意的问题。",
+        "copy": "问题由你来定。你的受众在“是”和“否”之间做交易。每一笔操作都可能直接为你的钱包带来手续费收入。",
+        "question": "“GTA 6 会在 2025 年 7 月前发布吗？”"
+      },
+      {
+        "title": "从第 1 天就有交易活跃度",
+        "copy": "借助镜像市场带来的共享流动性，你的市场一上线就有交易动态。大多数产品最难的冷启动，在这里不是问题。",
+        "feedLabel": "实时动态",
+        "feedStatus": "第 1 天",
+        "trades": [
+          {
+            "avatar": "J",
+            "name": "John",
+            "action": "买入了",
+            "side": "否",
+            "sideClass": "no",
+            "entry": "价格 72¢（$4）"
+          },
+          {
+            "avatar": "M",
+            "name": "Maria",
+            "action": "卖出了",
+            "side": "是",
+            "sideClass": "yes",
+            "entry": "价格 41¢（$9）"
+          },
+          {
+            "avatar": "S",
+            "name": "Steve",
+            "action": "买入了",
+            "side": "是",
+            "sideClass": "yes",
+            "entry": "价格 18¢（$2）"
+          },
+          {
+            "avatar": "N",
+            "name": "Nina",
+            "action": "卖出了",
+            "side": "否",
+            "sideClass": "no",
+            "entry": "价格 63¢（$11）"
+          },
+          {
+            "avatar": "A",
+            "name": "Alex",
+            "action": "买入了",
+            "side": "是",
+            "sideClass": "yes",
+            "entry": "价格 81¢（$7）"
+          }
+        ]
+      }
+    ]
+  },
+  "calculator": {
+    "eyebrow": "算一算",
+    "title": "你的市场可能赚多少钱？",
+    "dailyVolumeLabel": "日交易量",
+    "dailyVolumeAriaLabel": "日交易量",
+    "feeLabel": "交易手续费",
+    "decreaseFeeAriaLabel": "降低手续费",
+    "increaseFeeAriaLabel": "提高手续费",
+    "resultLabel": "预估月度手续费收入",
+    "note": "这里按所选日交易量估算 30 天收入。实际收入会受交易量、定价、推荐分成和 VIP 折扣影响。",
+    "ctaPrompt": "如果这个结果打动你，你的市场可能会在下一杯咖啡喝完前就上线。"
+  },
+  "whyNow": {
+    "eyebrow": "为什么是现在",
+    "title": "大多数垂直赛道还没有预测市场。你的可以先一步。",
+    "subtitle": "Polymarket 做大选，Kalshi 做宏观。你的垂直赛道，仍然空着。",
+    "cards": [
+      {
+        "label": "仍然没有头部玩家的赛道",
+        "sub": "还没有人在你的受众身上赚取交易手续费。这就是机会窗口。"
+      },
+      {
+        "label": "用 Kuest 上线需要多久",
+        "sub": "从注册到市场上线，不需要工程团队介入。"
+      },
+      {
+        "label": "启动成本",
+        "sub": "可以免费开始，做大之后再按使用量付费。"
+      },
+      {
+        "label": "市场如何带来收入",
+        "sub": "每一笔交易都会产生手续费。成交量增长，而固定成本不会同比飙升。"
+      }
+    ]
+  },
+  "niches": {
+    "eyebrow": "选择你的赛道",
+    "title": "只要你的受众有观点，就能围绕它做出一个市场。",
+    "ctaPrompt": "你的赛道。你的品牌。每一笔交易里属于你的那一份。",
+    "volumeSuffix": "成交量",
+    "tabs": [
+      "加密与金融",
+      "体育",
+      "政治",
+      "娱乐",
+      "社区",
+      "迷因与其他"
+    ],
+    "data": [
+      {
+        "tag": "加密与金融",
+        "tagline": "为你的社区打造专属 Polymarket。",
+        "cards": [
+          {
+            "title": "比特币会在第三季度前突破 $150K 吗？",
+            "cat": "加密"
+          },
+          {
+            "title": "以太坊会在 2025 年反超比特币市值吗？",
+            "cat": "加密"
+          },
+          {
+            "title": "美联储下一次利率动作",
+            "cat": "金融",
+            "rows": [
+              "降息",
+              "不变",
+              "加息"
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "体育",
+        "tagline": "任何比赛都能开盘，手续费归你。",
+        "cards": [
+          {
+            "title": "欧冠决赛最佳射手",
+            "cat": "体育",
+            "rows": [
+              "Mbappé",
+              "Vinicius",
+              "Bellingham"
+            ]
+          },
+          {
+            "title": "勇士会进入 2025 年季后赛吗？",
+            "cat": "NBA"
+          },
+          {
+            "title": "Daniel Negreanu 会打进 2026 年 WSOP 主赛事决赛桌吗？",
+            "cat": "扑克"
+          }
+        ]
+      },
+      {
+        "tag": "政治",
+        "tagline": "你的受众做判断，你来赚钱。",
+        "cards": [
+          {
+            "title": "Elon Musk 会赢得 2028 年美国总统大选吗？",
+            "cat": "政治"
+          },
+          {
+            "title": "俄罗斯和乌克兰会在 2026 年 12 月 31 日前达成停火吗？",
+            "cat": "地缘政治"
+          },
+          {
+            "title": "谁会赢得英国大选？",
+            "cat": "英国",
+            "rows": [
+              "工党",
+              "保守党",
+              "其他"
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "娱乐",
+        "tagline": "有争议，就有市场。",
+        "cards": [
+          {
+            "title": "新的漫威电影首映票房会超过 $200M 吗？",
+            "cat": "电影"
+          },
+          {
+            "title": "谁会赢得 2025 年巴西老大哥？",
+            "cat": "真人秀",
+            "rows": [
+              "Beatriz",
+              "Davi",
+              "其他"
+            ]
+          },
+          {
+            "title": "Taylor Swift 会在 2025 年发布新专辑吗？",
+            "cat": "音乐"
+          }
+        ]
+      },
+      {
+        "tag": "社区与 DAO",
+        "tagline": "把你的 Discord 变成一个预测市场。",
+        "cards": [
+          {
+            "title": "Uniswap v4 会在第二季度前上线主网吗？",
+            "cat": "DeFi"
+          },
+          {
+            "title": "下一次治理投票会在哪条链上进行？",
+            "cat": "DAO",
+            "rows": [
+              "Ethereum",
+              "Arbitrum",
+              "Polygon"
+            ]
+          },
+          {
+            "title": "我们的 Discord 本月会达到 5 万成员吗？",
+            "cat": "社区"
+          }
+        ]
+      },
+      {
+        "tag": "迷因与其他",
+        "tagline": "只要互联网在争论，它就可能变成一个市场。",
+        "cards": [
+          {
+            "title": "MrBeast 会在 2025 年 7 月前超越 T-Series 成为 YouTube 第一频道吗？",
+            "cat": "互联网"
+          },
+          {
+            "title": "Elon Musk 会在 2025 年底前身价超过 $500B 吗？",
+            "cat": "亿万富翁"
+          },
+          {
+            "title": "会有美国歌手在 2026 年 12 月前被逮捕，且其粉丝超过 1000 万吗？",
+            "cat": "开放"
+          }
+        ]
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "在你开口之前",
+    "titleHtml": "常见问题，<em>直接回答。</em>",
+    "items": [
+      {
+        "q": "上线要多久？需要技术能力吗？",
+        "aHtml": "大多数市场都能在 15 分钟内上线。你可以直接通过 <a href=\"/launch\">/launch</a> 按引导完成配置——无需写代码、无需部署合约，也不用处理 DevOps。只要你能搭一个 Shopify 店铺，就能上线一个 Kuest 市场。"
+      },
+      {
+        "q": "我能把 Polymarket 的市场展示在自己的网站上吗？",
+        "aHtml": "可以。你可以镜像 Polymarket 上已经活跃的市场——可以是全部分类，也可以只选与你赛道相关的分类，比如加密、体育或政治。这些镜像市场从第一天就带着共享流动性，所以你的网站一上线就会显得是活的。"
+      },
+      {
+        "q": "我能创建自己的市场吗？流动性由谁提供？",
+        "aHtml": "可以。你可以围绕任何问题创建自定义市场。镜像的 Polymarket 市场本身就带有共享流动性。你自己创建的市场则取决于你的受众是否愿意交易——也就是说，成交量主要由你的内容和社区驱动。你也可以选择为创作者市场开启跨市场流动性共享。"
+      },
+      {
+        "q": "我怎么赚钱？手续费可以自己定吗？",
+        "aHtml": "你可以自己设置市场的交易手续费，通常在 0.5% 到 3% 之间。每次有人交易，这笔手续费都会直接进入你的钱包。没有分成、没有中间商、也不用等待。费率由你控制，而且随时可以修改。"
+      },
+      {
+        "q": "我可以使用自己的域名和品牌吗？",
+        "aHtml": "可以。你可以使用自己的域名、Logo、配色和分类结构，让这个市场看起来完全属于你的品牌，而不是 Kuest 的白标页面。"
+      },
+      {
+        "q": "市场如何结算？",
+        "aHtml": "Kuest 使用基于 UMA 的结算轨道，实现透明且可验证的清算。底层智能合约源自 Polymarket 的那套体系，并经过 OpenZeppelin 审计，同时又被改造成支持多个市场之间的共享流动性。你不需要理解这些技术细节也能直接使用，但这意味着你市场背后的金融基础设施，本质上就是那套已经处理过数十亿美元交易量的系统。"
+      },
+      {
+        "q": "启动有成本吗？",
+        "aHtml": "启动流程本身免费。生产环境基础设施按使用量计费——也就是等你做大了再付费。"
+      },
+      {
+        "q": "我可以自己托管 Kuest 吗？",
+        "aHtml": "代码库以 <a href=\"https://github.com/kuestcom/prediction-market/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">Kuest MIT+Commons 许可</a> 开源。你可以 fork 来做品牌、前端和自定义 UX 的修改。但生产环境部署必须使用 Kuest 基础设施。若要独立运行一整套交易系统，则需要单独的 <a href=\"mailto:hello@kuest.com\">商业协议</a>。"
+      }
+    ]
+  },
+  "finalCta": {
+    "eyebrow": "你的赛道正在等你",
+    "title": "今天就启动你自己的预测市场。",
+    "subtitle": "免费开始。15 分钟上线。你的品牌、你的问题、你的收入。",
+    "cta": "启动你的预测市场 →",
+    "note": "免费启动 · 无需代码 · 几分钟上线"
+  },
+  "footer": {
+    "launch": "启动",
+    "demo": "演示",
+    "docs": "文档",
+    "contact": "联系",
+    "live": "Polygon"
+  },
+  "sourceModal": {
+    "outlet": "来源",
+    "title": "来源标题",
+    "loading": "正在加载来源…",
+    "note": "如果该媒体禁止嵌入，请使用下方的外部链接。",
+    "external": "在新标签页打开来源",
+    "back": "返回页面",
+    "dynamicNote": "{{domain}} 的嵌入预览。如果该媒体禁止嵌入，请使用下方的外部链接。"
+  }
+}
