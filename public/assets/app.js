@@ -1,5 +1,8 @@
 /* ── NAV SCROLL ── */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('s',scrollY>40),{passive:true});
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('nav');
+  if(nav)nav.classList.toggle('s',scrollY>40);
+},{passive:true});
 
 /* ── BACKGROUND PARTICLES ── */
 const BG_EFFECT_CONFIG={

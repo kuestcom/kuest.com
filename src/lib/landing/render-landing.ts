@@ -240,8 +240,128 @@ function serializeForInlineScript(value: unknown) {
     .replaceAll("\u2029", "\\u2029");
 }
 
-function localizeLaunchHref(html: string, locale: SiteLocale) {
-  return html.replaceAll('href="/launch"', `href="${localeHref(locale, "/launch")}"`);
+function sanitizeTradeOutcomeClass(sideClass: string) {
+  return sideClass === "yes" || sideClass === "no" ? sideClass : "neutral";
+}
+
+function sanitizeTranslatedHref(href: string, locale: SiteLocale) {
+  const trimmedHref = href.trim();
+  const localizedHref = trimmedHref === "/launch" ? localeHref(locale, "/launch") : trimmedHref;
+
+  if (!localizedHref) {
+    return null;
+  }
+
+  if (localizedHref.startsWith("/") || localizedHref.startsWith("#")) {
+    return localizedHref;
+  }
+
+  if (localizedHref.startsWith("mailto:")) {
+    return localizedHref;
+  }
+
+  try {
+    const url = new URL(localizedHref);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+function sanitizeTranslatedClassName(className: string | null) {
+  return (className ?? "")
+    .split(/\s+/)
+    .filter((token) => token === "source-link")
+    .join(" ");
+}
+
+function sanitizeTranslatedTarget(target: string | null) {
+  return target === "_blank" ? "_blank" : null;
+}
+
+function sanitizeTranslatedRel(rel: string | null, target: string | null) {
+  const allowedTokens = new Set(["noopener", "noreferrer"]);
+  const relTokens = new Set(
+    (rel ?? "")
+      .split(/\s+/)
+      .map((token) => token.trim().toLowerCase())
+      .filter((token) => allowedTokens.has(token)),
+  );
+
+  if (target === "_blank") {
+    relTokens.add("noopener");
+    relTokens.add("noreferrer");
+  }
+
+  return relTokens.size > 0 ? Array.from(relTokens).join(" ") : null;
+}
+
+function sanitizeTranslatedNode(node: ChildNode, locale: SiteLocale): string {
+  if (node.nodeType === 3) {
+    return escapeHtml(node.textContent ?? "");
+  }
+
+  if (node.nodeType !== 1) {
+    return "";
+  }
+
+  const element = node as Element;
+  const tagName = element.tagName.toLowerCase();
+  const childMarkup = Array.from(element.childNodes)
+    .map((childNode) => sanitizeTranslatedNode(childNode, locale))
+    .join("");
+
+  if (tagName === "br") {
+    return "<br>";
+  }
+
+  if (tagName === "em" || tagName === "strong") {
+    return `<${tagName}>${childMarkup}</${tagName}>`;
+  }
+
+  if (tagName === "a") {
+    const href = sanitizeTranslatedHref(element.getAttribute("href") ?? "", locale);
+
+    if (!href) {
+      return childMarkup;
+    }
+
+    const attrs = [`href="${escapeHtml(href)}"`];
+    const className = sanitizeTranslatedClassName(element.getAttribute("class"));
+    const target = sanitizeTranslatedTarget(element.getAttribute("target"));
+    const rel = sanitizeTranslatedRel(element.getAttribute("rel"), target);
+
+    if (className) {
+      attrs.push(`class="${escapeHtml(className)}"`);
+    }
+
+    if (target) {
+      attrs.push(`target="${target}"`);
+    }
+
+    if (rel) {
+      attrs.push(`rel="${escapeHtml(rel)}"`);
+    }
+
+    ["data-source-outlet", "data-source-title", "data-source-summary"].forEach((attr) => {
+      const value = element.getAttribute(attr);
+      if (value) {
+        attrs.push(`${attr}="${escapeHtml(value)}"`);
+      }
+    });
+
+    return `<a ${attrs.join(" ")}>${childMarkup}</a>`;
+  }
+
+  return childMarkup;
+}
+
+function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
+  const { document } = parseHTML(`<body>${html}</body>`);
+
+  return Array.from(document.body.childNodes)
+    .map((node) => sanitizeTranslatedNode(node, locale))
+    .join("");
 }
 
 function getDemoLocalePath(locale: SiteLocale) {
@@ -274,8 +394,10 @@ function buildTradeFeed(
   return trades
     .concat(trades.slice(0, 2))
     .map(
-      (item) =>
-        `<div class="mini-trade-row"><span class="mini-trade-avatar">${item.avatar}</span><span class="mini-trade-text"><span class="mini-trade-name">${item.name}</span> <span class="mini-trade-verb">${item.action}</span> <strong class="mini-trade-outcome is-${item.sideClass}">${item.side}</strong> <span class="mini-trade-entry-price">${item.entry}</span></span></div>`,
+      (item) => {
+        const safeOutcomeClass = sanitizeTradeOutcomeClass(item.sideClass);
+        return `<div class="mini-trade-row"><span class="mini-trade-avatar">${escapeHtml(item.avatar)}</span><span class="mini-trade-text"><span class="mini-trade-name">${escapeHtml(item.name)}</span> <span class="mini-trade-verb">${escapeHtml(item.action)}</span> <strong class="mini-trade-outcome is-${safeOutcomeClass}">${escapeHtml(item.side)}</strong> <span class="mini-trade-entry-price">${escapeHtml(item.entry)}</span></span></div>`;
+      },
     )
     .join("");
 }
@@ -397,7 +519,10 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector("#p2 .slbl"), bundle.social.eyebrow);
   setText(document.querySelector("#p2 .sh"), bundle.social.title);
   setText(document.querySelector("#p2 .bt"), bundle.social.subtitle);
-  setHtml(document.querySelector("#p2 .live-badge"), `<div class="live-dot"></div>${bundle.social.badge}`);
+  setHtml(
+    document.querySelector("#p2 .live-badge"),
+    `<div class="live-dot"></div>${escapeHtml(bundle.social.badge)}`,
+  );
   socialCards.forEach((card, index) => {
     const data = bundle.social.cards[index];
     if (!data) {
@@ -405,7 +530,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
     }
 
     setText(card.querySelector(".mn-label"), data.label);
-    setHtml(card.querySelector(".mn-sub"), data.subHtml);
+    setHtml(card.querySelector(".mn-sub"), sanitizeTranslatedHtml(data.subHtml, locale));
   });
 
   const problemCards = Array.from(document.querySelectorAll("#p1 .mini-card"));
@@ -442,7 +567,10 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector("#marketMockTitle"), bundle.solution.mock.title);
   setText(document.querySelector("#marketMockChanceSuffix"), bundle.solution.mock.chanceSuffix);
   setText(document.querySelector("#marketMockLogoLabel"), bundle.solution.mock.logoLabel);
-  setHtml(document.querySelector("#marketMockMeta"), bundle.solution.mock.metaHtml);
+  setHtml(
+    document.querySelector("#marketMockMeta"),
+    sanitizeTranslatedHtml(bundle.solution.mock.metaHtml, locale),
+  );
   setText(document.querySelector("#marketMockYesBtn"), bundle.solution.mock.yesButton);
   setText(document.querySelector("#marketMockNoBtn"), bundle.solution.mock.noButton);
 
@@ -471,7 +599,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
     setText(featureCards[2].querySelector(".mini-trade-head > span:first-child"), bundle.features.cards[2].feedStatus);
     setHtml(
       featureCards[2].querySelector(".mini-trade-status"),
-      `<span class="mini-trade-status-dot"></span>${bundle.features.cards[2].feedLabel}`,
+      `<span class="mini-trade-status-dot"></span>${escapeHtml(bundle.features.cards[2].feedLabel ?? "")}`,
     );
     setHtml(
       featureCards[2].querySelector(".mini-trade-track"),
@@ -522,7 +650,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
       return;
     }
 
-    setHtml(tab, `<i data-lucide="${NICHE_TAB_ICONS[index]}"></i> ${label}`);
+    setHtml(tab, `<i data-lucide="${NICHE_TAB_ICONS[index]}"></i> ${escapeHtml(label)}`);
   });
   setText(document.querySelector("#nicheTagline"), initialNiche.tagline);
   setHtml(
@@ -539,13 +667,13 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   );
 
   setText(document.querySelector("#p8 .slbl"), bundle.faq.eyebrow);
-  setHtml(document.querySelector("#p8 .sh"), bundle.faq.titleHtml);
+  setHtml(document.querySelector("#p8 .sh"), sanitizeTranslatedHtml(bundle.faq.titleHtml, locale));
   setHtml(
     document.querySelector("#p8 .faq-list"),
     bundle.faq.items
       .map(
         (item) =>
-          `<details class="faq-item"><summary class="faq-q">${item.q}</summary><div class="faq-a">${localizeLaunchHref(item.aHtml, locale)}</div></details>`,
+          `<details class="faq-item"><summary class="faq-q">${escapeHtml(item.q)}</summary><div class="faq-a">${sanitizeTranslatedHtml(item.aHtml, locale)}</div></details>`,
       )
       .join(""),
   );
