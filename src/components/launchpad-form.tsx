@@ -15,10 +15,12 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
 import { useAppKit } from "@/hooks/use-app-kit";
 import { launchLocaleOptions, useLaunchI18n } from "@/i18n/launch";
+import { localeHref } from "@/i18n/site-config";
 import {
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
@@ -384,6 +386,7 @@ function StepFooterBrand() {
 
 function StepFooterLanguageControl() {
   const { locale, setLocale, messages } = useLaunchI18n();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const controlRef = useRef<HTMLDivElement | null>(null);
   const currentLocaleOption =
@@ -460,6 +463,7 @@ function StepFooterLanguageControl() {
                 onClick={() => {
                   setLocale(option.code);
                   setOpen(false);
+                  router.push(localeHref(option.code, "/launch"));
                 }}
               >
                 <span className="launch-language-option-row">

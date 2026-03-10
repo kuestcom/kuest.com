@@ -1,0 +1,573 @@
+{
+  "landing": {
+    "meta": {
+      "title": "Kuest — Crea tu mercado de predicción white-label",
+      "description": "Crea tu propio mercado de predicción white-label en 15 minutos. Lánzalo con tu marca, tu dominio, tus comisiones y liquidez compartida desde el día uno.",
+      "ogTitle": "Kuest — Crea tu mercado de predicción white-label",
+      "ogDescription": "Crea tu propio mercado de predicción en 15 minutos, con liquidez compartida, marca propia y comisiones que se quedan contigo.",
+      "twitterTitle": "Kuest — Crea tu mercado de predicción white-label",
+      "twitterDescription": "Crea tu propio mercado de predicción en 15 minutos, con liquidez compartida, marca propia y comisiones que se quedan contigo."
+    },
+    "languageSelector": {
+      "ariaLabel": "Cambiar idioma del sitio"
+    },
+    "preview": {
+      "switchToDesktop": "Cambiar a vista de escritorio",
+      "switchToMobile": "Cambiar a vista móvil"
+    },
+    "common": {
+      "yes": "Sí",
+      "no": "No",
+      "chance": "de probabilidad"
+    },
+    "nav": {
+      "cta": "Lanza tu mercado →"
+    },
+    "hero": {
+      "kicker": "El Shopify de los mercados de predicción",
+      "titleLine1": "Tu propio Polymarket.",
+      "titleLine2": "En vivo en 15 minutos. Gratis.",
+      "subtitle": "Tu audiencia ya debate, opina y hace predicciones todos los días. Lanza un mercado con tu marca para cripto, deportes, política o cualquier nicho y cobra una comisión en cada operación.",
+      "cta": "Lanza tu mercado →",
+      "proof": "Lanzamiento gratis • Sin código • En vivo en minutos",
+      "previewUrl": "demo.kuest.com"
+    },
+    "social": {
+      "eyebrow": "La ola ya llegó",
+      "title": "La demanda ya existe. Lo que faltaba era la infraestructura para convertirla en ingresos tuyos.",
+      "subtitle": "Polymarket domina elecciones. Kalshi domina macro. Tu nicho sigue abierto.",
+      "badge": "Ya se mueven miles de millones",
+      "cards": [
+        {
+          "label": "Volumen en 2025",
+          "subHtml": "Los mercados de predicción movieron $63.5B en 2025, según <a href=\"https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf\" class=\"source-link\" data-source-outlet=\"CertiK Research\" data-source-title=\"2025 Skynet Prediction Markets Report\">CertiK</a>."
+        },
+        {
+          "label": "Valoración de Polymarket",
+          "subHtml": "Bloomberg situó a Polymarket cerca de $15B, vía <a href=\"https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg\" class=\"source-link\" data-source-outlet=\"CoinDesk\" data-source-title=\"Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg\">CoinDesk</a>."
+        },
+        {
+          "label": "Valoración de Kalshi",
+          "subHtml": "Kalshi levantó $1B con una valoración de $11B, según <a href=\"https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/\" class=\"source-link\" data-source-outlet=\"TechCrunch\" data-source-title=\"Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round\">TechCrunch</a>."
+        },
+        {
+          "label": "Volumen semanal",
+          "subHtml": "En el pico del ciclo, el volumen semanal superó los $2B, según <a href=\"https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume\" class=\"source-link\" data-source-outlet=\"Decrypt\" data-source-title=\"Prediction Market Trading Volume Hits All-Time High\">Decrypt</a>."
+        }
+      ]
+    },
+    "problems": {
+      "eyebrow": "¿Te suena?",
+      "title": "Tienes audiencia. Lo que falta es una forma escalable de monetizarla.",
+      "subtitle": "Los anuncios pagan poco. Los patrocinadores suben y bajan. Los cursos tardan meses. Mientras tanto, tu audiencia comenta, debate y predice todos los días, y nada de esa energía se convierte en ingresos para ti.",
+      "cards": [
+        {
+          "title": "Todo canal de monetización tiene techo",
+          "copy": "Los anuncios pagan por clic. Los sponsors por mención. Un mercado de predicción cobra una comisión en cada operación, 24/7, incluso después del lanzamiento."
+        },
+        {
+          "title": "Tu audiencia ya predice. Solo que lo hace fuera de tu marca",
+          "copy": "Debaten resultados en comentarios, grupos y en X. Kuest convierte esa energía en un mercado donde cada operación puede pagarte a ti."
+        },
+        {
+          "title": "No necesitas saber de trading para lanzar",
+          "copy": "Sin background cripto. Sin equipo técnico. Sin meses construyendo infraestructura. Solo tu nicho, tus preguntas y unos minutos para salir en vivo."
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "Cómo lo resuelve Kuest",
+      "title": "Lanza hoy. La parte difícil ya está resuelta.",
+      "subtitle": "Infraestructura de trading, liquidez compartida y tu marca, lista en 15 minutos.",
+      "points": [
+        {
+          "title": "Elige tu nicho y escribe tus preguntas",
+          "copy": "Deportes, cripto, política, memes: cualquier tema sobre el que tu audiencia ya discute. Tú defines las preguntas, la comisión y tu marca."
+        },
+        {
+          "title": "Sal al aire: nosotros nos encargamos de la infraestructura",
+          "copy": "Liquidación, wallets, liquidez, blockchain: todo funcionando antes de que termines la configuración. Tu mercado queda en vivo en menos de 15 minutos, sin código."
+        },
+        {
+          "title": "Cada trade te paga directamente",
+          "copy": "Tu audiencia opera. La comisión va directo a tu wallet. Sin intermediarios, sin reparto de ingresos y sin esperar."
+        }
+      ],
+      "mock": {
+        "title": "¿Tu mercado de predicción llegará a $500M en volumen antes de enero de 2027?",
+        "chanceSuffix": "de probabilidad",
+        "logoLabel": "Tu logo",
+        "metaHtml": "Volumen $4,679.80 &nbsp;·&nbsp; Cierra el 1 de enero de 2027",
+        "yesButton": "Sí 67¢",
+        "noButton": "No 33¢"
+      }
+    },
+    "features": {
+      "eyebrow": "Qué viene incluido",
+      "title": "Tres cosas que a un equipo le tomarían meses. Aquí las resuelves en 15 minutos.",
+      "subtitle": "Sin developers. Sin saber de blockchain. Sin mercado vacío.",
+      "cards": [
+        {
+          "title": "Tu sitio. Tu idioma. Tu nicho.",
+          "copy": "Dominio propio, logo, colores y contexto local. Lanza en español, inglés o en el idioma de tu audiencia."
+        },
+        {
+          "title": "Pregunta lo que mueve a tu audiencia.",
+          "copy": "Tú escribes la pregunta. Tu audiencia opera en Sí o No. Y cada operación puede dejar ingresos directos en tu wallet, sin intermediarios.",
+          "question": "\"¿Saldrá GTA 6 antes de julio de 2025?\""
+        },
+        {
+          "title": "Activo desde el día 1. Sin libro vacío.",
+          "copy": "Con liquidez compartida vía mercados espejo, tu mercado ya nace con actividad. El problema del libro vacío se queda fuera.",
+          "feedLabel": "Actividad en vivo",
+          "feedStatus": "Día 1",
+          "trades": [
+            {
+              "avatar": "J",
+              "name": "John",
+              "action": "compró",
+              "side": "No",
+              "sideClass": "no",
+              "entry": "a 72¢ ($4)"
+            },
+            {
+              "avatar": "M",
+              "name": "Maria",
+              "action": "vendió",
+              "side": "Sí",
+              "sideClass": "yes",
+              "entry": "a 41¢ ($9)"
+            },
+            {
+              "avatar": "S",
+              "name": "Steve",
+              "action": "compró",
+              "side": "Sí",
+              "sideClass": "yes",
+              "entry": "a 18¢ ($2)"
+            },
+            {
+              "avatar": "N",
+              "name": "Nina",
+              "action": "vendió",
+              "side": "No",
+              "sideClass": "no",
+              "entry": "a 63¢ ($11)"
+            },
+            {
+              "avatar": "A",
+              "name": "Alex",
+              "action": "compró",
+              "side": "Sí",
+              "sideClass": "yes",
+              "entry": "a 81¢ ($7)"
+            }
+          ]
+        }
+      ]
+    },
+    "calculator": {
+      "eyebrow": "Haz los números",
+      "title": "¿Cuánto podría generar tu mercado?",
+      "dailyVolumeLabel": "Volumen diario de trading",
+      "dailyVolumeAriaLabel": "Volumen diario de trading",
+      "feeLabel": "Comisión de trading",
+      "decreaseFeeAriaLabel": "Reducir comisión",
+      "increaseFeeAriaLabel": "Aumentar comisión",
+      "resultLabel": "Ingreso mensual estimado por comisiones",
+      "note": "Estimación usando el volumen diario seleccionado durante 30 días. El ingreso real varía según volumen, precio, referidos y descuentos VIP.",
+      "ctaPrompt": "¿Te cierra? Tu mercado podría estar en vivo antes de que termines tu próximo café."
+    },
+    "whyNow": {
+      "eyebrow": "Por qué ahora",
+      "title": "La mayoría de los nichos todavía no tiene un mercado de predicción. El tuyo puede llegar primero.",
+      "subtitle": "Polymarket domina elecciones. Kalshi domina macro. Tu nicho sigue abierto.",
+      "cards": [
+        {
+          "label": "Verticales que todavía no tienen dueño",
+          "sub": "Nadie está monetizando a tu audiencia con comisiones todavía. Ahí está la oportunidad."
+        },
+        {
+          "label": "Tiempo para lanzar con Kuest",
+          "sub": "Del registro al mercado en vivo, sin depender de ingeniería."
+        },
+        {
+          "label": "Costo para empezar",
+          "sub": "Puedes lanzar gratis y pagar solo cuando creces."
+        },
+        {
+          "label": "Cómo el mercado genera ingresos",
+          "sub": "Cada operación deja comisión. El volumen crece y el costo no sube al mismo ritmo."
+        }
+      ]
+    },
+    "niches": {
+      "eyebrow": "Elige tu nicho",
+      "title": "Si tu audiencia tiene opiniones, puedes convertir eso en un mercado.",
+      "ctaPrompt": "Tu nicho. Tu marca. Tu parte de cada trade.",
+      "volumeSuffix": "Vol.",
+      "tabs": [
+        "Cripto y finanzas",
+        "Deportes",
+        "Política",
+        "Entretenimiento",
+        "Comunidades",
+        "Memes y otros"
+      ],
+      "data": [
+        {
+          "tag": "Cripto y finanzas",
+          "tagline": "Tu propio Polymarket para tu comunidad.",
+          "cards": [
+            {
+              "title": "¿Bitcoin supera los $150K antes de Q3?",
+              "cat": "Cripto"
+            },
+            {
+              "title": "¿Ethereum supera la capitalización de Bitcoin en 2025?",
+              "cat": "Cripto"
+            },
+            {
+              "title": "Próxima decisión de la Fed",
+              "cat": "Finanzas",
+              "rows": [
+                "Recorte",
+                "Sin cambios",
+                "Subida"
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "Deportes",
+          "tagline": "Apuesta en cualquier partido. Quédate con las comisiones.",
+          "cards": [
+            {
+              "title": "Máximo goleador de la final de la Champions",
+              "cat": "Deportes",
+              "rows": [
+                "Mbappé",
+                "Vinicius",
+                "Bellingham"
+              ]
+            },
+            {
+              "title": "¿Los Warriors llegan a los playoffs de 2025?",
+              "cat": "NBA"
+            },
+            {
+              "title": "¿Daniel Negreanu llega a la mesa final del Main Event de la WSOP 2026?",
+              "cat": "Póker"
+            }
+          ]
+        },
+        {
+          "tag": "Política",
+          "tagline": "Tu audiencia predice. Tú monetizas.",
+          "cards": [
+            {
+              "title": "¿Elon Musk gana la elección presidencial de EE. UU. en 2028?",
+              "cat": "Política"
+            },
+            {
+              "title": "¿Rusia y Ucrania alcanzan un alto el fuego antes del 31 de diciembre de 2026?",
+              "cat": "Geopolítica"
+            },
+            {
+              "title": "¿Quién gana la elección general en Reino Unido?",
+              "cat": "Reino Unido",
+              "rows": [
+                "Labour",
+                "Conservadores",
+                "Otro"
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "Entretenimiento",
+          "tagline": "Si genera debate, genera mercado.",
+          "cards": [
+            {
+              "title": "¿La nueva película de Marvel abre por encima de $200M?",
+              "cat": "Cine"
+            },
+            {
+              "title": "¿Quién gana Big Brother Brasil 2025?",
+              "cat": "Reality show",
+              "rows": [
+                "Beatriz",
+                "Davi",
+                "Otros"
+              ]
+            },
+            {
+              "title": "¿Taylor Swift anuncia disco nuevo en 2025?",
+              "cat": "Música"
+            }
+          ]
+        },
+        {
+          "tag": "Comunidades y DAOs",
+          "tagline": "Convierte tu Discord en un mercado de predicción.",
+          "cards": [
+            {
+              "title": "¿Uniswap v4 llega a mainnet antes de Q2?",
+              "cat": "DeFi"
+            },
+            {
+              "title": "¿En qué chain sale la próxima votación de gobernanza?",
+              "cat": "DAO",
+              "rows": [
+                "Ethereum",
+                "Arbitrum",
+                "Polygon"
+              ]
+            },
+            {
+              "title": "¿Nuestro Discord llega a 50 mil miembros este mes?",
+              "cat": "Comunidad"
+            }
+          ]
+        },
+        {
+          "tag": "Memes y otros",
+          "tagline": "Si internet discute algo, eso puede ser un mercado.",
+          "cards": [
+            {
+              "title": "¿MrBeast supera a T-Series y se convierte en el canal #1 de YouTube antes de julio de 2025?",
+              "cat": "Internet"
+            },
+            {
+              "title": "¿El patrimonio de Elon Musk supera los $500B antes de fin de 2025?",
+              "cat": "Multimillonarios"
+            },
+            {
+              "title": "¿Algún cantante de EE. UU. con 10M+ seguidores será arrestado antes de diciembre de 2026?",
+              "cat": "Abierto"
+            }
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "Antes de que lo preguntes",
+      "titleHtml": "Preguntas frecuentes, <em>sin rodeos.</em>",
+      "items": [
+        {
+          "q": "¿Cuánto tarda y necesito conocimientos técnicos?",
+          "aHtml": "La mayoría de los mercados salen en vivo en menos de 15 minutos. Lanzas desde <a href=\"/launch\">/launch</a> con un flujo guiado: sin código, sin desplegar contratos y sin DevOps. Si puedes montar una tienda en Shopify, puedes lanzar un mercado con Kuest."
+        },
+        {
+          "q": "¿Puedo mostrar mercados de Polymarket en mi sitio?",
+          "aHtml": "Sí. Puedes espejar mercados activos de Polymarket, ya sea todas las categorías o solo las que encajan con tu nicho, como cripto, deportes o política. Esos mercados espejados llegan con liquidez compartida desde el día uno, así que tu sitio se siente vivo desde que se publica."
+        },
+        {
+          "q": "¿Puedo crear mis propios mercados? ¿Quién aporta la liquidez?",
+          "aHtml": "Sí. Puedes crear mercados personalizados sobre cualquier pregunta. Los mercados espejados de Polymarket ya vienen con liquidez compartida. Los mercados que creas tú dependen de que tu audiencia opere, así que tu contenido y tu comunidad impulsan ese volumen. También puedes activar liquidez compartida entre mercados de creadores."
+        },
+        {
+          "q": "¿Cómo gano dinero y puedo fijar mis propias comisiones?",
+          "aHtml": "Tú defines la comisión de trading de tu mercado, normalmente entre 0,5% y 3%. Cada vez que alguien opera, esa comisión va directo a tu wallet. Sin reparto de ingresos, sin intermediarios y sin esperas. Tú controlas la tarifa y puedes cambiarla cuando quieras."
+        },
+        {
+          "q": "¿Puedo usar mi propio dominio y branding?",
+          "aHtml": "Sí. Puedes lanzar con tu propio dominio, logo, colores y estructura de categorías para que el mercado se sienta totalmente nativo a tu marca, no como un white-label genérico."
+        },
+        {
+          "q": "¿Cómo se resuelven los mercados?",
+          "aHtml": "Kuest utiliza rails de resolución basados en UMA para un settlement transparente y verificable. Los smart contracts derivan del stack de Polymarket — auditado por OpenZeppelin — y están adaptados para soportar liquidez compartida entre mercados. No necesitas entender nada de esto para usarlo, pero significa que la infraestructura financiera bajo tu mercado es la misma que ya ha procesado miles de millones en volumen."
+        },
+        {
+          "q": "¿Tiene coste lanzar?",
+          "aHtml": "El flujo de lanzamiento es gratuito para empezar. La infraestructura de producción se cobra por uso: pagas cuando escalas, no antes."
+        },
+        {
+          "q": "¿Puedo alojar Kuest por mi cuenta?",
+          "aHtml": "La base de código es open source bajo la <a href=\"https://github.com/kuestcom/prediction-market/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">licencia Kuest MIT+Commons</a>. Los forks para branding, frontend y UX personalizada son bienvenidos. Pero los despliegues en producción deben usar la infraestructura de Kuest. Operar una stack de trading independiente requiere un <a href=\"mailto:hello@kuest.com\">acuerdo comercial aparte</a>."
+        }
+      ]
+    },
+    "finalCta": {
+      "eyebrow": "Tu nicho te está esperando",
+      "title": "Lanza tu propio mercado de predicción hoy.",
+      "subtitle": "Gratis para empezar. En vivo en 15 minutos. Tu marca, tus preguntas y tus ingresos.",
+      "cta": "Lanza tu mercado →",
+      "note": "Lanzamiento gratis · Sin código · En vivo en minutos"
+    },
+    "footer": {
+      "launch": "Lanzar",
+      "demo": "Demo",
+      "docs": "Docs",
+      "contact": "Contacto",
+      "live": "Polygon"
+    },
+    "sourceModal": {
+      "outlet": "Fuente",
+      "title": "Título de la fuente",
+      "loading": "Cargando fuente…",
+      "note": "Si ese medio bloquea embeds, usa el enlace externo de abajo.",
+      "external": "Abrir fuente en una nueva pestaña",
+      "back": "Volver a la página",
+      "dynamicNote": "Vista embebida de {{domain}}. Si el medio bloquea embeds, usa el enlace externo de abajo."
+    }
+  },
+  "launch": {
+    "hero": {
+      "title": "Lanza tu mercado de predicción",
+      "subtitle": "Del cero al aire en menos de 15 minutos"
+    },
+    "languageSelector": {
+      "ariaLabel": "Cambiar idioma del launchpad"
+    },
+    "common": {
+      "moreInfo": "Más información",
+      "closeWaitingModal": "Cerrar modal de espera",
+      "waitingForWalletApproval": "Esperando confirmación en la wallet...",
+      "yes": "Sí",
+      "no": "No",
+      "continue": "Continuar",
+      "deploy": "Publicar",
+      "working": "Procesando...",
+      "disconnect": "Desconectar",
+      "advancedOptions": "Configuración avanzada",
+      "oauth": "OAuth",
+      "accessToken": "Access Token",
+      "checking": "Verificando...",
+      "required": "Obligatorio",
+      "refresh": "Actualizar",
+      "refreshing": "Actualizando...",
+      "generate": "Generar",
+      "optional": "opcional",
+      "notConnected": "No conectado",
+      "connectedAccount": "Cuenta conectada",
+      "verified": "Verificado",
+      "pendingVerification": "Verificación pendiente",
+      "addDomain": "Agregar dominio",
+      "adding": "Agregando...",
+      "verify": "Verificar",
+      "verifying": "Verificando...",
+      "result": "Resultado",
+      "status": "Estado",
+      "project": "Proyecto",
+      "url": "URL",
+      "vercelDashboard": "Panel de Vercel",
+      "supabaseDashboard": "Panel de Supabase",
+      "duration": "Duración",
+      "logs": "Logs",
+      "success": "éxito",
+      "failed": "falló",
+      "dns": "DNS",
+      "none": "-",
+      "createNewDatabase": "CREAR NUEVA BASE DE DATOS",
+      "supabaseDatabaseOption": "BASE SUPABASE {index} - {name}"
+    },
+    "stepper": {
+      "step1": "Marca + Wallet admin",
+      "step2": "Hosting + Base de datos",
+      "step3": "Publicar"
+    },
+    "timeline": {
+      "validation": "Validar la configuración del launch",
+      "vercel": "Preparar o reutilizar el proyecto en Vercel",
+      "database": "Conectar la base Supabase",
+      "deploy": "Lanzar el deploy"
+    },
+    "modals": {
+      "connectingWalletTitle": "Conectando wallet",
+      "connectingWalletDescription": "Abre tu wallet y aprueba la conexión para seguir.",
+      "waitingForSignatureTitle": "Esperando firma",
+      "waitingForSignatureDescription": "Aprueba la firma en tu wallet para continuar.",
+      "walletIconAltNamed": "Ícono de wallet {walletName}",
+      "walletIconAltFallback": "Ícono de wallet conectada"
+    },
+    "wallet": {
+      "brandNameInfo": "Así se mostrará tu marca dentro del mercado.",
+      "adminWalletInfo": "Con una sola firma generas tus credenciales Kuest CLOB. Esta wallet queda como la admin del proyecto.",
+      "metamaskPrefix": "Para ir más rápido, usa la",
+      "metamaskExtension": "extensión de MetaMask del navegador",
+      "metamaskApp": "app de MetaMask",
+      "metamaskSuffix": "No necesitas saldo, no se mueve dinero y no pagas gas.",
+      "autoSwitchHelp": "Intentamos cambiar a Polygon Amoy automáticamente y añadir la red si hace falta.",
+      "creatingAccount": "Creando tu cuenta...",
+      "checkWalletConfirm": "Revisa tu wallet y confirma.",
+      "walletConnectedEnterSiteName": "Wallet conectada. Ahora solo falta el nombre de tu sitio.",
+      "openWalletApproveConnection": "Abre tu wallet y aprueba la conexión para seguir.",
+      "approveSignature": "Aprueba una firma para generar tus credenciales.",
+      "mintingCredentials": "Generando tus credenciales Kuest...",
+      "connectBeforeSwitchingNetwork": "Conecta la wallet antes de cambiar de red.",
+      "switchToNetworkSettings": "Cambia a {network} en la configuración de tu wallet.",
+      "unableToSwitchNetwork": "No se pudo cambiar a {network}.",
+      "switchingNetwork": "Cambiando a {network}...",
+      "networkActiveClickSign": "{network} ya está activa. Haz clic en Firmar para seguir.",
+      "walletConnectionNotReady": "La conexión de la wallet todavía no está lista.",
+      "failedGenerateBrowserWallet": "No se pudieron generar las credenciales con la wallet del navegador.",
+      "unableToSignAndGenerate": "No se pudo firmar ni generar las credenciales.",
+      "unableContinueWalletFlow": "No se pudo continuar el flujo de firma de la wallet.",
+      "useBrowserWallet": "Usar wallet del navegador",
+      "connect": "Conectar",
+      "sign": "Firmar",
+      "switchToNetworkButton": "Cambiar a {network}"
+    },
+    "step1": {
+      "srTitle": "Paso 1. Marca + Wallet admin",
+      "siteNameLabel": "Nombre del sitio",
+      "siteNamePlaceholder": "Nombre de tu sitio de mercado de predicción",
+      "adminWalletTitle": "Wallet admin",
+      "emailLabel": "Email (opcional)",
+      "emailPlaceholder": "tu@equipo.com",
+      "nonceLabel": "Nonce",
+      "noncePlaceholder": "0"
+    },
+    "step2": {
+      "srTitle": "Paso 2. Hosting + Base de datos",
+      "vercelAuthenticationTitle": "Autenticación de Vercel",
+      "vercelAuthenticationInfo": "Tu sitio va a quedar alojado en Vercel.",
+      "checkOauthStatusFailed": "No se pudo revisar el estado del OAuth.",
+      "connectVercel": "Conectar Vercel",
+      "connectVercelFirst": "Conecta Vercel primero para continuar.",
+      "disconnectVercelOauthFailed": "No se pudo desconectar el OAuth de Vercel.",
+      "pasteVercelTokenFirst": "Pega primero tu Vercel Access Token.",
+      "listSupabaseFailed": "No se pudieron listar las bases de Supabase.",
+      "noExistingDatabase": "No se encontró ninguna base existente. Igual puedes crear una nueva.",
+      "vercelAccessTokenLabel": "Vercel Access Token",
+      "vercelAccessTokenPlaceholder": "Pega el Vercel Access Token",
+      "createTokenInVercel": "Crear token en Vercel",
+      "reownProjectIdTitle": "Reown Project ID",
+      "reownProjectIdInfo": "Este ID habilita el login con wallet para los usuarios de tu mercado.",
+      "reownProjectIdLabel": "Reown Project ID",
+      "reownProjectIdHelpPrefix": "Consíguelo en",
+      "reownProjectIdHelpSuffix": "→ crea o selecciona el proyecto → copia el Project ID.",
+      "supabaseDatabaseTitle": "Base de datos Supabase",
+      "supabaseDatabaseInfo": "Supabase guarda usuarios, sesiones y datos de la app. Puedes crear o conectar la base desde la integración con Vercel.",
+      "projectSlugAuto": "Slug del proyecto (auto)",
+      "projectSlugOverride": "Slug del proyecto (manual)",
+      "projectSlugOverridePlaceholder": "opcional",
+      "repository": "Repositorio",
+      "branch": "Branch",
+      "vercelTeamId": "Vercel Team ID",
+      "vercelTeamIdPlaceholder": "vacío = cuenta personal",
+      "supabaseRegion": "Región de Supabase",
+      "supabaseRegionPlaceholder": "us-east-1",
+      "betterAuthSecretPlaceholder": "vacío = generado automáticamente por la API",
+      "cronSecretPlaceholder": "vacío = generado automáticamente por la API",
+      "siteUrlOverride": "SITE_URL manual",
+      "extraEnvVars": "Variables extra (.env)",
+      "extraEnvPlaceholder": "OPENROUTER_API_KEY=...\nSENTRY_DSN=..."
+    },
+    "step3": {
+      "srTitle": "Paso 3. Publicar",
+      "launchFailed": "No se pudo completar el launch.",
+      "failedCallApi": "No se pudo llamar a la API."
+    },
+    "domain": {
+      "enterDomainFirst": "Ingresa un dominio primero.",
+      "domainActionFailed": "La acción del dominio falló.",
+      "customDomainOptional": "Dominio propio (opcional)",
+      "customDomainInfo": "Después del deploy puedes conectar tu propio dominio. Primero agrégalo y luego valida los registros DNS.",
+      "customDomainPlaceholder": "app.tudominio.com",
+      "nameserversLabel": "Nameservers para configurar en tu registrador:",
+      "checkVercelDnsInstructions": "revisa las instrucciones DNS de Vercel"
+    }
+  }
+}
