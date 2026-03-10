@@ -89,16 +89,32 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     Kuest
   </a>
   <div class="nav-r">
-    <div class="site-language-control">
-      <select id="siteLanguageSelect" class="site-language-select" aria-label="Change site language">
-        <option value="en">🇺🇸 English</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="es">🇪🇸 Spanish</option>
-        <option value="pt">🇧🇷 Português</option>
-        <option value="fr">🇫🇷 French</option>
-        <option value="zh">🇨🇳 中文</option>
-      </select>
-      <span class="site-language-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+    <div class="site-language-control" id="siteLanguageControl">
+      <button
+        type="button"
+        id="siteLanguageButton"
+        class="site-language-trigger"
+        aria-label="Change site language"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+      >
+        <span class="site-language-trigger-content">
+          <img
+            id="siteLanguageCurrentFlag"
+            class="site-language-flag"
+            src="/assets/flags/en.svg"
+            alt=""
+            width="18"
+            height="12">
+          <span id="siteLanguageCurrentLabel" class="site-language-label">English</span>
+        </span>
+        <span class="site-language-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+      </button>
+      <div
+        id="siteLanguageMenu"
+        class="site-language-menu"
+        role="listbox"
+        aria-label="Change site language"></div>
     </div>
     <a href="/launch" class="nb nb-solid">Start your prediction market →</a>
   </div>

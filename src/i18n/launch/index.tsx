@@ -20,15 +20,16 @@ export type LaunchLocale = "en" | "de" | "es" | "pt" | "fr" | "zh";
 export interface LaunchLocaleOption {
   code: LaunchLocale;
   label: string;
+  flagSrc: string;
 }
 
 export const launchLocaleOptions: LaunchLocaleOption[] = [
-  { code: "en", label: "🇺🇸 English" },
-  { code: "de", label: "🇩🇪 Deutsch" },
-  { code: "es", label: "🇪🇸 Spanish" },
-  { code: "pt", label: "🇧🇷 Português" },
-  { code: "fr", label: "🇫🇷 French" },
-  { code: "zh", label: "🇨🇳 中文" },
+  { code: "en", label: "English", flagSrc: "/assets/flags/en.svg" },
+  { code: "de", label: "Deutsch", flagSrc: "/assets/flags/de.svg" },
+  { code: "es", label: "Español", flagSrc: "/assets/flags/es.svg" },
+  { code: "pt", label: "Português", flagSrc: "/assets/flags/pt.svg" },
+  { code: "fr", label: "Français", flagSrc: "/assets/flags/fr.svg" },
+  { code: "zh", label: "中文", flagSrc: "/assets/flags/zh.svg" },
 ];
 
 const DEFAULT_LOCALE: LaunchLocale = "en";

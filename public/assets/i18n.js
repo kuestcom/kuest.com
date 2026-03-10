@@ -2,6 +2,15 @@
   if (!window.i18next || !window.i18nextHttpBackend || !window.i18nextBrowserLanguageDetector) return;
 
   var SUPPORTED_LANGS = ['en', 'de', 'es', 'pt', 'fr', 'zh'];
+  var LANGUAGE_OPTIONS = [
+    { code: 'en', label: 'English', flagSrc: '/assets/flags/en.svg' },
+    { code: 'de', label: 'Deutsch', flagSrc: '/assets/flags/de.svg' },
+    { code: 'es', label: 'Español', flagSrc: '/assets/flags/es.svg' },
+    { code: 'pt', label: 'Português', flagSrc: '/assets/flags/pt.svg' },
+    { code: 'fr', label: 'Français', flagSrc: '/assets/flags/fr.svg' },
+    { code: 'zh', label: '中文', flagSrc: '/assets/flags/zh.svg' }
+  ];
+  var DEMO_ORIGIN = 'https://demo.kuest.com';
   var NICHE_TAB_ICONS = ['bitcoin', 'trophy', 'landmark', 'clapperboard', 'users', 'flame'];
   var NICHE_STATIC = [
     {
@@ -85,6 +94,42 @@
 
   function t(key, options) {
     return window.i18next.t(key, options);
+  }
+
+  function normalizeLocale(lng) {
+    var normalized = String(lng || 'en').toLowerCase().split('-')[0];
+    return SUPPORTED_LANGS.indexOf(normalized) >= 0 ? normalized : 'en';
+  }
+
+  function getResolvedLocale() {
+    return normalizeLocale(window.i18next.resolvedLanguage || window.i18next.language || 'en');
+  }
+
+  function getLanguageOption(lng) {
+    var locale = normalizeLocale(lng);
+    var match = LANGUAGE_OPTIONS.find(function (option) {
+      return option.code === locale;
+    });
+
+    return match || LANGUAGE_OPTIONS[0];
+  }
+
+  function getDemoLocalePath(lng) {
+    var locale = normalizeLocale(lng);
+    return locale === 'en' ? '' : '/' + locale;
+  }
+
+  function buildDemoHref(lng) {
+    return DEMO_ORIGIN + getDemoLocalePath(lng);
+  }
+
+  function buildDemoEmbedSrc(lng) {
+    var path = getDemoLocalePath(lng);
+    return DEMO_ORIGIN + (path ? path + '/' : '/') + '?embed-preview=1';
+  }
+
+  function buildDemoLabel(lng) {
+    return 'demo.kuest.com' + getDemoLocalePath(lng);
   }
 
   function toHtmlText(text) {
@@ -241,18 +286,31 @@
 
   function applyNav(bundle) {
     setText('nav .nb-solid', bundle.nav.cta);
-    setAttr('#siteLanguageSelect', 'aria-label', bundle.languageSelector.ariaLabel);
+    setAttr('#siteLanguageButton', 'aria-label', bundle.languageSelector.ariaLabel);
+    setAttr('#siteLanguageMenu', 'aria-label', bundle.languageSelector.ariaLabel);
   }
 
   function applyHero(bundle) {
     var heroLines = qa('.hero-title-line');
+    var locale = getResolvedLocale();
+    var previewHref = buildDemoHref(locale);
+    var previewLabel = buildDemoLabel(locale);
+    var previewFrame = q('#sitePreviewFrame');
+    var previewLink = q('.site-preview-url');
+
     setText('.hero-kicker', bundle.hero.kicker);
     setText(heroLines[0], bundle.hero.titleLine1);
     setText(heroLines[1], bundle.hero.titleLine2);
     setText('.hero-copy-sub', bundle.hero.subtitle);
     setText('.hero-copy-actions .btn-cta', bundle.hero.cta);
     setText('.hero-copy-proof', bundle.hero.proof);
-    setText('.site-preview-url', bundle.hero.previewUrl);
+    if (previewLink) {
+      previewLink.textContent = previewLabel;
+      previewLink.setAttribute('href', previewHref);
+    }
+    if (previewFrame) {
+      previewFrame.setAttribute('src', buildDemoEmbedSrc(locale));
+    }
   }
 
   function applyMarketProof(bundle) {
@@ -483,13 +541,65 @@
   }
 
   function syncSelectors(lng) {
-    var topSelect = q('#siteLanguageSelect');
+    var topCurrentFlag = q('#siteLanguageCurrentFlag');
+    var topCurrentLabel = q('#siteLanguageCurrentLabel');
+    var topMenu = q('#siteLanguageMenu');
     var demoSelect = q('#languageDemoSelect');
-    if (topSelect && topSelect.value !== lng) topSelect.value = lng;
+    var option = getLanguageOption(lng);
+
+    if (topCurrentFlag) topCurrentFlag.setAttribute('src', option.flagSrc);
+    if (topCurrentLabel) topCurrentLabel.textContent = option.label;
+
+    if (topMenu) {
+      topMenu.replaceChildren();
+
+      LANGUAGE_OPTIONS.forEach(function (item) {
+        var button = document.createElement('button');
+        var row = document.createElement('span');
+        var flag = document.createElement('img');
+        var label = document.createElement('span');
+        var isSelected = item.code === option.code;
+
+        button.type = 'button';
+        button.className = 'site-language-option' + (isSelected ? ' is-selected' : '');
+        button.setAttribute('role', 'option');
+        button.setAttribute('aria-selected', String(isSelected));
+        button.dataset.value = item.code;
+
+        row.className = 'site-language-option-row';
+        flag.className = 'site-language-flag';
+        flag.setAttribute('src', item.flagSrc);
+        flag.setAttribute('alt', '');
+        flag.setAttribute('width', '18');
+        flag.setAttribute('height', '12');
+        label.textContent = item.label;
+
+        row.appendChild(flag);
+        row.appendChild(label);
+        button.appendChild(row);
+
+        button.addEventListener('click', function () {
+          setLanguageMenuOpen(false);
+          window.i18next.changeLanguage(item.code);
+        });
+
+        topMenu.appendChild(button);
+      });
+    }
+
     if (demoSelect && demoSelect.querySelector('option[value="' + lng + '"]')) {
       demoSelect.value = lng;
       demoSelect.dispatchEvent(new Event('change'));
     }
+  }
+
+  function setLanguageMenuOpen(open) {
+    var control = q('#siteLanguageControl');
+    var button = q('#siteLanguageButton');
+    if (!control || !button) return;
+
+    control.dataset.open = open ? 'true' : 'false';
+    button.setAttribute('aria-expanded', String(open));
   }
 
   function applyAll() {
@@ -515,10 +625,24 @@
   }
 
   function initLanguageSelector() {
-    var select = q('#siteLanguageSelect');
-    if (!select) return;
-    select.addEventListener('change', function () {
-      window.i18next.changeLanguage(select.value);
+    var control = q('#siteLanguageControl');
+    var button = q('#siteLanguageButton');
+    if (!control || !button) return;
+
+    button.addEventListener('click', function () {
+      setLanguageMenuOpen(control.dataset.open !== 'true');
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!control.contains(event.target)) {
+        setLanguageMenuOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        setLanguageMenuOpen(false);
+      }
     });
   }
 

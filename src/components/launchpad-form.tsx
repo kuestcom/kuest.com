@@ -384,29 +384,99 @@ function StepFooterBrand() {
 
 function StepFooterLanguageControl() {
   const { locale, setLocale, messages } = useLaunchI18n();
+  const [open, setOpen] = useState(false);
+  const controlRef = useRef<HTMLDivElement | null>(null);
+  const currentLocaleOption =
+    launchLocaleOptions.find((option) => option.code === locale) ?? launchLocaleOptions[0];
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      if (!controlRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
 
   return (
     <div className="launch-step-footer-language">
-      <label className="launch-language-control">
-        <span className="sr-only">{messages.languageSelector.ariaLabel}</span>
-        <select
-          className="launch-language-select"
-          value={locale}
+      <div
+        ref={controlRef}
+        className="launch-language-control"
+        data-open={open ? "true" : "false"}
+      >
+        <button
+          type="button"
+          className="launch-language-trigger"
           aria-label={messages.languageSelector.ariaLabel}
-          onChange={(event) =>
-            setLocale(event.target.value as (typeof launchLocaleOptions)[number]["code"])
-          }
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          onClick={() => setOpen((previous) => !previous)}
         >
-          {launchLocaleOptions.map((option) => (
-            <option key={option.code} value={option.code}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <span className="launch-language-icon" aria-hidden="true">
-          <ChevronDownIcon className="size-3.5" />
-        </span>
-      </label>
+          <span className="launch-language-trigger-content">
+            <img
+              src={currentLocaleOption.flagSrc}
+              alt=""
+              width={18}
+              height={12}
+              className="launch-language-flag"
+            />
+            <span className="launch-language-label">{currentLocaleOption.label}</span>
+          </span>
+          <span className="launch-language-icon" aria-hidden="true">
+            <ChevronDownIcon className="size-3.5" />
+          </span>
+        </button>
+        <div className="launch-language-menu" role="listbox" aria-label={messages.languageSelector.ariaLabel}>
+          {launchLocaleOptions.map((option) => {
+            const isSelected = option.code === locale;
+
+            return (
+              <button
+                key={option.code}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                className={`launch-language-option${isSelected ? " is-selected" : ""}`}
+                onClick={() => {
+                  setLocale(option.code);
+                  setOpen(false);
+                }}
+              >
+                <span className="launch-language-option-row">
+                  <img
+                    src={option.flagSrc}
+                    alt=""
+                    width={18}
+                    height={12}
+                    className="launch-language-flag"
+                  />
+                  <span>{option.label}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

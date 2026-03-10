@@ -795,10 +795,14 @@
   min-width: 0;
 }
 
-.launch-language-select {
+.launch-language-trigger {
+  display: inline-flex;
+  min-width: 148px;
   height: 42px;
-  min-width: 136px;
-  padding: 0 2.1rem 0 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.8rem;
   border-radius: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
@@ -807,9 +811,9 @@
   font-size: 0.82rem;
   font-weight: 600;
   line-height: 1;
+  text-align: left;
+  cursor: pointer;
   outline: none;
-  appearance: none;
-  -webkit-appearance: none;
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease,
@@ -817,23 +821,107 @@
     box-shadow 0.16s ease;
 }
 
-.launch-language-select:hover,
-.launch-language-select:focus {
+.launch-language-trigger:hover,
+.launch-language-trigger:focus,
+.launch-language-control[data-open="true"] .launch-language-trigger {
   border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
   background: color-mix(in oklab, var(--primary) 8%, transparent);
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 20%, transparent);
 }
 
+.launch-language-trigger-content {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.58rem;
+}
+
+.launch-language-flag {
+  display: block;
+  width: 18px;
+  height: 12px;
+  flex: none;
+  border-radius: 0.22rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  object-fit: cover;
+  clip-path: inset(0 round 0.22rem);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
+}
+
+.launch-language-label {
+  white-space: nowrap;
+}
+
 .launch-language-icon {
-  position: absolute;
-  right: 0.72rem;
-  top: 50%;
-  transform: translateY(-50%);
   color: var(--muted-foreground);
-  pointer-events: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: none;
+}
+
+.launch-language-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 0.55rem);
+  min-width: 100%;
+  padding: 0.35rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 17, 24, 0.96);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transform: translateY(0.25rem);
+  pointer-events: none;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+
+.launch-language-control[data-open="true"] .launch-language-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.launch-language-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.7rem 0.75rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-sans), "Open Sauce One", "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.launch-language-option:hover,
+.launch-language-option:focus {
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+
+.launch-language-option.is-selected {
+  background: color-mix(in oklab, var(--primary) 14%, transparent);
+  color: color-mix(in oklab, white 92%, var(--foreground));
+}
+
+.launch-language-option-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58rem;
 }
 
 .launch-binary-nav {
@@ -1037,11 +1125,15 @@
     display: none;
   }
 
-  .launch-language-select {
+  .launch-language-trigger {
     min-width: 124px;
     height: 40px;
     padding-left: 0.72rem;
-    padding-right: 1.95rem;
+    padding-right: 0.72rem;
+    font-size: 0.78rem;
+  }
+
+  .launch-language-option {
     font-size: 0.78rem;
   }
 
