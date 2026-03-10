@@ -16,6 +16,8 @@ const BG_EFFECT_CONFIG={
   const cv=document.getElementById('bg-canvas');
   if(!cv)return;
   const ctx=cv.getContext('2d');
+  const MIN_COORDINATE=0;
+  const MAX_COORDINATE=1;
   let W,H,pts=[],tick=0,mode=BG_EFFECT_CONFIG.mode;
 
   function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
@@ -39,7 +41,7 @@ const BG_EFFECT_CONFIG={
   function buildBlue(){
     pts=[];
     for(let i=0;i<BG_EFFECT_CONFIG.blue.count;i++){
-      pts.push({x:Math.random()*2,y:Math.random()*2,vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,s:Math.random()*1.4+.4,o:Math.random()*.4+.1});
+      pts.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,s:Math.random()*1.4+.4,o:Math.random()*.4+.1});
     }
   }
 
@@ -71,8 +73,8 @@ const BG_EFFECT_CONFIG={
   function drawBlue(){
     pts.forEach(p=>{
       p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>1)p.vx*=-1;
-      if(p.y<0||p.y>1)p.vy*=-1;
+      if(p.x<MIN_COORDINATE||p.x>MAX_COORDINATE){p.x=Math.min(MAX_COORDINATE,Math.max(MIN_COORDINATE,p.x));p.vx*=-1;}
+      if(p.y<MIN_COORDINATE||p.y>MAX_COORDINATE){p.y=Math.min(MAX_COORDINATE,Math.max(MIN_COORDINATE,p.y));p.vy*=-1;}
       ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.s,0,Math.PI*2);
       ctx.fillStyle=`rgba(79,142,247,${p.o})`;ctx.fill();
     });
