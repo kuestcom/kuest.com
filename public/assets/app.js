@@ -663,109 +663,6 @@ const protoObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)i
 const pEl=document.getElementById('protoCanvas');if(pEl)protoObs.observe(pEl.parentElement);
 window.addEventListener('resize',initProto);
 
-/* ── GROWTH CHART ── */
-(function(){
-  const cv=document.getElementById('growthChart');if(!cv)return;
-  const years=['2020','2021','2022','2023','2024','2025','2026E'];
-  const vol=[0.1,0.4,0.8,2.1,9.5,50.0,156.0];
-  let animated=false;
-  let progress=0;
-
-  function draw(prog){
-    const W=cv.parentElement.offsetWidth||900,H=220,dpr=window.devicePixelRatio||1;
-    cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
-    const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
-    const PAD_L=50,PAD_R=20,PAD_T=28,PAD_B=36;
-    const cW=W-PAD_L-PAD_R,cH=H-PAD_T-PAD_B;
-    const maxV=160;
-    const ticks=[0,40,80,120,160];
-    const plotInset=8;
-    const plotStart=PAD_L+plotInset;
-    const plotEnd=W-PAD_R-plotInset;
-    const plotW=plotEnd-plotStart;
-    const step=plotW/years.length;
-    const barW=Math.min(72,step*.82);
-    const barAnim=(idx,p)=>{
-      const start=idx*.08;
-      return Math.max(0,Math.min((p-start)/(1-start),1));
-    };
-
-    ctx.clearRect(0,0,W,H);ctx.fillStyle='#131720';ctx.fillRect(0,0,W,H);
-
-    // grid lines
-    ticks.forEach(v=>{
-      const y=PAD_T+cH*(1-v/maxV);
-      ctx.beginPath();ctx.moveTo(PAD_L,y);ctx.lineTo(W-PAD_R,y);
-      ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;ctx.stroke();
-      ctx.font="9px 'Geist Mono',monospace";ctx.fillStyle='rgba(107,117,133,.8)';ctx.textAlign='right';
-      ctx.fillText(v>0?'$'+v+'B':'',PAD_L-6,y+3);
-    });
-
-    // x labels
-    years.forEach((yr,i)=>{
-      const x=plotStart+step*(i+.5);
-      ctx.font="9px 'Geist Mono',monospace";ctx.fillStyle='rgba(107,117,133,.8)';ctx.textAlign='center';
-      ctx.fillText(yr,x,H-8);
-    });
-
-    // draw bars animated
-    vol.forEach((v,i)=>{
-      const centerX=plotStart+step*(i+.5);
-      const x=centerX-barW/2;
-      const anim=barAnim(i,prog);
-      const scaled=v/maxV;
-      let barH=scaled*cH*anim;
-      if(v>0)barH=Math.max(barH,1*anim);
-      if(barH<=0)return;
-      const y=PAD_T+cH-barH;
-      const isLast=i===years.length-1;
-      const g=ctx.createLinearGradient(0,y,0,y+barH);
-      g.addColorStop(0,isLast?'rgba(52,208,127,.9)':'rgba(79,142,247,.85)');
-      g.addColorStop(1,isLast?'rgba(52,208,127,.2)':'rgba(79,142,247,.15)');
-      ctx.fillStyle=g;
-      ctx.beginPath();ctx.roundRect(x,y,barW,barH,4);ctx.fill();
-      // value label on top
-      if(barH>20){
-        ctx.font="600 10px 'Geist Mono',monospace";ctx.fillStyle=isLast?'#34d07f':'#4f8ef7';ctx.textAlign='center';
-        const labelY=Math.max(12,y-6);
-        ctx.fillText('$'+v+'B',centerX,labelY);
-      }
-    });
-
-    // update header synced with active bar growth
-    let active=-1;
-    for(let i=0;i<vol.length;i++){if(barAnim(i,prog)>0)active=i;}
-    let curVal=0;
-    if(active>=0){
-      const a=barAnim(active,prog);
-      const from=active>0?vol[active-1]:0;
-      const to=vol[active];
-      curVal=from+(to-from)*a;
-    }
-    document.getElementById('chartVal').textContent=curVal.toFixed(1);
-
-    if(active>0){
-      const prev=vol[active-1],target=vol[active];
-      const pct=((target-prev)/prev*100).toFixed(0);
-      document.getElementById('chartChange').textContent='↑ '+pct+'% from previous year';
-    }else{
-      document.getElementById('chartChange').textContent='↑ market expansion in progress';
-    }
-  }
-
-  const chartObs=new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting&&!animated){
-      animated=true;
-      let start=null;
-      function step(ts){if(!start)start=ts;progress=Math.min((ts-start)/2200,1);draw(progress);if(progress<1)requestAnimationFrame(step);}
-      requestAnimationFrame(step);
-    }
-  }),{threshold:.3});
-  chartObs.observe(cv.parentElement);
-  draw(0);
-  window.addEventListener('resize',()=>draw(progress));
-})();
-
 /* ── FEE REVENUE ESTIMATOR ── */
 (function(){
   const slider=document.getElementById('feeSlider');
@@ -845,6 +742,140 @@ window.addEventListener('resize',initProto);
       });
     });
   });
+})();
+
+/* ── NICHE SHOWCASE ── */
+(function(){
+  if(!Array.isArray(window.NICHE_DATA)||!window.NICHE_DATA.length)return;
+  const nicheGrid=document.getElementById('nicheCardsGrid');
+  const nicheTabs=document.getElementById('nicheTabs');
+  const tagline=document.getElementById('nicheTagline');
+  if(!nicheGrid||!nicheTabs||!tagline)return;
+
+  const ui=window.KUEST_I18N_UI||{yes:'Yes',no:'No',chance:'chance'};
+  let nicheTimer=null;
+  let currentNiche=0;
+  let nicheHovered=false;
+
+  function buildCard(card){
+    let gauge='';
+    if(card.type==='single'){
+      const arcLen=62.8;
+      const offset=arcLen-(arcLen*card.pct/100);
+      gauge='<div class="niche-market-gauge">'
+        + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '</svg>'
+        + '<div class="niche-market-gauge-value">' + card.pct + '%</div>'
+        + '<div class="niche-market-gauge-label">' + ui.chance + '</div>'
+        + '</div>';
+    }
+
+    const body=card.type==='single'
+      ? '<div class="niche-market-body niche-market-body-single"><div class="niche-market-actions"><button class="niche-market-btn niche-market-btn-yes">' + ui.yes + '</button><button class="niche-market-btn niche-market-btn-no">' + ui.no + '</button></div></div>'
+      : '<div class="niche-market-body niche-market-body-multi"><div class="niche-market-list">'
+        + card.rows.map(function(row){
+            return '<div class="niche-market-list-row"><span class="niche-market-row-label">' + row.label + '</span><div class="niche-market-row-actions"><span class="niche-market-row-pct">' + row.pct + '%</span><button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">' + ui.yes + '</button><button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">' + ui.no + '</button></div></div>';
+          }).join('')
+        + '</div></div>';
+
+    return '<div class="niche-market-card"><div class="niche-market-head"><img src="' + card.img + '" alt="" class="niche-market-thumb"><div class="niche-market-title-wrap"><div class="niche-market-title">' + card.title + '</div></div>' + gauge + '</div>' + body + '<div class="niche-market-footer"><span class="niche-market-volume">' + card.vol + '</span><span class="niche-market-category">' + card.cat + '</span></div></div>';
+  }
+
+  function setNicheHoverState(nextHovered){
+    nicheHovered=nextHovered;
+    if(nicheHovered){
+      clearInterval(nicheTimer);
+    }else{
+      restartNicheTimer();
+    }
+  }
+
+  nicheGrid.addEventListener('mouseenter',function(){setNicheHoverState(true);});
+  nicheGrid.addEventListener('mouseleave',function(){setNicheHoverState(false);});
+  nicheTabs.addEventListener('mouseenter',function(){setNicheHoverState(true);});
+  nicheTabs.addEventListener('mouseleave',function(){setNicheHoverState(false);});
+
+  function showNiche(index){
+    currentNiche=index;
+    const data=window.NICHE_DATA[index];
+    if(!data)return;
+
+    tagline.textContent=data.tagline;
+    tagline.style.color='rgba(' + data.accentRgb + ',0.88)';
+
+    nicheGrid.style.opacity='0';
+    nicheGrid.style.transition='opacity .25s';
+    setTimeout(function(){
+      nicheGrid.innerHTML=data.cards.map(buildCard).join('');
+      nicheGrid.style.opacity='1';
+      if(window.lucide)window.lucide.createIcons();
+    },250);
+
+    document.querySelectorAll('.niche-tab').forEach(function(tab,tabIndex){
+      const tabData=window.NICHE_DATA[tabIndex];
+      if(!tabData)return;
+      if(tabIndex===index){
+        tab.classList.add('is-active');
+        tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.46)';
+        tab.style.background='rgba(' + tabData.accentRgb + ',0.12)';
+        tab.style.color=tabData.accent;
+        tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+      }else{
+        tab.classList.remove('is-active');
+        tab.style.borderColor='rgba(255,255,255,0.08)';
+        tab.style.background='transparent';
+        tab.style.color='#6b7585';
+        tab.style.boxShadow='none';
+      }
+    });
+  }
+
+  function restartNicheTimer(){
+    clearInterval(nicheTimer);
+    if(nicheHovered)return;
+    nicheTimer=setInterval(function(){
+      showNiche((currentNiche+1)%window.NICHE_DATA.length);
+    },7000);
+  }
+
+  document.querySelectorAll('.niche-tab').forEach(function(tab){
+    tab.addEventListener('click',function(){
+      showNiche(parseInt(tab.dataset.niche,10)||0);
+      restartNicheTimer();
+    });
+  });
+
+  window.showNiche=showNiche;
+  showNiche(0);
+  restartNicheTimer();
+})();
+
+/* ── LANGUAGE DEMO ── */
+(function(){
+  const select=document.getElementById('languageDemoSelect');
+  const chips=[...document.querySelectorAll('[data-lang-chip]')];
+  if(!select||chips.length!==3)return;
+
+  const labels={
+    en:['Soccer','Politics','Crypto'],
+    de:['Fußball','Politik','Krypto'],
+    es:['Fútbol','Política','Cripto'],
+    pt:['Futebol','Política','Cripto'],
+    fr:['Football','Politique','Crypto'],
+    zh:['足球','政治','加密']
+  };
+
+  function renderLanguageChips(){
+    const values=labels[select.value]||labels.en;
+    chips.forEach(function(chip,index){
+      chip.textContent=values[index]||'';
+    });
+  }
+
+  select.addEventListener('change',renderLanguageChips);
+  renderLanguageChips();
 })();
 
 /* ── SOURCE MODAL ── */

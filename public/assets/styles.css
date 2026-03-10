@@ -472,6 +472,8 @@ nav.s {
 }
 .site-language-trigger:hover,
 .site-language-trigger:focus,
+.site-language-control:hover .site-language-trigger,
+.site-language-control:focus-within .site-language-trigger,
 .site-language-control[data-open="true"] .site-language-trigger {
   border-color: rgba(79,142,247,.35);
   background: rgba(79,142,247,.08);
@@ -528,6 +530,12 @@ nav.s {
   transition: opacity .16s ease,transform .16s ease;
 }
 .site-language-control[data-open="true"] .site-language-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.site-language-control:hover .site-language-menu,
+.site-language-control:focus-within .site-language-menu {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -4137,43 +4145,6 @@ html.embed-preview .hero-stack-panel .panel-sticky {
   font-weight: 700;
   letter-spacing: -.04em;
   color: var(--green);
-}
-.ch-change {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--green);
-  margin-top: 2px;
-}
-.chart-legend {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-.cl-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--muted);
-}
-.cl-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-#growthChart {
-  display: block;
-  width: 100%;
-}
-.chart-source {
-  padding: 10px 20px 12px;
-  border-top: 1px solid var(--border);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--faint);
 }
 #p8 {
   height: auto;
