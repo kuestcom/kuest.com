@@ -757,30 +757,104 @@ window.addEventListener('resize',initProto);
   let currentNiche=0;
   let nicheHovered=false;
 
-  function buildCard(card){
-    let gauge='';
+  function createNode(tag,className,text){
+    const node=document.createElement(tag);
+    if(className)node.className=className;
+    if(text!=null)node.textContent=String(text);
+    return node;
+  }
+
+  function createSvgNode(tag,attrs){
+    const node=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    Object.keys(attrs).forEach(function(key){
+      node.setAttribute(key,String(attrs[key]));
+    });
+    return node;
+  }
+
+  function createActionButton(label,className){
+    const button=createNode('button',className,label);
+    button.type='button';
+    return button;
+  }
+
+  function sanitizeImageSrc(src){
+    return typeof src==='string'&&/^\/assets\/images\/[\w./-]+$/.test(src)
+      ? src
+      : '/assets/images/bitcoin-150k.png';
+  }
+
+  function createGauge(card){
+    const arcLen=62.8;
+    const offset=arcLen-(arcLen*card.pct/100);
+    const gauge=createNode('div','niche-market-gauge');
+    const svg=createSvgNode('svg',{width:'48',height:'32',viewBox:'0 0 48 32',fill:'none'});
+    svg.appendChild(createSvgNode('path',{
+      d:'M4 28 A20 20 0 0 1 44 28',
+      stroke:'#2a3040',
+      'stroke-width':'5',
+      'stroke-linecap':'round'
+    }));
+    svg.appendChild(createSvgNode('path',{
+      d:'M4 28 A20 20 0 0 1 44 28',
+      stroke:'#4f8ef7',
+      'stroke-width':'5',
+      'stroke-linecap':'round',
+      'stroke-dasharray':'62.8',
+      'stroke-dashoffset':offset
+    }));
+    gauge.appendChild(svg);
+    gauge.appendChild(createNode('div','niche-market-gauge-value',card.pct + '%'));
+    gauge.appendChild(createNode('div','niche-market-gauge-label',ui.chance));
+    return gauge;
+  }
+
+  function buildCardElement(card){
+    const cardEl=createNode('div','niche-market-card');
+    const head=createNode('div','niche-market-head');
+    const thumb=document.createElement('img');
+    thumb.src=sanitizeImageSrc(card.img);
+    thumb.alt='';
+    thumb.className='niche-market-thumb';
+    const titleWrap=createNode('div','niche-market-title-wrap');
+    titleWrap.appendChild(createNode('div','niche-market-title',card.title));
+    head.appendChild(thumb);
+    head.appendChild(titleWrap);
     if(card.type==='single'){
-      const arcLen=62.8;
-      const offset=arcLen-(arcLen*card.pct/100);
-      gauge='<div class="niche-market-gauge">'
-        + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
-        + '</svg>'
-        + '<div class="niche-market-gauge-value">' + card.pct + '%</div>'
-        + '<div class="niche-market-gauge-label">' + ui.chance + '</div>'
-        + '</div>';
+      head.appendChild(createGauge(card));
+    }
+    cardEl.appendChild(head);
+
+    if(card.type==='single'){
+      const body=createNode('div','niche-market-body niche-market-body-single');
+      const actions=createNode('div','niche-market-actions');
+      actions.appendChild(createActionButton(ui.yes,'niche-market-btn niche-market-btn-yes'));
+      actions.appendChild(createActionButton(ui.no,'niche-market-btn niche-market-btn-no'));
+      body.appendChild(actions);
+      cardEl.appendChild(body);
+    }else{
+      const body=createNode('div','niche-market-body niche-market-body-multi');
+      const list=createNode('div','niche-market-list');
+      card.rows.forEach(function(row){
+        const rowEl=createNode('div','niche-market-list-row');
+        const actions=createNode('div','niche-market-row-actions');
+        actions.appendChild(createNode('span','niche-market-row-pct',row.pct + '%'));
+        actions.appendChild(createActionButton(ui.yes,'niche-market-btn niche-market-btn-mini niche-market-btn-yes'));
+        actions.appendChild(createActionButton(ui.no,'niche-market-btn niche-market-btn-mini niche-market-btn-no'));
+        rowEl.appendChild(createNode('span','niche-market-row-label',row.label));
+        rowEl.appendChild(actions);
+        list.appendChild(rowEl);
+      });
+      body.appendChild(list);
+      cardEl.appendChild(body);
     }
 
-    const body=card.type==='single'
-      ? '<div class="niche-market-body niche-market-body-single"><div class="niche-market-actions"><button class="niche-market-btn niche-market-btn-yes">' + ui.yes + '</button><button class="niche-market-btn niche-market-btn-no">' + ui.no + '</button></div></div>'
-      : '<div class="niche-market-body niche-market-body-multi"><div class="niche-market-list">'
-        + card.rows.map(function(row){
-            return '<div class="niche-market-list-row"><span class="niche-market-row-label">' + row.label + '</span><div class="niche-market-row-actions"><span class="niche-market-row-pct">' + row.pct + '%</span><button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">' + ui.yes + '</button><button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">' + ui.no + '</button></div></div>';
-          }).join('')
-        + '</div></div>';
+    const footer=createNode('div','niche-market-footer');
+    footer.appendChild(createNode('span','niche-market-volume',card.vol));
+    footer.appendChild(createNode('span','niche-market-category',card.cat));
+    cardEl.appendChild(footer);
 
-    return '<div class="niche-market-card"><div class="niche-market-head"><img src="' + card.img + '" alt="" class="niche-market-thumb"><div class="niche-market-title-wrap"><div class="niche-market-title">' + card.title + '</div></div>' + gauge + '</div>' + body + '<div class="niche-market-footer"><span class="niche-market-volume">' + card.vol + '</span><span class="niche-market-category">' + card.cat + '</span></div></div>';
+    return cardEl;
   }
 
   function setNicheHoverState(nextHovered){
@@ -808,7 +882,11 @@ window.addEventListener('resize',initProto);
     nicheGrid.style.opacity='0';
     nicheGrid.style.transition='opacity .25s';
     setTimeout(function(){
-      nicheGrid.innerHTML=data.cards.map(buildCard).join('');
+      const fragment=document.createDocumentFragment();
+      data.cards.forEach(function(card){
+        fragment.appendChild(buildCardElement(card));
+      });
+      nicheGrid.replaceChildren(fragment);
       nicheGrid.style.opacity='1';
       if(window.lucide)window.lucide.createIcons();
     },250);

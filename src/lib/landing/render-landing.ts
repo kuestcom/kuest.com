@@ -132,6 +132,30 @@ function setAttr(target: Element | null, attr: string, value: string) {
   }
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function sanitizeImageSrc(src: string) {
+  return /^\/assets\/images\/[\w./-]+$/.test(src)
+    ? src
+    : "/assets/images/bitcoin-150k.png";
+}
+
+function serializeForInlineScript(value: unknown) {
+  return JSON.stringify(value)
+    .replaceAll("<", "\\u003C")
+    .replaceAll(">", "\\u003E")
+    .replaceAll("&", "\\u0026")
+    .replaceAll("\u2028", "\\u2028")
+    .replaceAll("\u2029", "\\u2029");
+}
+
 function localizeLaunchHref(html: string, locale: SiteLocale) {
   return html.replaceAll('href="/launch"', `href="${localeHref(locale, "/launch")}"`);
 }
@@ -216,25 +240,31 @@ function buildGaugeHtml(pct: number, chanceLabel: string) {
   const arcLen = 62.8;
   const offset = arcLen - (arcLen * pct) / 100;
 
-  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${chanceLabel}</div></div>`;
+  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
 }
 
 function buildNicheCardHtml(
   card: LandingNicheCard,
   ui: { yes: string; no: string; chance: string },
 ) {
+  const safeYes = escapeHtml(ui.yes);
+  const safeNo = escapeHtml(ui.no);
+  const safeTitle = escapeHtml(card.title);
+  const safeVolume = escapeHtml(card.vol);
+  const safeCategory = escapeHtml(card.cat);
+  const safeImageSrc = escapeHtml(sanitizeImageSrc(card.img));
   const gauge = card.type === "single" ? buildGaugeHtml(card.pct, ui.chance) : "";
   const body =
     card.type === "single"
-      ? `<div class="niche-market-body niche-market-body-single"><div class="niche-market-actions"><button class="niche-market-btn niche-market-btn-yes">${ui.yes}</button><button class="niche-market-btn niche-market-btn-no">${ui.no}</button></div></div>`
+      ? `<div class="niche-market-body niche-market-body-single"><div class="niche-market-actions"><button class="niche-market-btn niche-market-btn-yes">${safeYes}</button><button class="niche-market-btn niche-market-btn-no">${safeNo}</button></div></div>`
       : `<div class="niche-market-body niche-market-body-multi"><div class="niche-market-list">${card.rows
           .map(
             (row) =>
-              `<div class="niche-market-list-row"><span class="niche-market-row-label">${row.label}</span><div class="niche-market-row-actions"><span class="niche-market-row-pct">${row.pct}%</span><button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">${ui.yes}</button><button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">${ui.no}</button></div></div>`,
+              `<div class="niche-market-list-row"><span class="niche-market-row-label">${escapeHtml(row.label)}</span><div class="niche-market-row-actions"><span class="niche-market-row-pct">${row.pct}%</span><button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">${safeYes}</button><button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">${safeNo}</button></div></div>`,
           )
           .join("")}</div></div>`;
 
-  return `<div class="niche-market-card"><div class="niche-market-head"><img src="${card.img}" alt="" class="niche-market-thumb"><div class="niche-market-title-wrap"><div class="niche-market-title">${card.title}</div></div>${gauge}</div>${body}<div class="niche-market-footer"><span class="niche-market-volume">${card.vol}</span><span class="niche-market-category">${card.cat}</span></div></div>`;
+  return `<div class="niche-market-card"><div class="niche-market-head"><img src="${safeImageSrc}" alt="" class="niche-market-thumb"><div class="niche-market-title-wrap"><div class="niche-market-title">${safeTitle}</div></div>${gauge}</div>${body}<div class="niche-market-footer"><span class="niche-market-volume">${safeVolume}</span><span class="niche-market-category">${safeCategory}</span></div></div>`;
 }
 
 function buildLanguageMenu(locale: SiteLocale) {
@@ -489,11 +519,13 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
       ? ["Fußball", "Politik", "Krypto"]
       : locale === "es"
         ? ["Fútbol", "Política", "Cripto"]
+        : locale === "pt"
+          ? ["Futebol", "Política", "Cripto"]
         : locale === "fr"
           ? ["Football", "Politique", "Crypto"]
           : locale === "zh"
             ? ["足球", "政治", "加密"]
-            : ["Futebol", "Política", "Cripto"];
+            : ["Soccer", "Politics", "Crypto"];
   const chips = Array.from(document.querySelectorAll("[data-lang-chip]"));
   chips.forEach((chip, index) => setText(chip, demoLabels[index] ?? ""));
 
@@ -518,5 +550,5 @@ export function buildLandingRuntimeScript(
     },
   };
 
-  return `window.KUEST_I18N_MESSAGES=${JSON.stringify(runtimeMessages)};window.KUEST_I18N={t:function(key,options){var value=window.KUEST_I18N_MESSAGES;key.split(".").forEach(function(part){value=value&&value[part];});if(typeof value!=="string")return"";return value.replace(/\\{\\{(\\w+)\\}\\}/g,function(match,name){return options&&options[name]!=null?String(options[name]):match;});}};window.KUEST_I18N_UI=${JSON.stringify({yes: bundle.common.yes, no: bundle.common.no, chance: bundle.common.chance})};window.NICHE_DATA=${JSON.stringify(nicheData)};`;
+  return `window.KUEST_I18N_MESSAGES=${serializeForInlineScript(runtimeMessages)};window.KUEST_I18N={t:function(key,options){var value=window.KUEST_I18N_MESSAGES;key.split(".").forEach(function(part){value=value&&value[part];});if(typeof value!=="string")return"";return value.replace(/\\{\\{(\\w+)\\}\\}/g,function(match,name){return options&&options[name]!=null?String(options[name]):match;});}};window.KUEST_I18N_UI=${serializeForInlineScript({yes: bundle.common.yes, no: bundle.common.no, chance: bundle.common.chance})};window.NICHE_DATA=${serializeForInlineScript(nicheData)};`;
 }
