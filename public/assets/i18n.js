@@ -75,7 +75,7 @@
 
   function setHTML(target, value) {
     var el = typeof target === 'string' ? q(target) : target;
-    if (el && typeof value === 'string') el.innerHTML = value;
+    if (el && typeof value === 'string') el.replaceChildren(sanitizeHtmlFragment(value));
   }
 
   function setAttr(target, attr, value) {
@@ -94,6 +94,139 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeClassNames(value) {
+    return String(value || '')
+      .split(/\s+/)
+      .filter(function (token) {
+        return /^[A-Za-z0-9_-]+$/.test(token);
+      })
+      .join(' ');
+  }
+
+  function sanitizeRelTokens(value) {
+    var tokens = String(value || '')
+      .split(/\s+/)
+      .filter(function (token) {
+        return /^(noopener|noreferrer|nofollow)$/.test(token);
+      });
+
+    return tokens.join(' ');
+  }
+
+  function sanitizeHref(value) {
+    var raw = String(value || '').trim();
+    if (!raw) return null;
+    if (raw.charAt(0) === '#' || raw.charAt(0) === '/') return raw;
+    if (raw.indexOf('./') === 0 || raw.indexOf('../') === 0) return raw;
+
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.protocol === 'http:' || url.protocol === 'https:' || url.protocol === 'mailto:') {
+        return raw;
+      }
+    } catch (error) {
+      return null;
+    }
+
+    return null;
+  }
+
+  function sanitizeAttribute(tagName, attrName, attrValue) {
+    if (attrName === 'class') {
+      var classNames = sanitizeClassNames(attrValue);
+      return classNames || null;
+    }
+
+    if (tagName === 'a' && attrName === 'href') {
+      return sanitizeHref(attrValue);
+    }
+
+    if (tagName === 'a' && attrName === 'target') {
+      return attrValue === '_blank' ? '_blank' : null;
+    }
+
+    if (tagName === 'a' && attrName === 'rel') {
+      var rel = sanitizeRelTokens(attrValue);
+      return rel || null;
+    }
+
+    if (attrName === 'data-source-outlet' || attrName === 'data-source-title') {
+      return String(attrValue || '').trim() || null;
+    }
+
+    if (attrName === 'open') {
+      return '';
+    }
+
+    return null;
+  }
+
+  function sanitizeNode(node, parent) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      parent.appendChild(document.createTextNode(node.textContent || ''));
+      return;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+
+    var tagName = node.tagName.toLowerCase();
+    if (/^(script|style|iframe|object|embed|svg|math|link|meta)$/.test(tagName)) {
+      return;
+    }
+
+    if (!/^(a|br|details|div|em|strong|summary)$/.test(tagName)) {
+      Array.prototype.forEach.call(node.childNodes, function (child) {
+        sanitizeNode(child, parent);
+      });
+      return;
+    }
+
+    var sanitized = document.createElement(tagName);
+
+    Array.prototype.forEach.call(node.attributes, function (attribute) {
+      var safeValue = sanitizeAttribute(tagName, attribute.name.toLowerCase(), attribute.value);
+      if (safeValue == null) return;
+
+      if (attribute.name.toLowerCase() === 'open') {
+        sanitized.setAttribute('open', '');
+        return;
+      }
+
+      sanitized.setAttribute(attribute.name.toLowerCase(), safeValue);
+    });
+
+    if (tagName === 'a' && sanitized.getAttribute('target') === '_blank') {
+      var rel = sanitizeRelTokens(sanitized.getAttribute('rel'));
+      var relTokens = rel ? rel.split(/\s+/) : [];
+
+      if (relTokens.indexOf('noopener') === -1) relTokens.push('noopener');
+      if (relTokens.indexOf('noreferrer') === -1) relTokens.push('noreferrer');
+
+      sanitized.setAttribute('rel', relTokens.join(' ').trim());
+    }
+
+    Array.prototype.forEach.call(node.childNodes, function (child) {
+      sanitizeNode(child, sanitized);
+    });
+
+    parent.appendChild(sanitized);
+  }
+
+  function sanitizeHtmlFragment(value) {
+    var template = document.createElement('template');
+    var fragment = document.createDocumentFragment();
+
+    template.innerHTML = String(value || '');
+
+    Array.prototype.forEach.call(template.content.childNodes, function (child) {
+      sanitizeNode(child, fragment);
+    });
+
+    return fragment;
   }
 
   function applyMeta(bundle) {
