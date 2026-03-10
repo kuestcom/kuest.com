@@ -19,6 +19,7 @@ const BG_EFFECT_CONFIG={
   const cv=document.getElementById('bg-canvas');
   if(!cv)return;
   const ctx=cv.getContext('2d');
+  if(!ctx)return;
   const MIN_COORDINATE=0;
   const MAX_COORDINATE=1;
   let W,H,pts=[],tick=0,mode=BG_EFFECT_CONFIG.mode;
@@ -436,7 +437,9 @@ function initProto(){
   const H=W<700?Math.max(440,W*.88):Math.max(420,W*.46);
   const dpr=window.devicePixelRatio||1;
   cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
-  const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
+  const ctx=cv.getContext('2d');
+  if(!ctx)return;
+  ctx.scale(dpr,dpr);
 
   const N1='#181e28',N2='#1e2530';
   const BLUE='#4f8ef7',GREEN='#34d07f',POLY='#2E5CFF',KALSHI='#28CC95',GOLD='#f0b429';

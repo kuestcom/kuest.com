@@ -73,10 +73,9 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
   return (
     <>
       <div suppressHydrationWarning dangerouslySetInnerHTML={{ __html: markup }} />
-      <Script
+      <script
         id="landing-structured-data"
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: serializeJsonForHtmlScript({
             "@context": "https://schema.org",
@@ -101,9 +100,8 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           }),
         }}
       />
-      <Script
+      <script
         id="landing-embed-preview"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html:
             "if(new URLSearchParams(window.location.search).has('embed-preview')){document.documentElement.classList.add('embed-preview');}",

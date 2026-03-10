@@ -23,7 +23,7 @@ import { __iconNode as usersIconNode } from "lucide-react/dist/esm/icons/users.j
 import { __iconNode as zapIconNode } from "lucide-react/dist/esm/icons/zap.js";
 import type { LandingMessages } from "@/i18n/site";
 import type { SiteLocale } from "@/i18n/site-config";
-import { defaultSiteLocale, localeHref } from "@/i18n/site";
+import { defaultSiteLocale, getLandingMessages, localeHref } from "@/i18n/site";
 
 const LANDING_TEMPLATE_PATH = join(process.cwd(), "src", "lib", "landing", "template.html");
 const DEMO_ORIGIN = "https://demo.kuest.com";
@@ -414,23 +414,25 @@ function buildTradeFeed(
     .join("");
 }
 
-function buildNicheData(bundle: LandingMessages): LandingNiche[] {
+function buildNicheData(bundle: LandingMessages, fallbackBundle: LandingMessages): LandingNiche[] {
   return NICHE_STATIC.map((staticNiche, nicheIndex) => {
-    const translated = bundle.niches.data[nicheIndex];
+    const fallbackTranslated = fallbackBundle.niches.data[nicheIndex];
+    const translated = bundle.niches.data[nicheIndex] ?? fallbackTranslated;
 
     return {
-      tag: translated.tag,
+      tag: translated?.tag ?? fallbackTranslated?.tag ?? bundle.niches.tabs[nicheIndex] ?? "",
       accent: staticNiche.accent,
       accentRgb: staticNiche.accentRgb,
-      tagline: translated.tagline,
+      tagline: translated?.tagline ?? fallbackTranslated?.tagline ?? "",
       cards: staticNiche.cards.map((staticCard, cardIndex) => {
-        const translatedCard = translated.cards[cardIndex];
+        const fallbackCard = fallbackTranslated?.cards[cardIndex];
+        const translatedCard = translated?.cards[cardIndex] ?? fallbackCard;
         const base = {
           type: staticCard.type,
           img: staticCard.img,
-          title: translatedCard.title,
-          vol: `${staticCard.volValue} ${bundle.niches.volumeSuffix}`,
-          cat: translatedCard.cat,
+          title: translatedCard?.title ?? fallbackCard?.title ?? "",
+          vol: `${staticCard.volValue} ${bundle.niches.volumeSuffix ?? fallbackBundle.niches.volumeSuffix}`,
+          cat: translatedCard?.cat ?? fallbackCard?.cat ?? "",
         };
 
         if (staticCard.type === "single") {
@@ -441,11 +443,18 @@ function buildNicheData(bundle: LandingMessages): LandingNiche[] {
           };
         }
 
+        const rowLabels: string[] =
+          translatedCard && "rows" in translatedCard
+            ? translatedCard.rows ?? []
+            : fallbackCard && "rows" in fallbackCard
+              ? fallbackCard.rows ?? []
+              : [];
+
         return {
           ...base,
           type: "multi" as const,
           rows: staticCard.rowPcts.map((pct, rowIndex) => ({
-            label: translatedCard.rows?.[rowIndex] ?? "",
+            label: rowLabels[rowIndex] ?? "",
             pct,
           })),
         };
@@ -498,7 +507,8 @@ function buildLanguageMenu(locale: SiteLocale) {
 export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMessages) {
   const template = await getLandingTemplate();
   const { document } = parseHTML(template);
-  const nicheData = buildNicheData(bundle);
+  const fallbackBundle = locale === defaultSiteLocale ? bundle : await getLandingMessages(defaultSiteLocale);
+  const nicheData = buildNicheData(bundle, fallbackBundle);
   const initialNiche = nicheData[0];
   const currentLanguage = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
   const launchHref = localeHref(locale, "/launch");
@@ -657,7 +667,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
 
   const nicheTabs = Array.from(document.querySelectorAll("#nicheTabs .niche-tab"));
   nicheTabs.forEach((tab, index) => {
-    const label = bundle.niches.tabs[index];
+    const label = bundle.niches.tabs[index] ?? fallbackBundle.niches.tabs[index];
     if (!label) {
       return;
     }

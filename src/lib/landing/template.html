@@ -162,6 +162,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 title="Kuest live site preview"
                 loading="lazy"
                 src="https://demo.kuest.com/?embed-preview=1"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
@@ -926,6 +927,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         class="source-modal-frame"
         title="Source preview"
         src="about:blank"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
         referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
     <p class="source-modal-note" id="sourceModalNote">If this publisher blocks embeds, use the external link below.</p>
