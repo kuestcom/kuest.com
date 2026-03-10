@@ -17,7 +17,7 @@ function buildRedirectUri(request: Request) {
 
 function safeReturnTo(input: string | null) {
   if (!input || !input.startsWith("/") || input.startsWith("//")) {
-    return "/";
+    return "/launch";
   }
   return input;
 }
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "OAuth start failed.";
     return NextResponse.redirect(
-      new URL(`/?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
+      new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
     );
   }
 }

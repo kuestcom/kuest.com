@@ -12,11 +12,17 @@ interface Particle {
 }
 
 const BLUE_RGB = "79,142,247";
+const MIN_COORDINATE = 0;
+const MAX_COORDINATE = 1;
+
+function clampCoordinate(value: number) {
+  return Math.min(MAX_COORDINATE, Math.max(MIN_COORDINATE, value));
+}
 
 function makeParticle(): Particle {
   return {
-    x: Math.random() * 2,
-    y: Math.random() * 2,
+    x: Math.random(),
+    y: Math.random(),
     vx: (Math.random() - 0.5) * 0.0003,
     vy: (Math.random() - 0.5) * 0.0003,
     s: Math.random() * 1.4 + 0.4,
@@ -59,10 +65,12 @@ export default function BackgroundParticles() {
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < 0 || p.x > 1) {
+        if (p.x < MIN_COORDINATE || p.x > MAX_COORDINATE) {
+          p.x = clampCoordinate(p.x);
           p.vx *= -1;
         }
-        if (p.y < 0 || p.y > 1) {
+        if (p.y < MIN_COORDINATE || p.y > MAX_COORDINATE) {
+          p.y = clampCoordinate(p.y);
           p.vy *= -1;
         }
 

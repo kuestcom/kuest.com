@@ -15,9 +15,12 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
 import { useAppKit } from "@/hooks/use-app-kit";
+import { launchLocaleOptions, useLaunchI18n } from "@/i18n/launch";
+import { localeHref } from "@/i18n/site-config";
 import {
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
@@ -109,12 +112,7 @@ const ALLOW_VERCEL_TOKEN_FALLBACK =
   process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== "false";
 const FOOTER_BRAND_NAME = "Kuest";
 
-const BASE_TIMELINE: Array<{ id: string; label: string }> = [
-  { id: "validation", label: "Validate launch settings" },
-  { id: "vercel", label: "Prepare or reuse Vercel project" },
-  { id: "database", label: "Attach Supabase database" },
-  { id: "deploy", label: "Trigger deployment" },
-];
+const BASE_TIMELINE = ["validation", "vercel", "database", "deploy"] as const;
 
 const DEFAULT_FORM: FormState = {
   vercelAccessToken: "",
@@ -236,6 +234,8 @@ function mapTimeline(status: TimelineStatus, index: number, runningIndex: number
 }
 
 function LogList({ logs }: { logs: LaunchLogEntry[] }) {
+  const { locale } = useLaunchI18n();
+
   return (
     <ul className="space-y-2">
       {logs.map((entry, index) => (
@@ -243,7 +243,9 @@ function LogList({ logs }: { logs: LaunchLogEntry[] }) {
           key={`${entry.at}-${entry.step}-${index}`}
           className="rounded-lg border border-border/70 p-3"
         >
-          <div className="text-xs text-muted-foreground">{new Date(entry.at).toLocaleString()}</div>
+          <div className="text-xs text-muted-foreground">
+            {new Date(entry.at).toLocaleString(locale)}
+          </div>
           <div className="text-sm font-semibold text-foreground">
             [{entry.step}] {" "}
             <span
@@ -266,12 +268,14 @@ function LogList({ logs }: { logs: LaunchLogEntry[] }) {
 }
 
 function InfoTip({ text }: { text: string }) {
+  const { messages } = useLaunchI18n();
+
   return (
     <span className="launch-info-tip">
       <button
         type="button"
         className="launch-info-tip-button"
-        aria-label="More info"
+        aria-label={messages.common.moreInfo}
       >
         <InfoIcon className="size-3.5" />
       </button>
@@ -288,6 +292,8 @@ function ActionPrompt({
   allowClose = false,
   onClose,
 }: ActionPromptProps) {
+  const { messages } = useLaunchI18n();
+
   if (!open) {
     return null;
   }
@@ -300,7 +306,7 @@ function ActionPrompt({
             type="button"
             onClick={onClose}
             className="absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
-            aria-label="Close waiting modal"
+            aria-label={messages.common.closeWaitingModal}
           >
             <XIcon className="size-4" />
           </button>
@@ -327,7 +333,7 @@ function ActionPrompt({
 
         <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
           <Loader2Icon className="size-4 animate-spin text-primary" />
-          <span>Waiting for wallet approval...</span>
+          <span>{messages.common.waitingForWalletApproval}</span>
         </div>
       </div>
     </div>
@@ -339,6 +345,7 @@ function ActionPromptWalletIcon({
   rounded = true,
   fit = "cover",
 }: ActionPromptWalletIconProps) {
+  const { messages, formatMessage } = useLaunchI18n();
   const { walletInfo } = useWalletInfo();
   const [failedIconUrl, setFailedIconUrl] = useState<string | null>(null);
   const walletName = typeof walletInfo?.name === "string" ? walletInfo.name : undefined;
@@ -352,7 +359,11 @@ function ActionPromptWalletIcon({
     <Image
       key={walletIconUrl}
       src={walletIconUrl}
-      alt={walletName ? `${walletName} wallet icon` : "Connected wallet icon"}
+      alt={
+        walletName
+          ? formatMessage(messages.modals.walletIconAltNamed, { walletName })
+          : messages.modals.walletIconAltFallback
+      }
       width={64}
       height={64}
       unoptimized
@@ -373,12 +384,115 @@ function StepFooterBrand() {
   );
 }
 
+function StepFooterLanguageControl() {
+  const { locale, setLocale, messages } = useLaunchI18n();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const controlRef = useRef<HTMLDivElement | null>(null);
+  const currentLocaleOption =
+    launchLocaleOptions.find((option) => option.code === locale) ?? launchLocaleOptions[0];
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      if (!controlRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="launch-step-footer-language">
+      <div
+        ref={controlRef}
+        className="launch-language-control"
+        data-open={open ? "true" : "false"}
+      >
+        <button
+          type="button"
+          className="launch-language-trigger"
+          aria-label={messages.languageSelector.ariaLabel}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          onClick={() => setOpen((previous) => !previous)}
+        >
+          <span className="launch-language-trigger-content">
+            <img
+              src={currentLocaleOption.flagSrc}
+              alt=""
+              width={18}
+              height={12}
+              className="launch-language-flag"
+            />
+            <span className="launch-language-label">{currentLocaleOption.label}</span>
+          </span>
+          <span className="launch-language-icon" aria-hidden="true">
+            <ChevronDownIcon className="size-3.5" />
+          </span>
+        </button>
+        <div className="launch-language-menu" role="listbox" aria-label={messages.languageSelector.ariaLabel}>
+          {launchLocaleOptions.map((option) => {
+            const isSelected = option.code === locale;
+
+            return (
+              <button
+                key={option.code}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                className={`launch-language-option${isSelected ? " is-selected" : ""}`}
+                onClick={() => {
+                  setLocale(option.code);
+                  setOpen(false);
+                  router.push(localeHref(option.code, "/launch"));
+                }}
+              >
+                <span className="launch-language-option-row">
+                  <img
+                    src={option.flagSrc}
+                    alt=""
+                    width={18}
+                    height={12}
+                    className="launch-language-flag"
+                  />
+                  <span>{option.label}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LaunchpadForm() {
   const account = useAccount();
   const { disconnect, status: disconnectStatus } = useDisconnect();
   const { switchChain } = useSwitchChain();
   const { signTypedDataAsync } = useSignTypedData();
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit();
+  const { messages, formatMessage } = useLaunchI18n();
+  const pathname = usePathname();
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
@@ -411,7 +525,11 @@ export default function LaunchpadForm() {
   const [domainActionError, setDomainActionError] = useState<string | null>(null);
   const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null);
   const [timeline, setTimeline] = useState<TimelineEntry[]>(
-    BASE_TIMELINE.map((step) => ({ ...step, status: "idle" })),
+    BASE_TIMELINE.map((id) => ({
+      id,
+      label: messages.timeline[id],
+      status: "idle",
+    })),
   );
 
   const timelineIntervalRef = useRef<number | null>(null);
@@ -419,6 +537,15 @@ export default function LaunchpadForm() {
   const handleConnectOrSignRef = useRef<
     ((options?: { autoProgress?: boolean }) => Promise<void>) | null
   >(null);
+
+  useEffect(() => {
+    setTimeline((previous) =>
+      previous.map((entry) => ({
+        ...entry,
+        label: messages.timeline[entry.id as keyof typeof messages.timeline],
+      })),
+    );
+  }, [messages]);
 
   const isConnected = account.status === "connected" && Boolean(account.address);
   const onRequiredChain =
@@ -538,12 +665,12 @@ export default function LaunchpadForm() {
       }
     } catch (error) {
       setOAuthStatusError(
-        error instanceof Error ? error.message : "Unable to check OAuth connection status.",
+        error instanceof Error ? error.message : messages.step2.checkOauthStatusFailed,
       );
     } finally {
       setOAuthStatusLoading(false);
     }
-  }, []);
+  }, [messages.step2.checkOauthStatusFailed]);
 
   useEffect(() => {
     void refreshOAuthStatus();
@@ -591,17 +718,17 @@ export default function LaunchpadForm() {
       await refreshOAuthStatus();
     } catch (error) {
       setOAuthStatusError(
-        error instanceof Error ? error.message : "Failed to disconnect Vercel OAuth.",
+        error instanceof Error ? error.message : messages.step2.disconnectVercelOauthFailed,
       );
     }
-  }, [refreshOAuthStatus]);
+  }, [messages.step2.disconnectVercelOauthFailed, refreshOAuthStatus]);
 
   function startVercelOAuth() {
     setOAuthStatusError(null);
     if (typeof window === "undefined") {
       return;
     }
-    const returnTo = encodeURIComponent("/");
+    const returnTo = encodeURIComponent(pathname || "/launch");
     window.location.assign(`/api/oauth/vercel/start?return_to=${returnTo}`);
   }
 
@@ -628,7 +755,7 @@ export default function LaunchpadForm() {
           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
         }));
         if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError("Paste your Vercel Access Token first.");
+          setSupabaseResourcesError(messages.step2.pasteVercelTokenFirst);
         } else {
           setSupabaseResourcesError(null);
         }
@@ -641,7 +768,7 @@ export default function LaunchpadForm() {
           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
         }));
         if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError("Connect Vercel OAuth first.");
+          setSupabaseResourcesError(messages.step2.connectVercelFirst);
         } else {
           setSupabaseResourcesError(null);
         }
@@ -676,22 +803,31 @@ export default function LaunchpadForm() {
         }));
 
         if (!response.ok) {
-          setSupabaseResourcesError(json.error ?? "Failed to list Supabase databases.");
+          setSupabaseResourcesError(json.error ?? messages.step2.listSupabaseFailed);
         } else if (!resources.length) {
-          setSupabaseResourcesError("No existing database found. You can still create a new one.");
+          setSupabaseResourcesError(messages.step2.noExistingDatabase);
         } else {
           setSupabaseResourcesError(null);
         }
       } catch (error) {
         setSupabaseResources([]);
         setSupabaseResourcesError(
-          error instanceof Error ? error.message : "Failed to list Supabase databases.",
+          error instanceof Error ? error.message : messages.step2.listSupabaseFailed,
         );
       } finally {
         setIsLoadingSupabaseResources(false);
       }
     },
-    [form.vercelAccessToken, form.vercelTeamId, vercelAuthMethod, vercelOauthConnected],
+    [
+      form.vercelAccessToken,
+      form.vercelTeamId,
+      messages.step2.connectVercelFirst,
+      messages.step2.listSupabaseFailed,
+      messages.step2.noExistingDatabase,
+      messages.step2.pasteVercelTokenFirst,
+      vercelAuthMethod,
+      vercelOauthConnected,
+    ],
   );
 
   useEffect(() => {
@@ -827,11 +963,11 @@ export default function LaunchpadForm() {
             return;
           }
           if (message.includes("Minting")) {
-            setWalletInfo("Creating your account...");
+            setWalletInfo(messages.wallet.creatingAccount);
             return;
           }
           if (message.includes("sign")) {
-            setWalletInfo("Check your wallet and confirm.");
+            setWalletInfo(messages.wallet.checkWalletConfirm);
             return;
           }
           setWalletInfo(message);
@@ -842,11 +978,11 @@ export default function LaunchpadForm() {
       if (advancedToStep2) {
         setWalletInfo(null);
       } else {
-        setWalletInfo("Wallet connected. Enter your site name to continue.");
+        setWalletInfo(messages.wallet.walletConnectedEnterSiteName);
       }
     } catch (error) {
       setWalletError(
-        error instanceof Error ? error.message : "Failed to generate credentials with browser wallet.",
+        error instanceof Error ? error.message : messages.wallet.failedGenerateBrowserWallet,
       );
     } finally {
       setWalletActionLoading(false);
@@ -855,7 +991,7 @@ export default function LaunchpadForm() {
 
   async function handleEnsureRequiredNetwork() {
     if (!isConnected) {
-      throw new Error("Connect wallet before switching network.");
+      throw new Error(messages.wallet.connectBeforeSwitchingNetwork);
     }
     if (onRequiredChain) {
       return;
@@ -864,7 +1000,11 @@ export default function LaunchpadForm() {
     if (!switchChain) {
       const provider = readInjectedProvider();
       if (!provider) {
-        throw new Error(`Switch to ${REQUIRED_CHAIN_LABEL} in your wallet settings.`);
+        throw new Error(
+          formatMessage(messages.wallet.switchToNetworkSettings, {
+            network: REQUIRED_CHAIN_LABEL,
+          }),
+        );
       }
       await ensureRequiredNetworkViaProvider(provider);
       return;
@@ -875,7 +1015,11 @@ export default function LaunchpadForm() {
     } catch {
       const provider = readInjectedProvider();
       if (!provider) {
-        throw new Error(`Unable to switch to ${REQUIRED_CHAIN_LABEL}.`);
+        throw new Error(
+          formatMessage(messages.wallet.unableToSwitchNetwork, {
+            network: REQUIRED_CHAIN_LABEL,
+          }),
+        );
       }
       await ensureRequiredNetworkViaProvider(provider);
     }
@@ -892,7 +1036,7 @@ export default function LaunchpadForm() {
     setWalletError(null);
 
     if (!isConnected) {
-      setWalletInfo("Open your wallet and approve the connection.");
+      setWalletInfo(messages.wallet.openWalletApproveConnection);
       setConnectPromptOpen(true);
       try {
         await openAppKit();
@@ -905,11 +1049,19 @@ export default function LaunchpadForm() {
 
     if (!onRequiredChain) {
       setWalletActionLoading(true);
-      setWalletInfo(`Switching to ${REQUIRED_CHAIN_LABEL}...`);
+      setWalletInfo(
+        formatMessage(messages.wallet.switchingNetwork, {
+          network: REQUIRED_CHAIN_LABEL,
+        }),
+      );
       try {
         await handleEnsureRequiredNetwork();
         if (!autoProgress) {
-          setWalletInfo(`${REQUIRED_CHAIN_LABEL} is active. Click Sign to continue.`);
+          setWalletInfo(
+            formatMessage(messages.wallet.networkActiveClickSign, {
+              network: REQUIRED_CHAIN_LABEL,
+            }),
+          );
         }
       } finally {
         setWalletActionLoading(false);
@@ -920,7 +1072,7 @@ export default function LaunchpadForm() {
     }
 
     if (!account.address || account.chainId === undefined) {
-      throw new Error("Wallet connection is not ready.");
+      throw new Error(messages.wallet.walletConnectionNotReady);
     }
 
     const nonce = sanitizeNonce(form.keyNonce);
@@ -929,7 +1081,7 @@ export default function LaunchpadForm() {
 
     setWalletActionLoading(true);
     setSignPromptOpen(true);
-    setWalletInfo("Approve one signature to generate credentials.");
+    setWalletInfo(messages.wallet.approveSignature);
 
     try {
       const signature = await signTypedDataAsync({
@@ -955,7 +1107,7 @@ export default function LaunchpadForm() {
         },
       });
 
-      setWalletInfo("Minting Kuest credentials...");
+      setWalletInfo(messages.wallet.mintingCredentials);
       const generated = await mintKuestKeysFromSignature({
         address: account.address,
         signature,
@@ -968,10 +1120,12 @@ export default function LaunchpadForm() {
       if (advancedToStep2) {
         setWalletInfo(null);
       } else {
-        setWalletInfo("Wallet connected. Enter your site name to continue.");
+        setWalletInfo(messages.wallet.walletConnectedEnterSiteName);
       }
     } catch (error) {
-      setWalletError(error instanceof Error ? error.message : "Unable to sign and generate keys.");
+      setWalletError(
+        error instanceof Error ? error.message : messages.wallet.unableToSignAndGenerate,
+      );
     } finally {
       setSignPromptOpen(false);
       setWalletActionLoading(false);
@@ -992,7 +1146,7 @@ export default function LaunchpadForm() {
       } catch (error) {
         if (!cancelled) {
           setWalletError(
-            error instanceof Error ? error.message : "Unable to continue wallet signing flow.",
+            error instanceof Error ? error.message : messages.wallet.unableContinueWalletFlow,
           );
         }
       } finally {
@@ -1005,7 +1159,13 @@ export default function LaunchpadForm() {
     return () => {
       cancelled = true;
     };
-  }, [autoSignAfterConnect, isConnected, step1Complete, walletActionLoading]);
+  }, [
+    autoSignAfterConnect,
+    isConnected,
+    messages.wallet.unableContinueWalletFlow,
+    step1Complete,
+    walletActionLoading,
+  ]);
 
   function startTimelineAnimation() {
     if (timelineIntervalRef.current) {
@@ -1015,8 +1175,9 @@ export default function LaunchpadForm() {
 
     timelineIndexRef.current = 0;
     setTimeline(
-      BASE_TIMELINE.map((item, index) => ({
-        ...item,
+      BASE_TIMELINE.map((id, index) => ({
+        id,
+        label: messages.timeline[id],
         status: index === 0 ? "running" : "idle",
       })),
     );
@@ -1076,7 +1237,7 @@ export default function LaunchpadForm() {
 
       const domain = normalizeCustomDomain(customDomain);
       if (!domain) {
-        setDomainActionError("Enter a domain first.");
+        setDomainActionError(messages.domain.enterDomainFirst);
         return;
       }
 
@@ -1102,13 +1263,15 @@ export default function LaunchpadForm() {
 
         const json = (await response.json()) as VercelDomainApiResponse;
         if (!response.ok || !json.domain) {
-          throw new Error(json.error ?? "Domain action failed.");
+          throw new Error(json.error ?? messages.domain.domainActionFailed);
         }
 
         setDomainState(json.domain);
         setCustomDomain(json.domain.name);
       } catch (error) {
-        setDomainActionError(error instanceof Error ? error.message : "Domain action failed.");
+        setDomainActionError(
+          error instanceof Error ? error.message : messages.domain.domainActionFailed,
+        );
       } finally {
         setDomainActionLoading(null);
       }
@@ -1117,6 +1280,9 @@ export default function LaunchpadForm() {
       customDomain,
       form.vercelAccessToken,
       form.vercelTeamId,
+      messages.domain.domainActionFailed,
+      messages.domain.enterDomainFirst,
+      messages.timeline,
       resolvedProjectSlug,
       result,
       vercelAuthMethod,
@@ -1174,13 +1340,13 @@ export default function LaunchpadForm() {
       setResult(json);
 
       if (!response.ok || !json.ok) {
-        setRequestError(json.error ?? "Launch failed.");
+        setRequestError(json.error ?? messages.step3.launchFailed);
         stopTimelineAnimation(false);
       } else {
         stopTimelineAnimation(true);
       }
     } catch (error) {
-      setRequestError(error instanceof Error ? error.message : "Failed to call API.");
+      setRequestError(error instanceof Error ? error.message : messages.step3.failedCallApi);
       stopTimelineAnimation(false);
     } finally {
       setIsLaunching(false);
@@ -1195,19 +1361,19 @@ export default function LaunchpadForm() {
   const stepItems = [
     {
       number: 1,
-      title: "Site + Admin wallet",
+      title: messages.stepper.step1,
       done: step1Complete && Boolean(form.brandName.trim()),
       active: activeStep === 1,
     },
     {
       number: 2,
-      title: "Host + Database",
+      title: messages.stepper.step2,
       done: step2VercelReady && step2ReownReady,
       active: activeStep === 2,
     },
     {
       number: 3,
-      title: "Deploy",
+      title: messages.stepper.step3,
       done: Boolean(result?.ok),
       active: activeStep === 3,
     },
@@ -1224,12 +1390,14 @@ export default function LaunchpadForm() {
     connectedAddressMatchesStep1;
   const brandNameReady = Boolean(form.brandName.trim());
   const step1PrimaryLabel = !isAppKitReady
-    ? "Use browser wallet"
+    ? messages.wallet.useBrowserWallet
     : !isConnected
-      ? "Connect"
+      ? messages.wallet.connect
       : !onRequiredChain
-        ? `Switch to ${REQUIRED_CHAIN_LABEL}`
-        : "Sign";
+        ? formatMessage(messages.wallet.switchToNetworkButton, {
+            network: REQUIRED_CHAIN_LABEL,
+          })
+        : messages.wallet.sign;
   const step1WalletLabel = showSignedWalletState
     ? `${shortAddress(storedStep1Address)} · ${account.chain?.name ?? REQUIRED_CHAIN_LABEL}`
     : "";
@@ -1269,13 +1437,13 @@ export default function LaunchpadForm() {
 
       {activeStep === 1 && (
         <section className="launch-island launch-step1-island">
-          <h2 className="sr-only">Step 1. Site + Admin wallet</h2>
+          <h2 className="sr-only">{messages.step1.srTitle}</h2>
 
           <div className="mt-5 launch-grid launch-step1-brand-grid">
             <label className="launch-field launch-step1-brand-field">
               <span className="launch-field-label">
-                <span>Site name</span>
-                <InfoTip text="This is your brand name." />
+                <span>{messages.step1.siteNameLabel}</span>
+                <InfoTip text={messages.wallet.brandNameInfo} />
               </span>
               <input
                 value={form.brandName}
@@ -1285,7 +1453,7 @@ export default function LaunchpadForm() {
                     brandName: event.target.value,
                   }))
                 }
-                placeholder="Your Prediction Market Site Name"
+                placeholder={messages.step1.siteNamePlaceholder}
                 required
               />
             </label>
@@ -1293,26 +1461,28 @@ export default function LaunchpadForm() {
 
           <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 px-5 py-5">
             <div className="mb-2 flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-foreground">Admin wallet</h3>
-              <InfoTip text="One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin." />
+              <h3 className="text-sm font-semibold text-foreground">
+                {messages.step1.adminWalletTitle}
+              </h3>
+              <InfoTip text={messages.wallet.adminWalletInfo} />
             </div>
             {!isConnected && (
               <>
                 <p className="text-xs text-muted-foreground">
-                  For the simplest setup, use{" "}
+                  {messages.wallet.metamaskPrefix}{" "}
                   <a
                     className="launch-link"
                     href="https://metamask.io/download"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="hidden sm:inline">MetaMask browser extension</span>
-                    <span className="sm:hidden">MetaMask app</span>
+                    <span className="hidden sm:inline">{messages.wallet.metamaskExtension}</span>
+                    <span className="sm:hidden">{messages.wallet.metamaskApp}</span>
                   </a>
-                  . No balance required, no funds moved, no gas fees.
+                  . {messages.wallet.metamaskSuffix}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  We try to switch to Polygon Amoy automatically and add the network when needed.
+                  {messages.wallet.autoSwitchHelp}
                 </p>
               </>
             )}
@@ -1328,13 +1498,13 @@ export default function LaunchpadForm() {
                   <button
                     type="button"
                     className="launch-mini-button"
-                    onClick={handleWalletDisconnect}
-                    disabled={disconnectStatus === "pending"}
-                  >
-                    Disconnect
-                  </button>
-                )}
-              </div>
+                  onClick={handleWalletDisconnect}
+                  disabled={disconnectStatus === "pending"}
+                >
+                  {messages.common.disconnect}
+                </button>
+              )}
+            </div>
             ) : (
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <button
@@ -1351,7 +1521,7 @@ export default function LaunchpadForm() {
                   {walletActionLoading ? (
                     <span className="inline-flex items-center gap-2">
                       <Loader2Icon className="size-4 animate-spin" />
-                      Working...
+                      {messages.common.working}
                     </span>
                   ) : (
                     step1PrimaryLabel
@@ -1365,7 +1535,7 @@ export default function LaunchpadForm() {
                     onClick={handleWalletDisconnect}
                     disabled={disconnectStatus === "pending"}
                   >
-                    Disconnect
+                    {messages.common.disconnect}
                   </button>
                 )}
               </div>
@@ -1382,7 +1552,7 @@ export default function LaunchpadForm() {
                 className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
                 onClick={() => setStep1AdvancedOpen((previous) => !previous)}
               >
-                <span>Advanced options</span>
+                <span>{messages.common.advancedOptions}</span>
                 <ChevronDownIcon
                   className={`size-4 transition-transform ${step1AdvancedOpen ? "rotate-180" : ""}`}
                 />
@@ -1391,11 +1561,11 @@ export default function LaunchpadForm() {
               {step1AdvancedOpen && (
                 <div className="mt-4 launch-grid">
                   <label className="launch-field">
-                    <span>Email (optional)</span>
+                    <span>{messages.step1.emailLabel}</span>
                     <input
                       type="email"
                       value={form.contactEmail}
-                      placeholder="you@team.com"
+                      placeholder={messages.step1.emailPlaceholder}
                       onChange={(event) =>
                         setForm((previous) => ({
                           ...previous,
@@ -1405,7 +1575,7 @@ export default function LaunchpadForm() {
                     />
                   </label>
                   <label className="launch-field">
-                    <span>Nonce</span>
+                    <span>{messages.step1.nonceLabel}</span>
                     <input
                       value={form.keyNonce}
                       onChange={(event) =>
@@ -1414,7 +1584,7 @@ export default function LaunchpadForm() {
                           keyNonce: event.target.value.replace(/\D+/g, "") || "0",
                         }))
                       }
-                      placeholder="0"
+                      placeholder={messages.step1.noncePlaceholder}
                       inputMode="numeric"
                     />
                   </label>
@@ -1424,13 +1594,13 @@ export default function LaunchpadForm() {
           </div>
 
           <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">
-            <span className="launch-step-footer-spacer" aria-hidden="true" />
+            <StepFooterLanguageControl />
             <StepFooterBrand />
             <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">Continue</span>
+              <span className="launch-binary-label">{messages.common.continue}</span>
               <button type="button" className="launch-choice-button launch-choice-no" disabled>
                 <ArrowLeftIcon className="size-3.5" />
-                No
+                {messages.common.no}
               </button>
               <button
                 type="button"
@@ -1438,7 +1608,7 @@ export default function LaunchpadForm() {
                 disabled={!canContinueStep2}
                 onClick={() => setActiveStep(2)}
               >
-                Yes
+                {messages.common.yes}
                 <ArrowRightIcon className="size-3.5" />
               </button>
             </div>
@@ -1448,14 +1618,16 @@ export default function LaunchpadForm() {
 
       {activeStep === 2 && (
         <section className="launch-island launch-step2-island">
-          <h2 className="sr-only">Step 2. Host + Database</h2>
+          <h2 className="sr-only">{messages.step2.srTitle}</h2>
 
           <div className="launch-stack mt-5 space-y-3">
             <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">Vercel authentication</h3>
-                  <InfoTip text="Vercel is where your prediction market website is hosted." />
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {messages.step2.vercelAuthenticationTitle}
+                  </h3>
+                  <InfoTip text={messages.step2.vercelAuthenticationInfo} />
                 </div>
                 {step2VercelReady ? (
                   <CircleCheckIcon className="size-5 text-primary" />
@@ -1471,7 +1643,7 @@ export default function LaunchpadForm() {
                     onClick={() => switchVercelAuthMethod("oauth")}
                     disabled={vercelAuthMethod === "oauth"}
                   >
-                    OAuth
+                    {messages.common.oauth}
                   </button>
                   <button
                     type="button"
@@ -1479,7 +1651,7 @@ export default function LaunchpadForm() {
                     onClick={() => switchVercelAuthMethod("token")}
                     disabled={vercelAuthMethod === "token"}
                   >
-                    Access Token
+                    {messages.common.accessToken}
                   </button>
                 </div>
               )}
@@ -1489,7 +1661,7 @@ export default function LaunchpadForm() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
                       <Image
-                        src="/vercel.svg"
+                        src="/images/vercel.svg"
                         alt="Vercel"
                         width={14}
                         height={14}
@@ -1498,10 +1670,12 @@ export default function LaunchpadForm() {
                     </span>
                     {vercelOauthConnected ? (
                       <span className="text-xs font-medium text-foreground">
-                        {vercelOauthIdentity || "Connected account"}
+                        {vercelOauthIdentity || messages.common.connectedAccount}
                       </span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">Not connected</span>
+                      <span className="text-xs text-muted-foreground">
+                        {messages.common.notConnected}
+                      </span>
                     )}
 
                     {vercelOauthConnected ? (
@@ -1513,7 +1687,7 @@ export default function LaunchpadForm() {
                         }}
                         disabled={oauthStatusLoading}
                       >
-                        Disconnect
+                        {messages.common.disconnect}
                       </button>
                     ) : (
                       <button
@@ -1522,7 +1696,9 @@ export default function LaunchpadForm() {
                         onClick={startVercelOAuth}
                         disabled={oauthStatusLoading}
                       >
-                        {oauthStatusLoading ? "Checking..." : "Connect Vercel"}
+                        {oauthStatusLoading
+                          ? messages.common.checking
+                          : messages.step2.connectVercel}
                       </button>
                     )}
                   </div>
@@ -1537,7 +1713,7 @@ export default function LaunchpadForm() {
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
                         <Image
-                          src="/vercel.svg"
+                          src="/images/vercel.svg"
                           alt="Vercel"
                           width={14}
                           height={14}
@@ -1558,13 +1734,13 @@ export default function LaunchpadForm() {
                           }))
                         }
                       >
-                        Disconnect
+                        {messages.common.disconnect}
                       </button>
                     </div>
                   ) : (
                     <>
                       <label className="launch-field">
-                        <span className="sr-only">Vercel Access Token</span>
+                        <span className="sr-only">{messages.step2.vercelAccessTokenLabel}</span>
                         <input
                           type="password"
                           value={form.vercelAccessToken}
@@ -1577,7 +1753,7 @@ export default function LaunchpadForm() {
                           }}
                           onFocus={() => setIsVercelTokenInputFocused(true)}
                           onBlur={() => setIsVercelTokenInputFocused(false)}
-                          placeholder="Paste Vercel Access Token"
+                          placeholder={messages.step2.vercelAccessTokenPlaceholder}
                           required
                         />
                       </label>
@@ -1588,7 +1764,7 @@ export default function LaunchpadForm() {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Create token in Vercel
+                          {messages.step2.createTokenInVercel}
                         </a>
                       </p>
                     </>
@@ -1601,8 +1777,10 @@ export default function LaunchpadForm() {
             <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">Reown Project ID</h3>
-                  <InfoTip text="Reown Project ID enables wallet login for your end users." />
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {messages.step2.reownProjectIdTitle}
+                  </h3>
+                  <InfoTip text={messages.step2.reownProjectIdInfo} />
                 </div>
                 {step2ReownReady ? (
                   <CircleCheckIcon className="size-5 text-primary" />
@@ -1611,7 +1789,7 @@ export default function LaunchpadForm() {
                 )}
               </div>
               <label className="launch-field">
-                <span className="sr-only">Reown Project ID</span>
+                <span className="sr-only">{messages.step2.reownProjectIdLabel}</span>
                 <input
                   value={form.env.REOWN_APPKIT_PROJECT_ID}
                   onChange={(event) =>
@@ -1623,12 +1801,12 @@ export default function LaunchpadForm() {
                       },
                     }))
                   }
-                  placeholder="Required"
+                  placeholder={messages.common.required}
                   required
                 />
               </label>
               <p className="mt-2 text-xs text-muted-foreground">
-                Get it at{" "}
+                {messages.step2.reownProjectIdHelpPrefix}{" "}
                 <a
                   className="launch-link"
                   href="https://cloud.reown.com"
@@ -1637,15 +1815,17 @@ export default function LaunchpadForm() {
                 >
                   cloud.reown.com
                 </a>
-                {" "}→ create/select project → copy Project ID.
+                {" "}{messages.step2.reownProjectIdHelpSuffix}
               </p>
             </div>
 
             <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">Supabase database</h3>
-                  <InfoTip text="Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration." />
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {messages.step2.supabaseDatabaseTitle}
+                  </h3>
+                  <InfoTip text={messages.step2.supabaseDatabaseInfo} />
                 </div>
                 {step2DatabaseReady ? (
                   <CircleCheckIcon className="size-5 text-primary" />
@@ -1665,10 +1845,15 @@ export default function LaunchpadForm() {
                   }
                   disabled={isLoadingSupabaseResources}
                 >
-                  <option value={SUPABASE_CREATE_NEW_OPTION}>CREATE NEW DATABASE</option>
+                  <option value={SUPABASE_CREATE_NEW_OPTION}>
+                    {messages.common.createNewDatabase}
+                  </option>
                   {supabaseResources.map((resource, index) => (
                     <option key={resource.id} value={resource.id}>
-                      {`SUPABASE DATABASE ${index + 1} - ${resource.name}`}
+                      {formatMessage(messages.common.supabaseDatabaseOption, {
+                        index: index + 1,
+                        name: resource.name,
+                      })}
                     </option>
                   ))}
                 </select>
@@ -1680,7 +1865,9 @@ export default function LaunchpadForm() {
                   }}
                   disabled={!step2VercelReady || isLoadingSupabaseResources}
                 >
-                  {isLoadingSupabaseResources ? "Refreshing..." : "Refresh"}
+                  {isLoadingSupabaseResources
+                    ? messages.common.refreshing
+                    : messages.common.refresh}
                 </button>
               </div>
               {supabaseResourcesError && (
@@ -1695,7 +1882,7 @@ export default function LaunchpadForm() {
               className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
               onClick={() => setStep2AdvancedOpen((previous) => !previous)}
             >
-              <span>Advanced options</span>
+              <span>{messages.common.advancedOptions}</span>
               <ChevronDownIcon
                 className={`size-4 transition-transform ${step2AdvancedOpen ? "rotate-180" : ""}`}
               />
@@ -1705,11 +1892,11 @@ export default function LaunchpadForm() {
               <div className="mt-4 border-t border-border/60 pt-4">
                 <div className="launch-grid">
                   <label className="launch-field">
-                    <span>Project slug (auto)</span>
+                    <span>{messages.step2.projectSlugAuto}</span>
                     <input value={resolvedProjectSlug} readOnly />
                   </label>
                   <label className="launch-field">
-                    <span>Project slug override</span>
+                    <span>{messages.step2.projectSlugOverride}</span>
                     <input
                       value={form.projectSlugOverride}
                       onChange={(event) =>
@@ -1718,11 +1905,11 @@ export default function LaunchpadForm() {
                           projectSlugOverride: event.target.value,
                         }))
                       }
-                      placeholder="optional"
+                      placeholder={messages.step2.projectSlugOverridePlaceholder}
                     />
                   </label>
                   <label className="launch-field">
-                    <span>Repository</span>
+                    <span>{messages.step2.repository}</span>
                     <input
                       value={form.gitRepo}
                       onChange={(event) =>
@@ -1734,7 +1921,7 @@ export default function LaunchpadForm() {
                     />
                   </label>
                   <label className="launch-field">
-                    <span>Branch</span>
+                    <span>{messages.step2.branch}</span>
                     <input
                       value={form.gitBranch}
                       onChange={(event) =>
@@ -1746,7 +1933,7 @@ export default function LaunchpadForm() {
                     />
                   </label>
                   <label className="launch-field">
-                    <span>Vercel Team ID</span>
+                    <span>{messages.step2.vercelTeamId}</span>
                     <input
                       value={form.vercelTeamId}
                       onChange={(event) =>
@@ -1756,11 +1943,11 @@ export default function LaunchpadForm() {
                           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
                         }))
                       }
-                      placeholder="empty = personal account"
+                      placeholder={messages.step2.vercelTeamIdPlaceholder}
                     />
                   </label>
                   <label className="launch-field">
-                    <span>Supabase region</span>
+                    <span>{messages.step2.supabaseRegion}</span>
                     <input
                       value={form.supabaseRegion}
                       onChange={(event) =>
@@ -1769,7 +1956,7 @@ export default function LaunchpadForm() {
                           supabaseRegion: event.target.value,
                         }))
                       }
-                      placeholder="us-east-1"
+                      placeholder={messages.step2.supabaseRegionPlaceholder}
                     />
                   </label>
                   <label className="launch-field">
@@ -1786,7 +1973,7 @@ export default function LaunchpadForm() {
                             },
                           }))
                         }
-                        placeholder="empty = auto generated by API"
+                        placeholder={messages.step2.betterAuthSecretPlaceholder}
                       />
                       <button
                         type="button"
@@ -1801,7 +1988,7 @@ export default function LaunchpadForm() {
                           }))
                         }
                       >
-                        Generate
+                        {messages.common.generate}
                       </button>
                     </div>
                   </label>
@@ -1819,7 +2006,7 @@ export default function LaunchpadForm() {
                             },
                           }))
                         }
-                        placeholder="empty = auto generated by API"
+                        placeholder={messages.step2.cronSecretPlaceholder}
                       />
                       <button
                         type="button"
@@ -1834,12 +2021,12 @@ export default function LaunchpadForm() {
                           }))
                         }
                       >
-                        Generate
+                        {messages.common.generate}
                       </button>
                     </div>
                   </label>
                   <label className="launch-field">
-                    <span>SITE_URL override</span>
+                    <span>{messages.step2.siteUrlOverride}</span>
                     <input
                       value={form.env.SITE_URL}
                       onChange={(event) =>
@@ -1856,7 +2043,7 @@ export default function LaunchpadForm() {
                   </label>
                 </div>
                 <label className="launch-field mt-4">
-                  <span>Extra env vars (.env format)</span>
+                  <span>{messages.step2.extraEnvVars}</span>
                   <textarea
                     value={form.extraEnvText}
                     onChange={(event) =>
@@ -1866,7 +2053,7 @@ export default function LaunchpadForm() {
                       }))
                     }
                     rows={5}
-                    placeholder={`OPENROUTER_API_KEY=...\nSENTRY_DSN=...`}
+                    placeholder={messages.step2.extraEnvPlaceholder}
                   />
                 </label>
               </div>
@@ -1874,17 +2061,17 @@ export default function LaunchpadForm() {
           </div>
 
           <div className="launch-step-actions launch-step-footer mt-6">
-            <span className="launch-step-footer-spacer" aria-hidden="true" />
+            <StepFooterLanguageControl />
             <StepFooterBrand />
             <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">Continue</span>
+              <span className="launch-binary-label">{messages.common.continue}</span>
               <button
                 type="button"
                 className="launch-choice-button launch-choice-no"
                 onClick={() => setActiveStep(1)}
               >
                 <ArrowLeftIcon className="size-3.5" />
-                No
+                {messages.common.no}
               </button>
               <button
                 type="button"
@@ -1892,7 +2079,7 @@ export default function LaunchpadForm() {
                 disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
                 onClick={() => setActiveStep(3)}
               >
-                Yes
+                {messages.common.yes}
                 <ArrowRightIcon className="size-3.5" />
               </button>
             </div>
@@ -1902,7 +2089,7 @@ export default function LaunchpadForm() {
 
       {activeStep === 3 && (
         <section className="launch-island launch-step3-island">
-          <h2 className="sr-only">Step 3. Deploy</h2>
+          <h2 className="sr-only">{messages.step3.srTitle}</h2>
 
           <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-5">
             <div className="space-y-3">
@@ -1937,17 +2124,17 @@ export default function LaunchpadForm() {
             </div>
 
             <div className="launch-step-actions launch-step-footer mt-6">
-              <span className="launch-step-footer-spacer" aria-hidden="true" />
+              <StepFooterLanguageControl />
               <StepFooterBrand />
               <div className="launch-step-footer-control launch-binary-nav">
-                <span className="launch-binary-label">Deploy</span>
+                <span className="launch-binary-label">{messages.common.deploy}</span>
                 <button
                   type="button"
                   className="launch-choice-button launch-choice-no"
                   onClick={() => setActiveStep(2)}
                 >
                   <ArrowLeftIcon className="size-3.5" />
-                  No
+                  {messages.common.no}
                 </button>
                 <button
                   type="submit"
@@ -1961,12 +2148,12 @@ export default function LaunchpadForm() {
                   {isLaunching ? (
                     <span className="inline-flex items-center gap-2">
                       <Loader2Icon className="size-4 animate-spin" />
-                      Yes
+                      {messages.common.yes}
                     </span>
                   ) : (
                     <>
                       <RocketIcon className="size-3.5" />
-                      Yes
+                      {messages.common.yes}
                     </>
                   )}
                 </button>
@@ -1982,29 +2169,29 @@ export default function LaunchpadForm() {
 
           {result && (
             <section className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
-              <h3 className="text-base font-semibold text-foreground">Result</h3>
+              <h3 className="text-base font-semibold text-foreground">{messages.common.result}</h3>
               <div className="mt-3 space-y-2 text-sm text-muted-foreground">
                 <div>
-                  Status:{" "}
+                  {messages.common.status}:{" "}
                   <strong className={result.ok ? "text-primary" : "text-destructive"}>
-                    {result.ok ? "success" : "failed"}
+                    {result.ok ? messages.common.success : messages.common.failed}
                   </strong>
                 </div>
                 <div>
-                  Project: <strong>{result.projectName ?? "-"}</strong>
+                  {messages.common.project}: <strong>{result.projectName ?? messages.common.none}</strong>
                 </div>
                 <div>
-                  URL:{" "}
+                  {messages.common.url}:{" "}
                   {result.projectUrl ? (
                     <a className="launch-link" href={result.projectUrl} target="_blank" rel="noreferrer">
                       {result.projectUrl}
                     </a>
                   ) : (
-                    "-"
+                    messages.common.none
                   )}
                 </div>
                 <div>
-                  Vercel dashboard:{" "}
+                  {messages.common.vercelDashboard}:{" "}
                   {result.vercelDashboardUrl ? (
                     <a
                       className="launch-link"
@@ -2015,11 +2202,11 @@ export default function LaunchpadForm() {
                       {result.vercelDashboardUrl}
                     </a>
                   ) : (
-                    "-"
+                    messages.common.none
                   )}
                 </div>
                 <div>
-                  Supabase dashboard:{" "}
+                  {messages.common.supabaseDashboard}:{" "}
                   {result.supabaseDashboardUrl ? (
                     <a
                       className="launch-link"
@@ -2030,18 +2217,22 @@ export default function LaunchpadForm() {
                       {result.supabaseDashboardUrl}
                     </a>
                   ) : (
-                    "-"
+                    messages.common.none
                   )}
                 </div>
-                <div>Duration: {Math.round(result.durationMs / 100) / 10}s</div>
+                <div>
+                  {messages.common.duration}: {Math.round(result.durationMs / 100) / 10}s
+                </div>
               </div>
 
               {result.ok && result.projectName && (
                 <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-foreground">Custom domain (optional)</h4>
-                      <InfoTip text="Use your own domain after deploy. Add it first, then verify DNS records." />
+                      <h4 className="text-sm font-semibold text-foreground">
+                        {messages.domain.customDomainOptional}
+                      </h4>
+                      <InfoTip text={messages.domain.customDomainInfo} />
                     </div>
                     {domainState && (
                       <span
@@ -2049,7 +2240,9 @@ export default function LaunchpadForm() {
                           domainState.verified ? "text-primary" : "text-muted-foreground"
                         }`}
                       >
-                        {domainState.verified ? "Verified" : "Pending verification"}
+                        {domainState.verified
+                          ? messages.common.verified
+                          : messages.common.pendingVerification}
                       </span>
                     )}
                   </div>
@@ -2058,7 +2251,7 @@ export default function LaunchpadForm() {
                       className="launch-inline-control"
                       value={customDomain}
                       onChange={(event) => setCustomDomain(event.target.value)}
-                      placeholder="app.yourdomain.com"
+                      placeholder={messages.domain.customDomainPlaceholder}
                     />
                     <button
                       type="button"
@@ -2068,7 +2261,9 @@ export default function LaunchpadForm() {
                       }}
                       disabled={domainActionLoading !== null}
                     >
-                      {domainActionLoading === "add" ? "Adding..." : "Add domain"}
+                      {domainActionLoading === "add"
+                        ? messages.common.adding
+                        : messages.common.addDomain}
                     </button>
                     <button
                       type="button"
@@ -2078,7 +2273,9 @@ export default function LaunchpadForm() {
                       }}
                       disabled={domainActionLoading !== null || !customDomain.trim()}
                     >
-                      {domainActionLoading === "verify" ? "Verifying..." : "Verify"}
+                      {domainActionLoading === "verify"
+                        ? messages.common.verifying
+                        : messages.common.verify}
                     </button>
                   </div>
                   {domainActionError && (
@@ -2086,7 +2283,9 @@ export default function LaunchpadForm() {
                   )}
                   {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
                     <div className="launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
-                      <p className="font-semibold text-foreground">Nameservers to set at your registrar:</p>
+                      <p className="font-semibold text-foreground">
+                        {messages.domain.nameserversLabel}
+                      </p>
                       <div className="mt-1 space-y-1">
                         {domainState.nameservers.map((nameServer) => (
                           <p key={nameServer} className="font-mono text-[11px] leading-4">
@@ -2104,9 +2303,10 @@ export default function LaunchpadForm() {
                           className="launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
                         >
                           <span className="font-semibold text-foreground">
-                            {record.type || "DNS"}:
+                            {record.type || messages.common.dns}:
                           </span>{" "}
-                          {record.domain || "@"} {"->"} {record.value || "check Vercel DNS instructions"}
+                          {record.domain || "@"} {"->"}{" "}
+                          {record.value || messages.domain.checkVercelDnsInstructions}
                         </div>
                       ))}
                     </div>
@@ -2116,7 +2316,7 @@ export default function LaunchpadForm() {
 
               <div className="mt-5">
                 <h4 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                  Logs
+                  {messages.common.logs}
                 </h4>
                 <LogList logs={result.logs} />
               </div>
@@ -2127,8 +2327,8 @@ export default function LaunchpadForm() {
 
       <ActionPrompt
         open={connectPromptOpen}
-        title="Connecting wallet"
-        description="Open your wallet and approve the connection to continue."
+        title={messages.modals.connectingWalletTitle}
+        description={messages.modals.connectingWalletDescription}
         showConnectedWalletIcon={isAppKitReady}
         allowClose
         onClose={() => setConnectPromptOpen(false)}
@@ -2136,8 +2336,8 @@ export default function LaunchpadForm() {
 
       <ActionPrompt
         open={signPromptOpen}
-        title="Waiting for signature"
-        description="Approve the signature in your wallet to continue."
+        title={messages.modals.waitingForSignatureTitle}
+        description={messages.modals.waitingForSignatureDescription}
         showConnectedWalletIcon={isAppKitReady}
         allowClose
         onClose={() => setSignPromptOpen(false)}

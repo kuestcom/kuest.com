@@ -2,7 +2,7 @@
 
 Open-source launch flow for Kuest white-label prediction markets.
 
-Public demo domain: `https://launch.kuest.com`
+Public demo path: `https://kuest.com/launch`
 
 Main goal of this repo:
 
@@ -47,7 +47,7 @@ Local URL: `http://localhost:3000`
 
 ## Production notes
 
-- Set `NEXT_PUBLIC_APP_URL` to your deployed domain (for example `https://launch.kuest.com`)
+- Set `NEXT_PUBLIC_APP_URL` to your deployed app URL (for example `https://kuest.com/launch`)
 - OAuth callbacks are generated from request origin:
   - `/api/oauth/vercel/callback`
   - `/api/oauth/supabase/callback`

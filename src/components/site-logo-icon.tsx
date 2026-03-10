@@ -13,7 +13,7 @@ export function SiteLogoIcon({
   imageClassName = "",
   alt = "Kuest logo",
   size = 32,
-  logoImageUrl = "/kuest-logo.svg",
+  logoImageUrl = "/images/kuest-logo.svg",
 }: SiteLogoIconProps) {
   return (
     <span className={className}>

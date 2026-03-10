@@ -6,10 +6,41 @@ export const projectId = process.env.NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID?.trim()
 
 const fallbackProjectId = "missing-reown-project-id";
 const resolvedProjectId = projectId || fallbackProjectId;
-const defaultAppUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://launch.kuest.com";
-const appIconUrl = process.env.NEXT_PUBLIC_APP_ICON ?? `${defaultAppUrl}/kuest-logo.svg`;
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Kuest";
 const metamaskWalletId = "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96";
+
+function resolveAppUrl(candidate: string | undefined, fallback: string) {
+  const trimmed = candidate?.trim();
+  if (!trimmed) {
+    return fallback;
+  }
+
+  try {
+    return new URL(trimmed).toString();
+  } catch {
+    return fallback;
+  }
+}
+
+function resolveAssetUrl(candidate: string | undefined, fallback: string, base: string) {
+  const trimmed = candidate?.trim();
+  if (!trimmed) {
+    return fallback;
+  }
+
+  try {
+    return new URL(trimmed, base).toString();
+  } catch {
+    return fallback;
+  }
+}
+
+const defaultAppUrl = resolveAppUrl(
+  process.env.NEXT_PUBLIC_APP_URL,
+  "https://kuest.com/launch",
+);
+const defaultAppIconUrl = new URL("/images/kuest-logo.svg", defaultAppUrl).toString();
+const appIconUrl = resolveAssetUrl(process.env.NEXT_PUBLIC_APP_ICON, defaultAppIconUrl, defaultAppUrl);
 
 export const networks = [polygon, polygonAmoy] as [AppKitNetwork, ...AppKitNetwork[]];
 
