@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { LaunchI18nProvider } from "@/i18n/launch";
 import AppKitProvider from "@/providers/app-kit-provider";
 
 interface AppProvidersProps {
@@ -15,7 +16,9 @@ export function AppProviders({ children }: AppProvidersProps) {
   return (
     <AppKitProvider>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-background text-foreground">{children}</div>
+        <LaunchI18nProvider>
+          <div className="min-h-screen bg-background text-foreground">{children}</div>
+        </LaunchI18nProvider>
       </QueryClientProvider>
     </AppKitProvider>
   );

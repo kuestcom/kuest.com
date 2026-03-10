@@ -772,6 +772,10 @@
   gap: 0.75rem;
 }
 
+.launch-step-footer-language {
+  justify-self: start;
+}
+
 .launch-step-footer-prev {
   justify-self: start;
 }
@@ -782,6 +786,54 @@
 
 .launch-step-footer-control {
   justify-self: end;
+}
+
+.launch-language-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.launch-language-select {
+  height: 42px;
+  min-width: 136px;
+  padding: 0 2.1rem 0 0.8rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--foreground);
+  font-family: var(--font-sans), "Open Sauce One", "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.launch-language-select:hover,
+.launch-language-select:focus {
+  border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
+  background: color-mix(in oklab, var(--primary) 8%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 20%, transparent);
+}
+
+.launch-language-icon {
+  position: absolute;
+  right: 0.72rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .launch-binary-nav {
@@ -952,25 +1004,29 @@
 
   .launch-step-footer {
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "language control"
+      "brand brand";
+    align-items: center;
     gap: 0.65rem;
   }
 
+  .launch-step-footer-language {
+    grid-area: language;
+    justify-self: start;
+  }
+
   .launch-footer-brand {
-    order: 2;
+    grid-area: brand;
     width: auto;
     justify-content: center;
     padding-top: 0.08rem;
   }
 
   .launch-step-footer-control {
-    order: 1;
-    justify-self: center;
-  }
-
-  .launch-step-footer-spacer {
-    display: none;
+    grid-area: control;
+    justify-self: end;
   }
 
   .launch-binary-nav {
@@ -978,7 +1034,15 @@
   }
 
   .launch-binary-label {
-    font-size: 0.68rem;
+    display: none;
+  }
+
+  .launch-language-select {
+    min-width: 124px;
+    height: 40px;
+    padding-left: 0.72rem;
+    padding-right: 1.95rem;
+    font-size: 0.78rem;
   }
 
   .launch-choice-button {
