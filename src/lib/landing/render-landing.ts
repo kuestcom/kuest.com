@@ -2,6 +2,25 @@ import { cache } from "react";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseHTML } from "linkedom/worker";
+import { __iconNode as activityIconNode } from "lucide-react/dist/esm/icons/activity.js";
+import { __iconNode as banknoteIconNode } from "lucide-react/dist/esm/icons/banknote.js";
+import { __iconNode as bitcoinIconNode } from "lucide-react/dist/esm/icons/bitcoin.js";
+import { __iconNode as chartColumnIncreasingIconNode } from "lucide-react/dist/esm/icons/chart-column-increasing.js";
+import { __iconNode as chevronDownIconNode } from "lucide-react/dist/esm/icons/chevron-down.js";
+import { __iconNode as circleDollarSignIconNode } from "lucide-react/dist/esm/icons/circle-dollar-sign.js";
+import { __iconNode as clapperboardIconNode } from "lucide-react/dist/esm/icons/clapperboard.js";
+import { __iconNode as dollarSignIconNode } from "lucide-react/dist/esm/icons/dollar-sign.js";
+import { __iconNode as flameIconNode } from "lucide-react/dist/esm/icons/flame.js";
+import { __iconNode as globe2IconNode } from "lucide-react/dist/esm/icons/earth.js";
+import { __iconNode as hexagonIconNode } from "lucide-react/dist/esm/icons/hexagon.js";
+import { __iconNode as landmarkIconNode } from "lucide-react/dist/esm/icons/landmark.js";
+import { __iconNode as monitorSmartphoneIconNode } from "lucide-react/dist/esm/icons/monitor-smartphone.js";
+import { __iconNode as slidersHorizontalIconNode } from "lucide-react/dist/esm/icons/sliders-horizontal.js";
+import { __iconNode as squarePenIconNode } from "lucide-react/dist/esm/icons/square-pen.js";
+import { __iconNode as targetIconNode } from "lucide-react/dist/esm/icons/target.js";
+import { __iconNode as trophyIconNode } from "lucide-react/dist/esm/icons/trophy.js";
+import { __iconNode as usersIconNode } from "lucide-react/dist/esm/icons/users.js";
+import { __iconNode as zapIconNode } from "lucide-react/dist/esm/icons/zap.js";
 import type { LandingMessages } from "@/i18n/site";
 import type { SiteLocale } from "@/i18n/site-config";
 import { defaultSiteLocale, localeHref } from "@/i18n/site";
@@ -9,6 +28,29 @@ import { defaultSiteLocale, localeHref } from "@/i18n/site";
 const LANDING_TEMPLATE_PATH = join(process.cwd(), "src", "lib", "landing", "template.html");
 const DEMO_ORIGIN = "https://demo.kuest.com";
 const NICHE_TAB_ICONS = ["bitcoin", "trophy", "landmark", "clapperboard", "users", "flame"];
+type LucideIconNode = ReadonlyArray<readonly [string, Record<string, string | number>]>;
+
+const LUCIDE_ICONS: Record<string, LucideIconNode> = {
+  activity: activityIconNode,
+  banknote: banknoteIconNode,
+  bitcoin: bitcoinIconNode,
+  "chart-column-increasing": chartColumnIncreasingIconNode,
+  "chevron-down": chevronDownIconNode,
+  "circle-dollar-sign": circleDollarSignIconNode,
+  clapperboard: clapperboardIconNode,
+  "dollar-sign": dollarSignIconNode,
+  flame: flameIconNode,
+  "globe-2": globe2IconNode,
+  hexagon: hexagonIconNode,
+  landmark: landmarkIconNode,
+  "monitor-smartphone": monitorSmartphoneIconNode,
+  "sliders-horizontal": slidersHorizontalIconNode,
+  "square-pen": squarePenIconNode,
+  target: targetIconNode,
+  trophy: trophyIconNode,
+  users: usersIconNode,
+  zap: zapIconNode,
+};
 
 const LANGUAGE_OPTIONS = [
   { code: "en", label: "English", flagSrc: "/assets/flags/en.svg" },
@@ -145,6 +187,48 @@ function sanitizeImageSrc(src: string) {
   return /^\/assets\/images\/[\w./-]+$/.test(src)
     ? src
     : "/assets/images/bitcoin-150k.png";
+}
+
+function toSvgAttrName(name: string) {
+  return name.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+}
+
+function renderLucideIcon(name: string) {
+  const iconNode = LUCIDE_ICONS[name];
+
+  if (!iconNode) {
+    return "";
+  }
+
+  const iconChildren = iconNode
+    .map(([tagName, attrs]) => {
+      const attrString = Object.entries(attrs)
+        .filter(([attrName]) => attrName !== "key")
+        .map(([attrName, value]) => `${toSvgAttrName(attrName)}="${escapeHtml(String(value))}"`)
+        .join(" ");
+
+      return `<${tagName}${attrString ? ` ${attrString}` : ""}></${tagName}>`;
+    })
+    .join("");
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-${name}" aria-hidden="true" focusable="false">${iconChildren}</svg>`;
+}
+
+function replaceLucidePlaceholders(document: Document) {
+  document.querySelectorAll("[data-lucide]").forEach((placeholder) => {
+    const iconName = placeholder.getAttribute("data-lucide");
+
+    if (!iconName) {
+      return;
+    }
+
+    const iconMarkup = renderLucideIcon(iconName);
+    if (!iconMarkup) {
+      return;
+    }
+
+    placeholder.outerHTML = iconMarkup;
+  });
 }
 
 function serializeForInlineScript(value: unknown) {
@@ -513,6 +597,8 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
       }
     });
   }
+
+  replaceLucidePlaceholders(document);
 
   const demoLabels =
     locale === "de"

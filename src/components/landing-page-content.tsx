@@ -93,8 +93,12 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         }}
       />
       <Script
-        src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"
-        strategy="afterInteractive"
+        id="landing-embed-preview"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html:
+            "if(new URLSearchParams(window.location.search).has('embed-preview')){document.documentElement.classList.add('embed-preview');}",
+        }}
       />
       <Script
         id="landing-runtime-data"
@@ -104,13 +108,6 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         }}
       />
       <Script src="/assets/app.js" strategy="afterInteractive" />
-      <Script
-        id="landing-lucide-init"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: "window.lucide&&window.lucide.createIcons();",
-        }}
-      />
     </>
   );
 }

@@ -888,7 +888,6 @@ window.addEventListener('resize',initProto);
       });
       nicheGrid.replaceChildren(fragment);
       nicheGrid.style.opacity='1';
-      if(window.lucide)window.lucide.createIcons();
     },250);
 
     document.querySelectorAll('.niche-tab').forEach(function(tab,tabIndex){

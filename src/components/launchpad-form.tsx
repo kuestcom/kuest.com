@@ -15,7 +15,7 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
 import { useAppKit } from "@/hooks/use-app-kit";
@@ -492,6 +492,7 @@ export default function LaunchpadForm() {
   const { signTypedDataAsync } = useSignTypedData();
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit();
   const { messages, formatMessage } = useLaunchI18n();
+  const pathname = usePathname();
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
@@ -727,7 +728,7 @@ export default function LaunchpadForm() {
     if (typeof window === "undefined") {
       return;
     }
-    const returnTo = encodeURIComponent("/launch");
+    const returnTo = encodeURIComponent(pathname || "/launch");
     window.location.assign(`/api/oauth/vercel/start?return_to=${returnTo}`);
   }
 
