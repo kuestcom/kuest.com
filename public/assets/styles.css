@@ -351,21 +351,21 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./assets/fonts/open-sauce-one-400.woff2') format('woff2');
+  src: url('/assets/fonts/open-sauce-one-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Open Sauce One';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('./assets/fonts/open-sauce-one-700.woff2') format('woff2');
+  src: url('/assets/fonts/open-sauce-one-700.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Geist Mono';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('./assets/fonts/geist-mono-500.ttf') format('truetype');
+  src: url('/assets/fonts/geist-mono-500.ttf') format('truetype');
 }
 :root {
   --bg: #0e1117;
@@ -1634,7 +1634,7 @@ nav.s {
   width: 100%;
   border-style: var(--tw-border-style);
   border-width: 0px;
-  background: #fff;
+  background: var(--color-bg1);
   transition: width .26s ease,border-radius .26s ease,box-shadow .26s ease;
 }
 .site-preview-mode-btn {
@@ -4459,19 +4459,66 @@ footer {
   .site-preview-body {
     aspect-ratio: 4/5;
   }
-  .calc-row {
+  #p5 .calc-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
-  .calc-value {
-    text-align: left;
+  #p5 .calc-label-wrap,
+  #p5 .calc-result-label-wrap {
+    justify-content: center;
+    width: 100%;
+    text-align: center;
   }
-  .calc-note {
-    text-align: left;
+  #p5 .calc-value,
+  #p5 .calc-result {
+    width: 100%;
+    text-align: center;
   }
-  .calc-rate-controls {
+  #p5 .calc-note {
+    margin-inline: auto;
+    text-align: center;
+    text-align-last: center;
+  }
+  #p5 .calc-rate-controls {
     width: 100%;
     grid-template-columns: 36px minmax(0,1fr) 36px;
+  }
+  #p7 .panel-sticky {
+    padding-top: 20px;
+  }
+  #p7 .panel-inner {
+    gap: 24px;
+  }
+  #p7 .niche-tabs-wrap {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 10px;
+    width: 100%;
+  }
+  #p7 .niche-tab {
+    width: 100%;
+    min-height: 72px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 10px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 1.25;
+    font-size: 13px;
+  }
+  #p7 .niche-tab svg,
+  #p7 .niche-tab .lucide {
+    width: 18px;
+    height: 18px;
+  }
+  #p9 .panel-sticky {
+    padding-top: 16px;
+  }
+  #p9 .cta-content {
+    padding-top: 16px;
+    padding-bottom: 24px;
   }
   .source-modal-dialog {
     width: min(1120px,calc(100vw - 20px));
