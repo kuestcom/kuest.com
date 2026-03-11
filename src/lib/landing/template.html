@@ -120,7 +120,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
-<div class="page">
+<div class="page kuest-premium-page" data-kuest-style="terminal" data-kuest-surface="dark">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
   <div class="panel-wrap panel-static hero-stack-panel" id="p0">
@@ -312,17 +312,17 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <svg viewBox="0 0 388 90" fill="none" class="market-mock-chart" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.18"/>
-                      <stop offset="100%" stop-color="#4f8ef7" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#39ff9f" stop-opacity="0.18"/>
+                      <stop offset="100%" stop-color="#39ff9f" stop-opacity="0"/>
                     </linearGradient>
                   </defs>
                   <!-- fill area -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18 L382,90 L0,90 Z" fill="url(#chartGrad)"/>
                   <!-- line -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18"
-                        stroke="#4f8ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="#39ff9f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <!-- dot at end -->
-                  <circle cx="382" cy="18" r="4" fill="#4f8ef7"/>
+                  <circle cx="382" cy="18" r="4" fill="#39ff9f"/>
                 </svg>
                 <!-- x axis labels -->
                 <div class="market-mock-axis">
@@ -382,12 +382,19 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="mini-card-copy">Custom domain, logo, and colors. Create markets in any language and build around your local sports team, regional politics, or community events.</div>
             </div>
             <div class="feature-demo-box">
-              <div class="feature-demo-head">
-                <div class="feature-demo-domain">YOURMARKET.COM</div>
-                <div class="language-demo-select-wrap">
-                  <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
-                    <option value="en" selected>🇺🇸 English</option>
-                    <option value="de">🇩🇪 Deutsch</option>
+                <div class="feature-demo-head">
+                  <div class="feature-demo-domain">YOURMARKET.COM</div>
+                  <div class="language-demo-select-wrap">
+                    <img
+                      id="languageDemoCurrentFlag"
+                      class="language-demo-current-flag"
+                      src="/assets/flags/en.svg"
+                      alt=""
+                      width="16"
+                      height="12">
+                    <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
+                      <option value="en" selected>🇺🇸 English</option>
+                      <option value="de">🇩🇪 Deutsch</option>
                     <option value="es">🇪🇸 Spanish</option>
                     <option value="pt">🇧🇷 Português</option>
                     <option value="fr">🇫🇷 French</option>
@@ -652,8 +659,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Politics",
-      accent: "#8b5cf6",
-      accentRgb: "139,92,246",
+      accent: "#2453c7",
+      accentRgb: "36,83,199",
       tagline: "Your audience predicts. You get paid.",
       cards: [
         { type:"single", img:"/assets/images/elon-usa-election.png", title:"Will Elon Musk win the 2028 U.S. election?", pct:42, vol:"$331k Vol.", cat:"Politics" },
@@ -663,8 +670,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Entertainment",
-      accent: "#f43f5e",
-      accentRgb: "244,63,94",
+      accent: "#ff7868",
+      accentRgb: "255,120,104",
       tagline: "If they argue about it, they'll trade it.",
       cards: [
         { type:"single", img:"/assets/images/marvel-opening-weekend.png", title:"Will the new Marvel film open above $200M?", pct:70, vol:"$9k Vol.", cat:"Film" },
@@ -674,8 +681,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Communities & DAOs",
-      accent: "#4f8ef7",
-      accentRgb: "79,142,247",
+      accent: "#39d9bd",
+      accentRgb: "57,217,189",
       tagline: "Turn your Discord into a prediction market.",
       cards: [
         { type:"single", img:"/assets/images/uniswap-v4-mainnet.png", title:"Will Uniswap v4 launch on mainnet before Q2?", pct:73, vol:"$7k Vol.", cat:"DeFi" },
@@ -685,8 +692,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Memes & Others",
-      accent: "#f5c842",
-      accentRgb: "245,200,66",
+      accent: "#a22c87",
+      accentRgb: "162,44,135",
       tagline: "If the internet argues about it, it's a market.",
       cards: [
         { type:"single", img:"/assets/images/mrbeast-vs-tseries.png", title:"Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?", pct:67, vol:"$21k Vol.", cat:"Internet" },
@@ -704,7 +711,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       gauge = '<div class="niche-market-gauge">'
         + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
         + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
         + '</svg>'
         + '<div class="niche-market-gauge-value">' + c.pct + '%</div>'
         + '<div class="niche-market-gauge-label">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.chance) || 'chance') + '</div>'
