@@ -2084,8 +2084,9 @@ nav.s {
   padding-top: 8px;
 }
 .solution-cta-wrap-visual {
-  width: 100%;
-  justify-content: flex-end;
+  width: 380px;
+  max-width: 100%;
+  justify-content: center;
   padding-top: 18px;
 }
 .solution-cta-block {
@@ -4228,6 +4229,12 @@ html.embed-preview .hero-stack-panel .panel-sticky {
 }
 .faq-item[open] .faq-q::after {
   transform: translateY(-35%) rotate(-135deg);
+}
+.faq-item:not([open]) > .faq-a {
+  display: none;
+}
+.faq-item[open] > .faq-a {
+  display: block;
 }
 .faq-a {
   padding-inline: calc(var(--spacing) * 5);

@@ -369,7 +369,7 @@ function sanitizeTranslatedNode(node: ChildNode, locale: SiteLocale): string {
 }
 
 function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
-  const { document } = parseHTML(`<body>${html}</body>`);
+  const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
 
   return Array.from(document.body.childNodes)
     .map((node) => sanitizeTranslatedNode(node, locale))
@@ -695,7 +695,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
     bundle.faq.items
       .map(
         (item) =>
-          `<details class="faq-item"><summary class="faq-q">${escapeHtml(item.q)}</summary><div class="faq-a">${sanitizeTranslatedHtml(item.aHtml, locale)}</div></details>`,
+          `<details class="faq-item"><summary class="faq-q" aria-expanded="false">${escapeHtml(item.q)}</summary><div class="faq-a">${sanitizeTranslatedHtml(item.aHtml, locale)}</div></details>`,
       )
       .join(""),
   );

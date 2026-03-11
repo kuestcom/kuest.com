@@ -981,6 +981,36 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
   renderLanguageChips();
 })();
 
+/* ── FAQ ── */
+(function(){
+  const faqList=document.querySelector('#p8 .faq-list');
+  if(!faqList)return;
+
+  function syncFaqItemState(item){
+    const summary=item.querySelector('.faq-q');
+    if(!summary)return;
+    summary.setAttribute('aria-expanded',String(item.hasAttribute('open')));
+  }
+
+  faqList.querySelectorAll('.faq-item').forEach(syncFaqItemState);
+
+  faqList.addEventListener('click',e=>{
+    const summary=e.target.closest('.faq-q');
+    if(!summary||!faqList.contains(summary))return;
+    e.preventDefault();
+    const item=summary.closest('.faq-item');
+    if(!item)return;
+
+    if(item.hasAttribute('open')){
+      item.removeAttribute('open');
+    }else{
+      item.setAttribute('open','');
+    }
+
+    syncFaqItemState(item);
+  });
+})();
+
 /* ── SOURCE MODAL ── */
 (function(){
   const modal=document.getElementById('sourceModal');
