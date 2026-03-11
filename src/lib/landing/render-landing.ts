@@ -63,8 +63,8 @@ const LANGUAGE_OPTIONS = [
 
 const NICHE_STATIC = [
   {
-    accent: "#f7931a",
-    accentRgb: "247,147,26",
+    accent: "#9c6400",
+    accentRgb: "156,100,0",
     cards: [
       { type: "single", img: "/assets/images/bitcoin-150k.png", pct: 61, volValue: "$42k" },
       { type: "single", img: "/assets/images/ethereum-flippening.png", pct: 18, volValue: "$29k" },
@@ -72,8 +72,8 @@ const NICHE_STATIC = [
     ],
   },
   {
-    accent: "#34d07f",
-    accentRgb: "52,208,127",
+    accent: "#7bf36a",
+    accentRgb: "123,243,106",
     cards: [
       {
         type: "multi",
@@ -86,8 +86,8 @@ const NICHE_STATIC = [
     ],
   },
   {
-    accent: "#8b5cf6",
-    accentRgb: "139,92,246",
+    accent: "#2453c7",
+    accentRgb: "36,83,199",
     cards: [
       { type: "single", img: "/assets/images/elon-usa-election.png", pct: 42, volValue: "$331k" },
       { type: "single", img: "/assets/images/russia-x-ukraine.png", pct: 34, volValue: "$22k" },
@@ -95,8 +95,8 @@ const NICHE_STATIC = [
     ],
   },
   {
-    accent: "#f43f5e",
-    accentRgb: "244,63,94",
+    accent: "#ff7868",
+    accentRgb: "255,120,104",
     cards: [
       { type: "single", img: "/assets/images/marvel-opening-weekend.png", pct: 70, volValue: "$9k" },
       { type: "multi", img: "/assets/images/big-brother-brasil.png", rowPcts: [41, 33, 26], volValue: "$14k" },
@@ -104,8 +104,8 @@ const NICHE_STATIC = [
     ],
   },
   {
-    accent: "#4f8ef7",
-    accentRgb: "79,142,247",
+    accent: "#39d9bd",
+    accentRgb: "57,217,189",
     cards: [
       { type: "single", img: "/assets/images/uniswap-v4-mainnet.png", pct: 73, volValue: "$7k" },
       {
@@ -118,8 +118,8 @@ const NICHE_STATIC = [
     ],
   },
   {
-    accent: "#f5c842",
-    accentRgb: "245,200,66",
+    accent: "#a22c87",
+    accentRgb: "162,44,135",
     cards: [
       { type: "single", img: "/assets/images/mrbeast-vs-tseries.png", pct: 67, volValue: "$21k" },
       { type: "single", img: "/assets/images/elon-500b-net-worth.png", pct: 38, volValue: "$15k" },
@@ -467,7 +467,7 @@ function buildGaugeHtml(pct: number, chanceLabel: string) {
   const arcLen = 62.8;
   const offset = arcLen - (arcLen * pct) / 100;
 
-  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
+  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#455046" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#c7ff4f" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
 }
 
 function buildNicheCardHtml(
@@ -731,6 +731,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector(".source-modal-actions button[data-source-close]"), bundle.sourceModal.back);
 
   const languageDemoSelect = document.querySelector("#languageDemoSelect");
+  const languageDemoCurrentFlag = document.querySelector("#languageDemoCurrentFlag");
   if (languageDemoSelect) {
     const demoOptions = Array.from(languageDemoSelect.querySelectorAll("option"));
     demoOptions.forEach((option, index) => {
@@ -746,6 +747,9 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
         option.removeAttribute("selected");
       }
     });
+  }
+  if (languageDemoCurrentFlag) {
+    setAttr(languageDemoCurrentFlag, "src", currentLanguage.flagSrc);
   }
 
   replaceLucidePlaceholders(document);

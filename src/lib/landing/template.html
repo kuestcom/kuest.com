@@ -120,7 +120,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
-<div class="page">
+<div class="page kuest-premium-page" data-kuest-surface="light">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
   <div class="panel-wrap panel-static hero-stack-panel" id="p0">
@@ -382,12 +382,19 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="mini-card-copy">Custom domain, logo, and colors. Create markets in any language and build around your local sports team, regional politics, or community events.</div>
             </div>
             <div class="feature-demo-box">
-              <div class="feature-demo-head">
-                <div class="feature-demo-domain">YOURMARKET.COM</div>
-                <div class="language-demo-select-wrap">
-                  <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
-                    <option value="en" selected>🇺🇸 English</option>
-                    <option value="de">🇩🇪 Deutsch</option>
+                <div class="feature-demo-head">
+                  <div class="feature-demo-domain">YOURMARKET.COM</div>
+                  <div class="language-demo-select-wrap">
+                    <img
+                      id="languageDemoCurrentFlag"
+                      class="language-demo-current-flag"
+                      src="/assets/flags/en.svg"
+                      alt=""
+                      width="16"
+                      height="12">
+                    <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
+                      <option value="en" selected>🇺🇸 English</option>
+                      <option value="de">🇩🇪 Deutsch</option>
                     <option value="es">🇪🇸 Spanish</option>
                     <option value="pt">🇧🇷 Português</option>
                     <option value="fr">🇫🇷 French</option>
