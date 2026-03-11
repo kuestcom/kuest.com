@@ -120,7 +120,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
-<div class="page">
+<div class="page kuest-premium-page" data-kuest-style="swiss" data-kuest-surface="light">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
   <div class="panel-wrap panel-static hero-stack-panel" id="p0">
@@ -312,17 +312,17 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <svg viewBox="0 0 388 90" fill="none" class="market-mock-chart" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.18"/>
-                      <stop offset="100%" stop-color="#4f8ef7" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#c7ff3d" stop-opacity="0.22"/>
+                      <stop offset="100%" stop-color="#c7ff3d" stop-opacity="0"/>
                     </linearGradient>
                   </defs>
                   <!-- fill area -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18 L382,90 L0,90 Z" fill="url(#chartGrad)"/>
                   <!-- line -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18"
-                        stroke="#4f8ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="#c7ff3d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <!-- dot at end -->
-                  <circle cx="382" cy="18" r="4" fill="#4f8ef7"/>
+                  <circle cx="382" cy="18" r="4" fill="#c7ff3d"/>
                 </svg>
                 <!-- x axis labels -->
                 <div class="market-mock-axis">
@@ -630,8 +630,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   var NICHE_DATA = [
     {
       tag: "Crypto & Finance",
-      accent: "#f7931a",
-      accentRgb: "247,147,26",
+      accent: "#a66b00",
+      accentRgb: "166,107,0",
       tagline: "Your own Polymarket for your community.",
       cards: [
         { type:"single", img:"/assets/images/bitcoin-150k.png", title:"Will Bitcoin trade above $150K before Q3?", pct:61, vol:"$42k Vol.", cat:"Crypto" },
@@ -641,8 +641,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Sports",
-      accent: "#34d07f",
-      accentRgb: "52,208,127",
+      accent: "#1f8f52",
+      accentRgb: "31,143,82",
       tagline: "Bet on any game. Keep the fees.",
       cards: [
         { type:"multi", img:"/assets/images/champions-league-top-scorer.png", title:"Top scorer — Champions League final", rows:[{label:"Mbappé",pct:34},{label:"Vinicius",pct:28},{label:"Bellingham",pct:19}], vol:"$18k Vol.", cat:"Soccer" },
@@ -652,8 +652,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Politics",
-      accent: "#8b5cf6",
-      accentRgb: "139,92,246",
+      accent: "#2156c9",
+      accentRgb: "33,86,201",
       tagline: "Your audience predicts. You get paid.",
       cards: [
         { type:"single", img:"/assets/images/elon-usa-election.png", title:"Will Elon Musk win the 2028 U.S. election?", pct:42, vol:"$331k Vol.", cat:"Politics" },
@@ -663,8 +663,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Entertainment",
-      accent: "#f43f5e",
-      accentRgb: "244,63,94",
+      accent: "#de6352",
+      accentRgb: "222,99,82",
       tagline: "If they argue about it, they'll trade it.",
       cards: [
         { type:"single", img:"/assets/images/marvel-opening-weekend.png", title:"Will the new Marvel film open above $200M?", pct:70, vol:"$9k Vol.", cat:"Film" },
@@ -674,8 +674,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Communities & DAOs",
-      accent: "#4f8ef7",
-      accentRgb: "79,142,247",
+      accent: "#169a87",
+      accentRgb: "22,154,135",
       tagline: "Turn your Discord into a prediction market.",
       cards: [
         { type:"single", img:"/assets/images/uniswap-v4-mainnet.png", title:"Will Uniswap v4 launch on mainnet before Q2?", pct:73, vol:"$7k Vol.", cat:"DeFi" },
@@ -685,8 +685,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Memes & Others",
-      accent: "#f5c842",
-      accentRgb: "245,200,66",
+      accent: "#9b2f7b",
+      accentRgb: "155,47,123",
       tagline: "If the internet argues about it, it's a market.",
       cards: [
         { type:"single", img:"/assets/images/mrbeast-vs-tseries.png", title:"Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?", pct:67, vol:"$21k Vol.", cat:"Internet" },
@@ -704,7 +704,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       gauge = '<div class="niche-market-gauge">'
         + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
         + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
         + '</svg>'
         + '<div class="niche-market-gauge-value">' + c.pct + '%</div>'
         + '<div class="niche-market-gauge-label">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.chance) || 'chance') + '</div>'
@@ -786,6 +786,10 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       if (window.lucide) window.lucide.createIcons();
     }, 250);
 
+    var pageRoot = document.querySelector('.kuest-premium-page');
+    var isSwiss = pageRoot && pageRoot.getAttribute('data-kuest-style') === 'swiss';
+    var isSwissDark = isSwiss && pageRoot.getAttribute('data-kuest-surface') === 'dark';
+
     document.querySelectorAll('.niche-tab').forEach(function(tab, idx) {
       var tabData = NICHE_DATA[idx];
       if (idx === i) {
@@ -793,12 +797,16 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         tab.style.borderColor = 'rgba(' + tabData.accentRgb + ',0.46)';
         tab.style.background = 'rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color = tabData.accent;
-        tab.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow = isSwiss
+          ? (isSwissDark ? '0 18px 38px rgba(0,0,0,0.24)' : '0 16px 32px rgba(18,16,12,0.08)')
+          : '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
       } else {
         tab.classList.remove('is-active');
-        tab.style.borderColor = 'rgba(255,255,255,0.08)';
+        tab.style.borderColor = isSwiss
+          ? (isSwissDark ? 'rgba(241,237,228,0.12)' : 'rgba(23,21,19,0.12)')
+          : 'rgba(255,255,255,0.08)';
         tab.style.background = 'transparent';
-        tab.style.color = '#6b7585';
+        tab.style.color = isSwiss ? (isSwissDark ? '#aea79c' : '#6b655d') : '#6b7585';
         tab.style.boxShadow = 'none';
       }
     });
