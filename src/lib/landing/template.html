@@ -120,6 +120,21 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
+<div class="market-signal-strip" aria-hidden="true">
+  <div class="market-signal-track">
+    <span>Creator-owned markets</span>
+    <span>Audience becomes order flow</span>
+    <span>Prediction markets for niche communities</span>
+    <span>Own the fee layer</span>
+    <span>Your brand, your questions, your volume</span>
+    <span>Creator-owned markets</span>
+    <span>Audience becomes order flow</span>
+    <span>Prediction markets for niche communities</span>
+    <span>Own the fee layer</span>
+    <span>Your brand, your questions, your volume</span>
+  </div>
+</div>
+
 <div class="page">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
@@ -139,31 +154,54 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
           <div class="hero-copy-proof mt-4 font-mono text-[11px] uppercase tracking-[.16em] text-faint">Free launch • No code • Live in minutes</div>
         </div>
         <div class="r rd hero-preview-wide">
-          <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
-            <div class="site-preview-head">
-              <div class="site-preview-dots" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
+          <div class="creator-market-stage">
+            <div class="creator-market-note creator-market-note-top" aria-hidden="true">
+              <span class="creator-market-note-index">01</span>
+              <div class="creator-market-note-copy">
+                <strong>Audience energy</strong>
+                <span>already behaves like a market</span>
               </div>
-              <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
-              <span class="site-preview-live">
-                <span class="site-preview-live-dot"></span>
-                Live Demo
-              </span>
-              <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
-                <i data-lucide="monitor-smartphone"></i>
-              </button>
             </div>
-            <div class="site-preview-body">
-              <iframe
-                id="sitePreviewFrame"
-                class="site-preview-frame"
-                title="Kuest live site preview"
-                loading="lazy"
-                src="https://demo.kuest.com/?embed-preview=1"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <div class="creator-market-note creator-market-note-side" aria-hidden="true">
+              <span class="creator-market-note-index">02</span>
+              <div class="creator-market-note-copy">
+                <strong>Own the fee layer</strong>
+                <span>instead of renting attention</span>
+              </div>
+            </div>
+            <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
+              <div class="site-preview-head">
+                <div class="site-preview-dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
+                <span class="site-preview-live">
+                  <span class="site-preview-live-dot"></span>
+                  Live Demo
+                </span>
+                <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
+                  <i data-lucide="monitor-smartphone"></i>
+                </button>
+              </div>
+              <div class="site-preview-body">
+                <iframe
+                  id="sitePreviewFrame"
+                  class="site-preview-frame"
+                  title="Kuest live site preview"
+                  loading="lazy"
+                  src="https://demo.kuest.com/?embed-preview=1"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+            </div>
+            <div class="creator-market-note creator-market-note-bottom" aria-hidden="true">
+              <span class="creator-market-note-index">03</span>
+              <div class="creator-market-note-copy">
+                <strong>Creator exchange</strong>
+                <span>sports, crypto, politics, culture</span>
+              </div>
             </div>
           </div>
         </div>
