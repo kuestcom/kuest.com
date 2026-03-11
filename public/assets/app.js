@@ -817,13 +817,13 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     const svg=createSvgNode('svg',{width:'48',height:'32',viewBox:'0 0 48 32',fill:'none'});
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#2a3040',
+      stroke:'#d5cec2',
       'stroke-width':'5',
       'stroke-linecap':'round'
     }));
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#4f8ef7',
+      stroke:'currentColor',
       'stroke-width':'5',
       'stroke-linecap':'round',
       'stroke-dasharray':'62.8',
@@ -901,6 +901,9 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     currentNiche=index;
     const data=window.NICHE_DATA[index];
     if(!data)return;
+    const pageRoot=document.querySelector('.kuest-premium-page');
+    const isZine=!!(pageRoot&&pageRoot.getAttribute('data-kuest-style')==='zine');
+    const isZineDark=!!(isZine&&pageRoot&&pageRoot.getAttribute('data-kuest-surface')==='dark');
 
     tagline.textContent=data.tagline;
     tagline.style.color='rgba(' + data.accentRgb + ',0.88)';
@@ -924,12 +927,16 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
         tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.46)';
         tab.style.background='rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color=tabData.accent;
-        tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow=isZine
+          ? (isZineDark ? '0 18px 34px rgba(0,0,0,0.22)' : '10px 10px 0 rgba(23,21,19,0.1)')
+          : '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
       }else{
         tab.classList.remove('is-active');
-        tab.style.borderColor='rgba(255,255,255,0.08)';
+        tab.style.borderColor=isZine
+          ? (isZineDark ? 'rgba(244,239,231,0.12)' : 'rgba(23,21,19,0.14)')
+          : 'rgba(255,255,255,0.08)';
         tab.style.background='transparent';
-        tab.style.color='#6b7585';
+        tab.style.color=isZine ? (isZineDark ? '#b4aba0' : '#6e655d') : '#6b7585';
         tab.style.boxShadow='none';
       }
     });
@@ -958,6 +965,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 /* ── LANGUAGE DEMO ── */
 (function(){
   const select=document.getElementById('languageDemoSelect');
+  const currentFlag=document.getElementById('languageDemoCurrentFlag');
   const chips=[...document.querySelectorAll('[data-lang-chip]')];
   if(!select||chips.length!==3)return;
 
@@ -969,12 +977,23 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     fr:['Football','Politique','Crypto'],
     zh:['足球','政治','加密']
   };
+  const flags={
+    en:'/assets/flags/en.svg',
+    de:'/assets/flags/de.svg',
+    es:'/assets/flags/es.svg',
+    pt:'/assets/flags/pt.svg',
+    fr:'/assets/flags/fr.svg',
+    zh:'/assets/flags/zh.svg'
+  };
 
   function renderLanguageChips(){
     const values=labels[select.value]||labels.en;
     chips.forEach(function(chip,index){
       chip.textContent=values[index]||'';
     });
+    if(currentFlag){
+      currentFlag.src=flags[select.value]||flags.en;
+    }
   }
 
   select.addEventListener('change',renderLanguageChips);
