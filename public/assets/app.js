@@ -823,7 +823,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     }));
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#4f8ef7',
+      stroke:'currentColor',
       'stroke-width':'5',
       'stroke-linecap':'round',
       'stroke-dasharray':'62.8',
@@ -927,9 +927,9 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
         tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
       }else{
         tab.classList.remove('is-active');
-        tab.style.borderColor='rgba(255,255,255,0.08)';
+        tab.style.borderColor='rgba(255,244,231,0.1)';
         tab.style.background='transparent';
-        tab.style.color='#6b7585';
+        tab.style.color='#948b7c';
         tab.style.boxShadow='none';
       }
     });
