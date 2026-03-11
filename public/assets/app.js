@@ -817,13 +817,13 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     const svg=createSvgNode('svg',{width:'48',height:'32',viewBox:'0 0 48 32',fill:'none'});
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#2a3040',
+      stroke:'#d6cdc0',
       'stroke-width':'5',
       'stroke-linecap':'round'
     }));
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#4f8ef7',
+      stroke:'#15795a',
       'stroke-width':'5',
       'stroke-linecap':'round',
       'stroke-dasharray':'62.8',
@@ -924,12 +924,12 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
         tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.46)';
         tab.style.background='rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color=tabData.accent;
-        tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow='0 12px 28px rgba(65,45,18,0.10)';
       }else{
         tab.classList.remove('is-active');
-        tab.style.borderColor='rgba(255,255,255,0.08)';
-        tab.style.background='transparent';
-        tab.style.color='#6b7585';
+        tab.style.borderColor='rgba(24,20,17,0.12)';
+        tab.style.background='rgba(255,249,241,0.72)';
+        tab.style.color='#4d443d';
         tab.style.boxShadow='none';
       }
     });

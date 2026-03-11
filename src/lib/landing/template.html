@@ -83,7 +83,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
 </div>
 
 <!-- NAV -->
-<nav id="nav">
+<nav id="nav" class="creator-exchange-nav">
   <a href="#" class="nav-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
     Kuest
@@ -120,14 +120,26 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
-<div class="page">
+<div class="page creator-exchange-page">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
-  <div class="panel-wrap panel-static hero-stack-panel" id="p0">
+  <div class="panel-wrap panel-static hero-stack-panel creator-hero-panel" id="p0">
     <div class="panel-sticky">
-      <div class="panel-inner hero-stack">
-        <div class="r hero-copy">
+      <div class="panel-inner hero-stack creator-hero-shell">
+        <div class="creator-marquee r" aria-hidden="true">
+          <div class="creator-marquee-track">
+            <span>Creator-owned markets</span>
+            <span>Audience energy → trade volume → fee revenue</span>
+            <span>News, research, yes/no, future</span>
+          </div>
+        </div>
+        <div class="r hero-copy creator-hero-copy">
           <div class="hero-kicker !mb-5 !gap-3 !opacity-100 !animate-none">The Shopify for Prediction Markets</div>
+          <div class="creator-hero-tags" aria-hidden="true">
+            <span class="creator-hero-tag">Research-native</span>
+            <span class="creator-hero-tag">Yes / No-native</span>
+            <span class="creator-hero-tag">Creator-owned</span>
+          </div>
           <h1 class="hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
             <span class="hero-title-line">Your own Polymarket.</span>
             <span class="hero-title-line">Live in 15 minutes. Free.</span>
@@ -138,32 +150,135 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
           </div>
           <div class="hero-copy-proof mt-4 font-mono text-[11px] uppercase tracking-[.16em] text-faint">Free launch • No code • Live in minutes</div>
         </div>
-        <div class="r rd hero-preview-wide">
-          <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
-            <div class="site-preview-head">
-              <div class="site-preview-dots" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
-              <span class="site-preview-live">
-                <span class="site-preview-live-dot"></span>
-                Live Demo
-              </span>
-              <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
-                <i data-lucide="monitor-smartphone"></i>
-              </button>
+        <div class="creator-proof-grid r" aria-hidden="true">
+          <article class="creator-proof-card">
+            <span class="creator-proof-label">Format</span>
+            <strong>Creator Desk</strong>
+            <p>More like a branded show format than a generic product dashboard.</p>
+          </article>
+          <article class="creator-proof-card">
+            <span class="creator-proof-label">Loop</span>
+            <strong>Comments → markets → fees</strong>
+            <p>Every repeated question from your audience becomes a new recurring surface.</p>
+          </article>
+          <article class="creator-proof-card">
+            <span class="creator-proof-label">Signal</span>
+            <strong>News-ready by design</strong>
+            <p>Use headlines, charts, and community takes as the visual language of the site.</p>
+          </article>
+        </div>
+        <div class="r rd hero-preview-wide creator-hero-stage">
+          <div class="creator-stage-surface">
+            <div class="creator-stage-strip" aria-hidden="true">
+              <span class="creator-stage-chip">LIVE SIGNAL</span>
+              <span class="creator-stage-chip">COMMUNITY SENTIMENT</span>
+              <span class="creator-stage-chip">FEE CAPTURE ON</span>
             </div>
-            <div class="site-preview-body">
-              <iframe
-                id="sitePreviewFrame"
-                class="site-preview-frame"
-                title="Kuest live site preview"
-                loading="lazy"
-                src="https://demo.kuest.com/?embed-preview=1"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <div class="creator-stage-grid">
+              <aside class="creator-stage-sidebar">
+                <article class="creator-profile-card">
+                  <div class="creator-stage-label">Host</div>
+                  <div class="creator-profile-head">
+                    <span class="creator-avatar creator-avatar-lg">K</span>
+                    <div>
+                      <div class="creator-profile-name">Kuest Creator Desk</div>
+                      <div class="creator-profile-meta">12.4k followers · markets every week</div>
+                    </div>
+                  </div>
+                  <div class="creator-profile-stats">
+                    <div>
+                      <span>Volume</span>
+                      <strong>$184k</strong>
+                    </div>
+                    <div>
+                      <span>Fee</span>
+                      <strong>1.5%</strong>
+                    </div>
+                  </div>
+                </article>
+                <article class="creator-signal-card">
+                  <div class="creator-stage-label">Comment to market</div>
+                  <p>"Chat, are we early enough to own this niche before the big players notice?"</p>
+                  <div class="creator-signal-pills">
+                    <span>Headline-ready</span>
+                    <span>Shareable</span>
+                  </div>
+                </article>
+              </aside>
+              <div class="creator-stage-main">
+                <article class="creator-market-ticket">
+                  <div class="creator-market-ticket-head">
+                    <div>
+                      <div class="creator-stage-label">Audience market</div>
+                      <h3>Will this creator desk call the next breakout narrative before month-end?</h3>
+                    </div>
+                    <div class="creator-market-meta">
+                      <span>Closes Fri</span>
+                      <span>1,482 traders</span>
+                    </div>
+                  </div>
+                  <div class="creator-market-outcomes">
+                    <button type="button" class="creator-outcome creator-outcome-yes">YES 64¢</button>
+                    <button type="button" class="creator-outcome creator-outcome-no">NO 36¢</button>
+                  </div>
+                </article>
+                <div class="creator-stage-preview">
+                  <div class="site-preview scroll-mt-24 creator-site-preview" id="sitePreview">
+                    <div class="site-preview-head">
+                      <div class="site-preview-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
+                      <span class="site-preview-live">
+                        <span class="site-preview-live-dot"></span>
+                        Live Demo
+                      </span>
+                      <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
+                        <i data-lucide="monitor-smartphone"></i>
+                      </button>
+                    </div>
+                    <div class="site-preview-body">
+                      <iframe
+                        id="sitePreviewFrame"
+                        class="site-preview-frame"
+                        title="Kuest live site preview"
+                        loading="lazy"
+                        src="https://demo.kuest.com/?embed-preview=1"
+                        sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                  </div>
+                </div>
+                <div class="creator-stage-bottom">
+                  <article class="creator-receipt-card">
+                    <div class="creator-stage-label">Fee receipt</div>
+                    <div class="creator-receipt-row">
+                      <span>Trades today</span>
+                      <strong>428</strong>
+                    </div>
+                    <div class="creator-receipt-row">
+                      <span>Creator fee</span>
+                      <strong>$2,941</strong>
+                    </div>
+                    <div class="creator-receipt-row">
+                      <span>Hottest desk</span>
+                      <strong>Politics / Sports</strong>
+                    </div>
+                  </article>
+                  <article class="creator-audience-belt">
+                    <div class="creator-stage-label">Audience loop</div>
+                    <div class="creator-avatar-stack" aria-hidden="true">
+                      <span class="creator-avatar">A</span>
+                      <span class="creator-avatar">M</span>
+                      <span class="creator-avatar">R</span>
+                      <span class="creator-avatar">S</span>
+                    </div>
+                    <p>Comments become questions. Questions become trades. Trades become recurring creator revenue.</p>
+                  </article>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -174,36 +289,49 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <!-- ═══ PANEL 1 — PAIN ═══ -->
   <div class="panel-wrap panel-static" id="p1">
     <div class="panel-sticky">
-      <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
+      <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10 creator-problem-shell">
 
-        <div class="r text-center">
+        <div class="r text-center creator-problem-intro">
           <div class="slbl justify-center">Sound familiar?</div>
           <h2 class="sh">You have an audience. You just can't make it pay.</h2>
           <p class="bt section-copy-center">Ads pay pennies. Sponsors are unpredictable. Courses take months to build. Meanwhile your audience argues, predicts, debates every day — and none of that energy earns you a cent.</p>
         </div>
 
-        <!-- 3 creator pain tiles -->
-        <div class="r mini-cards-grid">
-          <div class="mini-card mini-card-compact">
-            <div class="mini-card-head">
-              <span class="mini-card-icon"><i data-lucide="banknote"></i></span>
-              <div class="mini-card-title">Every revenue model you know already has a hard ceiling</div>
+        <div class="r creator-energy-board">
+          <div class="creator-energy-step">
+            <div class="creator-energy-label">01 · Attention</div>
+            <div class="mini-card mini-card-compact">
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="banknote"></i></span>
+                <div class="mini-card-title">Every revenue model you know already has a hard ceiling</div>
+              </div>
+              <div class="mini-card-copy">Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade — 24/7, with no effort from you after launch.</div>
             </div>
-            <div class="mini-card-copy">Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade — 24/7, with no effort from you after launch.</div>
+            <div class="creator-energy-meta">Comments, clips, polls, DMs</div>
           </div>
-          <div class="mini-card mini-card-compact">
-            <div class="mini-card-head">
-              <span class="mini-card-icon"><i data-lucide="target"></i></span>
-              <div class="mini-card-title">Your audience already predicts — you just don't own it</div>
+          <div class="creator-energy-connector" aria-hidden="true">→</div>
+          <div class="creator-energy-step">
+            <div class="creator-energy-label">02 · Market</div>
+            <div class="mini-card mini-card-compact">
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="target"></i></span>
+                <div class="mini-card-title">Your audience already predicts — you just don't own it</div>
+              </div>
+              <div class="mini-card-copy">They debate outcomes in your comments, in your DMs, in your community. Kuest turns that energy into a market where every trade pays you.</div>
             </div>
-            <div class="mini-card-copy">They debate outcomes in your comments, in your DMs, in your community. Kuest turns that energy into a market where every trade pays you.</div>
+            <div class="creator-energy-meta">Yes / No, research, future calls</div>
           </div>
-          <div class="mini-card mini-card-compact">
-            <div class="mini-card-head">
-              <span class="mini-card-icon"><i data-lucide="zap"></i></span>
-              <div class="mini-card-title">You don't need to understand prediction markets to launch one</div>
+          <div class="creator-energy-connector" aria-hidden="true">→</div>
+          <div class="creator-energy-step">
+            <div class="creator-energy-label">03 · Revenue</div>
+            <div class="mini-card mini-card-compact">
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="zap"></i></span>
+                <div class="mini-card-title">You don't need to understand prediction markets to launch one</div>
+              </div>
+              <div class="mini-card-copy">No trading knowledge. No crypto background. No dev team. Just your niche, your questions, and 15 minutes to go live.</div>
             </div>
-            <div class="mini-card-copy">No trading knowledge. No crypto background. No dev team. Just your niche, your questions, and 15 minutes to go live.</div>
+            <div class="creator-energy-meta">Fees captured directly in your brand</div>
           </div>
         </div>
 
@@ -286,6 +414,11 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
           </div>
           <div class="solution-visual-pane">
             <div class="solution-visual-stack">
+              <div class="creator-solution-rail" aria-hidden="true">
+                <span class="creator-solution-note">Own the question</span>
+                <span class="creator-solution-note">Own the brand</span>
+                <span class="creator-solution-note">Own the fee</span>
+              </div>
             <!-- Kuest-style market mock -->
             <div class="market-mock">
               <!-- Market event page mock — no header bar, logo inline -->
@@ -312,17 +445,17 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <svg viewBox="0 0 388 90" fill="none" class="market-mock-chart" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.18"/>
-                      <stop offset="100%" stop-color="#4f8ef7" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#15795a" stop-opacity="0.2"/>
+                      <stop offset="100%" stop-color="#15795a" stop-opacity="0"/>
                     </linearGradient>
                   </defs>
                   <!-- fill area -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18 L382,90 L0,90 Z" fill="url(#chartGrad)"/>
                   <!-- line -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18"
-                        stroke="#4f8ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="#15795a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <!-- dot at end -->
-                  <circle cx="382" cy="18" r="4" fill="#4f8ef7"/>
+                  <circle cx="382" cy="18" r="4" fill="#15795a"/>
                 </svg>
                 <!-- x axis labels -->
                 <div class="market-mock-axis">
@@ -630,8 +763,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   var NICHE_DATA = [
     {
       tag: "Crypto & Finance",
-      accent: "#f7931a",
-      accentRgb: "247,147,26",
+      accent: "#0f6b54",
+      accentRgb: "15,107,84",
       tagline: "Your own Polymarket for your community.",
       cards: [
         { type:"single", img:"/assets/images/bitcoin-150k.png", title:"Will Bitcoin trade above $150K before Q3?", pct:61, vol:"$42k Vol.", cat:"Crypto" },
@@ -641,8 +774,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Sports",
-      accent: "#34d07f",
-      accentRgb: "52,208,127",
+      accent: "#b93e34",
+      accentRgb: "185,62,52",
       tagline: "Bet on any game. Keep the fees.",
       cards: [
         { type:"multi", img:"/assets/images/champions-league-top-scorer.png", title:"Top scorer — Champions League final", rows:[{label:"Mbappé",pct:34},{label:"Vinicius",pct:28},{label:"Bellingham",pct:19}], vol:"$18k Vol.", cat:"Soccer" },
@@ -652,8 +785,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Politics",
-      accent: "#8b5cf6",
-      accentRgb: "139,92,246",
+      accent: "#6c56c9",
+      accentRgb: "108,86,201",
       tagline: "Your audience predicts. You get paid.",
       cards: [
         { type:"single", img:"/assets/images/elon-usa-election.png", title:"Will Elon Musk win the 2028 U.S. election?", pct:42, vol:"$331k Vol.", cat:"Politics" },
@@ -663,8 +796,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Entertainment",
-      accent: "#f43f5e",
-      accentRgb: "244,63,94",
+      accent: "#c73a66",
+      accentRgb: "199,58,102",
       tagline: "If they argue about it, they'll trade it.",
       cards: [
         { type:"single", img:"/assets/images/marvel-opening-weekend.png", title:"Will the new Marvel film open above $200M?", pct:70, vol:"$9k Vol.", cat:"Film" },
@@ -674,8 +807,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Communities & DAOs",
-      accent: "#4f8ef7",
-      accentRgb: "79,142,247",
+      accent: "#2b6a57",
+      accentRgb: "43,106,87",
       tagline: "Turn your Discord into a prediction market.",
       cards: [
         { type:"single", img:"/assets/images/uniswap-v4-mainnet.png", title:"Will Uniswap v4 launch on mainnet before Q2?", pct:73, vol:"$7k Vol.", cat:"DeFi" },
@@ -685,8 +818,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     },
     {
       tag: "Memes & Others",
-      accent: "#f5c842",
-      accentRgb: "245,200,66",
+      accent: "#8aa219",
+      accentRgb: "138,162,25",
       tagline: "If the internet argues about it, it's a market.",
       cards: [
         { type:"single", img:"/assets/images/mrbeast-vs-tseries.png", title:"Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?", pct:67, vol:"$21k Vol.", cat:"Internet" },
@@ -703,8 +836,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       var offset = arcLen - (arcLen * c.pct / 100);
       gauge = '<div class="niche-market-gauge">'
         + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#d6cdc0" stroke-width="5" stroke-linecap="round"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#15795a" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
         + '</svg>'
         + '<div class="niche-market-gauge-value">' + c.pct + '%</div>'
         + '<div class="niche-market-gauge-label">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.chance) || 'chance') + '</div>'
@@ -793,12 +926,12 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         tab.style.borderColor = 'rgba(' + tabData.accentRgb + ',0.46)';
         tab.style.background = 'rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color = tabData.accent;
-        tab.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow = '0 12px 28px rgba(65,45,18,0.10)';
       } else {
         tab.classList.remove('is-active');
-        tab.style.borderColor = 'rgba(255,255,255,0.08)';
-        tab.style.background = 'transparent';
-        tab.style.color = '#6b7585';
+        tab.style.borderColor = 'rgba(24,20,17,0.12)';
+        tab.style.background = 'rgba(255,249,241,0.72)';
+        tab.style.color = '#4d443d';
         tab.style.boxShadow = 'none';
       }
     });
@@ -899,14 +1032,25 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <!-- ═══ PANEL 9 — FINAL CTA ═══ -->
   <div class="panel-wrap panel-static panel-compact" id="p9">
     <div class="panel-sticky">
-      <div class="cta-content r py-12">
-        <div class="slbl justify-center">Your niche is waiting</div>
-        <h2 class="cta-h">Launch your own prediction market today.</h2>
-        <p class="cta-sub">Free to start. Live in 15 minutes. Your brand, your questions, your revenue.</p>
-        <div class="cta-btns">
-          <a href="/launch" class="btn-cta btn-cta-primary">Start your prediction market →</a>
+      <div class="cta-content r py-12 creator-final-shell">
+        <div class="creator-final-copy">
+          <div class="slbl justify-center">Your niche is waiting</div>
+          <h2 class="cta-h">Launch your own prediction market today.</h2>
+          <p class="cta-sub">Free to start. Live in 15 minutes. Your brand, your questions, your revenue.</p>
+          <div class="cta-btns">
+            <a href="/launch" class="btn-cta btn-cta-primary">Start your prediction market →</a>
+          </div>
+          <div class="cta-note">Free launch · No code · Live in minutes</div>
         </div>
-        <div class="cta-note">Free launch · No code · Live in minutes</div>
+        <aside class="creator-final-manifesto" aria-hidden="true">
+          <div class="creator-final-pill">Creator Exchange</div>
+          <div class="creator-final-list">
+            <span>Branded market</span>
+            <span>Shared liquidity</span>
+            <span>Recurring fee layer</span>
+          </div>
+          <p>Not another generic creator tool. A daily destination where your audience can watch, react, and trade on your next call.</p>
+        </aside>
       </div>
     </div>
   </div>
@@ -938,7 +1082,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </div>
 
-<footer>
+<footer class="creator-exchange-footer">
   <div class="foot-brand">
     <div class="nav-logo gap-2 font-sans text-[15px] font-bold text-muted">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
