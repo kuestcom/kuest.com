@@ -467,7 +467,7 @@ function buildGaugeHtml(pct: number, chanceLabel: string) {
   const arcLen = 62.8;
   const offset = arcLen - (arcLen * pct) / 100;
 
-  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
+  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#414754" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
 }
 
 function buildNicheCardHtml(
@@ -733,6 +733,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   const languageDemoSelect = document.querySelector("#languageDemoSelect");
   if (languageDemoSelect) {
     const demoOptions = Array.from(languageDemoSelect.querySelectorAll("option"));
+    const activeLanguage = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
     demoOptions.forEach((option, index) => {
       const languageOption = LANGUAGE_OPTIONS[index];
       if (!languageOption) {
@@ -746,6 +747,8 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
         option.removeAttribute("selected");
       }
     });
+    setAttr(languageDemoSelect, "value", activeLanguage.code);
+    setAttr(document.querySelector("#languageDemoFlag"), "src", activeLanguage.flagSrc);
   }
 
   replaceLucidePlaceholders(document);

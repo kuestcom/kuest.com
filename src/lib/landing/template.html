@@ -19,20 +19,20 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kuest">
-<meta property="og:title" content="Kuest — Create Your Own White-Label Prediction Market">
+<meta property="og:title" content="Kuest | Create Your Own White-Label Prediction Market">
 <meta property="og:description" content="Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.">
 <meta property="og:url" content="https://kuest.com/">
 <meta property="og:image" content="https://kuest.com/assets/images/your-predictoin-market-500mi-vol.png">
 <meta property="og:image:alt" content="Kuest prediction market preview">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kuest — Create Your Own White-Label Prediction Market">
+<meta name="twitter:title" content="Kuest | Create Your Own White-Label Prediction Market">
 <meta name="twitter:description" content="Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.">
 <meta name="twitter:image" content="https://kuest.com/assets/images/your-predictoin-market-500mi-vol.png">
 <meta name="twitter:image:alt" content="Kuest prediction market preview">
 
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<title>Kuest — Create Your Own White-Label Prediction Market</title>
+<title>Kuest | Create Your Own White-Label Prediction Market</title>
 <link rel="stylesheet" href="/assets/styles.css">
 <script type="application/ld+json">
 {
@@ -66,10 +66,10 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
 <body>
 
 <!-- BACKGROUND PARTICLE CANVAS -->
-<canvas id="bg-canvas"></canvas>
+<canvas id="bg-canvas" data-kuest-style="platform-amber-dark"></canvas>
 
 <!-- TIMELINE SPINE -->
-<div class="tl-spine" id="tlSpine">
+<div class="tl-spine" id="tlSpine" data-kuest-style="platform-amber-dark">
   <div class="tl-dot a" data-p="0"></div>
   <div class="tl-dot" data-p="1"></div>
   <div class="tl-dot" data-p="2"></div>
@@ -83,7 +83,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
 </div>
 
 <!-- NAV -->
-<nav id="nav">
+<nav id="nav" data-kuest-style="platform-amber-dark">
   <a href="#" class="nav-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
     Kuest
@@ -120,9 +120,9 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
-<div class="page">
+<div class="page" data-kuest-style="platform-amber-dark">
 
-  <!-- ═══ PANEL 0 — HERO ═══ -->
+  <!-- ═══ PANEL 0 HERO ═══ -->
   <div class="panel-wrap panel-static hero-stack-panel" id="p0">
     <div class="panel-sticky">
       <div class="panel-inner hero-stack">
@@ -132,7 +132,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <span class="hero-title-line">Your own Polymarket.</span>
             <span class="hero-title-line">Live in 15 minutes. Free.</span>
           </h1>
-          <p class="hero-copy-sub mt-6 text-[clamp(17px,1.75vw,20px)] leading-[1.55] text-muted">Your audience already predicts things every day. Launch your own market for any niche — crypto, sports, politics, anything — and earn a fee on every trade.</p>
+          <p class="hero-copy-sub mt-6 text-[clamp(17px,1.75vw,20px)] leading-[1.55] text-muted">Your audience already predicts things every day. Launch your own market for any niche, crypto, sports, politics, anything, and earn a fee on every trade.</p>
           <div class="hero-copy-actions mt-8 flex flex-wrap gap-3">
             <a href="/launch" class="btn-cta btn-cta-primary">Start your prediction market →</a>
           </div>
@@ -171,7 +171,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 1 — PAIN ═══ -->
+  <!-- ═══ PANEL 1 PAIN ═══ -->
   <div class="panel-wrap panel-static" id="p1">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
@@ -179,7 +179,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <div class="r text-center">
           <div class="slbl justify-center">Sound familiar?</div>
           <h2 class="sh">You have an audience. You just can't make it pay.</h2>
-          <p class="bt section-copy-center">Ads pay pennies. Sponsors are unpredictable. Courses take months to build. Meanwhile your audience argues, predicts, debates every day — and none of that energy earns you a cent.</p>
+          <p class="bt section-copy-center">Ads pay pennies. Sponsors are unpredictable. Courses take months to build. Meanwhile your audience argues, predicts, debates every day, and none of that energy earns you a cent.</p>
         </div>
 
         <!-- 3 creator pain tiles -->
@@ -189,12 +189,12 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <span class="mini-card-icon"><i data-lucide="banknote"></i></span>
               <div class="mini-card-title">Every revenue model you know already has a hard ceiling</div>
             </div>
-            <div class="mini-card-copy">Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade — 24/7, with no effort from you after launch.</div>
+            <div class="mini-card-copy">Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade, 24/7, with no effort from you after launch.</div>
           </div>
           <div class="mini-card mini-card-compact">
             <div class="mini-card-head">
               <span class="mini-card-icon"><i data-lucide="target"></i></span>
-              <div class="mini-card-title">Your audience already predicts — you just don't own it</div>
+              <div class="mini-card-title">Your audience already predicts, you just don't own it</div>
             </div>
             <div class="mini-card-copy">They debate outcomes in your comments, in your DMs, in your community. Kuest turns that energy into a market where every trade pays you.</div>
           </div>
@@ -211,13 +211,13 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 2 — SOCIAL PROOF ═══ -->
+  <!-- ═══ PANEL 2 SOCIAL PROOF ═══ -->
   <div class="panel-wrap panel-static" id="p2">
     <div class="panel-sticky">
       <div class="panel-inner market-focus max-w-[1120px] grid-cols-1 gap-8">
         <div class="r text-center" id="p1-text">
           <div class="slbl justify-center">The wave is already here</div>
-          <h2 class="sh">The demand is already there. The infrastructure to claim your slice wasn't — until now.</h2>
+          <h2 class="sh">The demand is already there. The infrastructure to claim your slice wasn't there until now.</h2>
           <p class="bt mx-auto max-w-[760px] text-center">Polymarket covers elections. Kalshi covers macro. Your niche? Still wide open.</p>
           <div class="live-badge mx-auto"><div class="live-dot"></div>Billions are already trading</div>
         </div>
@@ -249,7 +249,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 3 — SOLUTIONS ═══ -->
+  <!-- ═══ PANEL 3 SOLUTIONS ═══ -->
   <div class="panel-wrap panel-static" id="p3">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10">
@@ -257,7 +257,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
           <div class="solution-head">
             <div class="slbl">How Kuest solves it</div>
             <h2 class="sh">Launch today. We handle everything else.</h2>
-            <p class="bt">Full trading infrastructure, shared liquidity, your brand — ready in 15 minutes.</p>
+            <p class="bt">Full trading infrastructure, shared liquidity, your brand, ready in 15 minutes.</p>
           </div>
           <div class="solution-copy-pane">
             <div class="solution-point-list">
@@ -265,14 +265,14 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <span class="solution-point-icon solution-point-step" aria-hidden="true">1</span>
                 <div class="solution-point-body">
                   <h3>Pick your niche and write your questions</h3>
-                  <p>Sports, crypto, politics, memes — anything your audience already argues about. You set the questions, the fee rate, and your brand.</p>
+                  <p>Sports, crypto, politics, memes, anything your audience already argues about. You set the questions, the fee rate, and your brand.</p>
                 </div>
               </article>
               <article class="solution-point">
                 <span class="solution-point-icon solution-point-step" aria-hidden="true">2</span>
                 <div class="solution-point-body">
-                  <h3>Go live — we handle the infrastructure</h3>
-                  <p>Settlement, wallets, liquidity, blockchain — all running before you finish setup. Your market is live in under 15 minutes with no code.</p>
+                  <h3>Go live, we handle the infrastructure</h3>
+                  <p>Settlement, wallets, liquidity, blockchain, all running before you finish setup. Your market is live in under 15 minutes with no code.</p>
                 </div>
               </article>
               <article class="solution-point">
@@ -288,7 +288,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <div class="solution-visual-stack">
             <!-- Kuest-style market mock -->
             <div class="market-mock">
-              <!-- Market event page mock — no header bar, logo inline -->
+              <!-- Market event page mock, no header bar, logo inline -->
               <div class="market-mock-head">
                 <img src="/assets/images/your-predictoin-market-500mi-vol.png"
                      alt="" class="market-mock-thumb">
@@ -307,22 +307,22 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 </div>
               </div>
 
-              <!-- SVG chart — smooth rounded line -->
+              <!-- SVG chart, smooth rounded line -->
               <div class="market-mock-chart-wrap">
                 <svg viewBox="0 0 388 90" fill="none" class="market-mock-chart" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.18"/>
-                      <stop offset="100%" stop-color="#4f8ef7" stop-opacity="0"/>
+                      <stop offset="0%" stop-color="#f0d04a" stop-opacity="0.22"/>
+                      <stop offset="100%" stop-color="#f0d04a" stop-opacity="0"/>
                     </linearGradient>
                   </defs>
                   <!-- fill area -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18 L382,90 L0,90 Z" fill="url(#chartGrad)"/>
                   <!-- line -->
                   <path d="M0,70 C30,68 50,62 80,58 C110,54 120,72 150,74 C180,76 200,70 230,60 C260,50 280,52 310,48 C340,44 360,30 382,18"
-                        stroke="#4f8ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="#f0d04a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <!-- dot at end -->
-                  <circle cx="382" cy="18" r="4" fill="#4f8ef7"/>
+                  <circle cx="382" cy="18" r="4" fill="#f0d04a"/>
                 </svg>
                 <!-- x axis labels -->
                 <div class="market-mock-axis">
@@ -359,7 +359,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 4 — HOW IT WORKS ═══ -->
+  <!-- ═══ PANEL 4 HOW IT WORKS ═══ -->
   <div class="panel-wrap panel-static" id="p4">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
@@ -385,13 +385,20 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="feature-demo-head">
                 <div class="feature-demo-domain">YOURMARKET.COM</div>
                 <div class="language-demo-select-wrap">
+                  <img
+                    id="languageDemoFlag"
+                    class="language-demo-flag"
+                    src="/assets/flags/en.svg"
+                    alt=""
+                    width="18"
+                    height="12">
                   <select id="languageDemoSelect" class="language-demo-select" aria-label="Example language">
-                    <option value="en" selected>🇺🇸 English</option>
-                    <option value="de">🇩🇪 Deutsch</option>
-                    <option value="es">🇪🇸 Spanish</option>
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="fr">🇫🇷 French</option>
-                    <option value="zh">🇨🇳 中文</option>
+                    <option value="en" selected>English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Spanish</option>
+                    <option value="pt">Português</option>
+                    <option value="fr">French</option>
+                    <option value="zh">中文</option>
                   </select>
                   <span class="language-demo-select-icon" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
                 </div>
@@ -411,7 +418,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <span class="mini-card-icon"><i data-lucide="square-pen"></i></span>
                 <div class="mini-card-title">Ask anything. Your audience decides.</div>
               </div>
-              <div class="mini-card-copy">You write the question — about anything you cover. Your audience bets yes or no. Every trade earns you a fee, straight to your wallet with no intermediary.</div>
+              <div class="mini-card-copy">You write the question, about anything you cover. Your audience bets yes or no. Every trade earns you a fee, straight to your wallet with no intermediary.</div>
             </div>
             <div class="mini-vote-demo">
               <div class="mini-fee-burst" aria-hidden="true">
@@ -481,7 +488,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 5 — REVENUE CALCULATOR ═══ -->
+  <!-- ═══ PANEL 5 REVENUE CALCULATOR ═══ -->
   <div class="panel-wrap panel-static panel-compact" id="p5">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[980px] grid-cols-1 gap-8">
@@ -537,7 +544,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 6 — WHY NOW ═══ -->
+  <!-- ═══ PANEL 6 WHY NOW ═══ -->
   <div class="panel-wrap panel-static" id="p6">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[1120px] grid-cols-1 gap-10">
@@ -576,7 +583,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-    <!-- ═══ PANEL 7 — WHO IT'S FOR ═══ -->
+    <!-- ═══ PANEL 7 WHO IT'S FOR ═══ -->
   <div class="panel-wrap panel-static" id="p7">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[1160px] grid-cols-1 gap-10">
@@ -645,7 +652,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       accentRgb: "52,208,127",
       tagline: "Bet on any game. Keep the fees.",
       cards: [
-        { type:"multi", img:"/assets/images/champions-league-top-scorer.png", title:"Top scorer — Champions League final", rows:[{label:"Mbappé",pct:34},{label:"Vinicius",pct:28},{label:"Bellingham",pct:19}], vol:"$18k Vol.", cat:"Soccer" },
+        { type:"multi", img:"/assets/images/champions-league-top-scorer.png", title:"Top scorer, Champions League final", rows:[{label:"Mbappé",pct:34},{label:"Vinicius",pct:28},{label:"Bellingham",pct:19}], vol:"$18k Vol.", cat:"Soccer" },
         { type:"single", img:"/assets/images/warriors-playoffs.png", title:"Will the Warriors make the 2025 playoffs?", pct:55, vol:"$11k Vol.", cat:"NBA" },
         { type:"single", img:"/assets/images/daniel-negranu-wsop.png", title:"Will Daniel Negreanu make the final table of the 2026 WSOP Main Event?", pct:38, vol:"$8k Vol.", cat:"Poker" }
       ]
@@ -704,7 +711,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       gauge = '<div class="niche-market-gauge">'
         + '<svg width="48" height="32" viewBox="0 0 48 32" fill="none">'
         + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"/>'
-        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
+        + '<path d="M4 28 A20 20 0 0 1 44 28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="' + offset + '"/>'
         + '</svg>'
         + '<div class="niche-market-gauge-value">' + c.pct + '%</div>'
         + '<div class="niche-market-gauge-label">' + ((window.KUEST_I18N_UI && window.KUEST_I18N_UI.chance) || 'chance') + '</div>'
@@ -790,15 +797,15 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       var tabData = NICHE_DATA[idx];
       if (idx === i) {
         tab.classList.add('is-active');
-        tab.style.borderColor = 'rgba(' + tabData.accentRgb + ',0.46)';
+        tab.style.borderColor = 'rgba(' + tabData.accentRgb + ',0.28)';
         tab.style.background = 'rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color = tabData.accent;
-        tab.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow = '0 16px 32px rgba(0,0,0,0.22)';
       } else {
         tab.classList.remove('is-active');
         tab.style.borderColor = 'rgba(255,255,255,0.08)';
-        tab.style.background = 'transparent';
-        tab.style.color = '#6b7585';
+        tab.style.background = 'rgba(49,53,63,0.88)';
+        tab.style.color = '#8e95a6';
         tab.style.boxShadow = 'none';
       }
     });
@@ -826,8 +833,9 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <script>
   (function () {
     var select = document.getElementById('languageDemoSelect');
+    var flag = document.getElementById('languageDemoFlag');
     var chips = Array.prototype.slice.call(document.querySelectorAll('[data-lang-chip]'));
-    if (!select || chips.length !== 3) return;
+    if (!select || !flag || chips.length !== 3) return;
 
     var labels = {
       en: ['Soccer', 'Politics', 'Crypto'],
@@ -837,9 +845,19 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
       fr: ['Football', 'Politique', 'Crypto'],
       zh: ['足球', '政治', '加密']
     };
+    var flags = {
+      en: '/assets/flags/en.svg',
+      de: '/assets/flags/de.svg',
+      es: '/assets/flags/es.svg',
+      pt: '/assets/flags/pt.svg',
+      fr: '/assets/flags/fr.svg',
+      zh: '/assets/flags/zh.svg'
+    };
 
     function renderLanguageChips() {
-      var values = labels[select.value] || labels.pt;
+      var lang = labels[select.value] ? select.value : 'en';
+      var values = labels[lang];
+      flag.setAttribute('src', flags[lang] || flags.en);
       chips.forEach(function (chip, index) {
         chip.textContent = values[index] || '';
       });
@@ -850,7 +868,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   })();
   </script>
 
-    <!-- ═══ PANEL 8 — FAQ ═══ -->
+    <!-- ═══ PANEL 8 FAQ ═══ -->
   <div class="panel-wrap panel-static" id="p8">
     <div class="panel-sticky">
       <div class="panel-inner max-w-[820px] grid-cols-1 items-start">
@@ -861,31 +879,31 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <div class="r rd faq-list">
           <details class="faq-item">
             <summary class="faq-q">How long does it take, and do I need technical skills?</summary>
-            <div class="faq-a">Most markets go live in under 15 minutes. You launch from <a href="/launch">/launch</a> with a guided setup — no code, no contract deployment, no DevOps. If you can set up a Shopify store, you can launch a Kuest market.</div>
+            <div class="faq-a">Most markets go live in under 15 minutes. You launch from <a href="/launch">/launch</a> with a guided setup, no code, no contract deployment, no DevOps. If you can set up a Shopify store, you can launch a Kuest market.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">Can I show Polymarket markets on my site?</summary>
-            <div class="faq-a">Yes. You can mirror active markets from Polymarket — either all categories or only the ones relevant to your niche (crypto, sports, politics, etc.). These mirrored markets come with shared liquidity from day one, so your site feels live from the moment it's published.</div>
+            <div class="faq-a">Yes. You can mirror active markets from Polymarket, either all categories or only the ones relevant to your niche (crypto, sports, politics, etc.). These mirrored markets come with shared liquidity from day one, so your site feels live from the moment it's published.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">Can I create my own markets? Who provides the liquidity?</summary>
-            <div class="faq-a">Yes. You can create custom markets around any question you choose. Mirrored Polymarket markets have shared liquidity built in. Markets you create yourself depend on your audience trading — so your own content and community drive the volume there. You can also opt into cross-market liquidity sharing for creator markets.</div>
+            <div class="faq-a">Yes. You can create custom markets around any question you choose. Mirrored Polymarket markets have shared liquidity built in. Markets you create yourself depend on your audience trading, so your own content and community drive the volume there. You can also opt into cross-market liquidity sharing for creator markets.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">How do I make money, and can I set my own fees?</summary>
-            <div class="faq-a">You set a trading fee rate on your market — typically between 0.5% and 3%. Every time someone trades, that fee goes directly to your wallet. No revenue share, no intermediary, no waiting. You control the rate and can change it at any time.</div>
+            <div class="faq-a">You set a trading fee rate on your market, typically between 0.5% and 3%. Every time someone trades, that fee goes directly to your wallet. No revenue share, no intermediary, no waiting. You control the rate and can change it at any time.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">Can I use my own domain and branding?</summary>
-            <div class="faq-a">Yes. You can launch with your own domain, logo, colors, and category structure so the market feels entirely native to your brand — not a Kuest white-label.</div>
+            <div class="faq-a">Yes. You can launch with your own domain, logo, colors, and category structure so the market feels entirely native to your brand, not a Kuest white-label.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">How are markets resolved?</summary>
-            <div class="faq-a">Kuest uses UMA-based resolution rails for transparent, verifiable settlement. The smart contracts are derived from Polymarket's — audited by OpenZeppelin — and adapted to support shared liquidity across markets. You don't need to understand any of this to use it, but it means the financial infrastructure under your market is the same stack that's processed billions in volume.</div>
+            <div class="faq-a">Kuest uses UMA-based resolution rails for transparent, verifiable settlement. The smart contracts are derived from Polymarket's, audited by OpenZeppelin, and adapted to support shared liquidity across markets. You don't need to understand any of this to use it, but it means the financial infrastructure under your market is the same stack that's processed billions in volume.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">Is there a cost to launch?</summary>
-            <div class="faq-a">The launch flow is free to start. Production infrastructure pricing is usage-based — you pay when you scale, not before.</div>
+            <div class="faq-a">The launch flow is free to start. Production infrastructure pricing is usage-based, you pay when you scale, not before.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">Can I self-host Kuest?</summary>
@@ -896,7 +914,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
-  <!-- ═══ PANEL 9 — FINAL CTA ═══ -->
+  <!-- ═══ PANEL 9 FINAL CTA ═══ -->
   <div class="panel-wrap panel-static panel-compact" id="p9">
     <div class="panel-sticky">
       <div class="cta-content r py-12">
@@ -913,7 +931,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
 
 </div><!-- /page -->
 
-<div class="source-modal" id="sourceModal" hidden aria-hidden="true">
+<div class="source-modal" id="sourceModal" hidden aria-hidden="true" data-kuest-style="platform-amber-dark">
   <div class="source-modal-backdrop" data-source-close></div>
   <div class="source-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="sourceModalTitle">
     <button type="button" class="source-modal-close" aria-label="Close source modal" data-source-close>&times;</button>
@@ -938,7 +956,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </div>
 
-<footer>
+<footer data-kuest-style="platform-amber-dark">
   <div class="foot-brand">
     <div class="nav-logo gap-2 font-sans text-[15px] font-bold text-muted">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
@@ -954,7 +972,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     <a href="https://discord.gg/kuest">Discord</a>
     <a href="mailto:hello@kuest.com">Contact</a>
   </div>
-  <div class="foot-live"><div class="live-dot"></div><span id="footerLiveText">Polygon Mainnet — Live</span></div>
+  <div class="foot-live"><div class="live-dot"></div><span id="footerLiveText">Polygon Mainnet Live</span></div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>

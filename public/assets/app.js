@@ -817,13 +817,13 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     const svg=createSvgNode('svg',{width:'48',height:'32',viewBox:'0 0 48 32',fill:'none'});
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#2a3040',
+      stroke:'#414754',
       'stroke-width':'5',
       'stroke-linecap':'round'
     }));
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#4f8ef7',
+      stroke:'currentColor',
       'stroke-width':'5',
       'stroke-linecap':'round',
       'stroke-dasharray':'62.8',
@@ -921,15 +921,15 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
       if(!tabData)return;
       if(tabIndex===index){
         tab.classList.add('is-active');
-        tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.46)';
+        tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.28)';
         tab.style.background='rgba(' + tabData.accentRgb + ',0.12)';
         tab.style.color=tabData.accent;
-        tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow='0 16px 32px rgba(0,0,0,0.22)';
       }else{
         tab.classList.remove('is-active');
         tab.style.borderColor='rgba(255,255,255,0.08)';
-        tab.style.background='transparent';
-        tab.style.color='#6b7585';
+        tab.style.background='rgba(49,53,63,0.88)';
+        tab.style.color='#8e95a6';
         tab.style.boxShadow='none';
       }
     });
@@ -958,8 +958,9 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 /* ── LANGUAGE DEMO ── */
 (function(){
   const select=document.getElementById('languageDemoSelect');
+  const flag=document.getElementById('languageDemoFlag');
   const chips=[...document.querySelectorAll('[data-lang-chip]')];
-  if(!select||chips.length!==3)return;
+  if(!select||!flag||chips.length!==3)return;
 
   const labels={
     en:['Soccer','Politics','Crypto'],
@@ -969,9 +970,19 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     fr:['Football','Politique','Crypto'],
     zh:['足球','政治','加密']
   };
+  const flags={
+    en:'/assets/flags/en.svg',
+    de:'/assets/flags/de.svg',
+    es:'/assets/flags/es.svg',
+    pt:'/assets/flags/pt.svg',
+    fr:'/assets/flags/fr.svg',
+    zh:'/assets/flags/zh.svg'
+  };
 
   function renderLanguageChips(){
-    const values=labels[select.value]||labels.en;
+    const lang=select.value in labels?select.value:'en';
+    const values=labels[lang];
+    flag.setAttribute('src',flags[lang]||flags.en);
     chips.forEach(function(chip,index){
       chip.textContent=values[index]||'';
     });
