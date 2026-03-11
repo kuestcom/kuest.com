@@ -69,10 +69,17 @@ export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata
 export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
   const bundle = await getLandingMessages(locale);
   const { markup, nicheData } = await renderLandingMarkup(locale, bundle);
+  const landingStyleMatch = markup.match(/data-kuest-style="([^"]+)"/);
+  const landingStyle = landingStyleMatch?.[1];
 
   return (
     <>
-      <div suppressHydrationWarning dangerouslySetInnerHTML={{ __html: markup }} />
+      <div
+        className="landing-theme-shell"
+        data-kuest-style={landingStyle}
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: markup }}
+      />
       <script
         id="landing-structured-data"
         type="application/ld+json"

@@ -817,13 +817,13 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     const svg=createSvgNode('svg',{width:'48',height:'32',viewBox:'0 0 48 32',fill:'none'});
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#2a3040',
+      stroke:'#d2c8b5',
       'stroke-width':'5',
       'stroke-linecap':'round'
     }));
     svg.appendChild(createSvgNode('path',{
       d:'M4 28 A20 20 0 0 1 44 28',
-      stroke:'#4f8ef7',
+      stroke:'currentColor',
       'stroke-width':'5',
       'stroke-linecap':'round',
       'stroke-dasharray':'62.8',
@@ -921,16 +921,16 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
       if(!tabData)return;
       if(tabIndex===index){
         tab.classList.add('is-active');
-        tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.46)';
-        tab.style.background='rgba(' + tabData.accentRgb + ',0.12)';
+        tab.style.borderColor='rgba(' + tabData.accentRgb + ',0.9)';
+        tab.style.background='rgba(' + tabData.accentRgb + ',0.16)';
         tab.style.color=tabData.accent;
-        tab.style.boxShadow='0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)';
+        tab.style.boxShadow='6px 6px 0 #111111';
       }else{
         tab.classList.remove('is-active');
-        tab.style.borderColor='rgba(255,255,255,0.08)';
-        tab.style.background='transparent';
-        tab.style.color='#6b7585';
-        tab.style.boxShadow='none';
+        tab.style.borderColor='rgba(17,17,17,0.18)';
+        tab.style.background='rgba(255,250,241,0.98)';
+        tab.style.color='#5f5a50';
+        tab.style.boxShadow='4px 4px 0 #111111';
       }
     });
   }
@@ -959,6 +959,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 (function(){
   const select=document.getElementById('languageDemoSelect');
   const chips=[...document.querySelectorAll('[data-lang-chip]')];
+  const flag=document.getElementById('languageDemoCurrentFlag');
   if(!select||chips.length!==3)return;
 
   const labels={
@@ -969,12 +970,21 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     fr:['Football','Politique','Crypto'],
     zh:['足球','政治','加密']
   };
+  const flags={
+    en:'/assets/flags/en.svg',
+    de:'/assets/flags/de.svg',
+    es:'/assets/flags/es.svg',
+    pt:'/assets/flags/pt.svg',
+    fr:'/assets/flags/fr.svg',
+    zh:'/assets/flags/zh.svg'
+  };
 
   function renderLanguageChips(){
     const values=labels[select.value]||labels.en;
     chips.forEach(function(chip,index){
       chip.textContent=values[index]||'';
     });
+    if(flag)flag.src=flags[select.value]||flags.en;
   }
 
   select.addEventListener('change',renderLanguageChips);
