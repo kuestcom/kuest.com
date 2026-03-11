@@ -88,6 +88,10 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>
     Kuest
   </a>
+  <div class="broadcast-status" aria-hidden="true">
+    <span class="broadcast-status-live">LIVE</span>
+    <span class="broadcast-status-text">Creator Desk</span>
+  </div>
   <div class="nav-r">
     <div class="site-language-control" id="siteLanguageControl">
       <button
@@ -120,6 +124,25 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </nav>
 
+<div class="signal-strip" aria-hidden="true">
+  <div class="signal-strip-track">
+    <span>LIVE FEED</span>
+    <span>CREATOR DESKS</span>
+    <span>YES / NO</span>
+    <span>BREAKING MARKETS</span>
+    <span>VOLUME</span>
+    <span>RESEARCH</span>
+    <span>HEADLINES</span>
+    <span>LIVE FEED</span>
+    <span>CREATOR DESKS</span>
+    <span>YES / NO</span>
+    <span>BREAKING MARKETS</span>
+    <span>VOLUME</span>
+    <span>RESEARCH</span>
+    <span>HEADLINES</span>
+  </div>
+</div>
+
 <div class="page">
 
   <!-- ═══ PANEL 0 — HERO ═══ -->
@@ -139,31 +162,51 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
           <div class="hero-copy-proof mt-4 font-mono text-[11px] uppercase tracking-[.16em] text-faint">Free launch • No code • Live in minutes</div>
         </div>
         <div class="r rd hero-preview-wide">
-          <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
-            <div class="site-preview-head">
-              <div class="site-preview-dots" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
-              <span class="site-preview-live">
-                <span class="site-preview-live-dot"></span>
-                Live Demo
-              </span>
-              <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
-                <i data-lucide="monitor-smartphone"></i>
-              </button>
+          <div class="signal-desk-stage broadcast-stage">
+            <div class="signal-desk-chip signal-desk-chip-top broadcast-panel broadcast-panel-host" aria-hidden="true">
+              <div class="signal-desk-chip-label">CREATOR DESK</div>
+              <div class="signal-desk-chip-value">@yourbrand</div>
+              <div class="signal-desk-chip-meta">2.4M audience • crypto / sports / news</div>
             </div>
-            <div class="site-preview-body">
-              <iframe
-                id="sitePreviewFrame"
-                class="site-preview-frame"
-                title="Kuest live site preview"
-                loading="lazy"
-                src="https://demo.kuest.com/?embed-preview=1"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <div class="signal-desk-chip signal-desk-chip-side broadcast-panel broadcast-panel-market" aria-hidden="true">
+              <div class="signal-desk-chip-label">LIVE MARKET</div>
+              <div class="signal-desk-chip-value">YES 64c</div>
+              <div class="signal-desk-chip-meta">NO 36c • resolves in 4d</div>
+            </div>
+            <div class="site-preview scroll-mt-24 site-preview-glow" id="sitePreview">
+              <div class="site-preview-head">
+                <div class="site-preview-dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="site-preview-url">demo.kuest.com</a>
+                <span class="site-preview-live">
+                  <span class="site-preview-live-dot"></span>
+                  Live Demo
+                </span>
+                <button type="button" class="site-preview-mode-btn" id="sitePreviewModeBtn" aria-label="Switch to mobile preview" aria-pressed="false" title="Switch preview mode">
+                  <i data-lucide="monitor-smartphone"></i>
+                </button>
+              </div>
+              <div class="site-preview-body">
+                <iframe
+                  id="sitePreviewFrame"
+                  class="site-preview-frame"
+                  title="Kuest live site preview"
+                  loading="lazy"
+                  src="https://demo.kuest.com/?embed-preview=1"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+            </div>
+            <div class="signal-desk-chip signal-desk-chip-bottom broadcast-panel broadcast-panel-fee" aria-hidden="true">
+              <div class="signal-desk-chip-label">FEE CAPTURE</div>
+              <div class="signal-desk-chip-ticket">
+                <span class="signal-desk-chip-pill signal-desk-chip-pill-yes">$4,280</span>
+                <span class="signal-desk-chip-pill signal-desk-chip-pill-no">1.2K trades</span>
+              </div>
+              <div class="signal-desk-chip-meta">today across your market desk</div>
             </div>
           </div>
         </div>
