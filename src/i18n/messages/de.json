@@ -12,6 +12,8 @@
       "ariaLabel": "Sprache der Website ändern"
     },
     "preview": {
+      "title": "So wird deine Website aussehen.",
+      "subtitle": "Das ist eine funktionierende Demo mit gespiegelten Polymarket-Märkten. Schau sie dir an, handle darauf und stell dir das mit deiner Marke, deinem Publikum und deinen Fragen vor.",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
       "switchToMobile": "Zur Mobile-Ansicht wechseln"
     },
@@ -32,10 +34,30 @@
       "proof": "Kostenlos starten • Kein Code • In Minuten live",
       "previewUrl": "demo.kuest.com"
     },
+    "attentionScroll": {
+      "block1": {
+        "line1": "Jahrelang folgte das Geld der Aufmerksamkeit.",
+        "line2": "Affiliate-Modelle. Dropshipping. Online-Kurse. Wetten.",
+        "line3": "Jede Welle öffnete ein Fenster — und schloss sich kurz danach wieder.",
+        "line4": "Warst du früh dran oder kamst du erst, als schon alles gesättigt war?"
+      },
+      "block2": {
+        "line1": "Heute kontrollieren zwei Plattformen einen Milliardenmarkt.",
+        "brand1": "Polymarket.",
+        "brand2": "Kalshi.",
+        "line3": "49 % der Zugriffe kommen noch immer aus nur 5 Ländern.",
+        "line4": "Der Rest der Welt hat das kaum entdeckt."
+      },
+      "block3": {
+        "lead": "Du kannst wählen:",
+        "line2": "noch ein Trader sein, der die nächste Prognose treffen will —",
+        "line3": "oder das Haus bauen, in dem alle anderen spielen."
+      }
+    },
     "social": {
-      "eyebrow": "Die Welle rollt schon",
-      "title": "Die Nachfrage ist längst da. Was gefehlt hat, war die Infrastruktur, um daraus deinen Umsatz zu machen.",
-      "subtitle": "Polymarket besetzt Wahlen. Kalshi besetzt Makro. Deine Nische ist noch frei.",
+      "eyebrow": "KANN MAN DIE ZUKUNFT VORHERSAGEN?",
+      "title": "Prediction Market",
+      "subtitle": "Es funktioniert wie eine Börse, aber für zukünftige Ereignisse. Menschen handeln mit echtem Geld auf Ergebnisse wie \"Wer gewinnt die Wahl?\" oder \"Steigt Bitcoin über $100k?\". Weil echtes Geld auf dem Spiel steht, werden diese Prognosen erstaunlich präzise, oft genauer als Umfragen oder Experten. Regierungen, Unternehmen und Investoren nutzen diese Daten bereits, um Entscheidungen zu treffen, bevor die Fakten eintreten.",
       "badge": "Milliarden werden bereits gehandelt",
       "cards": [
         {
@@ -76,9 +98,11 @@
       ]
     },
     "solution": {
-      "eyebrow": "So löst Kuest das",
-      "title": "Starte heute. Die schwierige Infrastruktur steht schon.",
-      "subtitle": "Trading, geteilte Liquidität und deine Marke — in 15 Minuten startklar.",
+      "eyebrow": "",
+      "title": "Ein Milliardenmarkt. Auf zwei Unternehmen konzentriert. Bis jetzt.\nPolymarket und Kalshi dominieren — aber sie sind geschlossen. Du handelst auf ihnen. Nicht mit ihnen.",
+      "subtitle": "Kuest wurde gebaut, um das zu ändern.\nMit wenigen Klicks startest du deine eigene Prediction-Market-Seite: mit deiner Marke, deinen Kategorien und deinen eigenen Märkten. Wir kümmern uns um Smart Contracts, Infrastruktur, Liquidität und Integrationen. Du kümmerst dich um dein Publikum — und kassierst Gebühren für jeden Trade, der auf deiner Seite stattfindet.\nKein Code. Kein Server. Kein technischer Aufwand.",
+      "cta": "Ich will das Haus sein",
+      "note": "Kostenlos · Kuest-Infrastruktur · Liquidität inklusive",
       "points": [
         {
           "title": "Wähle deine Nische und formuliere deine Fragen",
@@ -389,11 +413,11 @@
       ]
     },
     "finalCta": {
-      "eyebrow": "Deine Nische wartet",
-      "title": "Starte deinen eigenen Prediction Market noch heute.",
-      "subtitle": "Kostenlos starten. In 15 Minuten live. Deine Marke, deine Fragen, dein Umsatz.",
-      "cta": "Prediction Market starten →",
-      "note": "Kostenlos starten · Kein Code · In Minuten live"
+      "eyebrow": "",
+      "title": "Dein Markt, dein Publikum, deine Regeln.",
+      "subtitle": "Starte kostenlos. Keine Kreditkarte erforderlich.",
+      "cta": "Meinen Prediction Market erstellen →",
+      "note": ""
     },
     "footer": {
       "launch": "Starten",

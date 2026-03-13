@@ -12,6 +12,8 @@
       "ariaLabel": "Changer la langue du site"
     },
     "preview": {
+      "title": "Voici à quoi ressemblera votre site.",
+      "subtitle": "Ceci est une démo fonctionnelle avec des marchés miroirs de Polymarket. Explorez-la, tradez dessus et imaginez cela avec votre marque, votre audience et vos questions.",
       "switchToDesktop": "Passer à la vue desktop",
       "switchToMobile": "Passer à la vue mobile"
     },
@@ -32,10 +34,30 @@
       "proof": "Lancement gratuit • Sans code • En ligne en quelques minutes",
       "previewUrl": "demo.kuest.com"
     },
+    "attentionScroll": {
+      "block1": {
+        "line1": "Pendant des années, l'argent a suivi l'attention.",
+        "line2": "Affiliation. Dropshipping. Formations en ligne. Paris.",
+        "line3": "Chaque vague a ouvert une fenêtre — puis l'a refermée presque aussitôt.",
+        "line4": "Tu es arrivé tôt, ou seulement quand c'était déjà saturé ?"
+      },
+      "block2": {
+        "line1": "Aujourd'hui, deux plateformes contrôlent un marché de plusieurs milliards.",
+        "brand1": "Polymarket.",
+        "brand2": "Kalshi.",
+        "line3": "49 % du trafic vient encore de seulement 5 pays.",
+        "line4": "Le reste du monde l'a à peine découvert."
+      },
+      "block3": {
+        "lead": "Tu peux choisir :",
+        "line2": "être un trader de plus à essayer d'anticiper la prochaine prédiction —",
+        "line3": "ou bâtir la maison où tous les autres viennent jouer."
+      }
+    },
     "social": {
-      "eyebrow": "La vague est déjà là",
-      "title": "La demande existe déjà. Ce qui manquait, c’était l’infrastructure pour en faire un revenu qui vous appartient.",
-      "subtitle": "Polymarket occupe les élections. Kalshi occupe le macro. Votre niche reste à prendre.",
+      "eyebrow": "PEUT-ON PRÉDIRE L'AVENIR ?",
+      "title": "Marché de prédiction",
+      "subtitle": "Cela fonctionne comme une bourse, mais pour des événements futurs. Des personnes misent de l'argent réel sur des résultats comme \"Qui gagne l'élection ?\" ou \"Le Bitcoin dépasse les $100k ?\". Parce qu'il y a de l'argent en jeu, ces prévisions deviennent étonnamment précises, souvent plus que les sondages ou les experts. Des gouvernements, des entreprises et des investisseurs utilisent déjà ces données pour prendre des décisions avant que les faits ne se produisent.",
       "badge": "Des milliards sont déjà échangés",
       "cards": [
         {
@@ -76,9 +98,11 @@
       ]
     },
     "solution": {
-      "eyebrow": "Comment Kuest règle le problème",
-      "title": "Lancez aujourd’hui. L’infrastructure compliquée est déjà prête.",
-      "subtitle": "Trading, liquidité partagée et votre marque : tout est prêt en 15 minutes.",
+      "eyebrow": "",
+      "title": "Un marché de plusieurs milliards. Concentré entre deux entreprises. Jusqu'à maintenant.\nPolymarket et Kalshi dominent — mais ce sont des plateformes fermées. Vous y tradez. Pas avec elles.",
+      "subtitle": "Kuest est née pour changer cela.\nEn quelques clics, vous lancez votre propre site de prediction market : avec votre marque, vos catégories et vos marchés personnalisés. Nous gérons les smart contracts, l'infrastructure, la liquidité et les intégrations. Vous vous concentrez sur votre audience — et percevez des frais sur chaque trade réalisé sur votre site.\nSans code. Sans serveur. Sans casse-tête technique.",
+      "cta": "Je veux être la maison",
+      "note": "Gratuit · Infrastructure Kuest · Liquidité incluse",
       "points": [
         {
           "title": "Choisissez votre niche et rédigez vos questions",
@@ -389,11 +413,11 @@
       ]
     },
     "finalCta": {
-      "eyebrow": "Votre niche vous attend",
-      "title": "Lancez votre propre marché de prédiction dès aujourd’hui.",
-      "subtitle": "Gratuit pour commencer. En ligne en 15 minutes. Votre marque, vos questions et vos revenus.",
-      "cta": "Lancez votre marché →",
-      "note": "Lancement gratuit · Sans code · En ligne en quelques minutes"
+      "eyebrow": "",
+      "title": "Votre marché, votre audience, vos règles.",
+      "subtitle": "Commencez gratuitement. Sans carte bancaire.",
+      "cta": "Créer mon prediction market →",
+      "note": ""
     },
     "footer": {
       "launch": "Lancer",

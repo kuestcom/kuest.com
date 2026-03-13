@@ -7,6 +7,7 @@ import { __iconNode as banknoteIconNode } from "lucide-react/dist/esm/icons/bank
 import { __iconNode as bitcoinIconNode } from "lucide-react/dist/esm/icons/bitcoin.js";
 import { __iconNode as chartColumnIncreasingIconNode } from "lucide-react/dist/esm/icons/chart-column-increasing.js";
 import { __iconNode as chevronDownIconNode } from "lucide-react/dist/esm/icons/chevron-down.js";
+import { __iconNode as chevronRightIconNode } from "lucide-react/dist/esm/icons/chevron-right.js";
 import { __iconNode as circleDollarSignIconNode } from "lucide-react/dist/esm/icons/circle-dollar-sign.js";
 import { __iconNode as clapperboardIconNode } from "lucide-react/dist/esm/icons/clapperboard.js";
 import { __iconNode as dollarSignIconNode } from "lucide-react/dist/esm/icons/dollar-sign.js";
@@ -15,8 +16,10 @@ import { __iconNode as globe2IconNode } from "lucide-react/dist/esm/icons/earth.
 import { __iconNode as hexagonIconNode } from "lucide-react/dist/esm/icons/hexagon.js";
 import { __iconNode as landmarkIconNode } from "lucide-react/dist/esm/icons/landmark.js";
 import { __iconNode as monitorSmartphoneIconNode } from "lucide-react/dist/esm/icons/monitor-smartphone.js";
+import { __iconNode as moonIconNode } from "lucide-react/dist/esm/icons/moon.js";
 import { __iconNode as slidersHorizontalIconNode } from "lucide-react/dist/esm/icons/sliders-horizontal.js";
 import { __iconNode as squarePenIconNode } from "lucide-react/dist/esm/icons/square-pen.js";
+import { __iconNode as sunIconNode } from "lucide-react/dist/esm/icons/sun.js";
 import { __iconNode as targetIconNode } from "lucide-react/dist/esm/icons/target.js";
 import { __iconNode as trophyIconNode } from "lucide-react/dist/esm/icons/trophy.js";
 import { __iconNode as usersIconNode } from "lucide-react/dist/esm/icons/users.js";
@@ -36,6 +39,7 @@ const LUCIDE_ICONS: Record<string, LucideIconNode> = {
   bitcoin: bitcoinIconNode,
   "chart-column-increasing": chartColumnIncreasingIconNode,
   "chevron-down": chevronDownIconNode,
+  "chevron-right": chevronRightIconNode,
   "circle-dollar-sign": circleDollarSignIconNode,
   clapperboard: clapperboardIconNode,
   "dollar-sign": dollarSignIconNode,
@@ -44,8 +48,10 @@ const LUCIDE_ICONS: Record<string, LucideIconNode> = {
   hexagon: hexagonIconNode,
   landmark: landmarkIconNode,
   "monitor-smartphone": monitorSmartphoneIconNode,
+  moon: moonIconNode,
   "sliders-horizontal": slidersHorizontalIconNode,
   "square-pen": squarePenIconNode,
+  sun: sunIconNode,
   target: targetIconNode,
   trophy: trophyIconNode,
   users: usersIconNode,
@@ -60,6 +66,15 @@ const LANGUAGE_OPTIONS = [
   { code: "fr", label: "Français", flagSrc: "/assets/flags/fr.svg" },
   { code: "zh", label: "中文", flagSrc: "/assets/flags/zh.svg" },
 ] as const;
+
+const HERO_TITLE_ACCENT_BY_LOCALE: Record<SiteLocale, string> = {
+  en: "Free",
+  de: "Kostenlos",
+  es: "Gratis",
+  pt: "Grátis",
+  fr: "Gratuit",
+  zh: "免费开始",
+};
 
 const NICHE_STATIC = [
   {
@@ -168,10 +183,148 @@ function setHtml(target: Element | null, value?: string | null) {
   }
 }
 
+function setTextWithAccent(target: Element | null, value: string | null | undefined, accent?: string) {
+  if (!target) {
+    return;
+  }
+
+  const text = value ?? "";
+  const accentText = accent?.trim();
+
+  if (!accentText) {
+    target.textContent = text;
+    return;
+  }
+
+  const matchIndex = text.lastIndexOf(accentText);
+
+  if (matchIndex === -1) {
+    target.textContent = text;
+    return;
+  }
+
+  let beforeText = text.slice(0, matchIndex);
+
+  if (/\s$/.test(beforeText)) {
+    beforeText = `${beforeText.slice(0, -1)}\u00a0`;
+  }
+
+  const before = escapeHtml(beforeText);
+  const highlighted = escapeHtml(text.slice(matchIndex, matchIndex + accentText.length));
+  const after = escapeHtml(text.slice(matchIndex + accentText.length));
+
+  target.innerHTML = `${before}<span class="hero-title-accent">${highlighted}</span>${after}`;
+}
+
 function setAttr(target: Element | null, attr: string, value: string) {
   if (target) {
     target.setAttribute(attr, value);
   }
+}
+
+const KUEST_MARK_HTML =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z" transform="rotate(-90 165.17 251.5)"/></svg>';
+
+function buildSolutionSubtitleHtml(titleRest: string[], subtitle: string) {
+  const introLines = titleRest.map((line) => line.trim()).filter(Boolean);
+  const subtitleLines = subtitle
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const [calloutLine, ...bodyLines] = subtitleLines;
+  const conclusionLine = bodyLines.length > 0 ? bodyLines[bodyLines.length - 1] : "";
+  const proseLines = conclusionLine ? bodyLines.slice(0, -1) : bodyLines;
+
+  const proseHtml = proseLines.flatMap((line, index) => {
+    if (index !== 0) {
+      return `<span class="solution-copy-line">${escapeHtml(line)}</span>`;
+    }
+
+    const sentenceBreakMatch = line.match(/^(.+?[.!?]["']?)(?:\s+)(.+)$/);
+
+    if (!sentenceBreakMatch) {
+      return `<span class="solution-copy-line">${escapeHtml(line)}</span>`;
+    }
+
+    const [, firstSentence, remainingCopy] = sentenceBreakMatch;
+
+    return `<span class="solution-copy-block"><span class="solution-copy-line">${escapeHtml(
+      firstSentence.trim(),
+    )}</span><span class="solution-copy-line">${escapeHtml(remainingCopy.trim())}</span></span>`;
+  });
+
+  const conclusionHeading = formatSolutionConclusionHeading(conclusionLine);
+
+  return [
+    ...introLines.map((line) => `<span class="solution-copy-line">${escapeHtml(line)}</span>`),
+    calloutLine
+      ? `<span class="solution-copy-callout"><span class="solution-copy-callout-mark">${KUEST_MARK_HTML}</span><span>${escapeHtml(calloutLine)}</span></span>`
+      : "",
+    ...proseHtml,
+    conclusionHeading ? `<h4 class="solution-copy-heading">${escapeHtml(conclusionHeading)}</h4>` : "",
+  ]
+    .filter(Boolean)
+    .join("");
+}
+
+function formatSolutionConclusionHeading(conclusionLine?: string | null) {
+  const value = (conclusionLine ?? "").trim();
+  return value ? `${value.replace(/[.:!?\u3002\uff01\uff1f]\s*$/, "").trim()}:` : "";
+}
+
+function extractSolutionConclusionHeading(subtitle: string) {
+  const subtitleLines = subtitle
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const bodyLines = subtitleLines.slice(1);
+  const conclusionLine = bodyLines.length > 0 ? bodyLines[bodyLines.length - 1] : "";
+
+  return formatSolutionConclusionHeading(conclusionLine);
+}
+
+function stripTrailingArrow(value?: string | null) {
+  return (value ?? "").replace(/\s*→\s*$/, "");
+}
+
+function stripTerminalPeriod(value?: string | null) {
+  return (value ?? "").replace(/[.。]\s*$/, "");
+}
+
+function extractLargestMoneyToken(value?: string | null) {
+  const matches = (value ?? "").match(/\$\d+(?:\.\d+)?[TBMK]?/g);
+
+  if (!matches?.length) {
+    return "";
+  }
+
+  const multiplierBySuffix: Record<string, number> = {
+    K: 1_000,
+    M: 1_000_000,
+    B: 1_000_000_000,
+    T: 1_000_000_000_000,
+  };
+
+  const best = matches.reduce<{ token: string; value: number } | null>((largest, token) => {
+    const [, amountText = "0", suffix = ""] = token.match(/^\$(\d+(?:\.\d+)?)([TBMK]?)$/) ?? [];
+    const numericValue = Number(amountText) * (multiplierBySuffix[suffix] ?? 1);
+
+    if (!largest || numericValue > largest.value) {
+      return { token, value: numericValue };
+    }
+
+    return largest;
+  }, null);
+
+  return best?.token ?? matches[0];
+}
+
+function setCtaContent(target: Element | null, value?: string | null) {
+  if (!target) {
+    return;
+  }
+
+  target.innerHTML = `<span class="cta-label">${escapeHtml(stripTrailingArrow(value))}</span><i data-lucide="chevron-right"></i>`;
 }
 
 function escapeHtml(value: string) {
@@ -250,10 +403,6 @@ function serializeForInlineScript(value: unknown) {
     .replaceAll("&", "\\u0026")
     .replaceAll("\u2028", "\\u2028")
     .replaceAll("\u2029", "\\u2029");
-}
-
-function sanitizeTradeOutcomeClass(sideClass: string) {
-  return sideClass === "yes" || sideClass === "no" ? sideClass : "neutral";
 }
 
 function sanitizeTranslatedHref(href: string, locale: SiteLocale) {
@@ -393,27 +542,6 @@ function getDemoLabel(locale: SiteLocale) {
   return `demo.kuest.com${getDemoLocalePath(locale)}`;
 }
 
-function buildTradeFeed(
-  trades: Array<{
-    avatar: string;
-    name: string;
-    action: string;
-    side: string;
-    sideClass: string;
-    entry: string;
-  }>,
-) {
-  return trades
-    .concat(trades.slice(0, 2))
-    .map(
-      (item) => {
-        const safeOutcomeClass = sanitizeTradeOutcomeClass(item.sideClass);
-        return `<div class="mini-trade-row"><span class="mini-trade-avatar">${escapeHtml(item.avatar)}</span><span class="mini-trade-text"><span class="mini-trade-name">${escapeHtml(item.name)}</span> <span class="mini-trade-verb">${escapeHtml(item.action)}</span> <strong class="mini-trade-outcome is-${safeOutcomeClass}">${escapeHtml(item.side)}</strong> <span class="mini-trade-entry-price">${escapeHtml(item.entry)}</span></span></div>`;
-      },
-    )
-    .join("");
-}
-
 function buildNicheData(bundle: LandingMessages, fallbackBundle: LandingMessages): LandingNiche[] {
   return NICHE_STATIC.map((staticNiche, nicheIndex) => {
     const fallbackTranslated = fallbackBundle.niches.data[nicheIndex];
@@ -463,35 +591,34 @@ function buildNicheData(bundle: LandingMessages, fallbackBundle: LandingMessages
   });
 }
 
-function buildGaugeHtml(pct: number, chanceLabel: string) {
-  const arcLen = 62.8;
-  const offset = arcLen - (arcLen * pct) / 100;
-
-  return `<div class="niche-market-gauge"><svg width="48" height="32" viewBox="0 0 48 32" fill="none"><path d="M4 28 A20 20 0 0 1 44 28" stroke="#2a3040" stroke-width="5" stroke-linecap="round"></path><path d="M4 28 A20 20 0 0 1 44 28" stroke="#4f8ef7" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.8" stroke-dashoffset="${offset}"></path></svg><div class="niche-market-gauge-value">${pct}%</div><div class="niche-market-gauge-label">${escapeHtml(chanceLabel)}</div></div>`;
-}
-
-function buildNicheCardHtml(
+function buildPredictionShowcaseCardHtml(
   card: LandingNicheCard,
-  ui: { yes: string; no: string; chance: string },
+  niche: LandingNiche,
+  ui: { yes: string; no: string },
 ) {
-  const safeYes = escapeHtml(ui.yes);
-  const safeNo = escapeHtml(ui.no);
-  const safeTitle = escapeHtml(card.title);
-  const safeVolume = escapeHtml(card.vol);
-  const safeCategory = escapeHtml(card.cat);
-  const safeImageSrc = escapeHtml(sanitizeImageSrc(card.img));
-  const gauge = card.type === "single" ? buildGaugeHtml(card.pct, ui.chance) : "";
-  const body =
+  const isLongTitle = card.title.length > 58;
+  const rows =
     card.type === "single"
-      ? `<div class="niche-market-body niche-market-body-single"><div class="niche-market-actions"><button class="niche-market-btn niche-market-btn-yes">${safeYes}</button><button class="niche-market-btn niche-market-btn-no">${safeNo}</button></div></div>`
-      : `<div class="niche-market-body niche-market-body-multi"><div class="niche-market-list">${card.rows
-          .map(
-            (row) =>
-              `<div class="niche-market-list-row"><span class="niche-market-row-label">${escapeHtml(row.label)}</span><div class="niche-market-row-actions"><span class="niche-market-row-pct">${row.pct}%</span><button class="niche-market-btn niche-market-btn-mini niche-market-btn-yes">${safeYes}</button><button class="niche-market-btn niche-market-btn-mini niche-market-btn-no">${safeNo}</button></div></div>`,
-          )
-          .join("")}</div></div>`;
+      ? [
+          { label: ui.yes, pct: card.pct },
+          { label: ui.no, pct: Math.max(0, 100 - card.pct) },
+        ]
+      : card.rows;
 
-  return `<div class="niche-market-card"><div class="niche-market-head"><img src="${safeImageSrc}" alt="" class="niche-market-thumb"><div class="niche-market-title-wrap"><div class="niche-market-title">${safeTitle}</div></div>${gauge}</div>${body}<div class="niche-market-footer"><span class="niche-market-volume">${safeVolume}</span><span class="niche-market-category">${safeCategory}</span></div></div>`;
+  return `<article class="prediction-showcase-card" style="--prediction-accent:${escapeHtml(niche.accent)};--prediction-accent-rgb:${escapeHtml(
+    niche.accentRgb,
+  )};"><img src="${escapeHtml(sanitizeImageSrc(card.img))}" alt="" class="prediction-showcase-thumb"><h3 class="prediction-showcase-title${
+    isLongTitle ? " is-long" : ""
+  }">${escapeHtml(
+    card.title,
+  )}</h3><div class="prediction-showcase-list">${rows
+    .map(
+      (row) =>
+        `<div class="prediction-showcase-row"><span class="prediction-showcase-row-label">${escapeHtml(
+          row.label,
+        )}</span><span class="prediction-showcase-row-track"><span class="prediction-showcase-row-fill" style="width:${row.pct}%"></span></span><span class="prediction-showcase-row-pct">${row.pct}%</span></div>`,
+    )
+    .join("")}</div></article>`;
 }
 
 function buildLanguageMenu(locale: SiteLocale) {
@@ -517,156 +644,71 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
 
   document.documentElement.setAttribute("lang", locale);
 
-  setAttr(document.querySelector(".nav-logo"), "href", localeHref(locale));
-  setAttr(document.querySelector("#siteLanguageButton"), "aria-label", bundle.languageSelector.ariaLabel);
-  setAttr(document.querySelector("#siteLanguageMenu"), "aria-label", bundle.languageSelector.ariaLabel);
-  setAttr(document.querySelector("#siteLanguageCurrentFlag"), "src", currentLanguage.flagSrc);
-  setText(document.querySelector("#siteLanguageCurrentLabel"), currentLanguage.label);
-  setHtml(document.querySelector("#siteLanguageMenu"), buildLanguageMenu(locale));
-  setText(document.querySelector("nav .nb-solid"), bundle.nav.cta);
+  document.querySelectorAll("nav .nav-logo").forEach((logo) => setAttr(logo, "href", localeHref(locale)));
+  [
+    {
+      button: "#siteLanguageButton",
+      menu: "#siteLanguageMenu",
+      flag: "#siteLanguageCurrentFlag",
+      label: "#siteLanguageCurrentLabel",
+    },
+    {
+      button: "#heroBrandLanguageButton",
+      menu: "#heroBrandLanguageMenu",
+      flag: "#heroBrandLanguageCurrentFlag",
+      label: "#heroBrandLanguageCurrentLabel",
+    },
+    {
+      button: "#dockSiteLanguageButton",
+      menu: "#dockSiteLanguageMenu",
+      flag: "#dockSiteLanguageCurrentFlag",
+      label: "#dockSiteLanguageCurrentLabel",
+    },
+  ].forEach((control) => {
+    setAttr(document.querySelector(control.button), "aria-label", bundle.languageSelector.ariaLabel);
+    setAttr(document.querySelector(control.menu), "aria-label", bundle.languageSelector.ariaLabel);
+    setAttr(document.querySelector(control.flag), "src", currentLanguage.flagSrc);
+    setText(document.querySelector(control.label), currentLanguage.label);
+    setHtml(document.querySelector(control.menu), buildLanguageMenu(locale));
+  });
+  document.querySelectorAll("nav .nav-cta").forEach((cta) => {
+    setCtaContent(cta, bundle.nav.cta);
+    setAttr(cta, "href", launchHref);
+  });
 
   const heroLines = Array.from(document.querySelectorAll(".hero-title-line"));
   setText(document.querySelector(".hero-kicker"), bundle.hero.kicker);
-  setText(heroLines[0] ?? null, bundle.hero.titleLine1);
-  setText(heroLines[1] ?? null, bundle.hero.titleLine2);
+  setText(heroLines[0] ?? null, stripTerminalPeriod(bundle.hero.titleLine1));
+  setTextWithAccent(
+    heroLines[1] ?? null,
+    stripTerminalPeriod(bundle.hero.titleLine2),
+    HERO_TITLE_ACCENT_BY_LOCALE[locale],
+  );
+  setText(document.querySelector("#attentionLine1"), bundle.attentionScroll.block1.line1);
+  setText(document.querySelector("#attentionLine2"), bundle.attentionScroll.block1.line2);
+  setText(document.querySelector("#attentionLine3"), bundle.attentionScroll.block1.line3);
+  setText(document.querySelector("#attentionLine4"), bundle.attentionScroll.block1.line4);
+  setText(document.querySelector("#attentionLine5"), bundle.attentionScroll.block2.line1);
+  setText(document.querySelector("#attentionLine6"), bundle.attentionScroll.block2.line3);
+  setText(document.querySelector("#attentionLine7"), bundle.attentionScroll.block2.line4);
+  setText(document.querySelector("#attentionLine8"), bundle.attentionScroll.block3.lead);
+  setText(document.querySelector("#attentionLine9"), bundle.attentionScroll.block3.line2);
+  setText(document.querySelector("#attentionLine10"), bundle.attentionScroll.block3.line3);
   setText(document.querySelector(".hero-copy-sub"), bundle.hero.subtitle);
-  setText(document.querySelector(".hero-copy-actions .btn-cta"), bundle.hero.cta);
+  setCtaContent(document.querySelector(".hero-copy-actions .btn-cta"), bundle.hero.cta);
   setAttr(document.querySelector(".hero-copy-actions .btn-cta"), "href", launchHref);
   setText(document.querySelector(".hero-copy-proof"), bundle.hero.proof);
+  setText(document.querySelector("#siteDemoTitle"), bundle.preview.title);
+  setText(document.querySelector("#siteDemoSubtitle"), bundle.preview.subtitle);
   setText(document.querySelector(".site-preview-url"), getDemoLabel(locale));
   setAttr(document.querySelector(".site-preview-url"), "href", getDemoHref(locale));
   setAttr(document.querySelector("#sitePreviewFrame"), "src", getDemoEmbedSrc(locale));
 
-  const socialCards = Array.from(document.querySelectorAll("#p2 .mn"));
-  setText(document.querySelector("#p2 .slbl"), bundle.social.eyebrow);
-  setText(document.querySelector("#p2 .sh"), bundle.social.title);
-  setText(document.querySelector("#p2 .bt"), bundle.social.subtitle);
-  setHtml(
-    document.querySelector("#p2 .live-badge"),
-    `<div class="live-dot"></div>${escapeHtml(bundle.social.badge)}`,
-  );
-  socialCards.forEach((card, index) => {
-    const data = bundle.social.cards[index];
-    if (!data) {
-      return;
-    }
-
-    setText(card.querySelector(".mn-label"), data.label);
-    setHtml(card.querySelector(".mn-sub"), sanitizeTranslatedHtml(data.subHtml, locale));
-  });
-
-  const problemCards = Array.from(document.querySelectorAll("#p1 .mini-card"));
-  setText(document.querySelector("#p1 .slbl"), bundle.problems.eyebrow);
-  setText(document.querySelector("#p1 .sh"), bundle.problems.title);
-  setText(document.querySelector("#p1 .bt"), bundle.problems.subtitle);
-  problemCards.forEach((card, index) => {
-    const data = bundle.problems.cards[index];
-    if (!data) {
-      return;
-    }
-
-    setText(card.querySelector(".mini-card-title"), data.title);
-    setText(card.querySelector(".mini-card-copy"), data.copy);
-  });
-
-  const solutionPoints = Array.from(document.querySelectorAll("#p3 .solution-point"));
-  setText(document.querySelector("#p3 .slbl"), bundle.solution.eyebrow);
-  setText(document.querySelector("#p3 .sh"), bundle.solution.title);
-  setText(document.querySelector("#p3 .bt"), bundle.solution.subtitle);
-  setText(document.querySelector("#solutionCtaBtn"), bundle.hero.cta);
-  setAttr(document.querySelector("#solutionCtaBtn"), "href", launchHref);
-  setText(document.querySelector("#solutionCtaNote"), bundle.hero.proof);
-  solutionPoints.forEach((point, index) => {
-    const data = bundle.solution.points[index];
-    if (!data) {
-      return;
-    }
-
-    setText(point.querySelector("h3"), data.title);
-    setText(point.querySelector("p"), data.copy);
-  });
-
-  setText(document.querySelector("#marketMockTitle"), bundle.solution.mock.title);
-  setText(document.querySelector("#marketMockChanceSuffix"), bundle.solution.mock.chanceSuffix);
-  setText(document.querySelector("#marketMockLogoLabel"), bundle.solution.mock.logoLabel);
-  setHtml(
-    document.querySelector("#marketMockMeta"),
-    sanitizeTranslatedHtml(bundle.solution.mock.metaHtml, locale),
-  );
-  setText(document.querySelector("#marketMockYesBtn"), bundle.solution.mock.yesButton);
-  setText(document.querySelector("#marketMockNoBtn"), bundle.solution.mock.noButton);
-
-  const featureCards = Array.from(document.querySelectorAll("#p4 .mini-card"));
-  setText(document.querySelector("#p4 .slbl"), bundle.features.eyebrow);
-  setText(document.querySelector("#p4 .sh"), bundle.features.title);
-  setText(document.querySelector("#p4 .bt"), bundle.features.subtitle);
-
-  if (featureCards[0]) {
-    setText(featureCards[0].querySelector(".mini-card-title"), bundle.features.cards[0].title);
-    setText(featureCards[0].querySelector(".mini-card-copy"), bundle.features.cards[0].copy);
-  }
-
-  if (featureCards[1]) {
-    setText(featureCards[1].querySelector(".mini-card-title"), bundle.features.cards[1].title);
-    setText(featureCards[1].querySelector(".mini-card-copy"), bundle.features.cards[1].copy);
-    setText(featureCards[1].querySelector(".mini-vote-question"), bundle.features.cards[1].question);
-    const voteButtons = Array.from(featureCards[1].querySelectorAll(".mini-vote-btn"));
-    setText(voteButtons[0] ?? null, bundle.common.yes);
-    setText(voteButtons[1] ?? null, bundle.common.no);
-  }
-
-  if (featureCards[2]) {
-    setText(featureCards[2].querySelector(".mini-card-title"), bundle.features.cards[2].title);
-    setText(featureCards[2].querySelector(".mini-card-copy"), bundle.features.cards[2].copy);
-    setText(featureCards[2].querySelector(".mini-trade-head > span:first-child"), bundle.features.cards[2].feedStatus);
-    setHtml(
-      featureCards[2].querySelector(".mini-trade-status"),
-      `<span class="mini-trade-status-dot"></span>${escapeHtml(bundle.features.cards[2].feedLabel ?? "")}`,
-    );
-    setHtml(
-      featureCards[2].querySelector(".mini-trade-track"),
-      buildTradeFeed(bundle.features.cards[2].trades ?? []),
-    );
-  }
-
-  setText(document.querySelector("#p5 .slbl"), bundle.calculator.eyebrow);
-  setText(document.querySelector("#p5 .sh"), bundle.calculator.title);
-  const calcLabels = Array.from(document.querySelectorAll("#p5 .calc-label"));
-  setText(calcLabels[0] ?? null, bundle.calculator.dailyVolumeLabel);
-  setText(calcLabels[1] ?? null, bundle.calculator.feeLabel);
-  setAttr(document.querySelector("#feeSlider"), "aria-label", bundle.calculator.dailyVolumeAriaLabel);
-  setAttr(document.querySelector("#feeRateDown"), "aria-label", bundle.calculator.decreaseFeeAriaLabel);
-  setAttr(document.querySelector("#feeRateUp"), "aria-label", bundle.calculator.increaseFeeAriaLabel);
-  setText(document.querySelector("#p5 .calc-result-label"), bundle.calculator.resultLabel);
-  setText(document.querySelector("#p5 .calc-note"), bundle.calculator.note);
-  setText(document.querySelector("#calculatorCtaPrompt"), bundle.calculator.ctaPrompt);
-  setText(document.querySelector("#calculatorCtaBtn"), bundle.hero.cta);
-  setAttr(document.querySelector("#calculatorCtaBtn"), "href", launchHref);
-  setText(document.querySelector("#calculatorCtaNote"), bundle.hero.proof);
-
-  const whyNowCards = Array.from(document.querySelectorAll("#p6 .mn"));
-  setText(document.querySelector("#p6 .slbl"), bundle.whyNow.eyebrow);
-  setText(document.querySelector("#p6 .sh"), bundle.whyNow.title);
-  setText(document.querySelector("#p6 .bt"), bundle.whyNow.subtitle);
-  whyNowCards.forEach((card, index) => {
-    const data = bundle.whyNow.cards[index];
-    if (!data) {
-      return;
-    }
-
-    setText(card.querySelector(".mn-label"), data.label);
-    setText(card.querySelector(".mn-sub"), data.sub);
-  });
-
-  setText(document.querySelector("#p7 .slbl"), bundle.niches.eyebrow);
-  setText(document.querySelector("#p7 .sh"), bundle.niches.title);
-  setText(document.querySelector("#nichesCtaPrompt"), bundle.niches.ctaPrompt);
-  setText(document.querySelector("#nichesCtaBtn"), bundle.hero.cta);
-  setAttr(document.querySelector("#nichesCtaBtn"), "href", launchHref);
-  setText(document.querySelector("#nichesCtaNote"), bundle.hero.proof);
-
-  const nicheTabs = Array.from(document.querySelectorAll("#nicheTabs .niche-tab"));
-  nicheTabs.forEach((tab, index) => {
+  setText(document.querySelector("#predictionExplainerEyebrow"), bundle.social.eyebrow);
+  setText(document.querySelector("#predictionExplainerTitle"), bundle.social.title);
+  setText(document.querySelector("#predictionExplainerSubtitle"), bundle.social.subtitle);
+  const predictionTabs = Array.from(document.querySelectorAll("#predictionNicheTabs .niche-tab"));
+  predictionTabs.forEach((tab, index) => {
     const label = bundle.niches.tabs[index] ?? fallbackBundle.niches.tabs[index];
     if (!label) {
       return;
@@ -674,28 +716,48 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
 
     setHtml(tab, `<i data-lucide="${NICHE_TAB_ICONS[index]}"></i> ${escapeHtml(label)}`);
   });
-  setText(document.querySelector("#nicheTagline"), initialNiche.tagline);
   setHtml(
-    document.querySelector("#nicheCardsGrid"),
+    document.querySelector("#predictionNicheCardsGrid"),
     initialNiche.cards
       .map((card) =>
-        buildNicheCardHtml(card, {
+        buildPredictionShowcaseCardHtml(card, initialNiche, {
           yes: bundle.common.yes,
           no: bundle.common.no,
-          chance: bundle.common.chance,
         }),
       )
       .join(""),
   );
 
-  setText(document.querySelector("#p8 .slbl"), bundle.faq.eyebrow);
-  setHtml(document.querySelector("#p8 .sh"), sanitizeTranslatedHtml(bundle.faq.titleHtml, locale));
+  const [solutionHeadline, ...solutionTitleRest] = bundle.solution.title
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  setText(document.querySelector("#p3 .sh"), solutionHeadline ?? bundle.solution.title);
+  setHtml(document.querySelector("#p3 .bt"), buildSolutionSubtitleHtml(solutionTitleRest, bundle.solution.subtitle));
+  setText(document.querySelector("#solutionCopyHeadingMobile"), extractSolutionConclusionHeading(bundle.solution.subtitle));
+  setCtaContent(document.querySelector("#solutionCtaBtn"), bundle.solution.cta);
+  setAttr(document.querySelector("#solutionCtaBtn"), "href", launchHref);
+  setText(document.querySelector("#solutionCtaNote"), bundle.solution.note);
+  setHtml(
+    document.querySelector("#solutionProofRotator"),
+    bundle.social.cards
+      .map((card, index) => {
+        const safeLabel = escapeHtml(card.label);
+        const safeCopy = sanitizeTranslatedHtml(card.subHtml, locale);
+        const safeValue = escapeHtml(extractLargestMoneyToken(card.subHtml));
+
+        return `<article class="solution-proof-card${index === 0 ? " is-active" : ""}"><div class="solution-proof-card-label">${safeLabel}</div><div class="solution-proof-card-value">${safeValue}</div><div class="solution-proof-card-copy">${safeCopy}</div></article>`;
+      })
+      .join(""),
+  );
+
+  setText(document.querySelector("#p8 .sh"), "FAQ");
   setHtml(
     document.querySelector("#p8 .faq-list"),
     bundle.faq.items
       .map(
         (item) =>
-          `<details class="faq-item"><summary class="faq-q" aria-expanded="false">${escapeHtml(item.q)}</summary><div class="faq-a">${sanitizeTranslatedHtml(item.aHtml, locale)}</div></details>`,
+          `<details class="faq-item"><summary class="faq-q" aria-expanded="false">${escapeHtml(item.q)}</summary><div class="faq-divider" aria-hidden="true"></div><div class="faq-panel"><div class="faq-panel-inner"><div class="faq-a">${sanitizeTranslatedHtml(item.aHtml, locale)}</div></div></div></details>`,
       )
       .join(""),
   );
@@ -703,25 +765,20 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector("#p9 .slbl"), bundle.finalCta.eyebrow);
   setText(document.querySelector("#p9 .cta-h"), bundle.finalCta.title);
   setText(document.querySelector("#p9 .cta-sub"), bundle.finalCta.subtitle);
-  setText(document.querySelector("#p9 .btn-cta"), bundle.finalCta.cta);
+  setCtaContent(document.querySelector("#p9 .btn-cta"), bundle.finalCta.cta);
   setAttr(document.querySelector("#p9 .btn-cta"), "href", launchHref);
   setText(document.querySelector("#p9 .cta-note"), bundle.finalCta.note);
 
-  const footerLinks = Array.from(document.querySelectorAll(".foot-links a"));
-  if (footerLinks[0]) {
-    footerLinks[0].textContent = bundle.footer.launch;
-    footerLinks[0].setAttribute("href", launchHref);
-  }
-  if (footerLinks[1]) {
-    footerLinks[1].textContent = bundle.footer.demo;
-  }
-  if (footerLinks[2]) {
-    footerLinks[2].textContent = bundle.footer.docs;
-  }
-  if (footerLinks[5]) {
-    footerLinks[5].textContent = bundle.footer.contact;
-  }
-  setText(document.querySelector("#footerLiveText"), bundle.footer.live);
+  [
+    { selector: "#footerDocsLink", label: bundle.footer.docs },
+    { selector: "#footerMailLink", label: bundle.footer.contact },
+    { selector: "#footerXLink", label: "X" },
+    { selector: "#footerDiscordLink", label: "Discord" },
+  ].forEach(({ selector, label }) => {
+    const link = document.querySelector(selector);
+    setAttr(link, "aria-label", label);
+    setAttr(link, "title", label);
+  });
 
   setText(document.querySelector("#sourceModalOutlet"), bundle.sourceModal.outlet);
   setText(document.querySelector("#sourceModalTitle"), bundle.sourceModal.title);
@@ -730,40 +787,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector("#sourceModalExternal"), bundle.sourceModal.external);
   setText(document.querySelector(".source-modal-actions button[data-source-close]"), bundle.sourceModal.back);
 
-  const languageDemoSelect = document.querySelector("#languageDemoSelect");
-  if (languageDemoSelect) {
-    const demoOptions = Array.from(languageDemoSelect.querySelectorAll("option"));
-    demoOptions.forEach((option, index) => {
-      const languageOption = LANGUAGE_OPTIONS[index];
-      if (!languageOption) {
-        return;
-      }
-
-      option.textContent = languageOption.label;
-      if (languageOption.code === locale) {
-        option.setAttribute("selected", "selected");
-      } else {
-        option.removeAttribute("selected");
-      }
-    });
-  }
-
   replaceLucidePlaceholders(document);
-
-  const demoLabels =
-    locale === "de"
-      ? ["Fußball", "Politik", "Krypto"]
-      : locale === "es"
-        ? ["Fútbol", "Política", "Cripto"]
-        : locale === "pt"
-          ? ["Futebol", "Política", "Cripto"]
-        : locale === "fr"
-          ? ["Football", "Politique", "Crypto"]
-          : locale === "zh"
-            ? ["足球", "政治", "加密"]
-            : ["Soccer", "Politics", "Crypto"];
-  const chips = Array.from(document.querySelectorAll("[data-lang-chip]"));
-  chips.forEach((chip, index) => setText(chip, demoLabels[index] ?? ""));
 
   document.querySelectorAll('a[href="/launch"]').forEach((link) => {
     link.setAttribute("href", launchHref);

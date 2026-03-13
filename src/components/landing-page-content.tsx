@@ -21,6 +21,10 @@ function serializeJsonForHtmlScript(value: unknown) {
     .replaceAll("\u2029", "\\u2029");
 }
 
+function buildLandingThemeBootstrapScript() {
+  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='light';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
+}
+
 export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata> {
   const bundle = await getLandingMessages(locale);
   const siteOrigin = getSiteOrigin();
@@ -30,6 +34,7 @@ export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata
   return {
     title: bundle.meta.title,
     description: bundle.meta.description,
+    themeColor: "#f7f8fb",
     keywords: [
       "create your prediction market",
       "white label prediction market",
@@ -72,6 +77,12 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
 
   return (
     <>
+      <script
+        id="landing-theme-bootstrap"
+        dangerouslySetInnerHTML={{
+          __html: buildLandingThemeBootstrapScript(),
+        }}
+      />
       <div suppressHydrationWarning dangerouslySetInnerHTML={{ __html: markup }} />
       <script
         id="landing-structured-data"

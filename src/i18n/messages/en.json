@@ -12,6 +12,8 @@
       "ariaLabel": "Change site language"
     },
     "preview": {
+      "title": "This is what your site will look like.",
+      "subtitle": "This is a functional demo with mirrored Polymarket markets. Explore it, trade on it, and imagine it with your brand, your audience, and your questions.",
       "switchToDesktop": "Switch to desktop preview",
       "switchToMobile": "Switch to mobile preview"
     },
@@ -32,10 +34,30 @@
       "proof": "Free launch • No code • Live in minutes",
       "previewUrl": "demo.kuest.com"
     },
+    "attentionScroll": {
+      "block1": {
+        "line1": "For years, money followed attention.",
+        "line2": "Affiliates. Dropshipping. Online courses. Betting.",
+        "line3": "Each wave opened a window — and closed right after.",
+        "line4": "Did you get in early, or arrive when it was already saturated?"
+      },
+      "block2": {
+        "line1": "Today, two platforms control a market worth billions.",
+        "brand1": "Polymarket.",
+        "brand2": "Kalshi.",
+        "line3": "49% of visits still come from just 5 countries.",
+        "line4": "The rest of the world has barely discovered this."
+      },
+      "block3": {
+        "lead": "You can choose:",
+        "line2": "be one more trader trying to call the next prediction —",
+        "line3": "or build the house where everyone else plays."
+      }
+    },
     "social": {
-      "eyebrow": "The wave is already here",
-      "title": "The demand is already there. The infrastructure to claim your slice wasn't — until now.",
-      "subtitle": "Polymarket covers elections. Kalshi covers macro. Your niche? Still wide open.",
+      "eyebrow": "IS IT POSSIBLE TO PREDICT THE FUTURE?",
+      "title": "Prediction Market",
+      "subtitle": "It works like a stock exchange, but for future events. People trade with real money on outcomes like \"Who wins the election?\" or \"Does Bitcoin go above $100k?\" Because real money is at stake, forecasts become surprisingly accurate, often outperforming polls or experts. Governments, companies, and investors already use this data to make decisions before the facts unfold.",
       "badge": "Billions are already trading",
       "cards": [
         {
@@ -76,9 +98,11 @@
       ]
     },
     "solution": {
-      "eyebrow": "How Kuest solves it",
-      "title": "Launch today. We handle everything else.",
-      "subtitle": "Full trading infrastructure, shared liquidity, your brand — ready in 15 minutes.",
+      "eyebrow": "",
+      "title": "A billion-dollar market. Concentrated in two companies. Until now.\nPolymarket and Kalshi dominate — but they are closed. You trade on them. Not with them.",
+      "subtitle": "Kuest was built to change that.\nIn just a few clicks, you launch your own prediction market site: with your brand, your categories, and your custom markets. We handle the smart contracts, infrastructure, liquidity, and integrations. You focus on your audience — and collect fees from every trade that happens on your site.\nNo code. No server. No technical headaches.",
+      "cta": "I want to be the house",
+      "note": "Free · Kuest infrastructure · Liquidity included",
       "points": [
         {
           "title": "Pick your niche and write your questions",
@@ -389,11 +413,11 @@
       ]
     },
     "finalCta": {
-      "eyebrow": "Your niche is waiting",
-      "title": "Launch your own prediction market today.",
-      "subtitle": "Free to start. Live in 15 minutes. Your brand, your questions, your revenue.",
-      "cta": "Start your prediction market →",
-      "note": "Free launch · No code · Live in minutes"
+      "eyebrow": "",
+      "title": "Your market, your audience, your rules.",
+      "subtitle": "Start free. No credit card required.",
+      "cta": "Create my prediction market →",
+      "note": ""
     },
     "footer": {
       "launch": "Launch",

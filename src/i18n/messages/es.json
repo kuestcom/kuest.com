@@ -12,6 +12,8 @@
       "ariaLabel": "Cambiar idioma del sitio"
     },
     "preview": {
+      "title": "Así se verá tu sitio.",
+      "subtitle": "Este es un demo funcional con mercados reflejados de Polymarket. Explóralo, opera y piensa en esto con tu marca, tu audiencia y tus preguntas.",
       "switchToDesktop": "Cambiar a vista de escritorio",
       "switchToMobile": "Cambiar a vista móvil"
     },
@@ -32,10 +34,30 @@
       "proof": "Lanzamiento gratis • Sin código • En vivo en minutos",
       "previewUrl": "demo.kuest.com"
     },
+    "attentionScroll": {
+      "block1": {
+        "line1": "Durante años, el dinero siguió a la atención.",
+        "line2": "Afiliados. Dropshipping. Cursos online. Apuestas.",
+        "line3": "Cada ola abrió una ventana — y se cerró poco después.",
+        "line4": "¿Entraste temprano o llegaste cuando ya estaba saturado?"
+      },
+      "block2": {
+        "line1": "Hoy dos plataformas controlan un mercado de miles de millones.",
+        "brand1": "Polymarket.",
+        "brand2": "Kalshi.",
+        "line3": "El 49% del tráfico todavía viene de solo 5 países.",
+        "line4": "El resto del mundo apenas está descubriendo esto."
+      },
+      "block3": {
+        "lead": "Puedes elegir:",
+        "line2": "ser un trader más intentando acertar la próxima predicción —",
+        "line3": "o montar la casa donde juegan todos los demás."
+      }
+    },
     "social": {
-      "eyebrow": "La ola ya llegó",
-      "title": "La demanda ya existe. Lo que faltaba era la infraestructura para convertirla en ingresos tuyos.",
-      "subtitle": "Polymarket domina elecciones. Kalshi domina macro. Tu nicho sigue abierto.",
+      "eyebrow": "¿ES POSIBLE PREDECIR EL FUTURO?",
+      "title": "Mercado de Predicción",
+      "subtitle": "Funciona como una bolsa de valores, pero para eventos futuros. Las personas operan con dinero real sobre resultados como \"¿Quién gana la elección?\" o \"¿Bitcoin supera los $100k?\". Como hay dinero en juego, las predicciones se vuelven sorprendentemente precisas, incluso más que las encuestas o los expertos. Gobiernos, empresas e inversionistas ya usan estos datos para tomar decisiones antes de que los hechos ocurran.",
       "badge": "Ya se mueven miles de millones",
       "cards": [
         {
@@ -76,9 +98,11 @@
       ]
     },
     "solution": {
-      "eyebrow": "Cómo lo resuelve Kuest",
-      "title": "Lanza hoy. La parte difícil ya está resuelta.",
-      "subtitle": "Infraestructura de trading, liquidez compartida y tu marca, lista en 15 minutos.",
+      "eyebrow": "",
+      "title": "Un mercado multimillonario. Concentrado en dos empresas. Hasta ahora.\nPolymarket y Kalshi dominan, pero son cerradas. Tú operas en ellas. No con ellas.",
+      "subtitle": "Kuest nació para cambiar eso.\nEn pocos clics lanzas tu propio sitio de prediction market: con tu marca, tus categorías y tus mercados personalizados. Nosotros nos encargamos de los contratos inteligentes, la infraestructura, la liquidez y las integraciones. Tú te ocupas de tu audiencia y recibes comisiones por cada trade que ocurre en tu sitio.\nSin código. Sin servidor. Sin dolor de cabeza técnico.",
+      "cta": "Quiero ser la casa",
+      "note": "Gratis · Infraestructura Kuest · Liquidez incluida",
       "points": [
         {
           "title": "Elige tu nicho y escribe tus preguntas",
@@ -389,11 +413,11 @@
       ]
     },
     "finalCta": {
-      "eyebrow": "Tu nicho te está esperando",
-      "title": "Lanza tu propio mercado de predicción hoy.",
-      "subtitle": "Gratis para empezar. En vivo en 15 minutos. Tu marca, tus preguntas y tus ingresos.",
-      "cta": "Lanza tu mercado →",
-      "note": "Lanzamiento gratis · Sin código · En vivo en minutos"
+      "eyebrow": "",
+      "title": "Tu mercado, tu audiencia, tus reglas.",
+      "subtitle": "Empieza gratis. Sin tarjeta de crédito.",
+      "cta": "Crear mi prediction market →",
+      "note": ""
     },
     "footer": {
       "launch": "Lanzar",
