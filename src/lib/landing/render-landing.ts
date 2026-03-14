@@ -594,7 +594,6 @@ function buildPredictionShowcaseCardHtml(
   ui: { yes: string; no: string },
 ) {
   const isLongTitle = card.title.length > 58;
-  const isExtraLongTitle = card.title.length > 67;
   const rows =
     card.type === "single"
       ? [
@@ -607,8 +606,6 @@ function buildPredictionShowcaseCardHtml(
     niche.accentRgb,
   )};"><img src="${escapeHtml(sanitizeImageSrc(card.img))}" alt="" class="prediction-showcase-thumb"><h3 class="prediction-showcase-title${
     isLongTitle ? " is-long" : ""
-  }${
-    isExtraLongTitle ? " is-xlong" : ""
   }">${escapeHtml(
     card.title,
   )}</h3><div class="prediction-showcase-list">${rows

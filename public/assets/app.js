@@ -1047,7 +1047,6 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 
   function buildPredictionCardElement(card,data){
     const isLongTitle=card.title.length>58;
-    const isExtraLongTitle=card.title.length>67;
     const cardEl=createNode('article','prediction-showcase-card');
     cardEl.style.setProperty('--prediction-accent',data.accent);
     cardEl.style.setProperty('--prediction-accent-rgb',data.accentRgb);
@@ -1057,7 +1056,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     thumb.alt='';
     thumb.className='prediction-showcase-thumb';
     cardEl.appendChild(thumb);
-    cardEl.appendChild(createNode('h3','prediction-showcase-title' + (isLongTitle?' is-long':'') + (isExtraLongTitle?' is-xlong':''),card.title));
+    cardEl.appendChild(createNode('h3','prediction-showcase-title' + (isLongTitle?' is-long':''),card.title));
 
     const list=createNode('div','prediction-showcase-list');
     const rows=card.type==='single'
