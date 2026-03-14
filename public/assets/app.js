@@ -30,12 +30,18 @@
   if(!toggles.length)return;
 
   const getMode=()=>root.getAttribute('data-theme-mode')==='dark'?'dark':'light';
-  const getToggleLabel=(mode)=>mode==='light'?'Switch to dark mode':'Switch to light mode';
+  const getToggleLabel=(toggle,mode)=>{
+    const fallbackDark='Switch to dark mode';
+    const fallbackLight='Switch to light mode';
+    return mode==='light'
+      ? (toggle.getAttribute('data-label-to-dark')||fallbackDark)
+      : (toggle.getAttribute('data-label-to-light')||fallbackLight);
+  };
 
   const syncToggle=()=>{
     const mode=getMode();
-    const label=getToggleLabel(mode);
     toggles.forEach(toggle=>{
+      const label=getToggleLabel(toggle,mode);
       toggle.setAttribute('aria-pressed',String(mode==='dark'));
       toggle.setAttribute('aria-label',label);
       toggle.setAttribute('title',label);

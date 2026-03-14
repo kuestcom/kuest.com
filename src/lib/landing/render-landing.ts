@@ -639,6 +639,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   const initialNiche = nicheData[0];
   const currentLanguage = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
   const launchHref = localeHref(locale, "/launch");
+  const protocolHref = localeHref(locale, "/protocol");
 
   document.querySelectorAll("script").forEach((script) => script.remove());
 
@@ -675,6 +676,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
     setCtaContent(cta, bundle.nav.cta);
     setAttr(cta, "href", launchHref);
   });
+  setAttr(document.querySelector("#dockSiteNavProtocolOption"), "href", protocolHref);
 
   const heroLines = Array.from(document.querySelectorAll(".hero-title-line"));
   setText(document.querySelector(".hero-kicker"), bundle.hero.kicker);

@@ -115,6 +115,31 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     Kuest
   </a>
   <div class="nav-r">
+    <div class="site-language-control site-nav-control" id="dockSiteNavControl">
+      <button
+        type="button"
+        id="dockSiteNavButton"
+        class="dock-theme-toggle site-nav-trigger"
+        aria-label="Open site navigation"
+        aria-haspopup="menu"
+        aria-expanded="false"
+      >
+        <span class="site-nav-trigger-bars" aria-hidden="true">
+          <span class="site-nav-trigger-line"></span>
+          <span class="site-nav-trigger-line"></span>
+          <span class="site-nav-trigger-line"></span>
+        </span>
+      </button>
+      <div
+        id="dockSiteNavMenu"
+        class="site-language-menu site-nav-menu"
+        role="menu"
+        aria-label="Site navigation"
+      >
+        <span class="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">Home</span>
+        <a id="dockSiteNavProtocolOption" href="/protocol" class="site-language-option site-nav-option" role="menuitem">The Protocol</a>
+      </div>
+    </div>
     <div class="site-language-control" id="dockSiteLanguageControl">
       <button
         type="button"
@@ -240,44 +265,113 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <div class="hero-market-stage" aria-hidden="true">
           <div class="hero-market-scene hero-market-scene-a">
             <figure class="hero-market-card hero-market-card-a1" style="--hero-market-rotate:-9deg;">
-              <img src="/assets/images/bitcoin-150k.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/bitcoin-150k.png" alt="">
+                </div>
+              </div>
             </figure>
-            <figure class="hero-market-card hero-market-card-a2" style="--hero-market-rotate:-4deg;">
-              <img src="/assets/images/champions-league-top-scorer.png" alt="">
+            <figure class="hero-market-card hero-market-card-a2 is-featured" data-expand-side="right" style="--hero-market-rotate:-4deg;">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/fed-rate-move.png" alt="">
+                </div>
+                <figcaption class="protocol-hero-card-panel" aria-hidden="true">
+                  <div class="protocol-hero-card-title">Will the Fed cut rates before July?</div>
+                  <div class="protocol-hero-card-actions">
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-yes">Yes</span>
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-no">No</span>
+                  </div>
+                </figcaption>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-a3" style="--hero-market-rotate:8deg;">
-              <img src="/assets/images/elon-usa-election.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/uniswap-v4-mainnet.png" alt="">
+                </div>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-a4" style="--hero-market-rotate:4deg;">
-              <img src="/assets/images/marvel-opening-weekend.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/ethereum-flippening.png" alt="">
+                </div>
+              </div>
             </figure>
           </div>
           <div class="hero-market-scene hero-market-scene-b">
             <figure class="hero-market-card hero-market-card-b1" style="--hero-market-rotate:-7deg;">
-              <img src="/assets/images/taylor-swift-album.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/elon-500b-net-worth.png" alt="">
+                </div>
+              </div>
             </figure>
-            <figure class="hero-market-card hero-market-card-b2" style="--hero-market-rotate:-2deg;">
-              <img src="/assets/images/warriors-playoffs.png" alt="">
+            <figure class="hero-market-card hero-market-card-b2 is-featured" data-expand-side="left" style="--hero-market-rotate:-2deg;">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/donald-trump-president.png" alt="">
+                </div>
+                <figcaption class="protocol-hero-card-panel" aria-hidden="true">
+                  <div class="protocol-hero-card-title">Will Trump announce a U.S. Bitcoin reserve this year?</div>
+                  <div class="protocol-hero-card-actions">
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-yes">Yes</span>
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-no">No</span>
+                  </div>
+                </figcaption>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-b3" style="--hero-market-rotate:7deg;">
-              <img src="/assets/images/uniswap-v4-mainnet.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/discord-50k-members.png" alt="">
+                </div>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-b4" style="--hero-market-rotate:3deg;">
-              <img src="/assets/images/mrbeast-vs-tseries.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/brazil-election-2026.png" alt="">
+                </div>
+              </div>
             </figure>
           </div>
           <div class="hero-market-scene hero-market-scene-c">
             <figure class="hero-market-card hero-market-card-c1" style="--hero-market-rotate:-8deg;">
-              <img src="/assets/images/donald-trump-president.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/donald-trump-president.png" alt="">
+                </div>
+              </div>
             </figure>
-            <figure class="hero-market-card hero-market-card-c2" style="--hero-market-rotate:-3deg;">
-              <img src="/assets/images/daniel-negranu-wsop.png" alt="">
+            <figure class="hero-market-card hero-market-card-c2 is-featured" data-expand-side="right" style="--hero-market-rotate:-3deg;">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/russia-x-ukraine.png" alt="">
+                </div>
+                <figcaption class="protocol-hero-card-panel" aria-hidden="true">
+                  <div class="protocol-hero-card-title">Will a Russia-Ukraine ceasefire be announced before year-end?</div>
+                  <div class="protocol-hero-card-actions">
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-yes">Yes</span>
+                    <span class="hero-market-tooltip-btn hero-market-tooltip-btn-no">No</span>
+                  </div>
+                </figcaption>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-c3" style="--hero-market-rotate:8deg;">
-              <img src="/assets/images/alien.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/uk-general-election.png" alt="">
+                </div>
+              </div>
             </figure>
             <figure class="hero-market-card hero-market-card-c4" style="--hero-market-rotate:4deg;">
-              <img src="/assets/images/war.png" alt="">
+              <div class="protocol-hero-card-shell">
+                <div class="hero-market-card-media">
+                  <img src="/assets/images/marvel-opening-weekend.png" alt="">
+                </div>
+              </div>
             </figure>
           </div>
         </div>
