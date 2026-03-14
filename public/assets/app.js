@@ -234,8 +234,9 @@ setTimeout(()=>{document.querySelectorAll('.r:not(.v)').forEach(el=>el.classList
   const segmenter=typeof Intl!=='undefined'&&typeof Intl.Segmenter==='function'
     ?new Intl.Segmenter(locale,{granularity:'word'})
     :null;
-  const ATTENTION_SCROLL_TRAVEL_FACTOR=.72;
+  const ATTENTION_SCROLL_TRAVEL_FACTOR=1;
   const ATTENTION_SCROLL_HOLD_FACTOR=.02;
+  const PUNCTUATION_TOKEN_RE=/^[.,!?;:…%]+$/u;
   let ticking=false;
   let palette={bg:[14,17,23],text:[232,234,240]};
 
@@ -262,11 +263,19 @@ setTimeout(()=>{document.querySelectorAll('.r:not(.v)').forEach(el=>el.classList
       :text.split(/(\s+)/);
 
     const words=[];
+    let previousWasWhitespace=false;
 
     segments.forEach(segment=>{
       if(!segment)return;
       if(/^\s+$/.test(segment)){
         line.append(document.createTextNode(segment));
+        previousWasWhitespace=true;
+        return;
+      }
+
+      if(PUNCTUATION_TOKEN_RE.test(segment)&&!previousWasWhitespace&&words.length){
+        words[words.length-1].textContent+=segment;
+        previousWasWhitespace=false;
         return;
       }
 
@@ -275,6 +284,7 @@ setTimeout(()=>{document.querySelectorAll('.r:not(.v)').forEach(el=>el.classList
       word.textContent=segment;
       line.append(word);
       words.push(word);
+      previousWasWhitespace=false;
     });
 
     return words;
@@ -336,7 +346,7 @@ setTimeout(()=>{document.querySelectorAll('.r:not(.v)').forEach(el=>el.classList
     const currentMetrics=measure();
     if(!currentMetrics)return;
     const rawTrackProgress=clamp((scrollY-section.offsetTop)/currentMetrics.travel,0,1);
-    const trackProgress=1-Math.pow(1-rawTrackProgress,1.04);
+    const trackProgress=rawTrackProgress;
     const dockRect=dockNav&&dockNav.classList.contains('is-visible')?dockNav.getBoundingClientRect():null;
     const anchorY=dockRect?dockRect.top-16:window.innerHeight*.8;
     const fadeRange=Math.max(84,window.innerHeight*.14);
@@ -1037,6 +1047,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
 
   function buildPredictionCardElement(card,data){
     const isLongTitle=card.title.length>58;
+    const isExtraLongTitle=card.title.length>67;
     const cardEl=createNode('article','prediction-showcase-card');
     cardEl.style.setProperty('--prediction-accent',data.accent);
     cardEl.style.setProperty('--prediction-accent-rgb',data.accentRgb);
@@ -1046,7 +1057,7 @@ window.addEventListener('resize',()=>{if(protoVisible)initProto();});
     thumb.alt='';
     thumb.className='prediction-showcase-thumb';
     cardEl.appendChild(thumb);
-    cardEl.appendChild(createNode('h3','prediction-showcase-title' + (isLongTitle?' is-long':''),card.title));
+    cardEl.appendChild(createNode('h3','prediction-showcase-title' + (isLongTitle?' is-long':'') + (isExtraLongTitle?' is-xlong':''),card.title));
 
     const list=createNode('div','prediction-showcase-list');
     const rows=card.type==='single'

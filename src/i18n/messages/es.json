@@ -99,22 +99,22 @@
     },
     "solution": {
       "eyebrow": "",
-      "title": "Un mercado multimillonario. Concentrado en dos empresas. Hasta ahora.\nPolymarket y Kalshi dominan, pero son cerradas. Tú operas en ellas. No con ellas.",
-      "subtitle": "Kuest nació para cambiar eso.\nEn pocos clics lanzas tu propio sitio de prediction market: con tu marca, tus categorías y tus mercados personalizados. Nosotros nos encargamos de los contratos inteligentes, la infraestructura, la liquidez y las integraciones. Tú te ocupas de tu audiencia y recibes comisiones por cada trade que ocurre en tu sitio.\nSin código. Sin servidor. Sin dolor de cabeza técnico.",
+      "title": "Un mercado multimillonario que todavía está concentrado en dos empresas.\nPolymarket y Kalshi dominan este espacio, pero son plataformas cerradas. Puedes operar en ellas, no construir sobre ellas.",
+      "subtitle": "Kuest nació para cambiar eso.\nEn pocos clics lanzas tu propio mercado de predicción, con tu marca, tus categorías y tus preguntas. Nosotros nos ocupamos de los contratos inteligentes, la infraestructura, la liquidez y las integraciones. Tú te concentras en tu audiencia y monetizas cada operación que sucede en tu sitio.\nSin código. Sin servidor. Sin complicaciones técnicas.",
       "cta": "Quiero ser la casa",
       "note": "Gratis · Infraestructura Kuest · Liquidez incluida",
       "points": [
         {
-          "title": "Elige tu nicho y escribe tus preguntas",
-          "copy": "Deportes, cripto, política, memes: cualquier tema sobre el que tu audiencia ya discute. Tú defines las preguntas, la comisión y tu marca."
+          "title": "Elige tu nicho y publica tus preguntas",
+          "copy": "Deportes, cripto, política, cultura pop o memes: cualquier tema que ya mueva a tu audiencia sirve. Tú decides las preguntas, la comisión y la identidad del producto."
         },
         {
-          "title": "Sal al aire: nosotros nos encargamos de la infraestructura",
-          "copy": "Liquidación, wallets, liquidez, blockchain: todo funcionando antes de que termines la configuración. Tu mercado queda en vivo en menos de 15 minutos, sin código."
+          "title": "Sal al aire; la infraestructura corre por nuestra cuenta",
+          "copy": "Liquidación, billeteras, liquidez y blockchain quedan resueltos antes de que termines la configuración. Tu mercado puede estar en vivo en menos de 15 minutos, sin escribir código."
         },
         {
-          "title": "Cada trade te paga directamente",
-          "copy": "Tu audiencia opera. La comisión va directo a tu wallet. Sin intermediarios, sin reparto de ingresos y sin esperar."
+          "title": "Cada operación te genera ingresos",
+          "copy": "Tu audiencia opera y la comisión entra directo a tu billetera. Sin intermediarios, sin reparto de ingresos y sin esperas."
         }
       ],
       "mock": {

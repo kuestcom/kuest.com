@@ -253,15 +253,12 @@ function buildSolutionSubtitleHtml(titleRest: string[], subtitle: string) {
     )}</span><span class="solution-copy-line">${escapeHtml(remainingCopy.trim())}</span></span>`;
   });
 
-  const conclusionHeading = formatSolutionConclusionHeading(conclusionLine);
-
   return [
     ...introLines.map((line) => `<span class="solution-copy-line">${escapeHtml(line)}</span>`),
     calloutLine
       ? `<span class="solution-copy-callout"><span class="solution-copy-callout-mark">${KUEST_MARK_HTML}</span><span>${escapeHtml(calloutLine)}</span></span>`
       : "",
     ...proseHtml,
-    conclusionHeading ? `<h4 class="solution-copy-heading">${escapeHtml(conclusionHeading)}</h4>` : "",
   ]
     .filter(Boolean)
     .join("");
@@ -597,6 +594,7 @@ function buildPredictionShowcaseCardHtml(
   ui: { yes: string; no: string },
 ) {
   const isLongTitle = card.title.length > 58;
+  const isExtraLongTitle = card.title.length > 67;
   const rows =
     card.type === "single"
       ? [
@@ -609,6 +607,8 @@ function buildPredictionShowcaseCardHtml(
     niche.accentRgb,
   )};"><img src="${escapeHtml(sanitizeImageSrc(card.img))}" alt="" class="prediction-showcase-thumb"><h3 class="prediction-showcase-title${
     isLongTitle ? " is-long" : ""
+  }${
+    isExtraLongTitle ? " is-xlong" : ""
   }">${escapeHtml(
     card.title,
   )}</h3><div class="prediction-showcase-list">${rows
@@ -737,6 +737,10 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
   setText(document.querySelector("#p3 .sh"), solutionHeadline ?? bundle.solution.title);
   setHtml(document.querySelector("#p3 .bt"), buildSolutionSubtitleHtml(solutionTitleRest, bundle.solution.subtitle));
   setText(document.querySelector("#solutionCopyHeadingMobile"), extractSolutionConclusionHeading(bundle.solution.subtitle));
+  bundle.solution.points.forEach((point, index) => {
+    setText(document.querySelector(`#solutionTimelineTitle${index + 1}`), point.title);
+    setText(document.querySelector(`#solutionTimelineText${index + 1}`), point.copy);
+  });
   setCtaContent(document.querySelector("#solutionCtaBtn"), bundle.solution.cta);
   setAttr(document.querySelector("#solutionCtaBtn"), "href", launchHref);
   setText(document.querySelector("#solutionCtaNote"), bundle.solution.note);

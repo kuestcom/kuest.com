@@ -99,22 +99,22 @@
     },
     "solution": {
       "eyebrow": "",
-      "title": "Ein Milliardenmarkt. Auf zwei Unternehmen konzentriert. Bis jetzt.\nPolymarket und Kalshi dominieren — aber sie sind geschlossen. Du handelst auf ihnen. Nicht mit ihnen.",
-      "subtitle": "Kuest wurde gebaut, um das zu ändern.\nMit wenigen Klicks startest du deine eigene Prediction-Market-Seite: mit deiner Marke, deinen Kategorien und deinen eigenen Märkten. Wir kümmern uns um Smart Contracts, Infrastruktur, Liquidität und Integrationen. Du kümmerst dich um dein Publikum — und kassierst Gebühren für jeden Trade, der auf deiner Seite stattfindet.\nKein Code. Kein Server. Kein technischer Aufwand.",
+      "title": "Ein Milliardenmarkt, der noch immer in den Händen von zwei Anbietern liegt.\nPolymarket und Kalshi dominieren den Markt, aber ihre Plattformen sind geschlossen. Du kannst dort handeln, aber nicht darauf aufbauen.",
+      "subtitle": "Kuest wurde genau dafür gebaut.\nMit wenigen Klicks startest du deinen eigenen Prognosemarkt — mit deiner Marke, deinen Kategorien und deinen Fragen. Wir kümmern uns um Smart Contracts, Infrastruktur, Liquidität und Integrationen. Du konzentrierst dich auf deine Community und verdienst an jeder Transaktion auf deiner Seite mit.\nKein Code. Kein Server. Kein technischer Stress.",
       "cta": "Ich will das Haus sein",
       "note": "Kostenlos · Kuest-Infrastruktur · Liquidität inklusive",
       "points": [
         {
-          "title": "Wähle deine Nische und formuliere deine Fragen",
-          "copy": "Sport, Krypto, Politik, Memes — alles, worüber deine Community ohnehin schon diskutiert. Du definierst die Fragen, die Gebühr und deine Marke."
+          "title": "Wähle deine Nische und stelle deine Fragen",
+          "copy": "Sport, Krypto, Politik, Popkultur oder Memes — alles, worüber deine Community ohnehin spricht, kann zum Markt werden. Du legst Fragen, Gebühren und Auftritt fest."
         },
         {
-          "title": "Geh live — wir übernehmen die Infrastruktur",
-          "copy": "Settlement, Wallets, Liquidität, Blockchain — alles läuft, bevor du mit dem Setup fertig bist. Dein Markt ist in unter 15 Minuten live, ganz ohne Code."
+          "title": "Geh live — wir übernehmen den Unterbau",
+          "copy": "Abwicklung, Wallets, Liquidität und Blockchain stehen, bevor du mit der Einrichtung fertig bist. Dein Markt kann in weniger als 15 Minuten live sein — ganz ohne Code."
         },
         {
-          "title": "Jeder Trade zahlt direkt an dich",
-          "copy": "Deine Community handelt. Die Gebühr geht direkt in dein Wallet. Kein Zwischenhändler, kein Revenue Share, keine Wartezeit."
+          "title": "Jede Transaktion bringt dir Umsatz",
+          "copy": "Deine Community handelt, die Gebühren landen direkt in deinem Wallet. Ohne Mittelsmann, ohne Umsatzbeteiligung und ohne Wartezeit."
         }
       ],
       "mock": {

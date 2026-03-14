@@ -99,22 +99,22 @@
     },
     "solution": {
       "eyebrow": "",
-      "title": "Un marché de plusieurs milliards. Concentré entre deux entreprises. Jusqu'à maintenant.\nPolymarket et Kalshi dominent — mais ce sont des plateformes fermées. Vous y tradez. Pas avec elles.",
-      "subtitle": "Kuest est née pour changer cela.\nEn quelques clics, vous lancez votre propre site de prediction market : avec votre marque, vos catégories et vos marchés personnalisés. Nous gérons les smart contracts, l'infrastructure, la liquidité et les intégrations. Vous vous concentrez sur votre audience — et percevez des frais sur chaque trade réalisé sur votre site.\nSans code. Sans serveur. Sans casse-tête technique.",
+      "title": "Un marché de plusieurs milliards, encore concentré entre deux acteurs.\nPolymarket et Kalshi dominent le secteur, mais ce sont des plateformes fermées. Vous pouvez y trader, pas construire dessus.",
+      "subtitle": "Kuest a été pensée pour changer ça.\nEn quelques clics, vous lancez votre propre marché de prédiction, avec votre marque, vos catégories et vos questions. Nous gérons les contrats intelligents, l'infrastructure, la liquidité et les intégrations. Vous vous concentrez sur votre audience et vous monétisez chaque transaction exécutée sur votre site.\nSans code. Sans serveur. Sans casse-tête technique.",
       "cta": "Je veux être la maison",
       "note": "Gratuit · Infrastructure Kuest · Liquidité incluse",
       "points": [
         {
-          "title": "Choisissez votre niche et rédigez vos questions",
-          "copy": "Sport, crypto, politique, memes : tout ce dont votre audience débat déjà. Vous définissez les questions, la commission et votre marque."
+          "title": "Choisissez votre niche et publiez vos questions",
+          "copy": "Sport, crypto, politique, culture web ou divertissement : tout sujet qui fait déjà réagir votre audience peut devenir un marché. Vous définissez les questions, les frais et l'identité du produit."
         },
         {
-          "title": "Passez en ligne — on gère l'infrastructure",
-          "copy": "Settlement, wallets, liquidité, blockchain : tout tourne avant même que vous ayez fini le setup. Votre marché est en ligne en moins de 15 minutes, sans code."
+          "title": "Mettez en ligne, on s'occupe du reste",
+          "copy": "Règlement, portefeuilles, liquidité et blockchain : tout est prêt avant même la fin de la configuration. Votre marché peut être en ligne en moins de 15 minutes, sans écrire une ligne de code."
         },
         {
-          "title": "Chaque trade vous paie directement",
-          "copy": "Votre audience trade. La commission arrive directement dans votre portefeuille. Sans intermédiaire, sans partage de revenus, sans attente."
+          "title": "Chaque transaction vous rapporte",
+          "copy": "Votre audience prend position et les frais arrivent directement dans votre portefeuille. Sans intermédiaire, sans partage de revenus et sans délai."
         }
       ],
       "mock": {

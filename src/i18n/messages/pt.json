@@ -99,22 +99,22 @@
     },
     "solution": {
       "eyebrow": "",
-      "title": "Um mercado bilionário. Concentrado em duas empresas. Até agora.\nPolymarket e Kalshi dominam — mas são fechadas. Você opera nelas. Não com elas.",
-      "subtitle": "A Kuest nasceu para mudar isso.\nEm poucos cliques você lança seu próprio site de prediction market: com sua marca, suas categorias, seus mercados personalizados. Nós cuidamos dos contratos inteligentes, da infraestrutura, da liquidez e das integrações. Você cuida do seu público — e recebe taxas de cada trade que acontece no seu site.\nSem código. Sem servidor. Sem dor de cabeça técnica.",
+      "title": "Um mercado bilionário, ainda concentrado em duas empresas.\nPolymarket e Kalshi dominam esse espaço, mas são plataformas fechadas. Você até pode operar nelas. O que não pode é construir em cima delas.",
+      "subtitle": "A Kuest nasceu para mudar esse cenário.\nEm poucos cliques, você coloca no ar o seu próprio mercado de previsões, com sua marca, suas categorias e suas perguntas. A gente cuida dos contratos inteligentes, da infraestrutura, da liquidez e das integrações. Você foca na sua audiência e monetiza cada operação feita no seu site.\nSem código. Sem servidor. Sem dor de cabeça técnica.",
       "cta": "Quero ser a casa",
       "note": "Grátis · Infraestrutura Kuest · Liquidez incluída",
       "points": [
         {
-          "title": "Escolha seu nicho e escreva as perguntas",
-          "copy": "Esportes, cripto, política, memes — qualquer tema sobre o qual sua audiência já discute. Você define as perguntas, a taxa e a sua marca."
+          "title": "Defina seu nicho e publique as perguntas",
+          "copy": "Esportes, cripto, política, cultura pop ou memes: vale qualquer assunto que já mobilize a sua audiência. Você escolhe as perguntas, a taxa cobrada e a identidade da operação."
         },
         {
-          "title": "Entre no ar — nós cuidamos da infraestrutura",
-          "copy": "Liquidação, wallets, liquidez, blockchain — tudo rodando antes de você terminar o setup. Seu mercado entra no ar em menos de 15 minutos, sem código."
+          "title": "Entre no ar — a infraestrutura fica com a gente",
+          "copy": "Liquidação, carteiras, liquidez e blockchain já ficam prontos antes mesmo de você terminar a configuração. Seu mercado pode estar no ar em menos de 15 minutos, sem escrever uma linha de código."
         },
         {
-          "title": "Cada trade paga você direto",
-          "copy": "Sua audiência opera. A taxa cai direto na sua wallet. Sem intermediário, sem divisão de receita, sem espera."
+          "title": "Cada operação gera receita para você",
+          "copy": "Seu público negocia e a taxa vai direto para a sua carteira. Sem intermediários, sem divisão de receita e sem precisar esperar."
         }
       ],
       "mock": {
