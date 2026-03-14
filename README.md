@@ -2,7 +2,9 @@
 
 Open-source launch flow for Kuest white-label prediction markets.
 
-Public demo path: `https://kuest.com/launch`
+Public demo path: `https://demo.kuest.com`
+Launch: `https://kuest.com/launch`
+The Protocol: `https://kuest.com/protocol`
 
 Main goal of this repo:
 
