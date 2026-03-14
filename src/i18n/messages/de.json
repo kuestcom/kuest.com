@@ -12,6 +12,8 @@
       "ariaLabel": "Sprache der Website ändern"
     },
     "preview": {
+      "title": "So wird deine Website aussehen.",
+      "subtitle": "Das ist eine funktionierende Demo mit gespiegelten Polymarket-Märkten. Schau sie dir an, handle darauf und stell dir das mit deiner Marke, deinem Publikum und deinen Fragen vor.",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
       "switchToMobile": "Zur Mobile-Ansicht wechseln"
     },
@@ -32,10 +34,30 @@
       "proof": "Kostenlos starten • Kein Code • In Minuten live",
       "previewUrl": "demo.kuest.com"
     },
+    "attentionScroll": {
+      "block1": {
+        "line1": "Jahrelang folgte das Geld der Aufmerksamkeit.",
+        "line2": "Affiliate-Modelle. Dropshipping. Online-Kurse. Wetten.",
+        "line3": "Jede Welle öffnete ein Fenster — und schloss sich kurz danach wieder.",
+        "line4": "Warst du früh dran oder kamst du erst, als schon alles gesättigt war?"
+      },
+      "block2": {
+        "line1": "Heute kontrollieren zwei Plattformen einen Milliardenmarkt.",
+        "brand1": "Polymarket.",
+        "brand2": "Kalshi.",
+        "line3": "49 % der Zugriffe kommen noch immer aus nur 5 Ländern.",
+        "line4": "Der Rest der Welt hat das kaum entdeckt."
+      },
+      "block3": {
+        "lead": "Du kannst wählen:",
+        "line2": "noch ein Trader sein, der die nächste Prognose treffen will —",
+        "line3": "oder das Haus bauen, in dem alle anderen spielen."
+      }
+    },
     "social": {
-      "eyebrow": "Die Welle rollt schon",
-      "title": "Die Nachfrage ist längst da. Was gefehlt hat, war die Infrastruktur, um daraus deinen Umsatz zu machen.",
-      "subtitle": "Polymarket besetzt Wahlen. Kalshi besetzt Makro. Deine Nische ist noch frei.",
+      "eyebrow": "KANN MAN DIE ZUKUNFT VORHERSAGEN?",
+      "title": "Prediction Market",
+      "subtitle": "Es funktioniert wie eine Börse, aber für zukünftige Ereignisse. Menschen handeln mit echtem Geld auf Ergebnisse wie \"Wer gewinnt die Wahl?\" oder \"Steigt Bitcoin über $100k?\". Weil echtes Geld auf dem Spiel steht, werden diese Prognosen erstaunlich präzise, oft genauer als Umfragen oder Experten. Regierungen, Unternehmen und Investoren nutzen diese Daten bereits, um Entscheidungen zu treffen, bevor die Fakten eintreten.",
       "badge": "Milliarden werden bereits gehandelt",
       "cards": [
         {
@@ -76,9 +98,11 @@
       ]
     },
     "solution": {
-      "eyebrow": "So löst Kuest das",
-      "title": "Starte heute. Die schwierige Infrastruktur steht schon.",
-      "subtitle": "Trading, geteilte Liquidität und deine Marke — in 15 Minuten startklar.",
+      "eyebrow": "",
+      "title": "Ein Milliardenmarkt. Auf zwei Unternehmen konzentriert. Bis jetzt.\nPolymarket und Kalshi dominieren — aber sie sind geschlossen. Du handelst auf ihnen. Nicht mit ihnen.",
+      "subtitle": "Kuest wurde gebaut, um das zu ändern.\nMit wenigen Klicks startest du deine eigene Prediction-Market-Seite: mit deiner Marke, deinen Kategorien und deinen eigenen Märkten. Wir kümmern uns um Smart Contracts, Infrastruktur, Liquidität und Integrationen. Du kümmerst dich um dein Publikum — und kassierst Gebühren für jeden Trade, der auf deiner Seite stattfindet.\nKein Code. Kein Server. Kein technischer Aufwand.",
+      "cta": "Ich will das Haus sein",
+      "note": "Kostenlos · Kuest-Infrastruktur · Liquidität inklusive",
       "points": [
         {
           "title": "Wähle deine Nische und formuliere deine Fragen",
@@ -389,11 +413,11 @@
       ]
     },
     "finalCta": {
-      "eyebrow": "Deine Nische wartet",
-      "title": "Starte deinen eigenen Prediction Market noch heute.",
-      "subtitle": "Kostenlos starten. In 15 Minuten live. Deine Marke, deine Fragen, dein Umsatz.",
-      "cta": "Prediction Market starten →",
-      "note": "Kostenlos starten · Kein Code · In Minuten live"
+      "eyebrow": "",
+      "title": "Dein Markt, dein Publikum, deine Regeln.",
+      "subtitle": "Starte kostenlos. Keine Kreditkarte erforderlich.",
+      "cta": "Meinen Prediction Market erstellen →",
+      "note": ""
     },
     "footer": {
       "launch": "Starten",
@@ -568,6 +592,346 @@
       "customDomainPlaceholder": "app.deinedomain.com",
       "nameserversLabel": "Diese Nameserver musst du bei deinem Registrar eintragen:",
       "checkVercelDnsInstructions": "prüfe die DNS-Hinweise in Vercel"
+    }
+  },
+  "protocol": {
+    "meta": {
+      "title": "Kuest Protocol - Infrastruktur für Prognosemärkte",
+      "description": "Kuest ist ein White-Label-Protokoll für Prognosemärkte, mit dem Institutionen, Medienunternehmen und Creator gebrandete Märkte mit geteilter Liquidität und Protokoll-Infrastruktur starten können.",
+      "keywords": [
+        "Infrastruktur für Prognosemärkte",
+        "White-Label-Protokoll Prognosemarkt",
+        "Prognosemarkt API",
+        "Shared-Liquidity-Protokoll",
+        "institutionelle Prognosemärkte",
+        "Seed-Runde Prognosemarkt"
+      ],
+      "ogImageAlt": "Überblick über Kuest Protocol"
+    },
+    "structuredData": {
+      "description": "White-Label-Protokoll für Prognosemärkte für Betreiber, die gebrandete Märkte, geteilte Liquidität und Protokoll-Infrastruktur wollen.",
+      "featureList": [
+        "White-Label-Deployments für Betreiber",
+        "Geteilte Liquidität über Betreiber-Frontends hinweg",
+        "Von Polymarket abgeleitete Smart-Contract-Architektur",
+        "Polymarket-kompatible APIs und Bot-Tooling",
+        "Nutzungsbasierte Infrastruktur für Produktionsbetreiber"
+      ]
+    },
+    "languageSelector": {
+      "ariaLabel": "Sprache der Website ändern"
+    },
+    "themeToggle": {
+      "toDark": "Zum Dunkelmodus wechseln",
+      "toLight": "Zum Hellmodus wechseln"
+    },
+    "common": {
+      "yes": "Ja",
+      "no": "Nein"
+    },
+    "heroStage": {
+      "cards": [
+        "Steigt Bitcoin vor Q3 über $150K?",
+        "Senkt die Fed die Zinsen vor Juli?",
+        "Kommt Uniswap v4 vor Q2 auf Mainnet?",
+        "Übertrifft Ethereum Bitcoin in diesem Quartal?",
+        "Übersteigt Elon Musks Nettovermögen dieses Jahr $500B?",
+        "Wird Trump dieses Jahr eine US-Bitcoin-Reserve ankündigen?",
+        "Erreicht die Community vor Q4 50.000 Mitglieder?",
+        "Wählt Brasilien 2026 einen marktfreundlichen Präsidenten?",
+        "Gewinnt Donald Trump die nächste US-Wahl?",
+        "Wird vor Jahresende ein Waffenstillstand zwischen Russland und der Ukraine angekündigt?",
+        "Gewinnt die Labour Party die nächste britische Parlamentswahl?",
+        "Startet der nächste Marvel-Film über $200M?"
+      ]
+    },
+    "nav": {
+      "contactCta": "Kontakt aufnehmen"
+    },
+    "hero": {
+      "kicker": "KUEST PROTOCOL · SEED-RUNDE OFFEN",
+      "titleLine1": "Polymarket hat das Modell bewiesen.",
+      "titleLine2BeforeAccent": "Wir machen daraus ",
+      "titleLine2Accent": "Infrastruktur.",
+      "subtitle": "Kuest ist ein White-Label-Protokoll für Prognosemärkte - die Ebene, mit der jedes Finanzinstitut, Medienunternehmen oder Creator einen eigenen gebrandeten Markt starten, Liquidität teilen und Trading-Gebühren verdienen kann. Gebaut auf derselben Smart-Contract-Architektur, die bereits Milliarden an Volumen verarbeitet hat. Bereit für den Einsatz.",
+      "pitchDeckCta": "Pitch Deck ansehen",
+      "contactCta": "Kontakt aufnehmen",
+      "proof": "MVP BETRIEBSBEREIT · SEED-RUNDE OFFEN · OPEN SOURCE"
+    },
+    "deckModal": {
+      "kicker": "DECK ANFRAGEN",
+      "title": "Pitch Deck für Kuest Protocol anfragen",
+      "description": "Hinterlassen Sie Ihren Firmennamen und Ihre E-Mail-Adresse, und wir leiten die Anfrage an das Team weiter.",
+      "companyLabel": "Firmenname",
+      "companyPlaceholder": "Ihr Unternehmen",
+      "emailLabel": "Geschäftliche E-Mail",
+      "emailPlaceholder": "du@unternehmen.com",
+      "cancel": "Abbrechen",
+      "submit": "Anfrage senden",
+      "submitting": "Wird gesendet...",
+      "success": "Anfrage gesendet. Wir melden uns per E-Mail.",
+      "error": "Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "close": "Modal schließen"
+    },
+    "opportunity": {
+      "badge": "DIE CHANCE",
+      "title": "Eine 20-Milliarden-Dollar-Industrie entsteht in Echtzeit - und 95 % der Welt haben noch keinen Zugang dazu.",
+      "stats": [
+        {
+          "value": "$18.3B",
+          "label": "Kombiniertes monatliches Trading-Volumen, Kalshi + Polymarket, Feb. 2026",
+          "sourceLabel": "Quelle: The Block",
+          "sourceHref": "https://www.theblock.co/post/392755"
+        },
+        {
+          "value": "96.7M",
+          "label": "Besuche bei Polymarket in 3 Monaten. Die USA machen nur 20 % des Traffics aus.",
+          "sourceLabel": "Quelle: SimilarWeb, Feb. 2026",
+          "sourceHref": "https://www.similarweb.com/website/polymarket.com/"
+        },
+        {
+          "value": "200x",
+          "label": "Wachstum des Kalshi-Trading-Volumens in den letzten 12 Monaten",
+          "sourceLabel": "Quelle: PYMNTS / Kalshi-Pressemitteilung",
+          "sourceHref": "https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/"
+        },
+        {
+          "value": "$20B",
+          "label": "Zielbewertung für Kalshi und Polymarket in den aktuellen Fundraising-Runden",
+          "sourceLabel": "Quelle: CoinDesk via WSJ, März 2026",
+          "sourceHref": "https://www.coindesk.com/business/2026/03/07/kalshi-polymarket-seeking-usd20-billion-valuations-in-fundraising-talks-wsj"
+        }
+      ],
+      "body": "Zwei Plattformen dominieren diesen Sektor derzeit. Kalshi, die regulierte US-Börse, hat zuletzt eine annualisierte Revenue-Run-Rate von $1B bis $1.5B überschritten. Polymarket auf Polygon zieht weltweit über 32 Millionen monatliche Besuche an. Zusammen haben sie gezeigt, dass Prognosemärkte keine Nische sind, sondern eine neue finanzielle Primitive. Das Problem: Beide sind geschlossene Plattformen. Man handelt auf ihnen. Man baut nicht mit ihnen."
+    },
+    "whyNow": {
+      "badge": "WARUM JETZT",
+      "title": "Der Deal zwischen XP und Kalshi hat gerade bestätigt, wofür wir bereits gebaut haben.",
+      "paragraphs": [
+        "Am 9. März 2026 kündigte Kalshi seine erste strategische Partnerschaft mit einem Finanzinstitut außerhalb der Vereinigten Staaten an: XP International, eine der größten Brokerages Brasiliens mit über 4,7 Millionen aktiven Kunden und R$1,8 Billionen Assets under Management.",
+        "Im Rahmen dieses Modells übernimmt XP die lokale Distribution und Kundenbeziehungen, während Kalshi die Trading-Technologie und das Marktdesign liefert - ein Modell für den Export von Prognosemarkt-Infrastruktur über lokale Finanzplattformen.",
+        "Brasilien hat noch keine spezifische Regulierung für Prognosemärkte, aber Plattformen wie Kalshi und Polymarket hosten bereits Verträge mit Bezug zum Land. Auch B3 plant den Eintritt in diesen Markt, und das Finanzministerium beobachtet den Sektor genau. Die Mitgründerin von Kalshi bezeichnete Brasilien als \"so, wie die USA vor Jahren bei Prognosemärkten waren\".",
+        "Kalshi brauchte XP, weil sie eine Plattform und keine Infrastruktur sind. Sie können nur ein Land nach dem anderen und einen institutionellen Deal nach dem anderen erschließen. Kuest ist die Ebene, die jedes XP-Äquivalent in jedem Markt zu einem potenziellen Prognosemarkt-Betreiber macht - ohne auf Kalshis Partnerschafts-Warteschlange zu warten."
+      ],
+      "quote": {
+        "imageSrc": "/assets/images/kalshi-logo.svg",
+        "imageAlt": "Kalshi",
+        "quote": "Für uns ist es sinnvoll, über diese internationalen Partner zu gehen. Sie haben bereits die Kunden und die Marke.",
+        "attribution": "Luana Lopes Lara, Mitgründerin und COO von Kalshi",
+        "sourceLabel": "Quelle: Finance Magnates, März 2026",
+        "sourceHref": "https://www.financemagnates.com/fintech/kalshi-taps-brazils-xp-to-take-prediction-markets-global/",
+        "isLogo": true
+      },
+      "followup": "Genau das ermöglicht Kuest - in Protokoll-Skalierung, nicht Deal für Deal."
+    },
+    "protocol": {
+      "badge": "DAS PROTOKOLL",
+      "title": "Wir sind kein Prognosemarkt. Wir sind die Infrastruktur, die sie startet.",
+      "cards": [
+        {
+          "title": "Plattform vs. Protokoll",
+          "body": "Polymarket ist ein einzelner Venue. Kalshi ist ein einzelner Venue. Kuest ist die darunterliegende Ebene - jeder Betreiber kann sein eigenes Frontend, seine eigene Marke und seine eigenen Märkte deployen und die Liquidität vom ersten Tag an mit allen anderen Kuest-Sites teilen.",
+          "tags": [
+            "Eigenes Frontend",
+            "Eigene Marke",
+            "Geteilte Liquidität"
+          ]
+        },
+        {
+          "title": "Die Shopify-Analogie",
+          "body": "Shopify hat nicht mit Amazon konkurriert. Shopify hat Millionen von Shops ermöglicht, die sonst nicht existieren würden. Kuest konkurriert nicht mit Polymarket. Wir ermöglichen die nächsten 1.000 Betreiber von Prognosemärkten - Medienhäuser, Brokerages, Community-Plattformen und Creator.",
+          "tags": [
+            "Betreiber",
+            "Distribution",
+            "Netzwerkskalierung"
+          ]
+        },
+        {
+          "title": "Was bereits gebaut ist",
+          "body": "CLOB engine, Relayer, Smart Contracts, Polymarket-kompatible APIs, Vercel + Supabase Deployment-Stack, Shared-Liquidity-Layer, SDK, Bot-Infrastruktur, Market-Maker-Integrationen und ein mehrsprachiges Frontend. Live-Demo auf demo.kuest.com.",
+          "tags": [
+            "SDK",
+            "Bots",
+            "API",
+            "Mainnet"
+          ]
+        }
+      ]
+    },
+    "architecture": {
+      "badge": "WARUM DIESE ARCHITEKTUR",
+      "title": "Eine strategische Entscheidung, keine Abkürzung.",
+      "paragraphs": [
+        "Kuests Smart Contracts leiten sich von Polymarkets CLOB-Architektur ab - demselben Design, das bereits Milliarden an verifiziertem Volumen verarbeitet hat. Die Kernverträge basieren auf OpenZeppelins Audit-Validierung. Wir haben sie so angepasst, dass sie geteilte Liquidität über mehrere Betreiber-Frontends hinweg unterstützen - die architektonische Primitive, die das Protokollmodell möglich macht.",
+        "Auch die Wahl von Polygon war bewusst. Der Großteil der bestehenden Prognosemarkt-Liquidität liegt bereits auf Polygon. Trader halten dort bereits USDC-Bestände. Market-Making-Bots operieren bereits in dieser Umgebung. Auf einer anderen Chain zu bauen würde bedeuten, jeden Liquiditätsanbieter zum Neustart zu zwingen. Unsere Innovation konzentriert sich auf Distribution und Infrastruktur - nicht darauf, eine Trading-Engine neu zu erfinden, die bereits im großen Maßstab funktioniert.",
+        "Das Ergebnis ist ein Protokoll, das sofort mit bestehenden Trading-Strategien, Bot-Infrastruktur und Market-Maker-Tooling kompatibel ist und so die Hürde für Liquiditäts-Bootstrapping bei neuen Betreiber-Deployments drastisch senkt."
+      ],
+      "quote": {
+        "imageSrc": "/assets/images/polymarket-logo.svg",
+        "imageAlt": "Polymarket",
+        "quote": "Polymarket hat das Modell bewiesen. Wir machen diese Infrastruktur zu einem Protokoll, damit jeder Märkte mit geteilter Liquidität starten kann.",
+        "attribution": "Kuest-Protokoll-These",
+        "isLogo": true
+      }
+    },
+    "businessModel": {
+      "badge": "WIE DAS PROTOKOLL GELD VERDIENT",
+      "title": "Drei Erlösschichten. Ein Infrastruktur-Stack.",
+      "cards": [
+        {
+          "title": "Betreibergebühren",
+          "body": "Betreiber setzen ihre eigenen Trading-Gebühren fest, typischerweise 0,5 % bis 3 %. Kuest behält auf jeden Trade im Netzwerk eine kleine Protokollgebühr ein. Mit wachsender Zahl an Betreibern wird daraus ein volumenaggregierter Erlösstrom, der unabhängig von der Performance eines einzelnen Betreibers ist.",
+          "tags": [
+            "0,5 %-3 % Betreibergebühr",
+            "Protocol Take Rate"
+          ]
+        },
+        {
+          "title": "Infrastruktur",
+          "body": "Der Launch ist kostenlos. Produktionsinfrastruktur ist nutzungsbasiert - Betreiber zahlen, wenn sie skalieren. Serverkosten, Gas-Management, Settlement-Infrastruktur und Skalierbarkeit übernimmt Kuest. Betreiber konzentrieren sich auf Distribution. Wir betreiben den Stack.",
+          "tags": [
+            "Kostenloser Launch",
+            "Nutzungsbasiert"
+          ]
+        },
+        {
+          "title": "Liquiditätsservices",
+          "body": "Market Maker, die über das Kuest-Netzwerk hinweg Liquidität bereitstellen, verdienen Spreads. Kuest erleichtert dieses Matching und schöpft Wert auf der Infrastrukturebene ab. Mit wachsendem Betreiber-Netzwerk steigt die Liquiditätseffizienz - ein kumulativer Netzwerkeffekt.",
+          "tags": [
+            "Spread Capture",
+            "Netzwerkeffekte"
+          ]
+        }
+      ],
+      "context": "Derzeit sind die Infrastrukturkosten beherrschbar und planbar. Sie skalieren mit dem Volumen - aber die Protokollerlöse ebenfalls, proportional. Die Kostenstruktur ist keine Obergrenze; sie ist eine Variable, die mit dem Wachstum mitläuft."
+    },
+    "partners": {
+      "badge": "WEN WIR SUCHEN",
+      "title": "Drei Arten von Partnern. Alle notwendig. Alle komplementär.",
+      "cards": [
+        {
+          "title": "Investoren",
+          "body": "Seed-Kapital, um Betreiberakquise, Incentive-Programme für Market Maker und Protokoll-Härtung zu beschleunigen. Der Prognosemarkt-Sektor bewegt sich schnell von experimentell zu institutionell. Wir befinden uns an dem Wendepunkt, an dem Plays auf der Infrastrukturebene bewertet werden - nicht erst danach."
+        },
+        {
+          "title": "Market Maker",
+          "body": "Das Cold-Start-Problem neuer Prognosemärkte ist Liquidität. Wir lösen es durch geteilte Liquidität über das Betreiber-Netzwerk - brauchen aber erste Market-Maker-Partnerschaften, um Tiefe in neuen Deployments zu säen. Wenn Sie Bots betreiben oder Liquidität auf Polymarket oder Kalshi bereitstellen, haben Sie bereits alles, was Sie für den Betrieb auf Kuest brauchen. Der geschätzte APY hängt von Strategie und Volumen ab, aber bei geklonten Polymarket-artigen Märkten kann das Profil aus Spread und Turnover die passive Stablecoin-Rendite für Desks übertreffen, die Inventar effizient recyceln."
+        },
+        {
+          "title": "Institutionelle Betreiber",
+          "body": "Der XP + Kalshi-Deal zeigt das Modell: Ein Finanzinstitut will Zugang zu Prognosemärkten, benötigt dafür aber eine lokale, gebrandete und kontrollierte Umgebung. Kuest liefert genau das, ohne einen bilateralen Deal mit Kalshi zu erfordern. Banken, Brokerages, Investment-Plattformen und Mediengruppen mit Finanzpublikum können Kuest als Infrastrukturebene nutzen. Brasilien ist dafür besonders gut positioniert: B3 bereitet sich auf die Kategorie vor, XP hat die Kalshi-Partnerschaft, und das Finanzministerium beobachtet den Sektor genau. Das Zeitfenster für frühe Betreiber-Positionierung ist offen."
+        }
+      ]
+    },
+    "strategicQuestion": {
+      "badge": "DIE STRATEGISCHE FRAGE, BEANTWORTET",
+      "title": "Warum macht Polymarket das nicht einfach selbst?",
+      "intro": "Sie konzentrieren sich darauf, die beste Prognosemarkt-Plattform der Welt zu sein. Das ist ein anderes Unternehmen als eines, das sich darauf fokussiert, die beste Infrastruktur für Prognosemärkte der Welt zu sein. Polymarket muss ein gebrandetes Consumer-Produkt mit $9B Bewertung schützen. Sie bauen nicht das SDK, das ihre Wettbewerber antreibt.",
+      "applicationLayer": {
+        "tag": "Application Layer",
+        "title": "Plattformunternehmen optimieren für Ziel-Traffic.",
+        "body": "Polymarket und Kalshi gewinnen, indem sie Nutzer bündeln, die Marke schützen und die Liquidität auf ihren eigenen Venues vertiefen.",
+        "items": [
+          {
+            "label": "Consumer Brand",
+            "value": "der Kernwert ist der Venue selbst"
+          },
+          {
+            "label": "Unit Economics",
+            "value": "an den eigenen Orderflow gebunden"
+          },
+          {
+            "label": "Expansion",
+            "value": "eine Partnerschaft nach der anderen"
+          }
+        ]
+      },
+      "protocolLayer": {
+        "tag": "Protocol Layer",
+        "title": "Infrastrukturunternehmen optimieren für Betreiber-Skalierung.",
+        "body": "Kuest gewinnt, indem Tausende von Betreibern Märkte mit geteilter Liquidität starten können, während Kuest den zugrunde liegenden Stack betreibt.",
+        "items": [
+          {
+            "label": "Betreiber-Netzwerk",
+            "value": "jede Marke wird zum Distributionsknoten"
+          },
+          {
+            "label": "Ökonomie",
+            "value": "Protokollgebühren auf aggregiertes Volumen"
+          },
+          {
+            "label": "Skalierung",
+            "value": "viele Deployments gleichzeitig"
+          }
+        ]
+      },
+      "outro": "Diese Dynamik ist nicht neu. Uniswap hat Tausende Token-Märkte ermöglicht, ohne mit jedem gelisteten Projekt zu konkurrieren. AWS hat Millionen Unternehmen ermöglicht, ohne selbst all diese Unternehmen sein zu wollen. Der XP + Kalshi-Deal validiert die Nachfrage, zeigt aber auch den Engpass: Kalshi kann jeweils nur eine institutionelle Partnerschaft abschließen. Kuest kann Tausende gleichzeitig realisieren, weil wir das Protokoll sind - nicht die Gegenpartei."
+    },
+    "status": {
+      "badge": "WO WIR HEUTE STEHEN",
+      "title": "MVP live. Protokoll betriebsbereit. Wir suchen die richtigen Partner für die Skalierung.",
+      "items": [
+        {
+          "label": "Smart Contracts deployed",
+          "detail": "Polygon Mainnet, von OpenZeppelin validierte Architektur",
+          "complete": true
+        },
+        {
+          "label": "CLOB engine + Relayer betriebsbereit",
+          "detail": "Der zentrale Trading-Stack läuft bereits",
+          "complete": true
+        },
+        {
+          "label": "Polymarket-kompatible API",
+          "detail": "Cross-Platform-Liquidität vom ersten Tag an",
+          "complete": true
+        },
+        {
+          "label": "White-Label-Frontend",
+          "detail": "Deployment in unter 15 Minuten, ohne Code",
+          "complete": true
+        },
+        {
+          "label": "SDK + Bot-Infrastruktur",
+          "detail": "Verfügbar für Betreiber- und Market-Maker-Integrationen",
+          "complete": true
+        },
+        {
+          "label": "Live-Demo",
+          "detail": "demo.kuest.com",
+          "complete": true
+        },
+        {
+          "label": "Open Source",
+          "detail": "github.com/kuestcom/prediction-market",
+          "complete": true
+        },
+        {
+          "label": "Market-Maker-Programm",
+          "detail": "Aktive Rekrutierung",
+          "complete": false
+        },
+        {
+          "label": "Seed-Runde",
+          "detail": "Offen",
+          "complete": false
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Die Infrastrukturebene für Prognosemärkte wird gerade gebaut.",
+      "subtitle": "Wir hätten lieber die richtigen Partner zum richtigen Zeitpunkt, als schnell ohne Alignment zu handeln. Wenn Sie Investor, Market Maker oder institutioneller Betreiber sind, sprechen wir miteinander.",
+      "requestDeckCta": "Pitch Deck anfragen",
+      "contactCta": "Team kontaktieren",
+      "viewDemoCta": "Live-Demo ansehen",
+      "proof": "AUF POLYMARKET-BASIERTEN VERTRÄGEN AUFGEBAUT · CORE VON OPENZEPPELIN AUDITIERT · OPEN SOURCE: GITHUB.COM/KUESTCOM · DEMO: DEMO.KUEST.COM"
+    },
+    "footer": {
+      "note": "Auf Polymarket-basierten Verträgen aufgebaut, von OpenZeppelin auditiert",
+      "docsLabel": "Docs",
+      "contactLabel": "Kontakt",
+      "xLabel": "X",
+      "discordLabel": "Discord"
     }
   }
 }

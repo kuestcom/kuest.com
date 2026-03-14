@@ -15,6 +15,7 @@ export type { SiteLocale } from "@/i18n/site-config";
 export type SiteMessages = typeof enMessages;
 export type LandingMessages = SiteMessages["landing"];
 export type LaunchMessages = SiteMessages["launch"];
+export type ProtocolMessages = SiteMessages["protocol"];
 
 export const getSiteMessages = cache(async (locale: SiteLocale): Promise<SiteMessages> => {
   const filePath = join(process.cwd(), "src", "i18n", "messages", `${locale}.json`);
@@ -25,6 +26,10 @@ export const getSiteMessages = cache(async (locale: SiteLocale): Promise<SiteMes
 
 export const getLandingMessages = cache(async (locale: SiteLocale): Promise<LandingMessages> => {
   return (await getSiteMessages(locale)).landing;
+});
+
+export const getProtocolMessages = cache(async (locale: SiteLocale): Promise<ProtocolMessages> => {
+  return (await getSiteMessages(locale)).protocol;
 });
 
 export function getSiteOrigin() {
