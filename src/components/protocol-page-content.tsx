@@ -218,12 +218,14 @@ function LanguageControl({
 
 function DockMenuControl({
   homeHref,
+  enterpriseHref,
   protocolHref,
   active,
 }: {
   homeHref: string;
+  enterpriseHref: string;
   protocolHref: string;
-  active: "home" | "protocol";
+  active: "home" | "enterprise" | "protocol";
 }) {
   return (
     <div className="site-language-control site-nav-control" id="dockSiteNavControl">
@@ -249,6 +251,15 @@ function DockMenuControl({
         ) : (
           <a href={homeHref} className="site-language-option site-nav-option" role="menuitem">
             Home
+          </a>
+        )}
+        {active === "enterprise" ? (
+          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
+            Enterprise
+          </span>
+        ) : (
+          <a href={enterpriseHref} className="site-language-option site-nav-option" role="menuitem">
+            Enterprise
           </a>
         )}
         {active === "protocol" ? (
@@ -497,6 +508,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
         <div className="nav-r">
           <DockMenuControl
             homeHref={localeHref(locale, "/")}
+            enterpriseHref="/enterprise"
             protocolHref={localeHref(locale, "/protocol")}
             active="protocol"
           />
