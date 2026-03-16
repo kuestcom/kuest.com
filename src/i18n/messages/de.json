@@ -732,7 +732,6 @@
           "title": "Plattform vs. Protokoll",
           "body": "Polymarket ist ein einzelner Venue. Kalshi ist ein einzelner Venue. Kuest ist die darunterliegende Ebene - jeder Betreiber kann sein eigenes Frontend, seine eigene Marke und seine eigenen Märkte deployen und die Liquidität vom ersten Tag an mit allen anderen Kuest-Sites teilen.",
           "tags": [
-            "Eigenes Frontend",
             "Eigene Marke",
             "Geteilte Liquidität"
           ]

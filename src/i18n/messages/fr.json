@@ -732,7 +732,6 @@
           "title": "Plateforme vs protocole",
           "body": "Polymarket est un seul venue. Kalshi est un seul venue. Kuest est la couche sous-jacente : tout opérateur peut déployer son propre frontend, sa propre marque, ses propres marchés et partager la liquidité avec tous les autres sites propulsés par Kuest dès le premier jour.",
           "tags": [
-            "Frontend propre",
             "Marque propre",
             "Liquidité partagée"
           ]

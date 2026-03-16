@@ -91,20 +91,11 @@ function serializeJsonForHtmlScript(value: unknown) {
 }
 
 function buildThemeBootstrapScript() {
-  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
+  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
 }
 
 function KuestMark() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 339 320" aria-hidden="true">
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        d="M236.307692,394.69011 L304.949451,284.975824 L373.591209,394.69011 L236.307692,394.69011 Z M130.531868,256.281319 L208.457143,130.438443 L287.337853,256.281319 L208.457143,381.468132 L130.531868,256.281319 Z M400.879121,87.2087912 C406.224176,87.2087912 411.287912,90.3032967 414.101099,95.0857143 C416.914286,99.8681319 416.632967,105.775824 413.81978,110.558242 L322.672527,256.281319 L413.81978,402.004396 C416.632967,406.505495 416.914286,412.413187 413.538462,416.914286 C411.006593,421.696703 405.942857,424.791209 400.316484,424.791209 L205.362637,424.791209 C205.081319,424.791209 204.518681,424.50989 204.237363,424.50989 L203.956044,424.50989 C203.674725,424.228571 203.674725,424.228571 203.393407,424.228571 C203.112088,423.947253 202.830769,423.947253 202.830769,423.947253 L201.142857,423.103297 C201.142857,423.103297 200.861538,423.103297 200.58022,422.821978 L200.298901,422.821978 C200.298901,422.540659 200.017582,422.540659 199.736264,422.259341 C199.454945,422.259341 199.454945,422.259341 199.173626,421.978022 C198.892308,421.978022 198.892308,421.696703 198.610989,421.696703 L198.32967,421.415385 L196.641758,419.727473 C196.641758,419.446154 196.36044,419.446154 196.36044,419.164835 L196.079121,418.883516 C196.079121,418.602198 195.797802,418.602198 195.797802,418.320879 L99.5868132,264.43956 C96.4923077,259.375824 96.4923077,253.186813 99.5868132,248.123077 L195.797802,94.5230769 C198.610989,90.021978 203.393407,87.2087912 208.738462,87.2087912 Z M373.591209,116.184615 L236.307692,116.184615 L304.949451,225.898901 L373.591209,116.184615 Z"
-        transform="rotate(-90 165.17 251.5)"
-      />
-    </svg>
-  );
+  return <span className="kuest-logo-mark" aria-hidden="true" />;
 }
 
 function ThemeToggle({
@@ -427,7 +418,7 @@ export async function buildProtocolMetadata(locale: SiteLocale): Promise<Metadat
 
 export function buildProtocolViewport(): Viewport {
   return {
-    themeColor: "#f7f8fb",
+    themeColor: "#0e1117",
   };
 }
 
@@ -809,8 +800,8 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
                 <p>{messages.strategicQuestion.intro}</p>
               </div>
               <div className="r rd2 path-grid">
-                <article className="path-card creator">
-                  <div className="path-tag c">
+                <article className="path-card investor">
+                  <div className="path-tag i">
                     <Newspaper size={14} />
                     {messages.strategicQuestion.applicationLayer.tag}
                   </div>
@@ -824,8 +815,8 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
                     ))}
                   </div>
                 </article>
-                <article className="path-card investor">
-                  <div className="path-tag i">
+                <article className="path-card creator">
+                  <div className="path-tag c">
                     <Globe2 size={14} />
                     {messages.strategicQuestion.protocolLayer.tag}
                   </div>

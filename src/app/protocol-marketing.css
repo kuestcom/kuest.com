@@ -538,7 +538,7 @@
   color: var(--text);
 }
 
-.protocol-quote-card-thumb-mark svg {
+.protocol-quote-card-thumb-mark .kuest-logo-mark {
   width: 100%;
   height: 100%;
   display: block;
@@ -638,7 +638,7 @@
 }
 
 .protocol-status-rows .audience-row-icon.is-pending {
-  color: var(--accent);
+  color: var(--color-white);
 }
 
 .protocol-final-cta {

@@ -1008,7 +1008,7 @@
   width: 1.2rem;
   height: 1.2rem;
   flex-shrink: 0;
-  background: var(--muted-foreground);
+  background: var(--color-accent);
   opacity: 0.92;
   mask-image: url("/images/kuest-logo.svg");
   mask-repeat: no-repeat;

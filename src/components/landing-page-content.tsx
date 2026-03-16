@@ -22,7 +22,7 @@ function serializeJsonForHtmlScript(value: unknown) {
 }
 
 function buildLandingThemeBootstrapScript() {
-  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='light';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
+  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
 }
 
 export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata> {
@@ -34,7 +34,7 @@ export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata
   return {
     title: bundle.meta.title,
     description: bundle.meta.description,
-    themeColor: "#f7f8fb",
+    themeColor: "#0e1117",
     keywords: [
       "create your prediction market",
       "white label prediction market",
