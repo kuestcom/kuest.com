@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import {
   buildLandingMetadata,
+  buildLandingViewport,
   LandingPageContent,
 } from "@/components/landing-page-content";
 import {
@@ -20,6 +21,10 @@ export async function generateMetadata({ params }: LandingPageProps): Promise<Me
   }
 
   return buildLandingMetadata(locale);
+}
+
+export function generateViewport(): Viewport {
+  return buildLandingViewport();
 }
 
 export default async function LandingPage({ params }: LandingPageProps) {

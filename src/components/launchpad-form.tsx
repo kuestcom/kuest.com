@@ -436,11 +436,12 @@ function StepFooterLanguageControl() {
           onClick={() => setOpen((previous) => !previous)}
         >
           <span className="launch-language-trigger-content">
-            <img
+            <Image
               src={currentLocaleOption.flagSrc}
               alt=""
               width={18}
               height={12}
+              sizes="18px"
               className="launch-language-flag"
             />
             <span className="launch-language-label">{currentLocaleOption.label}</span>
@@ -467,11 +468,12 @@ function StepFooterLanguageControl() {
                 }}
               >
                 <span className="launch-language-option-row">
-                  <img
+                  <Image
                     src={option.flagSrc}
                     alt=""
                     width={18}
                     height={12}
+                    sizes="18px"
                     className="launch-language-flag"
                   />
                   <span>{option.label}</span>
@@ -1282,7 +1284,6 @@ export default function LaunchpadForm() {
       form.vercelTeamId,
       messages.domain.domainActionFailed,
       messages.domain.enterDomainFirst,
-      messages.timeline,
       resolvedProjectSlug,
       result,
       vercelAuthMethod,

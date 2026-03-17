@@ -18,14 +18,5 @@ export function normalizeSiteLocale(input?: string | null): SiteLocale {
 
 export function localeHref(locale: SiteLocale, path = "/") {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-
-  if (locale === defaultSiteLocale) {
-    return normalizedPath;
-  }
-
-  if (normalizedPath === "/") {
-    return `/${locale}`;
-  }
-
-  return `/${locale}${normalizedPath}`;
+  return normalizedPath === "/" ? `/${locale}` : `/${locale}${normalizedPath}`;
 }

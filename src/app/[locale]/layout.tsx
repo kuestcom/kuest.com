@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SiteRootLayout, siteRootMetadata } from "@/components/site-root-layout";
+import { setRequestLocale } from "next-intl/server";
+import {
+  SiteLocaleProviders,
+  siteRootMetadata,
+} from "@/components/site-root-layout";
 import { getSiteMessages, isSiteLocale, siteLocales } from "@/i18n/site";
-import "../globals.css";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -13,7 +15,7 @@ export async function generateStaticParams() {
   return siteLocales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = siteRootMetadata;
+export const metadata = siteRootMetadata;
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
@@ -22,7 +24,13 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     notFound();
   }
 
+  setRequestLocale(locale);
+
   const messages = await getSiteMessages(locale);
 
-  return <SiteRootLayout locale={locale} messages={messages}>{children}</SiteRootLayout>;
+  return (
+    <SiteLocaleProviders locale={locale} messages={messages}>
+      {children}
+    </SiteLocaleProviders>
+  );
 }

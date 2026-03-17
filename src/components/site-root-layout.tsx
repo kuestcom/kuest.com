@@ -1,11 +1,21 @@
-import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { NextIntlClientProvider } from "next-intl";
 import { LocaleSync } from "@/i18n/locale-sync";
-import { getSiteOrigin, type SiteLocale, type SiteMessages } from "@/i18n/site";
+import {
+  defaultSiteLocale,
+  getSiteOrigin,
+  type SiteLocale,
+  type SiteMessages,
+} from "@/i18n/site";
 import { geistMono, openSauceOne } from "@/lib/fonts";
 
-interface SiteRootLayoutProps {
+interface SiteDocumentProps {
+  children: ReactNode;
+  locale?: string;
+}
+
+interface SiteLocaleProvidersProps {
   children: ReactNode;
   locale: SiteLocale;
   messages: SiteMessages;
@@ -20,7 +30,14 @@ export const siteRootMetadata: Metadata = {
   },
 };
 
-export function SiteRootLayout({ children, locale, messages }: SiteRootLayoutProps) {
+export const siteRootViewport: Viewport = {
+  themeColor: "#CDFF00",
+};
+
+export function SiteDocument({
+  children,
+  locale = defaultSiteLocale,
+}: SiteDocumentProps) {
   return (
     <html
       lang={locale}
@@ -28,15 +45,20 @@ export function SiteRootLayout({ children, locale, messages }: SiteRootLayoutPro
       data-theme-mode="dark"
       suppressHydrationWarning
     >
-      <head>
-        <meta name="theme-color" content="#CDFF00" />
-      </head>
-      <body className="flex min-h-screen flex-col font-sans antialiased">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <LocaleSync />
-          {children}
-        </NextIntlClientProvider>
-      </body>
+      <body className="flex min-h-screen flex-col font-sans antialiased">{children}</body>
     </html>
+  );
+}
+
+export function SiteLocaleProviders({
+  children,
+  locale,
+  messages,
+}: SiteLocaleProvidersProps) {
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <LocaleSync />
+      {children}
+    </NextIntlClientProvider>
   );
 }

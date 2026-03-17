@@ -1,20 +1,30 @@
-/* eslint-disable @next/next/no-img-element */
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
-import Script from "next/script";
 import {
   ArrowRight,
   Banknote,
   Bot,
   Building2,
   Check,
-  ChevronDown,
   Clock3,
   Globe2,
-  Moon,
   Newspaper,
-  Sun,
 } from "lucide-react";
+import {
+  DockMenuControl,
+  HeroMarketStage,
+  KuestMark,
+  LanguageControl,
+  SiteFooter,
+  ThemeToggle,
+} from "@/components/marketing-shared";
+import { MarketingPageRuntime } from "@/components/marketing-page-runtime";
+import { ProtocolPitchDeckModal } from "@/components/protocol-pitch-deck-modal";
+import {
+  buildThemeBootstrapScript,
+  getDemoHref,
+  serializeJsonForHtmlScript,
+} from "@/lib/marketing-content";
 import {
   getProtocolMessages,
   getSiteOrigin,
@@ -22,301 +32,8 @@ import {
   siteLocales,
   type SiteLocale,
 } from "@/i18n/site";
-import { ProtocolPitchDeckModal } from "@/components/protocol-pitch-deck-modal";
 
 const CONTACT_HREF = "mailto:hello@kuest.com?subject=Kuest%20Protocol";
-const DEMO_HREF = "https://demo.kuest.com";
-
-const LANGUAGE_OPTIONS = [
-  { code: "en", label: "English", flagSrc: "/assets/flags/en.svg" },
-  { code: "de", label: "Deutsch", flagSrc: "/assets/flags/de.svg" },
-  { code: "es", label: "Español", flagSrc: "/assets/flags/es.svg" },
-  { code: "pt", label: "Português", flagSrc: "/assets/flags/pt.svg" },
-  { code: "fr", label: "Français", flagSrc: "/assets/flags/fr.svg" },
-  { code: "zh", label: "中文", flagSrc: "/assets/flags/zh.svg" },
-] satisfies ReadonlyArray<{ code: SiteLocale; label: string; flagSrc: string }>;
-
-const HERO_MARKET_SCENES = [
-  {
-    sceneClassName: "hero-market-scene hero-market-scene-a",
-    cards: [
-      { cardClassName: "hero-market-card hero-market-card-a1", rotate: "-9deg", imageSrc: "/assets/images/bitcoin-150k.png" },
-      {
-        cardClassName: "hero-market-card hero-market-card-a2 is-featured",
-        rotate: "-4deg",
-        imageSrc: "/assets/images/fed-rate-move.png",
-        expandSide: "right",
-      },
-      { cardClassName: "hero-market-card hero-market-card-a3", rotate: "8deg", imageSrc: "/assets/images/uniswap-v4-mainnet.png" },
-      { cardClassName: "hero-market-card hero-market-card-a4", rotate: "4deg", imageSrc: "/assets/images/ethereum-flippening.png" },
-    ],
-  },
-  {
-    sceneClassName: "hero-market-scene hero-market-scene-b",
-    cards: [
-      { cardClassName: "hero-market-card hero-market-card-b1", rotate: "-7deg", imageSrc: "/assets/images/elon-500b-net-worth.png" },
-      {
-        cardClassName: "hero-market-card hero-market-card-b2 is-featured",
-        rotate: "-2deg",
-        imageSrc: "/assets/images/donald-trump-president.png",
-        expandSide: "left",
-      },
-      { cardClassName: "hero-market-card hero-market-card-b3", rotate: "7deg", imageSrc: "/assets/images/discord-50k-members.png" },
-      { cardClassName: "hero-market-card hero-market-card-b4", rotate: "3deg", imageSrc: "/assets/images/brazil-election-2026.png" },
-    ],
-  },
-  {
-    sceneClassName: "hero-market-scene hero-market-scene-c",
-    cards: [
-      { cardClassName: "hero-market-card hero-market-card-c1", rotate: "-8deg", imageSrc: "/assets/images/donald-trump-president.png" },
-      {
-        cardClassName: "hero-market-card hero-market-card-c2 is-featured",
-        rotate: "-3deg",
-        imageSrc: "/assets/images/russia-x-ukraine.png",
-        expandSide: "right",
-      },
-      { cardClassName: "hero-market-card hero-market-card-c3", rotate: "8deg", imageSrc: "/assets/images/uk-general-election.png" },
-      { cardClassName: "hero-market-card hero-market-card-c4", rotate: "4deg", imageSrc: "/assets/images/marvel-opening-weekend.png" },
-    ],
-  },
-] as const;
-
-function serializeJsonForHtmlScript(value: unknown) {
-  return JSON.stringify(value)
-    .replaceAll("<", "\\u003C")
-    .replaceAll(">", "\\u003E")
-    .replaceAll("&", "\\u0026")
-    .replaceAll("\u2028", "\\u2028")
-    .replaceAll("\u2029", "\\u2029");
-}
-
-function buildThemeBootstrapScript() {
-  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta){var fallback=mode==='dark'?'#CDFF00':'#0e1117';try{var accent=getComputedStyle(root).getPropertyValue('--color-accent').trim();meta.setAttribute('content',accent||fallback);}catch(error){meta.setAttribute('content',fallback);}}})();`;
-}
-
-function KuestMark() {
-  return <span className="kuest-logo-mark" aria-hidden="true" />;
-}
-
-function ThemeToggle({
-  id,
-  className,
-  labelToDark,
-  labelToLight,
-}: {
-  id: string;
-  className: string;
-  labelToDark: string;
-  labelToLight: string;
-}) {
-  return (
-    <button
-      type="button"
-      id={id}
-      className={className}
-      data-theme-toggle
-      data-label-to-dark={labelToDark}
-      data-label-to-light={labelToLight}
-      aria-label={labelToDark}
-      aria-pressed="false"
-      title={labelToDark}
-    >
-      <span className="dock-theme-toggle-inner" aria-hidden="true">
-        <span className="theme-toggle-icon theme-toggle-icon-light">
-          <Sun />
-        </span>
-        <span className="theme-toggle-icon theme-toggle-icon-dark">
-          <Moon />
-        </span>
-      </span>
-    </button>
-  );
-}
-
-function LanguageControl({
-  locale,
-  path,
-  controlId,
-  buttonId,
-  menuId,
-  flagId,
-  labelId,
-  ariaLabel,
-}: {
-  locale: SiteLocale;
-  path: string;
-  controlId: string;
-  buttonId: string;
-  menuId: string;
-  flagId: string;
-  labelId: string;
-  ariaLabel: string;
-}) {
-  const currentLanguage = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
-
-  return (
-    <div className="site-language-control" id={controlId}>
-      <button
-        type="button"
-        id={buttonId}
-        className="site-language-trigger"
-        aria-label={ariaLabel}
-        aria-haspopup="listbox"
-        aria-expanded="false"
-      >
-        <span className="site-language-trigger-content">
-          <Image
-            id={flagId}
-            className="site-language-flag"
-            src={currentLanguage.flagSrc}
-            alt=""
-            width={18}
-            height={12}
-          />
-          <span id={labelId} className="site-language-label">
-            {currentLanguage.label}
-          </span>
-        </span>
-        <span className="site-language-icon" aria-hidden="true">
-          <ChevronDown />
-        </span>
-      </button>
-      <div id={menuId} className="site-language-menu" role="listbox" aria-label={ariaLabel}>
-        {LANGUAGE_OPTIONS.map((option) => (
-          <a
-            key={option.code}
-            href={localeHref(option.code, path)}
-            className={`site-language-option${option.code === locale ? " is-selected" : ""}`}
-            role="option"
-            aria-selected={option.code === locale}
-          >
-            <span className="site-language-option-row">
-              <Image
-                className="site-language-flag"
-                src={option.flagSrc}
-                alt=""
-                width={18}
-                height={12}
-              />
-              <span>{option.label}</span>
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DockMenuControl({
-  homeHref,
-  enterpriseHref,
-  protocolHref,
-  active,
-}: {
-  homeHref: string;
-  enterpriseHref: string;
-  protocolHref: string;
-  active: "home" | "enterprise" | "protocol";
-}) {
-  return (
-    <div className="site-language-control site-nav-control" id="dockSiteNavControl">
-      <button
-        type="button"
-        id="dockSiteNavButton"
-        className="dock-theme-toggle site-nav-trigger"
-        aria-label="Open site navigation"
-        aria-haspopup="menu"
-        aria-expanded="false"
-      >
-        <span className="site-nav-trigger-bars" aria-hidden="true">
-          <span className="site-nav-trigger-line" />
-          <span className="site-nav-trigger-line" />
-          <span className="site-nav-trigger-line" />
-        </span>
-      </button>
-      <div id="dockSiteNavMenu" className="site-language-menu site-nav-menu" role="menu" aria-label="Site navigation">
-        {active === "home" ? (
-          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
-            Home
-          </span>
-        ) : (
-          <a href={homeHref} className="site-language-option site-nav-option" role="menuitem">
-            Home
-          </a>
-        )}
-        {active === "enterprise" ? (
-          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
-            Enterprise
-          </span>
-        ) : (
-          <a href={enterpriseHref} className="site-language-option site-nav-option" role="menuitem">
-            Enterprise
-          </a>
-        )}
-        {active === "protocol" ? (
-          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
-            The Protocol
-          </span>
-        ) : (
-          <a href={protocolHref} className="site-language-option site-nav-option" role="menuitem">
-            The Protocol
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function HeroMarketStage({
-  titles,
-  yesLabel,
-  noLabel,
-}: {
-  titles: readonly string[];
-  yesLabel: string;
-  noLabel: string;
-}) {
-  return (
-    <div className="hero-market-stage" aria-hidden="true">
-      {HERO_MARKET_SCENES.map((scene, sceneIndex) => (
-        <div key={scene.sceneClassName} className={scene.sceneClassName}>
-          {scene.cards.map((card, cardIndex) => {
-            const titleIndex =
-              HERO_MARKET_SCENES
-                .slice(0, sceneIndex)
-                .reduce((total, entry) => total + entry.cards.length, 0) + cardIndex;
-            const title = titles[titleIndex] ?? "";
-            const expandSide = "expandSide" in card ? card.expandSide : undefined;
-
-            return (
-              <figure
-                key={card.cardClassName}
-                className={card.cardClassName}
-                data-expand-side={expandSide}
-                style={{ ["--hero-market-rotate" as string]: card.rotate }}
-              >
-                <div className="protocol-hero-card-shell">
-                  <div className="hero-market-card-media">
-                    <img src={card.imageSrc} alt="" />
-                  </div>
-                  {expandSide ? (
-                    <figcaption className="protocol-hero-card-panel" aria-hidden="true">
-                      <div className="protocol-hero-card-title">{title}</div>
-                      <div className="protocol-hero-card-actions">
-                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-yes">{yesLabel}</span>
-                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-no">{noLabel}</span>
-                      </div>
-                    </figcaption>
-                  ) : null}
-                </div>
-              </figure>
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function ProtocolQuoteCard({
   quote,
@@ -384,6 +101,7 @@ export async function buildProtocolMetadata(locale: SiteLocale): Promise<Metadat
   const description = messages.meta.description;
 
   return {
+    metadataBase: new URL(siteOrigin),
     title,
     description,
     keywords: messages.meta.keywords,
@@ -424,6 +142,7 @@ export function buildProtocolViewport(): Viewport {
 
 export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
   const messages = await getProtocolMessages(locale);
+  const demoHref = getDemoHref(locale);
   const partnerIcons = [Banknote, Bot, Building2] as const;
   const [whyNowLead, ...whyNowRest] = messages.whyNow.paragraphs;
   const [architectureLead, ...architectureRest] = messages.architecture.paragraphs;
@@ -438,7 +157,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
     return (
       <>
         {before}
-        <a href={DEMO_HREF} target="_blank" rel="noopener noreferrer">
+        <a href={demoHref} target="_blank" rel="noopener noreferrer">
           demo.kuest.com
         </a>
         {after}
@@ -454,10 +173,9 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
           __html: buildThemeBootstrapScript(),
         }}
       />
-      <Script
+      <script
         id="protocol-structured-data"
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: serializeJsonForHtmlScript({
             "@context": "https://schema.org",
@@ -476,6 +194,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
           }),
         }}
       />
+
       <nav id="heroNav" className="hero-nav">
         <div className="nav-r">
           <LanguageControl
@@ -499,7 +218,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
         <div className="nav-r">
           <DockMenuControl
             homeHref={localeHref(locale, "/")}
-            enterpriseHref="/enterprise"
+            enterpriseHref={localeHref(locale, "/enterprise")}
             protocolHref={localeHref(locale, "/protocol")}
             active="protocol"
           />
@@ -882,7 +601,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
                   <ArrowRight />
                 </a>
                 <a
-                  href={DEMO_HREF}
+                  href={demoHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-cta btn-cta-secondary"
@@ -896,63 +615,17 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
         </section>
       </main>
 
-      <footer>
-        <div className="foot-brand">
-          <div className="nav-logo gap-2 font-sans text-[15px] font-bold text-muted">
-            <KuestMark />
-            Kuest
-          </div>
-          <div className="foot-note">{messages.footer.note}</div>
-        </div>
-        <div className="foot-links">
-          <a
-            id="footerDocsLink"
-            className="foot-link-icon"
-            href="https://kuest.com/docs/owners"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={messages.footer.docsLabel}
-            title={messages.footer.docsLabel}
-          >
-            <Image src="/assets/images/docs.svg" alt="" width={21} height={21} />
-          </a>
-          <a
-            id="footerMailLink"
-            className="foot-link-icon"
-            href="mailto:hello@kuest.com"
-            aria-label={messages.footer.contactLabel}
-            title={messages.footer.contactLabel}
-          >
-            <Image src="/assets/images/mail.svg" alt="" width={20} height={20} />
-          </a>
-          <a
-            id="footerXLink"
-            className="foot-link-icon"
-            href="https://x.com/kuest"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={messages.footer.xLabel}
-            title={messages.footer.xLabel}
-          >
-            <Image src="/assets/images/x.svg" alt="" width={20} height={20} />
-          </a>
-          <a
-            id="footerDiscordLink"
-            className="foot-link-icon"
-            href="https://discord.gg/kuest"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={messages.footer.discordLabel}
-            title={messages.footer.discordLabel}
-          >
-            <Image src="/assets/images/discord.svg" alt="" width={20} height={20} />
-          </a>
-        </div>
-      </footer>
+      <SiteFooter
+        note={messages.footer.note}
+        docsLabel={messages.footer.docsLabel}
+        contactLabel={messages.footer.contactLabel}
+        xLabel={messages.footer.xLabel}
+        discordLabel={messages.footer.discordLabel}
+      />
 
       <ProtocolPitchDeckModal messages={messages.deckModal} />
 
-      <Script src="/assets/app.js" strategy="afterInteractive" />
+      <MarketingPageRuntime nextSectionId="p1" finalSectionId="p9" />
     </>
   );
 }
