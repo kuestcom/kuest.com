@@ -732,7 +732,7 @@ export async function renderLandingMarkup(locale: SiteLocale, bundle: LandingMes
     .filter(Boolean);
   setText(document.querySelector("#p3 .sh"), solutionHeadline ?? bundle.solution.title);
   setHtml(document.querySelector("#p3 .bt"), buildSolutionSubtitleHtml(solutionTitleRest, bundle.solution.subtitle));
-  setText(document.querySelector("#solutionCopyHeadingMobile"), extractSolutionConclusionHeading(bundle.solution.subtitle));
+  setText(document.querySelector("#solutionFlowHeading"), extractSolutionConclusionHeading(bundle.solution.subtitle));
   bundle.solution.points.forEach((point, index) => {
     setText(document.querySelector(`#solutionTimelineTitle${index + 1}`), point.title);
     setText(document.querySelector(`#solutionTimelineText${index + 1}`), point.copy);

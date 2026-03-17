@@ -74,6 +74,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <div class="tl-dot" data-p="4"></div>
   <div class="tl-dot" data-p="5"></div>
   <div class="tl-dot" data-p="6"></div>
+  <div class="tl-dot" data-p="7"></div>
 </div>
 
 <!-- NAV -->
@@ -468,9 +469,23 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="solution-proof-rotator" id="solutionProofRotator"></div>
             </div>
           </div>
-          <div class="solution-copy-heading-mobile" id="solutionCopyHeadingMobile"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-wrap panel-static" id="p3-flow">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10">
+        <div class="solution-flow-stage r">
+          <div class="solution-flow-head">
+            <h2 class="sh" id="solutionFlowHeading">No code. No server. No technical headaches:</h2>
+          </div>
           <div class="solution-timeline" aria-label="How Kuest works">
-            <article class="solution-timeline-step solution-timeline-step-right">
+            <div class="solution-timeline-rail" aria-hidden="true">
+              <span class="solution-timeline-head"></span>
+            </div>
+            <article class="solution-timeline-step solution-timeline-step-top solution-timeline-step-right">
               <div class="solution-timeline-side" aria-hidden="true"></div>
               <div class="solution-timeline-node" aria-hidden="true"><span>1</span></div>
               <div class="solution-timeline-copy">
@@ -478,7 +493,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <p class="solution-timeline-text" id="solutionTimelineText1">Sports, crypto, politics, memes — anything your audience already argues about. You set the questions, the fee rate, and your brand.</p>
               </div>
             </article>
-            <article class="solution-timeline-step solution-timeline-step-left">
+            <article class="solution-timeline-step solution-timeline-step-bottom solution-timeline-step-left">
               <div class="solution-timeline-copy">
                 <h3 class="solution-timeline-title" id="solutionTimelineTitle2">Go live — we handle the infrastructure</h3>
                 <p class="solution-timeline-text" id="solutionTimelineText2">Settlement, wallets, liquidity, blockchain — all running before you finish setup. Your market is live in under 15 minutes with no code.</p>
@@ -486,7 +501,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="solution-timeline-node" aria-hidden="true"><span>2</span></div>
               <div class="solution-timeline-side" aria-hidden="true"></div>
             </article>
-            <article class="solution-timeline-step solution-timeline-step-right">
+            <article class="solution-timeline-step solution-timeline-step-top solution-timeline-step-right">
               <div class="solution-timeline-side" aria-hidden="true"></div>
               <div class="solution-timeline-node" aria-hidden="true"><span>3</span></div>
               <div class="solution-timeline-copy">
@@ -494,14 +509,14 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <p class="solution-timeline-text" id="solutionTimelineText3">Your audience bets. The fee goes straight to your wallet. No intermediary, no revenue share, no waiting.</p>
               </div>
             </article>
-          </div>
-          <div class="solution-cta-wrap solution-cta-wrap-centered">
-            <div class="solution-cta-block solution-cta-block-inline">
-              <a href="/launch" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
-                <span class="cta-label">I want to be the house</span>
-                <i data-lucide="chevron-right"></i>
-              </a>
-              <div class="solution-cta-note" id="solutionCtaNote">FREE · KUEST INFRASTRUCTURE · LIQUIDITY INCLUDED</div>
+            <div class="solution-timeline-cta">
+              <div class="solution-cta-block solution-cta-block-inline">
+                <a href="/launch" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
+                  <span class="cta-label">I want to be the house</span>
+                  <i data-lucide="chevron-right"></i>
+                </a>
+                <div class="solution-cta-note" id="solutionCtaNote">FREE · KUEST INFRASTRUCTURE · LIQUIDITY INCLUDED</div>
+              </div>
             </div>
           </div>
         </div>

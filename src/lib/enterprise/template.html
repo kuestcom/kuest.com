@@ -510,9 +510,12 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="solution-proof-rotator" id="solutionProofRotator"></div>
             </div>
           </div>
-          <div class="solution-copy-heading-mobile" id="solutionCopyHeadingMobile"></div>
+          <h2 class="solution-copy-heading-mobile" id="solutionCopyHeadingMobile"></h2>
           <div class="solution-timeline" aria-label="How Kuest works">
-            <article class="solution-timeline-step solution-timeline-step-right">
+            <div class="solution-timeline-rail" aria-hidden="true">
+              <span class="solution-timeline-head"></span>
+            </div>
+            <article class="solution-timeline-step solution-timeline-step-top solution-timeline-step-right">
               <div class="solution-timeline-side" aria-hidden="true"></div>
               <div class="solution-timeline-node" aria-hidden="true"><span>1</span></div>
               <div class="solution-timeline-copy">
@@ -520,7 +523,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <p class="solution-timeline-text" id="solutionTimelineText1">Choose the event categories your clients care about — macroeconomics, interest rates, politics, commodities, crypto, sports. Create proprietary markets exclusive to your platform. Set your fee rate. We configure everything around your brand and regulatory perimeter.</p>
               </div>
             </article>
-            <article class="solution-timeline-step solution-timeline-step-left">
+            <article class="solution-timeline-step solution-timeline-step-bottom solution-timeline-step-left">
               <div class="solution-timeline-copy">
                 <h3 class="solution-timeline-title" id="solutionTimelineTitle2">We deploy the full technical stack — zero engineering required</h3>
                 <p class="solution-timeline-text" id="solutionTimelineText2">Smart contracts, CLOB engine, settlement rails, wallet infrastructure, liquidity — all running before your team finishes onboarding. Contracts are derived from Polymarket's architecture, audited by OpenZeppelin. No internal blockchain team needed. No infrastructure sprint.</p>
@@ -528,7 +531,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
               <div class="solution-timeline-node" aria-hidden="true"><span>2</span></div>
               <div class="solution-timeline-side" aria-hidden="true"></div>
             </article>
-            <article class="solution-timeline-step solution-timeline-step-right">
+            <article class="solution-timeline-step solution-timeline-step-top solution-timeline-step-right">
               <div class="solution-timeline-side" aria-hidden="true"></div>
               <div class="solution-timeline-node" aria-hidden="true"><span>3</span></div>
               <div class="solution-timeline-copy">
@@ -536,14 +539,14 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <p class="solution-timeline-text" id="solutionTimelineText3">Every transaction your clients execute generates a direct fee to your institution — no intermediary, no revenue share, no settlement lag. The same infrastructure model used by platforms that collectively process over $18 billion in monthly volume.</p>
               </div>
             </article>
-          </div>
-          <div class="solution-cta-wrap solution-cta-wrap-centered">
-            <div class="solution-cta-block solution-cta-block-inline">
-              <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
-                <span class="cta-label">Schedule a demo</span>
-                <i data-lucide="chevron-right"></i>
-              </a>
-              <div class="solution-cta-note" id="solutionCtaNote">WHITE-LABEL · AUDITED CONTRACTS · LIQUIDITY INCLUDED</div>
+            <div class="solution-timeline-cta">
+              <div class="solution-cta-block solution-cta-block-inline">
+                <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
+                  <span class="cta-label">Schedule a demo</span>
+                  <i data-lucide="chevron-right"></i>
+                </a>
+                <div class="solution-cta-note" id="solutionCtaNote">WHITE-LABEL · AUDITED CONTRACTS · LIQUIDITY INCLUDED</div>
+              </div>
             </div>
           </div>
         </div>

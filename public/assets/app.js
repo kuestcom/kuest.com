@@ -223,6 +223,31 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 /* fallback for iframe/preview environments */
 setTimeout(()=>{document.querySelectorAll('.r:not(.v)').forEach(el=>el.classList.add('v'));},400);
 
+/* ── SOLUTION TIMELINE ── */
+(function(){
+  const timelines=[...document.querySelectorAll('.solution-timeline')];
+  if(!timelines.length)return;
+
+  const prefersReducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(prefersReducedMotion||typeof IntersectionObserver!=='function'){
+    timelines.forEach(timeline=>timeline.classList.add('is-revealed'));
+    return;
+  }
+
+  const revealTimeline=(timeline,observer)=>{
+    timeline.classList.add('is-revealed');
+    if(observer)observer.unobserve(timeline);
+  };
+
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting)revealTimeline(entry.target,observer);
+    });
+  },{threshold:.56,rootMargin:'0px 0px -4% 0px'});
+
+  timelines.forEach(timeline=>observer.observe(timeline));
+})();
+
 /* ── ATTENTION SCROLL ── */
 (function(){
   const section=document.getElementById('p1-scroll');
