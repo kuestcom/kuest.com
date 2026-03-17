@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import {
+  SiteDocument,
   SiteLocaleProviders,
   siteRootMetadata,
+  siteRootViewport,
 } from "@/components/site-root-layout";
 import { getSiteMessages, isSiteLocale, siteLocales } from "@/i18n/site";
 
@@ -16,6 +18,7 @@ export async function generateStaticParams() {
 }
 
 export const metadata = siteRootMetadata;
+export const viewport = siteRootViewport;
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
@@ -29,8 +32,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const messages = await getSiteMessages(locale);
 
   return (
-    <SiteLocaleProviders locale={locale} messages={messages}>
-      {children}
-    </SiteLocaleProviders>
+    <SiteDocument locale={locale}>
+      <SiteLocaleProviders locale={locale} messages={messages}>
+        {children}
+      </SiteLocaleProviders>
+    </SiteDocument>
   );
 }

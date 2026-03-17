@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { LocaleSync } from "@/i18n/locale-sync";
 import {
-  defaultSiteLocale,
   getSiteOrigin,
   type SiteLocale,
   type SiteMessages,
@@ -12,7 +11,7 @@ import { geistMono, openSauceOne } from "@/lib/fonts";
 
 interface SiteDocumentProps {
   children: ReactNode;
-  locale?: string;
+  locale: string;
 }
 
 interface SiteLocaleProvidersProps {
@@ -36,7 +35,7 @@ export const siteRootViewport: Viewport = {
 
 export function SiteDocument({
   children,
-  locale = defaultSiteLocale,
+  locale,
 }: SiteDocumentProps) {
   return (
     <html

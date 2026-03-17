@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ComponentType } from "react";
 import {
   Activity,
@@ -138,7 +139,7 @@ export function LanguageControl({
       </button>
       <div id={menuId} className="site-language-menu" role="listbox" aria-label={ariaLabel}>
         {LANGUAGE_OPTIONS.map((option) => (
-          <a
+          <Link
             key={option.code}
             href={localeHref(option.code, path)}
             className={`site-language-option${option.code === locale ? " is-selected" : ""}`}
@@ -155,7 +156,7 @@ export function LanguageControl({
               />
               <span>{option.label}</span>
             </span>
-          </a>
+          </Link>
         ))}
       </div>
     </div>
@@ -195,27 +196,27 @@ export function DockMenuControl({
             Home
           </span>
         ) : (
-          <a href={homeHref} className="site-language-option site-nav-option" role="menuitem">
+          <Link href={homeHref} className="site-language-option site-nav-option" role="menuitem">
             Home
-          </a>
+          </Link>
         )}
         {active === "enterprise" ? (
           <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
             Enterprise
           </span>
         ) : (
-          <a href={enterpriseHref} className="site-language-option site-nav-option" role="menuitem">
+          <Link href={enterpriseHref} className="site-language-option site-nav-option" role="menuitem">
             Enterprise
-          </a>
+          </Link>
         )}
         {active === "protocol" ? (
           <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
             The Protocol
           </span>
         ) : (
-          <a href={protocolHref} className="site-language-option site-nav-option" role="menuitem">
+          <Link href={protocolHref} className="site-language-option site-nav-option" role="menuitem">
             The Protocol
-          </a>
+          </Link>
         )}
       </div>
     </div>

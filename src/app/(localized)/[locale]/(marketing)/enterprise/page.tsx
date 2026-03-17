@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: EnterprisePageProps): Promise
     notFound();
   }
 
-  return buildEnterpriseMetadata();
+  return buildEnterpriseMetadata(locale);
 }
 
 export default async function EnterprisePage({ params }: EnterprisePageProps) {

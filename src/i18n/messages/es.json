@@ -14,6 +14,7 @@
     "preview": {
       "title": "Así se verá tu sitio.",
       "subtitle": "Este es un demo funcional con mercados reflejados de Polymarket. Explóralo, opera y piensa en esto con tu marca, tu audiencia y tus preguntas.",
+      "liveLabel": "Demo en vivo",
       "switchToDesktop": "Cambiar a vista de escritorio",
       "switchToMobile": "Cambiar a vista móvil"
     },
@@ -127,66 +128,33 @@
       }
     },
     "features": {
-      "eyebrow": "Qué viene incluido",
-      "title": "Tres cosas que a un equipo le tomarían meses. Aquí las resuelves en 15 minutos.",
-      "subtitle": "Sin developers. Sin saber de blockchain. Sin mercado vacío.",
+      "eyebrow": "Todo ya está construido",
+      "title": "La stack completa. Lista para salir en vivo.",
+      "subtitle": "Desde el motor de trading hasta tu leaderboard, todo lo que esperarías de una plataforma de trading ya está corriendo. Tú solo agregas tu marca.",
       "cards": [
         {
-          "title": "Tu sitio. Tu idioma. Tu nicho.",
-          "copy": "Dominio propio, logo, colores y contexto local. Lanza en español, inglés o en el idioma de tu audiencia."
+          "title": "Tu dominio. Tu marca. Cualquier idioma.",
+          "copy": "Dominio propio, logo, colores e interfaz en el idioma de tu audiencia. Español, inglés, portugués, alemán, francés y chino ya vienen listos."
         },
         {
-          "title": "Pregunta lo que mueve a tu audiencia.",
-          "copy": "Tú escribes la pregunta. Tu audiencia opera en Sí o No. Y cada operación puede dejar ingresos directos en tu wallet, sin intermediarios.",
-          "question": "\"¿Saldrá GTA 6 antes de julio de 2025?\""
+          "title": "Liquidez compartida desde el día 1.",
+          "copy": "Refleja mercados activos de Polymarket con flujo de órdenes incorporado. Tu sitio nace vivo, sin cold start ni libros vacíos."
         },
         {
-          "title": "Activo desde el día 1. Sin libro vacío.",
-          "copy": "Con liquidez compartida vía mercados espejo, tu mercado ya nace con actividad. El problema del libro vacío se queda fuera.",
-          "feedLabel": "Actividad en vivo",
-          "feedStatus": "Día 1",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "compró",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "a 72¢ ($4)"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "vendió",
-              "side": "Sí",
-              "sideClass": "yes",
-              "entry": "a 41¢ ($9)"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "compró",
-              "side": "Sí",
-              "sideClass": "yes",
-              "entry": "a 18¢ ($2)"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "vendió",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "a 63¢ ($11)"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "compró",
-              "side": "Sí",
-              "sideClass": "yes",
-              "entry": "a 81¢ ($7)"
-            }
-          ]
+          "title": "Leaderboard + PnL incluidos.",
+          "copy": "Ranking de traders, profit and loss y feed de actividad ya vienen activos por defecto. Tu comunidad tiene una razón clara para volver."
+        },
+        {
+          "title": "Sistema de afiliados on-chain.",
+          "copy": "Deja que otras personas promuevan tu mercado y ganen una parte de las comisiones con liquidación trustless on-chain. Sin pagos manuales ni hojas de cálculo."
+        },
+        {
+          "title": "SDKs para trading automatizado.",
+          "copy": "Los SDKs en Python y Rust permiten que market makers y power users ejecuten bots directamente en tu plataforma, aumentando volumen y profundidad automáticamente."
+        },
+        {
+          "title": "Contratos auditados por OpenZeppelin.",
+          "copy": "Smart contracts derivados de la arquitectura de Polymarket con resolución vía UMA para una liquidación transparente y verificable. No necesitas entender todo eso. Solo necesitas que funcione."
         }
       ]
     },

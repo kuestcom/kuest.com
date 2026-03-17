@@ -9,14 +9,14 @@ export function SitePreview({
   iframeSrc,
   switchToDesktopLabel,
   switchToMobileLabel,
-  liveLabel = "Live Demo",
+  liveLabel,
 }: {
   href: string;
   label: string;
   iframeSrc: string;
   switchToDesktopLabel: string;
   switchToMobileLabel: string;
-  liveLabel?: string;
+  liveLabel: string;
 }) {
   const [forcedMobile, setForcedMobile] = useState(false);
   const [manualMobile, setManualMobile] = useState(false);

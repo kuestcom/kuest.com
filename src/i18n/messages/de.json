@@ -14,6 +14,7 @@
     "preview": {
       "title": "So wird deine Website aussehen.",
       "subtitle": "Das ist eine funktionierende Demo mit gespiegelten Polymarket-Märkten. Schau sie dir an, handle darauf und stell dir das mit deiner Marke, deinem Publikum und deinen Fragen vor.",
+      "liveLabel": "Live-Demo",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
       "switchToMobile": "Zur Mobile-Ansicht wechseln"
     },
@@ -127,66 +128,33 @@
       }
     },
     "features": {
-      "eyebrow": "Was schon drin ist",
-      "title": "Drei Dinge, für die ein Team Monate bräuchte. Hier erledigst du sie in 15 Minuten.",
-      "subtitle": "Kein Dev-Team. Kein Blockchain-Know-how. Kein leerer Markt zum Start.",
+      "eyebrow": "Alles ist bereits gebaut",
+      "title": "Der komplette Stack. Bereit für den Go-live.",
+      "subtitle": "Von der Trading-Engine bis zum Leaderboard ist alles, was man von einer Trading-Plattform erwartet, bereits in Betrieb. Du bringst nur noch deine Marke mit.",
       "cards": [
         {
-          "title": "Deine Seite. Deine Sprache. Deine Nische.",
-          "copy": "Eigene Domain, Logo, Farben und lokaler Kontext. Starte auf Deutsch, Englisch oder in der Sprache deiner Community."
+          "title": "Deine Domain. Deine Marke. Jede Sprache.",
+          "copy": "Eigene Domain, Logo, Farben und UI-Sprache. Englisch, Portugiesisch, Spanisch, Deutsch, Französisch und Chinesisch sind sofort verfügbar."
         },
         {
-          "title": "Stell die Fragen, die dein Publikum bewegen.",
-          "copy": "Du formulierst die Frage. Dein Publikum handelt auf Ja oder Nein. Und jeder Trade kann Gebühren direkt in dein Wallet bringen — ohne Zwischenhändler.",
-          "question": "\"Erscheint GTA 6 vor Juli 2025?\""
+          "title": "Geteilte Liquidität ab Tag 1.",
+          "copy": "Spiegele aktive Polymarket-Märkte mit integriertem Orderflow. Deine Seite startet lebendig, ohne Cold Start und ohne leere Orderbücher."
         },
         {
-          "title": "Vom ersten Tag an lebendig. Kein leeres Orderbuch.",
-          "copy": "Durch geteilte Liquidität über gespiegelte Märkte startet dein Markt nicht leer. Das Problem des leeren Orderbuchs entfällt.",
-          "feedLabel": "Live-Aktivität",
-          "feedStatus": "Tag 1",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "kaufte",
-              "side": "Nein",
-              "sideClass": "no",
-              "entry": "zu 72¢ ($4)"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "verkaufte",
-              "side": "Ja",
-              "sideClass": "yes",
-              "entry": "zu 41¢ ($9)"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "kaufte",
-              "side": "Ja",
-              "sideClass": "yes",
-              "entry": "zu 18¢ ($2)"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "verkaufte",
-              "side": "Nein",
-              "sideClass": "no",
-              "entry": "zu 63¢ ($11)"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "kaufte",
-              "side": "Ja",
-              "sideClass": "yes",
-              "entry": "zu 81¢ ($7)"
-            }
-          ]
+          "title": "Leaderboard + PnL inklusive.",
+          "copy": "Trader-Rankings, Gewinn-und-Verlust-Tracking und Aktivitätsfeeds sind standardmäßig aktiv. Deine Community hat einen echten Grund zurückzukommen."
+        },
+        {
+          "title": "On-Chain-Affiliate-System.",
+          "copy": "Lass andere deinen Markt bewerben und an den Gebühren mitverdienen, trustless on-chain abgerechnet. Keine manuellen Auszahlungen und keine Tabellen."
+        },
+        {
+          "title": "SDKs für automatisierten Handel.",
+          "copy": "Python- und Rust-SDKs erlauben es Market Makern und Power Usern, Bots direkt auf deiner Plattform auszuführen und damit Volumen und Tiefe automatisch zu erhöhen."
+        },
+        {
+          "title": "Von OpenZeppelin auditierte Verträge.",
+          "copy": "Smart Contracts auf Basis der Polymarket-Architektur mit UMA-basierter Auflösung für transparente und verifizierbare Abwicklung. Du musst das nicht im Detail verstehen. Es muss einfach funktionieren."
         }
       ]
     },

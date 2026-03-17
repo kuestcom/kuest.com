@@ -23,7 +23,13 @@ import {
   getDemoHref,
   getDemoLabel,
 } from "@/lib/marketing-content";
-import { getLandingMessages, getSiteOrigin, localeHref, type SiteLocale } from "@/i18n/site";
+import {
+  getLandingMessages,
+  getSiteOrigin,
+  localeHref,
+  siteLocales,
+  type SiteLocale,
+} from "@/i18n/site";
 
 const CONTACT_HREF = "mailto:hello@kuest.com?subject=Enterprise%20Demo";
 const THEME_LABELS = {
@@ -155,12 +161,38 @@ const ENTERPRISE_FAQ = [
   },
 ] as const;
 
-export async function buildEnterpriseMetadata(): Promise<Metadata> {
+export async function buildEnterpriseMetadata(locale: SiteLocale): Promise<Metadata> {
+  const siteOrigin = getSiteOrigin();
+  const canonical = new URL(localeHref(locale, "/enterprise"), siteOrigin);
+  const ogImage = new URL("/assets/images/your-predictoin-market-500mi-vol.png", siteOrigin);
+
   return {
-    metadataBase: new URL(getSiteOrigin()),
+    metadataBase: new URL(siteOrigin),
     title: "Kuest Enterprise",
     description:
       "White-label prediction market infrastructure for financial institutions, media platforms, and enterprise operators.",
+    alternates: {
+      canonical,
+      languages: Object.fromEntries(
+        siteLocales.map((entry) => [entry, localeHref(entry, "/enterprise")]),
+      ),
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Kuest",
+      title: "Kuest Enterprise",
+      description:
+        "White-label prediction market infrastructure for financial institutions, media platforms, and enterprise operators.",
+      url: canonical,
+      images: [{ url: ogImage, alt: "Kuest Enterprise preview" }],
+    },
+    twitter: {
+      card: "summary",
+      title: "Kuest Enterprise",
+      description:
+        "White-label prediction market infrastructure for financial institutions, media platforms, and enterprise operators.",
+      images: [ogImage],
+    },
   };
 }
 
@@ -516,6 +548,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                   href={getDemoHref(locale)}
                   label={getDemoLabel(locale)}
                   iframeSrc={getDemoEmbedSrc(locale)}
+                  liveLabel={bundle.preview.liveLabel}
                   switchToDesktopLabel={bundle.preview.switchToDesktop}
                   switchToMobileLabel={bundle.preview.switchToMobile}
                 />

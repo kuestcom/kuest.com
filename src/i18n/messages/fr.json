@@ -14,6 +14,7 @@
     "preview": {
       "title": "Voici à quoi ressemblera votre site.",
       "subtitle": "Ceci est une démo fonctionnelle avec des marchés miroirs de Polymarket. Explorez-la, tradez dessus et imaginez cela avec votre marque, votre audience et vos questions.",
+      "liveLabel": "Démo en direct",
       "switchToDesktop": "Passer à la vue desktop",
       "switchToMobile": "Passer à la vue mobile"
     },
@@ -127,66 +128,33 @@
       }
     },
     "features": {
-      "eyebrow": "Ce qui est déjà inclus",
-      "title": "Trois choses qui prendraient des mois à une équipe. Ici, vous les lancez en 15 minutes.",
-      "subtitle": "Pas d’équipe tech. Pas besoin de maîtriser la blockchain. Pas de marché vide au départ.",
+      "eyebrow": "Tout est déjà construit",
+      "title": "Toute la stack. Prête à être lancée.",
+      "subtitle": "Du moteur de trading jusqu'au leaderboard, tout ce qu'on attend d'une plateforme de trading tourne déjà. Vous n'avez plus qu'à ajouter votre marque.",
       "cards": [
         {
-          "title": "Votre site. Votre langue. Votre niche.",
-          "copy": "Domaine, logo, couleurs et contexte local. Lancez en français, en anglais ou dans la langue de votre audience."
+          "title": "Votre domaine. Votre marque. Toutes les langues.",
+          "copy": "Domaine personnalisé, logo, couleurs et langue de l'interface. Anglais, portugais, espagnol, allemand, français et chinois sont déjà disponibles."
         },
         {
-          "title": "Posez les questions qui comptent pour votre audience.",
-          "copy": "Vous rédigez la question. Votre audience se positionne sur Oui ou Non. Et chaque transaction peut générer une commission directement dans votre portefeuille.",
-          "question": "\"GTA 6 sortira-t-il avant juillet 2025 ?\""
+          "title": "Liquidité partagée dès le premier jour.",
+          "copy": "Reprenez des marchés actifs de Polymarket avec un flux d'ordres intégré. Votre site démarre vivant, sans cold start ni carnet vide."
         },
         {
-          "title": "Vivant dès le jour 1. Pas de carnet vide.",
-          "copy": "Avec la liquidité partagée via des marchés miroir, votre marché démarre déjà avec de l’activité. Le problème du carnet d’ordres vide disparaît.",
-          "feedLabel": "Activité en direct",
-          "feedStatus": "Jour 1",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "a acheté",
-              "side": "Non",
-              "sideClass": "no",
-              "entry": "à 72¢ ($4)"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "a vendu",
-              "side": "Oui",
-              "sideClass": "yes",
-              "entry": "à 41¢ ($9)"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "a acheté",
-              "side": "Oui",
-              "sideClass": "yes",
-              "entry": "à 18¢ ($2)"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "a vendu",
-              "side": "Non",
-              "sideClass": "no",
-              "entry": "à 63¢ ($11)"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "a acheté",
-              "side": "Oui",
-              "sideClass": "yes",
-              "entry": "à 81¢ ($7)"
-            }
-          ]
+          "title": "Leaderboard + PnL inclus.",
+          "copy": "Classement des traders, suivi des profits et pertes, et flux d'activité sont actifs par défaut. Votre audience a une vraie raison de revenir."
+        },
+        {
+          "title": "Système d'affiliation on-chain.",
+          "copy": "Laissez d'autres personnes promouvoir votre marché et gagner une part des frais, réglée trustless on-chain. Aucun paiement manuel, aucun tableur."
+        },
+        {
+          "title": "SDKs pour le trading automatisé.",
+          "copy": "Les SDK Python et Rust permettent aux market makers et aux utilisateurs avancés d'exécuter des bots directement sur votre plateforme, ce qui augmente automatiquement le volume et la profondeur."
+        },
+        {
+          "title": "Contrats audités par OpenZeppelin.",
+          "copy": "Des smart contracts dérivés de l'architecture de Polymarket avec résolution via UMA pour un règlement transparent et vérifiable. Vous n'avez pas besoin d'en maîtriser les détails. Il faut simplement que cela fonctionne."
         }
       ]
     },

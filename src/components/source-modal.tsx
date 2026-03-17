@@ -64,13 +64,14 @@ export function SourceModal({
         return;
       }
 
+      event.preventDefault();
+
       const safeUrl = getSafeSourceUrl(link.getAttribute("href") ?? "");
 
       if (!safeUrl) {
         return;
       }
 
-      event.preventDefault();
       setIsLoading(true);
       setSource({
         href: safeUrl.href,

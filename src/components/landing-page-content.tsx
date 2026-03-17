@@ -467,40 +467,12 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           <div className="panel-sticky">
             <div className="panel-inner max-w-[1180px] grid-cols-1 gap-10">
               <div className="r text-center">
-                <div className="slbl justify-center">EVERYTHING ALREADY BUILT</div>
-                <h2 className="sh">The full stack. Ready to go live.</h2>
-                <p className="bt section-copy-center">
-                  From the trading engine to your leaderboard - every feature you&apos;d expect a trading
-                  platform to have is already running. You just add your brand.
-                </p>
+                <div className="slbl justify-center">{bundle.features.eyebrow}</div>
+                <h2 className="sh">{bundle.features.title}</h2>
+                <p className="bt section-copy-center">{bundle.features.subtitle}</p>
               </div>
               <div className="r mini-cards-grid mini-cards-grid-feature">
-                {[
-                  {
-                    title: "Your domain. Your brand. Any language.",
-                    copy: "Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, and Chinese out of the box.",
-                  },
-                  {
-                    title: "Shared liquidity from day one.",
-                    copy: "Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches - no cold start, no empty order books.",
-                  },
-                  {
-                    title: "Leaderboard + PnL built in.",
-                    copy: "Trader rankings, profit and loss tracking, and activity feeds are live by default. Your community has a reason to keep coming back.",
-                  },
-                  {
-                    title: "On-chain affiliate system.",
-                    copy: "Let others promote your market and earn a share of fees - settled trustlessly on-chain. No manual payouts, no spreadsheets.",
-                  },
-                  {
-                    title: "Bot SDKs for automated trading.",
-                    copy: "Python and Rust SDKs let market makers and power users run bots directly on your platform - increasing volume and depth automatically.",
-                  },
-                  {
-                    title: "OpenZeppelin-audited contracts.",
-                    copy: "Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this - it just works.",
-                  },
-                ].map((card, index) => {
+                {bundle.features.cards.map((card, index) => {
                   const Icon = FEATURE_ICONS[index];
 
                   return (
@@ -534,6 +506,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                   href={previewHref}
                   label={previewLabel}
                   iframeSrc={previewSrc}
+                  liveLabel={bundle.preview.liveLabel}
                   switchToDesktopLabel={bundle.preview.switchToDesktop}
                   switchToMobileLabel={bundle.preview.switchToMobile}
                 />

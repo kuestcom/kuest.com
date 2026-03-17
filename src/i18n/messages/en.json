@@ -14,6 +14,7 @@
     "preview": {
       "title": "This is what your site will look like.",
       "subtitle": "This is a functional demo with mirrored Polymarket markets. Explore it, trade on it, and imagine it with your brand, your audience, and your questions.",
+      "liveLabel": "Live Demo",
       "switchToDesktop": "Switch to desktop preview",
       "switchToMobile": "Switch to mobile preview"
     },
@@ -127,66 +128,33 @@
       }
     },
     "features": {
-      "eyebrow": "What's included",
-      "title": "Three things that would take a team months. Done in 15 minutes.",
-      "subtitle": "No engineers. No blockchain knowledge. No cold start.",
+      "eyebrow": "Everything already built",
+      "title": "The full stack. Ready to go live.",
+      "subtitle": "From the trading engine to your leaderboard, every feature you’d expect from a trading platform is already running. You just add your brand.",
       "cards": [
         {
-          "title": "Your site. Your language. Your niche.",
-          "copy": "Custom domain, logo, and colors. Create markets in any language and build around your local sports team, regional politics, or community events."
+          "title": "Your domain. Your brand. Any language.",
+          "copy": "Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, and Chinese out of the box."
         },
         {
-          "title": "Ask anything. Your audience decides.",
-          "copy": "You write the question — about anything you cover. Your audience bets yes or no. Every trade earns you a fee, straight to your wallet with no intermediary.",
-          "question": "\"Will GTA 6 launch before July 2025?\""
+          "title": "Shared liquidity from day one.",
+          "copy": "Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches with no cold start and no empty order books."
         },
         {
-          "title": "Alive from day one. No empty market problem.",
-          "copy": "Shared liquidity via mirrored markets gives your market activity before the first visitor arrives. The cold start problem that kills most platforms doesn't exist here.",
-          "feedLabel": "Live activity",
-          "feedStatus": "Day 1",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "bought",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "at 72¢ ($4)"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "sold",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 41¢ ($9)"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "bought",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 18¢ ($2)"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "sold",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "at 63¢ ($11)"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "bought",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 81¢ ($7)"
-            }
-          ]
+          "title": "Leaderboard + PnL built in.",
+          "copy": "Trader rankings, profit and loss tracking, and activity feeds are live by default. Your community has a reason to keep coming back."
+        },
+        {
+          "title": "On-chain affiliate system.",
+          "copy": "Let others promote your market and earn a share of fees, settled trustlessly on-chain. No manual payouts and no spreadsheets."
+        },
+        {
+          "title": "Bot SDKs for automated trading.",
+          "copy": "Python and Rust SDKs let market makers and power users run bots directly on your platform, increasing volume and depth automatically."
+        },
+        {
+          "title": "OpenZeppelin-audited contracts.",
+          "copy": "Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this. It just works."
         }
       ]
     },
