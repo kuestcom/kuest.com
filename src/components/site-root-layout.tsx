@@ -29,7 +29,7 @@ export function SiteRootLayout({ children, locale, messages }: SiteRootLayoutPro
       suppressHydrationWarning
     >
       <head>
-        <meta name="theme-color" content="#0e1117" />
+        <meta name="theme-color" content="#CDFF00" />
       </head>
       <body className="flex min-h-screen flex-col font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>

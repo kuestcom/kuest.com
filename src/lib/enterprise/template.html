@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0e1117">
+<meta name="theme-color" content="#CDFF00">
 <meta name="description" content="Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="keywords" content="create your prediction market, white label prediction market, prediction market whitelabel, launch your own prediction market, no-code prediction market, branded prediction market, shared liquidity">
@@ -75,6 +75,32 @@
   max-width: 760px;
   margin-inline: auto;
 }
+
+#p-market-today .panel-sticky {
+  min-height: auto;
+  align-items: flex-start;
+  padding: 18px 0 28px;
+}
+
+#p-market-today .panel-inner {
+  gap: 18px;
+}
+
+#p-market-today .slbl {
+  width: 100%;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-copy {
+  right: -54px;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-title {
+  max-width: 21ch;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-text {
+  max-width: 44ch;
+}
 </style>
 <script type="application/ld+json">
 {
@@ -116,6 +142,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <div class="tl-dot" data-p="4"></div>
   <div class="tl-dot" data-p="5"></div>
   <div class="tl-dot" data-p="6"></div>
+  <div class="tl-dot" data-p="7"></div>
 </div>
 
 <!-- NAV -->
@@ -224,8 +251,8 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <span class="theme-toggle-icon theme-toggle-icon-dark"><i data-lucide="moon"></i></span>
       </span>
     </button>
-    <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="nb nb-solid nav-cta">
-      <span class="cta-label">Schedule a demo</span>
+    <a href="mailto:hello@kuest.com" class="nb nb-solid nav-cta">
+      <span class="cta-label">Contact us</span>
       <i data-lucide="chevron-right"></i>
     </a>
   </div>
@@ -298,11 +325,15 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <p class="hero-copy-sub text-[clamp(17px,1.75vw,20px)] leading-[1.55] text-muted">Prediction markets already process billions in monthly volume — and 66% of that demand comes from outside the US, without a single local operator. Kuest lets financial institutions, brokerages, and media companies launch their own branded prediction market: audited infrastructure, shared liquidity, your fee on every trade.</p>
             <div class="hero-copy-actions flex flex-wrap gap-3">
               <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="btn-cta btn-cta-primary">
-                <span class="cta-label">Schedule a demo</span>
+                <span class="cta-label">Contact us</span>
+                <i data-lucide="chevron-right"></i>
+              </a>
+              <a href="#p3-demo" class="btn-cta btn-cta-secondary">
+                <span class="cta-label">View demo</span>
                 <i data-lucide="chevron-right"></i>
               </a>
             </div>
-            <div class="hero-copy-proof font-mono text-[11px] uppercase tracking-[.16em] text-faint">$126M combined monthly volume · OpenZeppelin audited · White-label ready</div>
+            <div class="hero-copy-proof font-mono text-[11px] uppercase tracking-[.16em] text-faint">$18B combined monthly volume · OpenZeppelin audited · White-label ready</div>
           </div>
         </div>
         <div class="hero-market-stage" aria-hidden="true">
@@ -426,16 +457,16 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <div class="panel-wrap attention-scroll-panel" id="p1-scroll">
     <div class="panel-sticky">
       <div class="panel-inner attention-scroll-shell">
-        <div class="attention-scroll-copy" aria-label="A new financial instrument is forming">
+        <div class="attention-scroll-copy" aria-label="The opportunity in prediction markets">
           <div class="attention-scroll-block">
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine1">Financial institutions don't wait for new instruments to mature.</p>
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine2">Options. ETFs. Crypto custody. Structured products.</p>
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine3">The institutions that built the rails first captured the fees, the clients, and the data.</p>
-            <p class="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line" id="attentionLine4">A new instrument is forming right now — and it's already live.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine1">Your clients are already trading on Polymarket.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine2">Elections. Interest rates. Bitcoin prices. Economic outcomes.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine3">They're doing it on a US-based platform. Outside your ecosystem. Paying fees to someone else.</p>
+            <p class="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line" id="attentionLine4">You have no visibility into it. No revenue from it. And it's growing fast.</p>
           </div>
 
           <div class="attention-scroll-block attention-scroll-block-map">
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine5">Two platforms are processing billions in monthly trading volume.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine5">Polymarket and Kalshi now process over $18 billion in monthly trading volume.</p>
             <div class="attention-scroll-brand-row" data-attention-step="brands" aria-hidden="true">
               <div class="attention-scroll-brand">
                 <img src="/assets/images/polymarket-logo.svg" alt="Polymarket" class="attention-scroll-brand-logo">
@@ -444,15 +475,47 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 <img src="/assets/images/kalshi-logo.svg" alt="Kalshi" class="attention-scroll-brand-logo">
               </div>
             </div>
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine6">96 million visits in 3 months. 200x volume growth in one year.</p>
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine7">66% of that demand already comes from outside the US — without a single local operator.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine6">66% of their users are outside the US — in your markets.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine7">Without a single local institution capturing that demand.</p>
           </div>
 
           <div class="attention-scroll-block">
-            <p class="attention-scroll-line attention-scroll-line-lead" data-attention-step="line" id="attentionLine8">The instrument is proven. The rails are open.</p>
-            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine9">Every major market still has no local branded platform for it.</p>
-            <p class="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line" id="attentionLine10">That's the window. And it's closing fast.</p>
+            <p class="attention-scroll-line attention-scroll-line-lead" data-attention-step="line" id="attentionLine8">XP International — Brazil's largest brokerage — just partnered with Kalshi to fix exactly this.</p>
+            <p class="attention-scroll-line" data-attention-step="line" id="attentionLine9">They saw the volume flowing out of their ecosystem and decided to own the infrastructure.</p>
+            <p class="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line" id="attentionLine10">You don't need to wait for Kalshi to call you.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-wrap panel-static" id="p-market-today">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px] grid-cols-1">
+        <div class="r text-center">
+          <div class="slbl justify-center">THE MARKET TODAY</div>
+        </div>
+        <div class="r market-numbers market-numbers-4">
+          <article class="mn">
+            <div class="mn-num">$18.3B</div>
+            <div class="mn-label">combined monthly volume, Kalshi + Polymarket</div>
+            <div class="mn-sub"><a href="https://www.theblock.co/post/392755" target="_blank" rel="noopener" class="source-link">Source: The Block, Q1 2026</a></div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">200x</div>
+            <div class="mn-label">Kalshi annual volume growth, 2024–2025</div>
+            <div class="mn-sub"><a href="https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/" target="_blank" rel="noopener" class="source-link">Source: PYMNTS, 2026</a></div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">66%</div>
+            <div class="mn-label">of Polymarket traffic from outside the US</div>
+            <div class="mn-sub"><a href="https://www.similarweb.com/website/polymarket.com/" target="_blank" rel="noopener" class="source-link">Source: SimilarWeb, Feb 2026</a></div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">$20B</div>
+            <div class="mn-label">target valuation in current fundraising rounds</div>
+            <div class="mn-sub"><a href="https://www.coindesk.com/business/2026/03/07/kalshi-polymarket-seeking-usd20-billion-valuations-in-fundraising-talks-wsj" target="_blank" rel="noopener" class="source-link">Source: CoinDesk via WSJ</a></div>
+          </article>
         </div>
       </div>
     </div>
@@ -470,22 +533,22 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <div class="prediction-explainer-stage r rd" id="predictionExplainerStage">
           <div class="prediction-showcase-tabs niche-tabs-wrap" id="predictionNicheTabs">
             <button class="niche-tab is-active" data-prediction-niche="0">
-              <i data-lucide="bitcoin"></i> Crypto &amp; Finance
+              <i data-lucide="bitcoin"></i> Crypto &amp; Assets
             </button>
             <button class="niche-tab" data-prediction-niche="1">
-              <i data-lucide="trophy"></i> Sports
+              <i data-lucide="landmark"></i> Elections &amp; Policy
             </button>
             <button class="niche-tab" data-prediction-niche="2">
-              <i data-lucide="landmark"></i> Politics
+              <i data-lucide="trending-up"></i> Macro &amp; Rates
             </button>
             <button class="niche-tab" data-prediction-niche="3">
-              <i data-lucide="clapperboard"></i> Entertainment
+              <i data-lucide="bar-chart-2"></i> Commodities
             </button>
             <button class="niche-tab" data-prediction-niche="4">
-              <i data-lucide="users"></i> Communities
+              <i data-lucide="trophy"></i> Sports
             </button>
             <button class="niche-tab" data-prediction-niche="5">
-              <i data-lucide="flame"></i> Memes &amp; Others
+              <i data-lucide="sliders"></i> Custom Markets
             </button>
           </div>
           <div class="prediction-showcase-grid" id="predictionNicheCardsGrid"></div>
@@ -542,11 +605,80 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <div class="solution-timeline-cta">
               <div class="solution-cta-block solution-cta-block-inline">
                 <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
-                  <span class="cta-label">Schedule a demo</span>
+                  <span class="cta-label">Contact us</span>
                   <i data-lucide="chevron-right"></i>
                 </a>
                 <div class="solution-cta-note" id="solutionCtaNote">WHITE-LABEL · AUDITED CONTRACTS · LIQUIDITY INCLUDED</div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURES ═══ -->
+  <div class="panel-wrap panel-static" id="p-features">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10">
+        <div class="r text-center">
+          <div class="slbl justify-center">WHAT'S ALREADY OPERATIONAL</div>
+          <h2 class="sh">The full trading stack. No engineering sprint required.</h2>
+          <p class="bt section-copy-center">Everything your institution would need to build from scratch — already live, already audited, ready to deploy under your brand.</p>
+        </div>
+        <div class="r mini-cards-grid mini-cards-grid-feature">
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="activity"></i></span>
+                <div class="mini-card-title">CLOB engine + relayer + matching</div>
+              </div>
+              <div class="mini-card-copy">Central limit order book, relayer infrastructure, and matching engine — the same architecture powering Polymarket, running on Polygon mainnet.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="shield-check"></i></span>
+                <div class="mini-card-title">OpenZeppelin-audited contracts</div>
+              </div>
+              <div class="mini-card-copy">Smart contracts derived from Polymarket's audited architecture, adapted for shared liquidity across multiple operator frontends. UMA-based resolution for verifiable settlement.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="droplets"></i></span>
+                <div class="mini-card-title">Shared liquidity from day one</div>
+              </div>
+              <div class="mini-card-copy">Mirror live Polymarket markets with existing order flow. Your platform launches with real depth — no cold start, no market maker recruitment required initially.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="bot"></i></span>
+                <div class="mini-card-title">Bot SDKs for institutional traders</div>
+              </div>
+              <div class="mini-card-copy">Python and Rust SDKs compatible with existing Polymarket bot strategies. Market makers already operating on Polymarket can port to your platform without rebuilding.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="globe-2"></i></span>
+                <div class="mini-card-title">Full white-label frontend</div>
+              </div>
+              <div class="mini-card-copy">Your domain, your brand, your language. Multi-language UI with built-in i18n. Custom event categories. Looks and feels like a native product of your institution — not a Kuest deployment.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="server"></i></span>
+                <div class="mini-card-title">Fully managed infrastructure</div>
+              </div>
+              <div class="mini-card-copy">Gas costs, settlement, scalability, monitoring — all handled on our side. No blockchain team needed internally. No cloud infrastructure to manage. You focus on distribution.</div>
             </div>
           </div>
         </div>
@@ -644,7 +776,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <details class="faq-item">
               <summary class="faq-q">What is the technical and compliance foundation?</summary>
               <div class="faq-divider" aria-hidden="true"></div>
-              <div class="faq-panel"><div class="faq-panel-inner"><div class="faq-a">Smart contracts are derived from Polymarket's CLOB architecture — the stack that has processed billions in verified volume — audited by OpenZeppelin, the institutional standard for on-chain infrastructure. Settlement uses UMA-based resolution rails for transparent, verifiable outcomes. The codebase is open source under the <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">Kuest MIT+Commons license</a> for full auditability. Custom compliance configurations and enterprise infrastructure agreements are available — <a href="mailto:hello@kuest.com?subject=Enterprise">contact us</a> to discuss your regulatory environment.</div></div></div>
+              <div class="faq-panel"><div class="faq-panel-inner"><div class="faq-a">Smart contracts are derived from Polymarket's CLOB architecture — the stack that has processed billions in verified volume — audited by OpenZeppelin, the institutional standard for on-chain infrastructure. Settlement uses UMA-based resolution rails for transparent, verifiable outcomes. The codebase is open source under the <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">Kuest MIT+Commons license</a> for full auditability. Custom compliance configurations and enterprise infrastructure agreements are available — <a href="mailto:hello@kuest.com">contact us</a> to discuss your regulatory environment.</div></div></div>
             </details>
           </div>
         </div>
@@ -660,7 +792,11 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
         <p class="cta-sub">The infrastructure is ready. First mover advantage in prediction markets closes fast.</p>
         <div class="cta-btns">
           <a href="mailto:hello@kuest.com?subject=Enterprise%20Demo" class="btn-cta btn-cta-primary">
-            <span class="cta-label">Schedule a demo</span>
+            <span class="cta-label">Contact us</span>
+            <i data-lucide="chevron-right"></i>
+          </a>
+          <a href="https://demo.kuest.com" target="_blank" rel="noopener noreferrer" class="btn-cta btn-cta-secondary">
+            <span class="cta-label">View live demo</span>
             <i data-lucide="chevron-right"></i>
           </a>
         </div>
@@ -707,7 +843,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     <a id="footerDocsLink" class="foot-link-icon" href="https://kuest.com/docs/owners" aria-label="Docs" title="Docs">
       <img src="/assets/images/docs.svg" alt="" width="21" height="21">
     </a>
-    <a id="footerMailLink" class="foot-link-icon" href="mailto:hello@kuest.com?subject=Enterprise" aria-label="Contact" title="Contact">
+    <a id="footerMailLink" class="foot-link-icon" href="mailto:hello@kuest.com" aria-label="Contact" title="Contact">
       <img src="/assets/images/mail.svg" alt="" width="20" height="20">
     </a>
     <a id="footerXLink" class="foot-link-icon" href="https://x.com/kuest" aria-label="X" title="X">
@@ -718,3 +854,5 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </a>
   </div>
 </footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

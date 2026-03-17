@@ -5,6 +5,7 @@ import { parseHTML } from "linkedom/worker";
 import { __iconNode as activityIconNode } from "lucide-react/dist/esm/icons/activity.js";
 import { __iconNode as banknoteIconNode } from "lucide-react/dist/esm/icons/banknote.js";
 import { __iconNode as bitcoinIconNode } from "lucide-react/dist/esm/icons/bitcoin.js";
+import { __iconNode as botIconNode } from "lucide-react/dist/esm/icons/bot.js";
 import { __iconNode as chartColumnIncreasingIconNode } from "lucide-react/dist/esm/icons/chart-column-increasing.js";
 import { __iconNode as chevronDownIconNode } from "lucide-react/dist/esm/icons/chevron-down.js";
 import { __iconNode as chevronRightIconNode } from "lucide-react/dist/esm/icons/chevron-right.js";
@@ -17,6 +18,8 @@ import { __iconNode as hexagonIconNode } from "lucide-react/dist/esm/icons/hexag
 import { __iconNode as landmarkIconNode } from "lucide-react/dist/esm/icons/landmark.js";
 import { __iconNode as monitorSmartphoneIconNode } from "lucide-react/dist/esm/icons/monitor-smartphone.js";
 import { __iconNode as moonIconNode } from "lucide-react/dist/esm/icons/moon.js";
+import { __iconNode as share2IconNode } from "lucide-react/dist/esm/icons/share-2.js";
+import { __iconNode as shieldCheckIconNode } from "lucide-react/dist/esm/icons/shield-check.js";
 import { __iconNode as slidersHorizontalIconNode } from "lucide-react/dist/esm/icons/sliders-horizontal.js";
 import { __iconNode as squarePenIconNode } from "lucide-react/dist/esm/icons/square-pen.js";
 import { __iconNode as sunIconNode } from "lucide-react/dist/esm/icons/sun.js";
@@ -37,6 +40,7 @@ const LUCIDE_ICONS: Record<string, LucideIconNode> = {
   activity: activityIconNode,
   banknote: banknoteIconNode,
   bitcoin: bitcoinIconNode,
+  bot: botIconNode,
   "chart-column-increasing": chartColumnIncreasingIconNode,
   "chevron-down": chevronDownIconNode,
   "chevron-right": chevronRightIconNode,
@@ -49,6 +53,8 @@ const LUCIDE_ICONS: Record<string, LucideIconNode> = {
   landmark: landmarkIconNode,
   "monitor-smartphone": monitorSmartphoneIconNode,
   moon: moonIconNode,
+  "share-2": share2IconNode,
+  "shield-check": shieldCheckIconNode,
   "sliders-horizontal": slidersHorizontalIconNode,
   "square-pen": squarePenIconNode,
   sun: sunIconNode,

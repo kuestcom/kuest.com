@@ -22,7 +22,7 @@ function serializeJsonForHtmlScript(value: unknown) {
 }
 
 function buildLandingThemeBootstrapScript() {
-  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta)meta.setAttribute('content',mode==='dark'?'#0e1117':'#f7f8fb');})();`;
+  return `(function(){var root=document.documentElement;var meta=document.querySelector('meta[name="theme-color"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta){var fallback=mode==='dark'?'#CDFF00':'#0e1117';try{var accent=getComputedStyle(root).getPropertyValue('--color-accent').trim();meta.setAttribute('content',accent||fallback);}catch(error){meta.setAttribute('content',fallback);}}})();`;
 }
 
 export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata> {
@@ -34,7 +34,7 @@ export async function buildLandingMetadata(locale: SiteLocale): Promise<Metadata
   return {
     title: bundle.meta.title,
     description: bundle.meta.description,
-    themeColor: "#0e1117",
+    themeColor: "#CDFF00",
     keywords: [
       "create your prediction market",
       "white label prediction market",

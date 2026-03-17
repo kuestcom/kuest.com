@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0e1117">
+<meta name="theme-color" content="#CDFF00">
 <meta name="description" content="Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="keywords" content="create your prediction market, white label prediction market, prediction market whitelabel, launch your own prediction market, no-code prediction market, branded prediction market, shared liquidity">
@@ -75,6 +75,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   <div class="tl-dot" data-p="5"></div>
   <div class="tl-dot" data-p="6"></div>
   <div class="tl-dot" data-p="7"></div>
+  <div class="tl-dot" data-p="9"></div>
 </div>
 
 <!-- NAV -->
@@ -417,14 +418,51 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
     </div>
   </div>
 
+  <!-- ═══ SOCIAL PROOF ═══ -->
+  <div class="panel-wrap panel-static panel-compact" id="p-social">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px]">
+        <div class="r market-numbers market-numbers-4">
+          <article class="mn">
+            <div class="mn-num">100+</div>
+            <div class="mn-label">markets launched on testnet</div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">0.5–3%</div>
+            <div class="mn-label">fee per trade, direct to your wallet</div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">15 min</div>
+            <div class="mn-label">average time to go live</div>
+          </article>
+          <article class="mn">
+            <div class="mn-num">Free</div>
+            <div class="mn-label">to launch, usage-based at scale</div>
+          </article>
+        </div>
+        <!-- Replace these src URLs with real GitHub avatar URLs of operators who launched -->
+        <div class="r" style="display:flex;align-items:center;gap:12px;justify-content:center;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;gap:-8px;">
+            <img src="https://avatars.githubusercontent.com/u/1?v=4" alt="" width="28" height="28" style="border-radius:50%;border:2px solid #0e1117;margin-left:-8px;first-child:margin-left:0;">
+            <img src="https://avatars.githubusercontent.com/u/2?v=4" alt="" width="28" height="28" style="border-radius:50%;border:2px solid #0e1117;margin-left:-8px;">
+            <img src="https://avatars.githubusercontent.com/u/3?v=4" alt="" width="28" height="28" style="border-radius:50%;border:2px solid #0e1117;margin-left:-8px;">
+            <img src="https://avatars.githubusercontent.com/u/4?v=4" alt="" width="28" height="28" style="border-radius:50%;border:2px solid #0e1117;margin-left:-8px;">
+            <img src="https://avatars.githubusercontent.com/u/5?v=4" alt="" width="28" height="28" style="border-radius:50%;border:2px solid #0e1117;margin-left:-8px;">
+          </div>
+          <span class="font-mono text-[11px] uppercase tracking-[.12em] text-faint">Joined by 100+ operators in early access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ PANEL 2 — PREDICTION MARKET ═══ -->
   <div class="panel-wrap panel-static" id="p2">
     <div class="panel-sticky">
       <div class="panel-inner prediction-explainer">
         <div class="prediction-explainer-copy r">
-          <div class="hero-kicker prediction-explainer-kicker" id="predictionExplainerEyebrow">IS IT POSSIBLE TO PREDICT THE FUTURE?</div>
+          <div class="hero-kicker prediction-explainer-kicker" id="predictionExplainerEyebrow">YOUR AUDIENCE ALREADY DOES THIS — FOR FREE</div>
           <h2 class="prediction-explainer-title" id="predictionExplainerTitle">Prediction Market</h2>
-          <p class="prediction-explainer-sub" id="predictionExplainerSubtitle">It works like a stock exchange, but for future events. People trade with real money on outcomes like "Who wins the election?" or "Does Bitcoin go above $100k?" Because real money is at stake, forecasts become surprisingly accurate, often outperforming polls or experts. Governments, companies, and investors already use this data to make decisions before the facts unfold.</p>
+          <p class="prediction-explainer-sub" id="predictionExplainerSubtitle">Your followers already predict things every day. Who wins the next election. Whether Bitcoin hits $100k. Who gets eliminated this week. They argue about it in your comments, your DMs, your community — and none of that energy earns you a cent. A prediction market turns that conviction into real trades, with real money. Every trade pays a fee. That fee goes to you.</p>
         </div>
         <div class="prediction-explainer-stage r rd" id="predictionExplainerStage">
           <div class="prediction-showcase-tabs niche-tabs-wrap" id="predictionNicheTabs">
@@ -512,11 +550,80 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
             <div class="solution-timeline-cta">
               <div class="solution-cta-block solution-cta-block-inline">
                 <a href="/launch" class="btn-cta btn-cta-primary" id="solutionCtaBtn">
-                  <span class="cta-label">I want to be the house</span>
+                  <span class="cta-label">Start earning from my audience</span>
                   <i data-lucide="chevron-right"></i>
                 </a>
-                <div class="solution-cta-note" id="solutionCtaNote">FREE · KUEST INFRASTRUCTURE · LIQUIDITY INCLUDED</div>
+                <div class="solution-cta-note" id="solutionCtaNote">FREE · NO CODE · LIVE IN 15 MINUTES</div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURES ═══ -->
+  <div class="panel-wrap panel-static" id="p-features">
+    <div class="panel-sticky">
+      <div class="panel-inner max-w-[1180px] grid-cols-1 gap-10">
+        <div class="r text-center">
+          <div class="slbl justify-center">EVERYTHING ALREADY BUILT</div>
+          <h2 class="sh">The full stack. Ready to go live.</h2>
+          <p class="bt section-copy-center">From the trading engine to your leaderboard — every feature you'd expect a trading platform to have is already running. You just add your brand.</p>
+        </div>
+        <div class="r mini-cards-grid mini-cards-grid-feature">
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="globe-2"></i></span>
+                <div class="mini-card-title">Your domain. Your brand. Any language.</div>
+              </div>
+              <div class="mini-card-copy">Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, and Chinese out of the box.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="zap"></i></span>
+                <div class="mini-card-title">Shared liquidity from day one.</div>
+              </div>
+              <div class="mini-card-copy">Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches — no cold start, no empty order books.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="trophy"></i></span>
+                <div class="mini-card-title">Leaderboard + PnL built in.</div>
+              </div>
+              <div class="mini-card-copy">Trader rankings, profit and loss tracking, and activity feeds are live by default. Your community has a reason to keep coming back.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="share-2"></i></span>
+                <div class="mini-card-title">On-chain affiliate system.</div>
+              </div>
+              <div class="mini-card-copy">Let others promote your market and earn a share of fees — settled trustlessly on-chain. No manual payouts, no spreadsheets.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="bot"></i></span>
+                <div class="mini-card-title">Bot SDKs for automated trading.</div>
+              </div>
+              <div class="mini-card-copy">Python and Rust SDKs let market makers and power users run bots directly on your platform — increasing volume and depth automatically.</div>
+            </div>
+          </div>
+          <div class="mini-card mini-card-feature">
+            <div>
+              <div class="mini-card-head">
+                <span class="mini-card-icon"><i data-lucide="shield-check"></i></span>
+                <div class="mini-card-title">OpenZeppelin-audited contracts.</div>
+              </div>
+              <div class="mini-card-copy">Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this — it just works.</div>
             </div>
           </div>
         </div>
@@ -562,6 +669,21 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MID CTA ═══ -->
+  <div class="panel-wrap panel-static panel-compact" id="p-mid-cta">
+    <div class="panel-sticky">
+      <div class="cta-content r py-10">
+        <h2 class="cta-h">Ready to turn your audience into a revenue stream?</h2>
+        <div class="cta-btns">
+          <a href="/launch" class="btn-cta btn-cta-primary">
+            <span class="cta-label">Launch my market — it's free</span>
+            <i data-lucide="chevron-right"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -721,6 +843,7 @@ if (new URLSearchParams(window.location.search).has('embed-preview')) {
   </div>
 </footer>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
 <script src="/assets/app.js"></script>
 <script>
