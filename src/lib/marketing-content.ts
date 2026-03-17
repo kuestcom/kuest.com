@@ -351,23 +351,126 @@ export function stripTerminalPeriod(value?: string | null) {
   return (value ?? "").replace(/[.。]\s*$/, "");
 }
 
+const MONEY_SUFFIX_PATTERN = [
+  "trillion(?:s)?",
+  "billion(?:s)?",
+  "million(?:s)?",
+  "thousand",
+  "milliarde?n?",
+  "millionen",
+  "millon(?:es)?",
+  "milh(?:ão|ões|ao|oes)",
+  "bilh(?:ão|ões|ao|oes)",
+  "billones?",
+  "mrd\\.?",
+  "mio\\.?",
+  "tn",
+  "bn",
+  "mn",
+  "mil",
+  "t",
+  "b",
+  "m",
+  "k",
+].join("|");
+
+const MONEY_TOKEN_RE = new RegExp(
+  `\\$\\s*\\d(?:[\\d.,\\s\\u00A0]*\\d)?(?:\\s*(?:${MONEY_SUFFIX_PATTERN}))?`,
+  "giu",
+);
+
+function normalizeMoneyAmountText(value: string) {
+  const compact = value.replaceAll(/\s|\u00A0/g, "");
+  const hasComma = compact.includes(",");
+  const hasDot = compact.includes(".");
+
+  if (hasComma && hasDot) {
+    const decimalSeparator = compact.lastIndexOf(",") > compact.lastIndexOf(".") ? "," : ".";
+    const thousandsSeparator = decimalSeparator === "," ? "." : ",";
+
+    return compact.replaceAll(thousandsSeparator, "").replace(decimalSeparator, ".");
+  }
+
+  const normalizeSingleSeparator = (separator: "," | ".") => {
+    const parts = compact.split(separator);
+
+    if (parts.length === 1) {
+      return compact;
+    }
+
+    const fractionalPart = parts[parts.length - 1] ?? "";
+    const useAsThousandsSeparator =
+      fractionalPart.length === 3 && parts.slice(0, -1).every((part, index) => (index === 0 ? part.length > 0 : part.length === 3));
+
+    return useAsThousandsSeparator ? parts.join("") : `${parts.slice(0, -1).join("")}.${fractionalPart}`;
+  };
+
+  if (hasComma) {
+    return normalizeSingleSeparator(",");
+  }
+
+  if (hasDot) {
+    return normalizeSingleSeparator(".");
+  }
+
+  return compact;
+}
+
+function normalizeMoneySuffix(value: string) {
+  return value
+    .toLowerCase()
+    .replaceAll(".", "")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+}
+
 export function extractLargestMoneyToken(value?: string | null) {
-  const matches = (value ?? "").match(/\$\d+(?:\.\d+)?[TBMK]?/g);
+  const matches = Array.from((value ?? "").matchAll(MONEY_TOKEN_RE), (match) => match[0].trim());
 
   if (!matches?.length) {
     return "";
   }
 
   const multiplierBySuffix: Record<string, number> = {
-    K: 1_000,
-    M: 1_000_000,
-    B: 1_000_000_000,
-    T: 1_000_000_000_000,
+    k: 1_000,
+    thousand: 1_000,
+    mil: 1_000,
+    m: 1_000_000,
+    mn: 1_000_000,
+    mio: 1_000_000,
+    million: 1_000_000,
+    millions: 1_000_000,
+    millionen: 1_000_000,
+    millon: 1_000_000,
+    millones: 1_000_000,
+    milhao: 1_000_000,
+    milhoes: 1_000_000,
+    b: 1_000_000_000,
+    bn: 1_000_000_000,
+    billion: 1_000_000_000,
+    billions: 1_000_000_000,
+    billones: 1_000_000_000,
+    mrd: 1_000_000_000,
+    milliard: 1_000_000_000,
+    milliarde: 1_000_000_000,
+    milliarden: 1_000_000_000,
+    bilhao: 1_000_000_000,
+    bilhoes: 1_000_000_000,
+    t: 1_000_000_000_000,
+    tn: 1_000_000_000_000,
+    trillion: 1_000_000_000_000,
+    trillions: 1_000_000_000_000,
   };
 
   const best = matches.reduce<{ token: string; value: number } | null>((largest, token) => {
-    const [, amountText = "0", suffix = ""] = token.match(/^\$(\d+(?:\.\d+)?)([TBMK]?)$/) ?? [];
-    const numericValue = Number(amountText) * (multiplierBySuffix[suffix] ?? 1);
+    const suffixMatch = token.match(new RegExp(`(${MONEY_SUFFIX_PATTERN})$`, "iu"));
+    const suffix = normalizeMoneySuffix(suffixMatch?.[0] ?? "");
+    const amountText = token
+      .replace(/^\$\s*/, "")
+      .slice(0, suffixMatch ? -suffixMatch[0].length : undefined)
+      .trim();
+    const numericValue =
+      Number(normalizeMoneyAmountText(amountText)) * (multiplierBySuffix[suffix] ?? 1);
 
     if (!largest || numericValue > largest.value) {
       return { token, value: numericValue };

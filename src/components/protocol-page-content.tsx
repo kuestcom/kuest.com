@@ -584,44 +584,47 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
           </div>
         </section>
 
-        <section className="panel-wrap panel-static panel-compact" id="p9">
+        <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="cta-content r py-12 protocol-final-cta">
-              <h2 className="cta-h">{messages.finalCta.title}</h2>
-              <p className="cta-sub">{messages.finalCta.subtitle}</p>
-              <div className="protocol-final-primary">
-                <button type="button" className="btn-cta btn-cta-primary" data-protocol-deck-open>
-                  <span className="cta-label">{messages.finalCta.requestDeckCta}</span>
-                  <ArrowRight />
-                </button>
+            <div className="marketing-final-panel">
+              <div className="cta-content r py-12 protocol-final-cta">
+                <h2 className="cta-h">{messages.finalCta.title}</h2>
+                <p className="cta-sub">{messages.finalCta.subtitle}</p>
+                <div className="protocol-final-primary">
+                  <button type="button" className="btn-cta btn-cta-primary" data-protocol-deck-open>
+                    <span className="cta-label">{messages.finalCta.requestDeckCta}</span>
+                    <ArrowRight />
+                  </button>
+                </div>
+                <div className="cta-btns protocol-final-actions">
+                  <a href={CONTACT_HREF} className="btn-cta btn-cta-secondary">
+                    <span className="cta-label">{messages.finalCta.contactCta}</span>
+                    <ArrowRight />
+                  </a>
+                  <a
+                    href={demoHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-cta btn-cta-secondary"
+                  >
+                    <span className="cta-label">{messages.finalCta.viewDemoCta}</span>
+                    <ArrowRight />
+                  </a>
+                </div>
               </div>
-              <div className="cta-btns protocol-final-actions">
-                <a href={CONTACT_HREF} className="btn-cta btn-cta-secondary">
-                  <span className="cta-label">{messages.finalCta.contactCta}</span>
-                  <ArrowRight />
-                </a>
-                <a
-                  href={demoHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cta btn-cta-secondary"
-                >
-                  <span className="cta-label">{messages.finalCta.viewDemoCta}</span>
-                  <ArrowRight />
-                </a>
+              <div className="marketing-footer-wrap">
+                <SiteFooter
+                  note={messages.footer.note}
+                  docsLabel={messages.footer.docsLabel}
+                  contactLabel={messages.footer.contactLabel}
+                  xLabel={messages.footer.xLabel}
+                  discordLabel={messages.footer.discordLabel}
+                />
               </div>
             </div>
           </div>
         </section>
       </main>
-
-      <SiteFooter
-        note={messages.footer.note}
-        docsLabel={messages.footer.docsLabel}
-        contactLabel={messages.footer.contactLabel}
-        xLabel={messages.footer.xLabel}
-        discordLabel={messages.footer.discordLabel}
-      />
 
       <ProtocolPitchDeckModal messages={messages.deckModal} />
 

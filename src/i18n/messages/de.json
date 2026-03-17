@@ -53,7 +53,8 @@
         "lead": "Du kannst wählen:",
         "line2": "noch ein Trader sein, der die nächste Prognose treffen will —",
         "line3": "oder das Haus bauen, in dem alle anderen spielen."
-      }
+      },
+      "ariaLabel": "Aufmerksamkeitsverschiebungen schaffen Zeitfenster voller Chancen"
     },
     "social": {
       "eyebrow": "KANN MAN DIE ZUKUNFT VORHERSAGEN?",
@@ -125,7 +126,8 @@
         "metaHtml": "Volumen $4.679,80 &nbsp;·&nbsp; Schließt am 1. Jan. 2027",
         "yesButton": "Ja 67¢",
         "noButton": "Nein 33¢"
-      }
+      },
+      "timelineAriaLabel": "So funktioniert Kuest"
     },
     "features": {
       "eyebrow": "Alles ist bereits gebaut",
@@ -392,7 +394,8 @@
       "demo": "Demo",
       "docs": "Docs",
       "contact": "Kontakt",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "Basierend auf von Polymarket abgeleiteten Contracts, geprüft von OpenZeppelin"
     },
     "sourceModal": {
       "outlet": "Quelle",
@@ -402,6 +405,35 @@
       "external": "Quelle in neuem Tab öffnen",
       "back": "Zurück zur Seite",
       "dynamicNote": "Eingebettete Vorschau für {{domain}}. Wenn das Medium Embeds blockiert, nutze den externen Link unten."
+    },
+    "themeToggle": {
+      "toDark": "Zum Dunkelmodus wechseln",
+      "toLight": "Zum Hellmodus wechseln"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "Märkte im Testnet gestartet"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "Gebühr pro Trade, direkt in deine Wallet"
+        },
+        {
+          "value": "15 Min.",
+          "label": "durchschnittliche Zeit bis zum Go-live"
+        },
+        {
+          "value": "Kostenlos",
+          "label": "für den Start, nutzungsbasiert beim Skalieren"
+        }
+      ],
+      "joinedLabel": "Mit 100+ Operatoren im Early Access"
+    },
+    "midCta": {
+      "title": "Bereit, deine Community in eine Umsatzquelle zu verwandeln?",
+      "cta": "Meinen Markt starten - kostenlos"
     }
   },
   "launch": {

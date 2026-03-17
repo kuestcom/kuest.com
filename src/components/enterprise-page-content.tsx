@@ -32,10 +32,6 @@ import {
 } from "@/i18n/site";
 
 const CONTACT_HREF = "mailto:hello@kuest.com?subject=Enterprise%20Demo";
-const THEME_LABELS = {
-  toDark: "Switch to dark mode",
-  toLight: "Switch to light mode",
-};
 
 const MARKET_TODAY_STATS = [
   {
@@ -246,8 +242,8 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
           <ThemeToggle
             id="dockThemeToggle"
             className="dock-theme-toggle"
-            labelToDark={THEME_LABELS.toDark}
-            labelToLight={THEME_LABELS.toLight}
+            labelToDark={bundle.themeToggle.toDark}
+            labelToLight={bundle.themeToggle.toLight}
           />
           <a href={CONTACT_HREF} className="nb nb-solid nav-cta">
             <span className="cta-label">Contact us</span>
@@ -281,8 +277,8 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                       <ThemeToggle
                         id="heroBrandThemeToggle"
                         className="dock-theme-toggle hero-brand-theme-toggle"
-                        labelToDark={THEME_LABELS.toDark}
-                        labelToLight={THEME_LABELS.toLight}
+                        labelToDark={bundle.themeToggle.toDark}
+                        labelToLight={bundle.themeToggle.toLight}
                       />
                     </div>
                   </div>
@@ -329,21 +325,25 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
             <div className="panel-inner attention-scroll-shell">
               <div className="attention-scroll-copy" aria-label="The opportunity in prediction markets">
                 <div className="attention-scroll-block">
-                  <p className="attention-scroll-line">Your clients are already trading on Polymarket.</p>
-                  <p className="attention-scroll-line">Elections. Interest rates. Bitcoin prices. Economic outcomes.</p>
-                  <p className="attention-scroll-line">
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    Your clients are already trading on Polymarket.
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    Elections. Interest rates. Bitcoin prices. Economic outcomes.
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
                     They&apos;re doing it on a US-based platform. Outside your ecosystem. Paying
                     fees to someone else.
                   </p>
-                  <p className="attention-scroll-line attention-scroll-line-pivot">
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     You have no visibility into it. No revenue from it. And it&apos;s growing fast.
                   </p>
                 </div>
                 <div className="attention-scroll-block attention-scroll-block-map">
-                  <p className="attention-scroll-line">
+                  <p className="attention-scroll-line" data-attention-step="line">
                     Polymarket and Kalshi now process over $18 billion in monthly trading volume.
                   </p>
-                  <div className="attention-scroll-brand-row" aria-hidden="true">
+                  <div className="attention-scroll-brand-row" data-attention-step="brands" aria-hidden="true">
                     <div className="attention-scroll-brand">
                       <Image
                         src="/assets/images/polymarket-logo.svg"
@@ -363,20 +363,25 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                       />
                     </div>
                   </div>
-                  <p className="attention-scroll-line">66% of their users are outside the US - in your markets.</p>
-                  <p className="attention-scroll-line">
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    66% of their users are outside the US - in your markets.
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
                     Without a single local institution capturing that demand.
                   </p>
                 </div>
                 <div className="attention-scroll-block">
-                  <p className="attention-scroll-line attention-scroll-line-lead">
+                  <p
+                    className="attention-scroll-line attention-scroll-line-lead"
+                    data-attention-step="line"
+                  >
                     XP International - Brazil&apos;s largest brokerage - just partnered with Kalshi
                     to fix exactly this.
                   </p>
-                  <p className="attention-scroll-line">
+                  <p className="attention-scroll-line" data-attention-step="line">
                     They saw the volume flowing out of their ecosystem and decided to own the infrastructure.
                   </p>
-                  <p className="attention-scroll-line attention-scroll-line-pivot">
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     You don&apos;t need to wait for Kalshi to call you.
                   </p>
                 </div>
@@ -431,22 +436,22 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
         <section className="panel-wrap panel-static" id="p3">
           <div className="panel-sticky">
             <div className="panel-inner max-w-[1180px] grid-cols-1 gap-10">
-              <div className="solution-split r">
+              <div className="solution-split enterprise-solution-split r">
                 <div className="solution-head">
                   <h2 className="sh">From signed agreement to live platform - in days, not quarters.</h2>
                 </div>
-                <div className="solution-body">
+                <div className="solution-body enterprise-solution-body">
                   <div className="solution-copy-lead">
                     <p className="bt">
                       Audited smart contracts, shared liquidity from day one, full white-label -
                       your team signs off on the brand, we handle everything else.
                     </p>
                   </div>
-                  <div className="solution-proof-pane">
+                  <div className="solution-proof-pane enterprise-solution-proof-pane">
                     <RotatingProofCards cards={ENTERPRISE_PROOF_CARDS} />
                   </div>
                 </div>
-                <div className="solution-timeline" aria-label="How Kuest works">
+                <div className="solution-timeline enterprise-solution-timeline" aria-label="How Kuest works">
                   <div className="solution-timeline-rail" aria-hidden="true">
                     <span className="solution-timeline-head" />
                   </div>
@@ -533,10 +538,12 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
         <section className="panel-wrap panel-static" id="p3-demo">
           <div className="panel-sticky">
             <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10">
-              <div className="site-demo-copy">
-                <div className="site-demo-copy-inner">
-                  <h2 className="sh">This is the product your clients will interact with.</h2>
-                  <p className="bt">
+              <div className="site-demo-copy enterprise-site-demo-copy">
+                <div className="site-demo-copy-inner enterprise-site-demo-copy-inner">
+                  <h2 className="sh enterprise-site-demo-title">
+                    This is the product your clients will interact with.
+                  </h2>
+                  <p className="bt enterprise-site-demo-sub">
                     A fully functional demo running live markets mirrored from Polymarket. Your
                     deployment would carry your domain, your brand, your chosen event categories -
                     and your fee on every transaction your clients execute.
@@ -582,30 +589,41 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
           </div>
         </section>
 
-        <section className="panel-wrap panel-static panel-compact" id="p9">
+        <section className="panel-wrap panel-static panel-compact marketing-final-section enterprise-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="cta-content r py-12">
-              <h2 className="cta-h">
-                Your clients are already trading on Polymarket. The question is whether that
-                happens on your platform.
-              </h2>
-              <p className="cta-sub">
-                The infrastructure is ready. First mover advantage in prediction markets closes fast.
-              </p>
-              <div className="cta-btns">
-                <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
-                  <span className="cta-label">Contact us</span>
-                  <ArrowRight />
-                </a>
-                <a
-                  href={getDemoHref(locale)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cta btn-cta-secondary"
-                >
-                  <span className="cta-label">View live demo</span>
-                  <ArrowRight />
-                </a>
+            <div className="marketing-final-panel enterprise-final-panel">
+              <div className="cta-content enterprise-cta-content r py-12">
+                <h2 className="cta-h">
+                  Your clients are already trading on Polymarket. The question is whether that
+                  happens on your platform.
+                </h2>
+                <p className="cta-sub">
+                  The infrastructure is ready. First mover advantage in prediction markets closes fast.
+                </p>
+                <div className="cta-btns">
+                  <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
+                    <span className="cta-label">Contact us</span>
+                    <ArrowRight />
+                  </a>
+                  <a
+                    href={getDemoHref(locale)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-cta btn-cta-secondary"
+                  >
+                    <span className="cta-label">View live demo</span>
+                    <ArrowRight />
+                  </a>
+                </div>
+              </div>
+              <div className="marketing-footer-wrap enterprise-footer-wrap">
+                <SiteFooter
+                  note={bundle.footer.note}
+                  docsLabel={bundle.footer.docs}
+                  contactLabel={bundle.footer.contact}
+                  xLabel="X"
+                  discordLabel="Discord"
+                />
               </div>
             </div>
           </div>
@@ -620,14 +638,6 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
         externalLabel={bundle.sourceModal.external}
         backLabel={bundle.sourceModal.back}
         dynamicNote={bundle.sourceModal.dynamicNote}
-      />
-
-      <SiteFooter
-        note="Built on Polymarket-derived contracts, audited by OpenZeppelin"
-        docsLabel={bundle.footer.docs}
-        contactLabel={bundle.footer.contact}
-        xLabel="X"
-        discordLabel="Discord"
       />
 
       <MarketingPageRuntime nextSectionId="p1-scroll" finalSectionId="p9" />

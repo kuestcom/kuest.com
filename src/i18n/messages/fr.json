@@ -53,7 +53,8 @@
         "lead": "Tu peux choisir :",
         "line2": "être un trader de plus à essayer d'anticiper la prochaine prédiction —",
         "line3": "ou bâtir la maison où tous les autres viennent jouer."
-      }
+      },
+      "ariaLabel": "Les changements d'attention ouvrent des fenêtres d'opportunité"
     },
     "social": {
       "eyebrow": "PEUT-ON PRÉDIRE L'AVENIR ?",
@@ -125,7 +126,8 @@
         "metaHtml": "Volume $4,679.80 &nbsp;·&nbsp; Clôture le 1 janv. 2027",
         "yesButton": "Oui 67¢",
         "noButton": "Non 33¢"
-      }
+      },
+      "timelineAriaLabel": "Comment fonctionne Kuest"
     },
     "features": {
       "eyebrow": "Tout est déjà construit",
@@ -392,7 +394,8 @@
       "demo": "Demo",
       "docs": "Docs",
       "contact": "Contact",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "Construit sur des contrats dérivés de Polymarket, audités par OpenZeppelin"
     },
     "sourceModal": {
       "outlet": "Source",
@@ -402,6 +405,35 @@
       "external": "Ouvrir la source dans un nouvel onglet",
       "back": "Retour à la page",
       "dynamicNote": "Aperçu intégré pour {{domain}}. Si ce média bloque les intégrations, utilisez le lien externe ci-dessous."
+    },
+    "themeToggle": {
+      "toDark": "Passer en mode sombre",
+      "toLight": "Passer en mode clair"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "marchés lancés sur testnet"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "frais par trade, versés directement sur votre wallet"
+        },
+        {
+          "value": "15 min",
+          "label": "temps moyen avant la mise en ligne"
+        },
+        {
+          "value": "Gratuit",
+          "label": "pour lancer, avec une tarification à l'usage à grande échelle"
+        }
+      ],
+      "joinedLabel": "Rejoint par 100+ opérateurs en early access"
+    },
+    "midCta": {
+      "title": "Prêt à transformer votre audience en source de revenus ?",
+      "cta": "Lancer mon marché - c'est gratuit"
     }
   },
   "launch": {

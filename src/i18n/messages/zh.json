@@ -53,7 +53,8 @@
         "lead": "你可以选择：",
         "line2": "继续做一个试图押中下一次预测的交易者 —",
         "line3": "或者搭建起那座让所有人都来下注的房子。"
-      }
+      },
+      "ariaLabel": "注意力迁移会带来新的机会窗口"
     },
     "social": {
       "eyebrow": "真的可以预测未来吗？",
@@ -125,7 +126,8 @@
         "metaHtml": "成交量 $4,679.80 &nbsp;·&nbsp; 截止于 2027 年 1 月 1 日",
         "yesButton": "是 67¢",
         "noButton": "否 33¢"
-      }
+      },
+      "timelineAriaLabel": "Kuest 的工作方式"
     },
     "features": {
       "eyebrow": "底层能力都已建好",
@@ -392,7 +394,8 @@
       "demo": "演示",
       "docs": "文档",
       "contact": "联系",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "基于源自 Polymarket 的合约构建，并由 OpenZeppelin 审计"
     },
     "sourceModal": {
       "outlet": "来源",
@@ -402,6 +405,35 @@
       "external": "在新标签页打开来源",
       "back": "返回页面",
       "dynamicNote": "{{domain}} 的嵌入预览。如果该媒体禁止嵌入，请使用下方的外部链接。"
+    },
+    "themeToggle": {
+      "toDark": "切换到深色模式",
+      "toLight": "切换到浅色模式"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "已在测试网上线的市场"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "每笔交易手续费，直接进入你的钱包"
+        },
+        {
+          "value": "15 分钟",
+          "label": "平均上线时间"
+        },
+        {
+          "value": "免费",
+          "label": "可免费启动，规模化后按使用计费"
+        }
+      ],
+      "joinedLabel": "已有 100+ 位运营者加入抢先体验"
+    },
+    "midCta": {
+      "title": "准备把你的受众变成收入来源了吗？",
+      "cta": "发布我的市场，免费开始"
     }
   },
   "launch": {

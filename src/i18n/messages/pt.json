@@ -53,7 +53,8 @@
         "lead": "Você pode escolher:",
         "line2": "ser mais um trader tentando acertar a próxima previsão —",
         "line3": "ou montar a casa onde todos os outros jogam."
-      }
+      },
+      "ariaLabel": "Mudanças de atenção criam janelas de oportunidade"
     },
     "social": {
       "eyebrow": "É POSSÍVEL PREVER O FUTURO?",
@@ -125,7 +126,8 @@
         "metaHtml": "Volume $4.679,80 &nbsp;·&nbsp; Fecha em 1 jan. 2027",
         "yesButton": "Sim 67¢",
         "noButton": "Não 33¢"
-      }
+      },
+      "timelineAriaLabel": "Como a Kuest funciona"
     },
     "features": {
       "eyebrow": "Tudo já construído",
@@ -392,7 +394,8 @@
       "demo": "Demo",
       "docs": "Docs",
       "contact": "Contato",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "Construído com contratos derivados da Polymarket, auditados pela OpenZeppelin"
     },
     "sourceModal": {
       "outlet": "Fonte",
@@ -402,6 +405,35 @@
       "external": "Abrir fonte em nova aba",
       "back": "Voltar para a página",
       "dynamicNote": "Prévia embutida de {{domain}}. Se o veículo bloquear embeds, use o link externo abaixo."
+    },
+    "themeToggle": {
+      "toDark": "Mudar para modo escuro",
+      "toLight": "Mudar para modo claro"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "mercados lançados em testnet"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "taxa por trade, direto para sua wallet"
+        },
+        {
+          "value": "15 min",
+          "label": "tempo médio para entrar no ar"
+        },
+        {
+          "value": "Grátis",
+          "label": "para lançar, com cobrança por uso em escala"
+        }
+      ],
+      "joinedLabel": "Com 100+ operadores no early access"
+    },
+    "midCta": {
+      "title": "Pronto para transformar sua audiência em uma fonte de receita?",
+      "cta": "Lançar meu mercado - é grátis"
     }
   },
   "launch": {

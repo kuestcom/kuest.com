@@ -53,7 +53,8 @@
         "lead": "You can choose:",
         "line2": "be one more trader trying to call the next prediction —",
         "line3": "or build the house where everyone else plays."
-      }
+      },
+      "ariaLabel": "Attention shifts create windows of opportunity"
     },
     "social": {
       "eyebrow": "IS IT POSSIBLE TO PREDICT THE FUTURE?",
@@ -125,7 +126,8 @@
         "metaHtml": "$4,679.80 Vol. &nbsp;·&nbsp; Closes Jan 01, 2027",
         "yesButton": "Yes 67¢",
         "noButton": "No 33¢"
-      }
+      },
+      "timelineAriaLabel": "How Kuest works"
     },
     "features": {
       "eyebrow": "Everything already built",
@@ -392,7 +394,8 @@
       "demo": "Demo",
       "docs": "Docs",
       "contact": "Contact",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "Built on Polymarket-derived contracts, audited by OpenZeppelin"
     },
     "sourceModal": {
       "outlet": "Source",
@@ -402,6 +405,35 @@
       "external": "Open source in new tab",
       "back": "Back to page",
       "dynamicNote": "Embedded preview for {{domain}}. If the publisher blocks embeds, use the external link below."
+    },
+    "themeToggle": {
+      "toDark": "Switch to dark mode",
+      "toLight": "Switch to light mode"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "markets launched on testnet"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "fee per trade, direct to your wallet"
+        },
+        {
+          "value": "15 min",
+          "label": "average time to go live"
+        },
+        {
+          "value": "Free",
+          "label": "to launch, usage-based at scale"
+        }
+      ],
+      "joinedLabel": "Joined by 100+ operators in early access"
+    },
+    "midCta": {
+      "title": "Ready to turn your audience into a revenue stream?",
+      "cta": "Launch my market - it's free"
     }
   },
   "launch": {

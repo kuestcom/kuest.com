@@ -38,10 +38,13 @@ import {
 } from "@/i18n/site";
 
 const FEATURE_ICONS = [Globe2, Zap, Trophy, Share2, Bot, ShieldCheck] as const;
-const THEME_LABELS = {
-  toDark: "Switch to dark mode",
-  toLight: "Switch to light mode",
-};
+const EARLY_ACCESS_AVATAR_SRCS = [
+  "https://avatars.githubusercontent.com/u/1?v=4",
+  "https://avatars.githubusercontent.com/u/2?v=4",
+  "https://avatars.githubusercontent.com/u/3?v=4",
+  "https://avatars.githubusercontent.com/u/4?v=4",
+  "https://avatars.githubusercontent.com/u/5?v=4",
+] as const;
 
 function renderLandingHeroLine2(locale: SiteLocale, value: string) {
   const text = stripTerminalPeriod(value);
@@ -63,6 +66,63 @@ function renderLandingHeroLine2(locale: SiteLocale, value: string) {
       {beforeText}
       <span className="hero-title-accent">{text.slice(matchIndex, matchIndex + accentText.length)}</span>
       {text.slice(matchIndex + accentText.length)}
+    </>
+  );
+}
+
+function formatSolutionConclusionHeading(value?: string | null) {
+  const text = (value ?? "").trim();
+  return text ? `${text.replace(/[.:!?\u3002\uff01\uff1f]\s*$/, "").trim()}:` : "";
+}
+
+function renderSolutionCopyContent(titleRest: string[], subtitleLines: string[]) {
+  const [calloutLine, ...bodyLines] = subtitleLines;
+  const conclusionLine = bodyLines.length > 0 ? bodyLines[bodyLines.length - 1] : "";
+  const proseLines = conclusionLine ? bodyLines.slice(0, -1) : bodyLines;
+
+  return (
+    <>
+      {titleRest.map((line, index) => (
+        <span key={`intro-${index}`} className="solution-copy-line">
+          {line}
+        </span>
+      ))}
+      {calloutLine ? (
+        <span className="solution-copy-callout">
+          <span className="solution-copy-callout-mark">
+            <KuestMark />
+          </span>
+          <span>{calloutLine}</span>
+        </span>
+      ) : null}
+      {proseLines.map((line, index) => {
+        if (index !== 0) {
+          return (
+            <span key={`prose-${index}`} className="solution-copy-line">
+              {line}
+            </span>
+          );
+        }
+
+        const sentenceBreakMatch = line.match(/^(.+?[.!?]["']?)(?:\s+)(.+)$/);
+
+        if (!sentenceBreakMatch) {
+          return (
+            <span key={`prose-${index}`} className="solution-copy-line">
+              {line}
+            </span>
+          );
+        }
+
+        const [, firstSentence, remainingCopy] = sentenceBreakMatch;
+
+        return (
+          <span key={`prose-${index}`} className="solution-copy-block">
+            <span className="solution-copy-line">{firstSentence.trim()}</span>
+            <span className="solution-copy-line">{remainingCopy.trim()}</span>
+          </span>
+        );
+      })}
     </>
   );
 }
@@ -132,6 +192,9 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
+  const solutionBodyLines = solutionSubtitleLines.slice(1);
+  const solutionFlowHeading = formatSolutionConclusionHeading(solutionBodyLines[solutionBodyLines.length - 1]);
+  const socialProofStats = bundle.socialProof.stats;
 
   return (
     <>
@@ -207,8 +270,8 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           <ThemeToggle
             id="dockThemeToggle"
             className="dock-theme-toggle"
-            labelToDark={THEME_LABELS.toDark}
-            labelToLight={THEME_LABELS.toLight}
+            labelToDark={bundle.themeToggle.toDark}
+            labelToLight={bundle.themeToggle.toLight}
           />
           <a href={launchHref} className="nb nb-solid nav-cta">
             <span className="cta-label">{stripTrailingArrow(bundle.nav.cta)}</span>
@@ -242,8 +305,8 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                       <ThemeToggle
                         id="heroBrandThemeToggle"
                         className="dock-theme-toggle hero-brand-theme-toggle"
-                        labelToDark={THEME_LABELS.toDark}
-                        labelToLight={THEME_LABELS.toLight}
+                        labelToDark={bundle.themeToggle.toDark}
+                        labelToLight={bundle.themeToggle.toLight}
                       />
                     </div>
                   </div>
@@ -284,18 +347,26 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         <section className="panel-wrap attention-scroll-panel" id="p1-scroll">
           <div className="panel-sticky">
             <div className="panel-inner attention-scroll-shell">
-              <div className="attention-scroll-copy" aria-label="Attention shifts create windows of opportunity">
+              <div className="attention-scroll-copy" aria-label={bundle.attentionScroll.ariaLabel}>
                 <div className="attention-scroll-block">
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block1.line1}</p>
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block1.line2}</p>
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block1.line3}</p>
-                  <p className="attention-scroll-line attention-scroll-line-pivot">
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block1.line1}
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block1.line2}
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block1.line3}
+                  </p>
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     {bundle.attentionScroll.block1.line4}
                   </p>
                 </div>
                 <div className="attention-scroll-block attention-scroll-block-map">
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block2.line1}</p>
-                  <div className="attention-scroll-brand-row" aria-hidden="true">
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block2.line1}
+                  </p>
+                  <div className="attention-scroll-brand-row" data-attention-step="brands" aria-hidden="true">
                     <div className="attention-scroll-brand">
                       <Image
                         src="/assets/images/polymarket-logo.svg"
@@ -315,15 +386,24 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                       />
                     </div>
                   </div>
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block2.line3}</p>
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block2.line4}</p>
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block2.line3}
+                  </p>
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block2.line4}
+                  </p>
                 </div>
                 <div className="attention-scroll-block">
-                  <p className="attention-scroll-line attention-scroll-line-lead">
+                  <p
+                    className="attention-scroll-line attention-scroll-line-lead"
+                    data-attention-step="line"
+                  >
                     {bundle.attentionScroll.block3.lead}
                   </p>
-                  <p className="attention-scroll-line">{bundle.attentionScroll.block3.line2}</p>
-                  <p className="attention-scroll-line attention-scroll-line-pivot">
+                  <p className="attention-scroll-line" data-attention-step="line">
+                    {bundle.attentionScroll.block3.line2}
+                  </p>
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     {bundle.attentionScroll.block3.line3}
                   </p>
                 </div>
@@ -336,37 +416,27 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           <div className="panel-sticky">
             <div className="panel-inner max-w-[1180px]">
               <div className="r market-numbers market-numbers-4">
-                <article className="mn">
-                  <div className="mn-num">100+</div>
-                  <div className="mn-label">markets launched on testnet</div>
-                </article>
-                <article className="mn">
-                  <div className="mn-num">0.5-3%</div>
-                  <div className="mn-label">fee per trade, direct to your wallet</div>
-                </article>
-                <article className="mn">
-                  <div className="mn-num">15 min</div>
-                  <div className="mn-label">average time to go live</div>
-                </article>
-                <article className="mn">
-                  <div className="mn-num">Free</div>
-                  <div className="mn-label">to launch, usage-based at scale</div>
-                </article>
+                {socialProofStats.map((stat) => (
+                  <article key={`${stat.value}-${stat.label}`} className="mn">
+                    <div className="mn-num">{stat.value}</div>
+                    <div className="mn-label">{stat.label}</div>
+                  </article>
+                ))}
               </div>
               <div className="r flex items-center justify-center gap-3 border-t border-white/6 pt-5 mt-6">
                 <div className="flex">
-                  {["J", "M", "S", "N", "A"].map((initial, index) => (
+                  {EARLY_ACCESS_AVATAR_SRCS.map((src, index) => (
                     <span
-                      key={initial}
-                      className="inline-flex size-7 items-center justify-center rounded-full border-2 border-[#0e1117] bg-card font-mono text-[10px] text-muted"
+                      key={src}
+                      className="inline-flex overflow-hidden rounded-full border-2 border-[#0e1117] bg-card"
                       style={{ marginLeft: index === 0 ? 0 : -8 }}
                     >
-                      {initial}
+                      <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
                     </span>
                   ))}
                 </div>
                 <span className="font-mono text-[11px] uppercase tracking-[.12em] text-faint">
-                  Joined by 100+ operators in early access
+                  {bundle.socialProof.joinedLabel}
                 </span>
               </div>
             </div>
@@ -396,12 +466,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                 <div className="solution-body">
                   <div className="solution-copy-lead">
                     <div className="bt">
-                      {solutionTitleLines.slice(1).map((line) => (
-                        <div key={line}>{line}</div>
-                      ))}
-                      {solutionSubtitleLines.map((line) => (
-                        <div key={line}>{line}</div>
-                      ))}
+                      {renderSolutionCopyContent(solutionTitleLines.slice(1), solutionSubtitleLines)}
                     </div>
                   </div>
                   <div className="solution-proof-pane">
@@ -418,11 +483,9 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
             <div className="panel-inner max-w-[1180px] grid-cols-1 gap-10">
               <div className="solution-flow-stage r">
                 <div className="solution-flow-head">
-                  <h2 className="sh">
-                    {solutionSubtitleLines[solutionSubtitleLines.length - 1]?.replace(/[.:!?]\s*$/, "")}:
-                  </h2>
+                  <h2 className="sh">{solutionFlowHeading}</h2>
                 </div>
-                <div className="solution-timeline" aria-label="How Kuest works">
+                <div className="solution-timeline" aria-label={bundle.solution.timelineAriaLabel}>
                   <div className="solution-timeline-rail" aria-hidden="true">
                     <span className="solution-timeline-head" />
                   </div>
@@ -518,10 +581,10 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         <section className="panel-wrap panel-static panel-compact" id="p-mid-cta">
           <div className="panel-sticky">
             <div className="cta-content r py-10">
-              <h2 className="cta-h">Ready to turn your audience into a revenue stream?</h2>
+              <h2 className="cta-h">{bundle.midCta.title}</h2>
               <div className="cta-btns">
                 <a href={launchHref} className="btn-cta btn-cta-primary">
-                  <span className="cta-label">Launch my market - it&apos;s free</span>
+                  <span className="cta-label">{bundle.midCta.cta}</span>
                   <ArrowRight />
                 </a>
               </div>
@@ -534,7 +597,13 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
             <div className="panel-inner max-w-[1180px] grid-cols-1 items-start">
               <div className="r faq-layout">
                 <div className="faq-head">
-                  <h2 className="sh">FAQ</h2>
+                  <div className="slbl">{bundle.faq.eyebrow}</div>
+                  <h2
+                    className="sh"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeTranslatedHtml(bundle.faq.titleHtml, locale),
+                    }}
+                  />
                 </div>
                 <div className="faq-list">
                   {bundle.faq.items.map((item) => (
@@ -559,16 +628,27 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           </div>
         </section>
 
-        <section className="panel-wrap panel-static panel-compact" id="p9">
+        <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="cta-content r py-12">
-              <h2 className="cta-h">{bundle.finalCta.title}</h2>
-              <p className="cta-sub">{bundle.finalCta.subtitle}</p>
-              <div className="cta-btns">
-                <a href={launchHref} className="btn-cta btn-cta-primary">
-                  <span className="cta-label">{stripTrailingArrow(bundle.finalCta.cta)}</span>
-                  <ArrowRight />
-                </a>
+            <div className="marketing-final-panel">
+              <div className="cta-content r py-12">
+                <h2 className="cta-h">{bundle.finalCta.title}</h2>
+                <p className="cta-sub">{bundle.finalCta.subtitle}</p>
+                <div className="cta-btns">
+                  <a href={launchHref} className="btn-cta btn-cta-primary">
+                    <span className="cta-label">{stripTrailingArrow(bundle.finalCta.cta)}</span>
+                    <ArrowRight />
+                  </a>
+                </div>
+              </div>
+              <div className="marketing-footer-wrap">
+                <SiteFooter
+                  note={bundle.footer.note}
+                  docsLabel={bundle.footer.docs}
+                  contactLabel={bundle.footer.contact}
+                  xLabel="X"
+                  discordLabel="Discord"
+                />
               </div>
             </div>
           </div>
@@ -583,14 +663,6 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         externalLabel={bundle.sourceModal.external}
         backLabel={bundle.sourceModal.back}
         dynamicNote={bundle.sourceModal.dynamicNote}
-      />
-
-      <SiteFooter
-        note="Built on Polymarket-derived contracts, audited by OpenZeppelin"
-        docsLabel={bundle.footer.docs}
-        contactLabel={bundle.footer.contact}
-        xLabel="X"
-        discordLabel="Discord"
       />
 
       <MarketingPageRuntime nextSectionId="p1-scroll" finalSectionId="p9" />

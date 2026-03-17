@@ -53,7 +53,8 @@
         "lead": "Puedes elegir:",
         "line2": "ser un trader más intentando acertar la próxima predicción —",
         "line3": "o montar la casa donde juegan todos los demás."
-      }
+      },
+      "ariaLabel": "Los cambios de atención crean ventanas de oportunidad"
     },
     "social": {
       "eyebrow": "¿ES POSIBLE PREDECIR EL FUTURO?",
@@ -125,7 +126,8 @@
         "metaHtml": "Volumen $4,679.80 &nbsp;·&nbsp; Cierra el 1 de enero de 2027",
         "yesButton": "Sí 67¢",
         "noButton": "No 33¢"
-      }
+      },
+      "timelineAriaLabel": "Cómo funciona Kuest"
     },
     "features": {
       "eyebrow": "Todo ya está construido",
@@ -392,7 +394,8 @@
       "demo": "Demo",
       "docs": "Docs",
       "contact": "Contacto",
-      "live": "Polygon"
+      "live": "Polygon",
+      "note": "Construido sobre contratos derivados de Polymarket, auditados por OpenZeppelin"
     },
     "sourceModal": {
       "outlet": "Fuente",
@@ -402,6 +405,35 @@
       "external": "Abrir fuente en una nueva pestaña",
       "back": "Volver a la página",
       "dynamicNote": "Vista embebida de {{domain}}. Si el medio bloquea embeds, usa el enlace externo de abajo."
+    },
+    "themeToggle": {
+      "toDark": "Cambiar a modo oscuro",
+      "toLight": "Cambiar a modo claro"
+    },
+    "socialProof": {
+      "stats": [
+        {
+          "value": "100+",
+          "label": "mercados lanzados en testnet"
+        },
+        {
+          "value": "0.5-3%",
+          "label": "comisión por trade, directo a tu wallet"
+        },
+        {
+          "value": "15 min",
+          "label": "tiempo promedio para salir en vivo"
+        },
+        {
+          "value": "Gratis",
+          "label": "para lanzar, con cobro por uso al escalar"
+        }
+      ],
+      "joinedLabel": "Con 100+ operadores en early access"
+    },
+    "midCta": {
+      "title": "¿Listo para convertir tu audiencia en una fuente de ingresos?",
+      "cta": "Lanzar mi mercado - es gratis"
     }
   },
   "launch": {

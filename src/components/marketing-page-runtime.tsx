@@ -2,6 +2,24 @@
 
 import { useEffect } from "react";
 
+type AttentionScrollStep =
+  | {
+      type: "brands";
+      brands: HTMLElement[];
+    }
+  | {
+      type: "line";
+      words: HTMLSpanElement[];
+    };
+
+const ATTENTION_PUNCTUATION_TOKEN_RE = /^[.,!?;:…%]+$/u;
+const ATTENTION_SCROLL_TRAVEL_FACTOR = 1;
+const ATTENTION_SCROLL_HOLD_FACTOR = 0.02;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
 export function MarketingPageRuntime({
   nextSectionId,
   finalSectionId,
@@ -42,6 +60,240 @@ export function MarketingPageRuntime({
     return () => {
       window.clearTimeout(fallbackTimer);
       observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const timelines = Array.from(document.querySelectorAll<HTMLElement>(".solution-timeline"));
+
+    if (!timelines.length) {
+      return;
+    }
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion || typeof IntersectionObserver !== "function") {
+      timelines.forEach((timeline) => timeline.classList.add("is-revealed"));
+      return;
+    }
+
+    const revealTimeline = (timeline: HTMLElement, observer: IntersectionObserver) => {
+      timeline.classList.add("is-revealed");
+      observer.unobserve(timeline);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            revealTimeline(entry.target as HTMLElement, observer);
+          }
+        });
+      },
+      { threshold: 0.56, rootMargin: "0px 0px -4% 0px" },
+    );
+
+    timelines.forEach((timeline) => observer.observe(timeline));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const section = document.getElementById("p1-scroll");
+    const steps = section
+      ? Array.from(section.querySelectorAll<HTMLElement>("[data-attention-step]"))
+      : [];
+
+    if (!section || !steps.length) {
+      return;
+    }
+
+    const locale = document.documentElement.lang || "en";
+    const segmenter =
+      typeof Intl !== "undefined" && typeof Intl.Segmenter === "function"
+        ? new Intl.Segmenter(locale, { granularity: "word" })
+        : null;
+    const blocks = Array.from(section.querySelectorAll<HTMLElement>(".attention-scroll-block"));
+    const copy = section.querySelector<HTMLElement>(".attention-scroll-copy");
+    const dockNav = document.getElementById("dockNav");
+
+    if (!copy || !blocks.length) {
+      return;
+    }
+
+    let ticking = false;
+    let palette = {
+      bg: [14, 17, 23] as [number, number, number],
+      text: [232, 234, 240] as [number, number, number],
+    };
+
+    const parseRgbTriplet = (value: string, fallback: [number, number, number]) => {
+      const parts = String(value)
+        .trim()
+        .split(/\s+/)
+        .map(Number)
+        .filter(Number.isFinite);
+
+      return parts.length === 3
+        ? ([parts[0], parts[1], parts[2]] as [number, number, number])
+        : fallback;
+    };
+
+    const readPalette = () => {
+      const styles = getComputedStyle(document.documentElement);
+      palette = {
+        bg: parseRgbTriplet(styles.getPropertyValue("--bg-rgb"), [14, 17, 23]),
+        text: parseRgbTriplet(styles.getPropertyValue("--text-rgb"), [232, 234, 240]),
+      };
+    };
+
+    const splitLine = (line: HTMLElement) => {
+      const text = line.textContent ?? "";
+      line.setAttribute("aria-label", text);
+      line.textContent = "";
+
+      const segments = segmenter
+        ? Array.from(segmenter.segment(text), (part) => part.segment)
+        : text.split(/(\s+)/);
+      const words: HTMLSpanElement[] = [];
+      let previousWasWhitespace = false;
+
+      segments.forEach((segment) => {
+        if (!segment) {
+          return;
+        }
+
+        if (/^\s+$/.test(segment)) {
+          line.append(document.createTextNode(segment));
+          previousWasWhitespace = true;
+          return;
+        }
+
+        if (ATTENTION_PUNCTUATION_TOKEN_RE.test(segment) && !previousWasWhitespace && words.length) {
+          words[words.length - 1].textContent += segment;
+          previousWasWhitespace = false;
+          return;
+        }
+
+        const word = document.createElement("span");
+        word.className = "attention-scroll-word";
+        word.textContent = segment;
+        line.append(word);
+        words.push(word);
+        previousWasWhitespace = false;
+      });
+
+      return words;
+    };
+
+    const stepData: AttentionScrollStep[] = steps.map((step) => {
+      if (step.dataset.attentionStep === "brands") {
+        return {
+          type: "brands",
+          brands: Array.from(step.querySelectorAll<HTMLElement>(".attention-scroll-brand")),
+        };
+      }
+
+      return {
+        type: "line",
+        words: splitLine(step),
+      };
+    });
+
+    const applyColor = (target: HTMLElement, progress: number) => {
+      const eased = progress * progress * (3 - 2 * progress);
+      const alpha = clamp((progress - 0.05) / 0.22, 0, 1);
+      const red = Math.round(palette.bg[0] + (palette.text[0] - palette.bg[0]) * eased);
+      const green = Math.round(palette.bg[1] + (palette.text[1] - palette.bg[1]) * eased);
+      const blue = Math.round(palette.bg[2] + (palette.text[2] - palette.bg[2]) * eased);
+      const strokeAlpha = alpha === 0 ? "0" : ((1 - eased) * 0.08 * alpha).toFixed(3);
+      const strokeColor = `rgba(${palette.text[0]}, ${palette.text[1]}, ${palette.text[2]}, ${strokeAlpha})`;
+
+      target.style.color = `rgb(${red} ${green} ${blue})`;
+      target.style.opacity = String(alpha);
+      target.style.setProperty("-webkit-text-stroke-color", strokeColor);
+      target.style.setProperty("text-stroke-color", strokeColor);
+    };
+
+    const measure = () => {
+      const firstBlock = blocks[0];
+      const lastBlock = blocks[blocks.length - 1];
+      const firstCenter = firstBlock.offsetTop + firstBlock.offsetHeight / 2;
+      const lastCenter = lastBlock.offsetTop + lastBlock.offsetHeight / 2;
+      const contentTravel = Math.max(lastCenter - firstCenter, 1);
+      const travel = Math.max(contentTravel * ATTENTION_SCROLL_TRAVEL_FACTOR, 1);
+      const hold = window.innerHeight * ATTENTION_SCROLL_HOLD_FACTOR;
+
+      section.style.height = `${Math.ceil(window.innerHeight + travel + hold)}px`;
+
+      return { firstCenter, lastCenter, travel };
+    };
+
+    const render = () => {
+      ticking = false;
+      readPalette();
+
+      const metrics = measure();
+      const trackProgress = clamp((window.scrollY - section.offsetTop) / metrics.travel, 0, 1);
+      const dockRect =
+        dockNav && dockNav.classList.contains("is-visible") ? dockNav.getBoundingClientRect() : null;
+      const anchorY = dockRect ? dockRect.top - 16 : window.innerHeight * 0.8;
+      const fadeRange = Math.max(84, window.innerHeight * 0.14);
+      const startShift = window.innerHeight * 0.5 - metrics.firstCenter;
+      const endShift = window.innerHeight * 0.5 - metrics.lastCenter;
+      const shift = startShift + (endShift - startShift) * trackProgress;
+
+      copy.style.transform = `translate3d(0, ${shift}px, 0)`;
+
+      stepData.forEach((step) => {
+        if (step.type === "brands") {
+          step.brands.forEach((brand, brandIndex) => {
+            const rect = brand.getBoundingClientRect();
+            const brandProgress = clamp((anchorY - (rect.top + brandIndex * 12)) / fadeRange, 0, 1);
+            brand.style.opacity = String(0.12 + brandProgress * 0.88);
+          });
+          return;
+        }
+
+        step.words.forEach((word, wordIndex) => {
+          const rect = word.getBoundingClientRect();
+          const wordProgress = clamp((anchorY - (rect.top + wordIndex * 3)) / fadeRange, 0, 1);
+          applyColor(word, wordProgress);
+        });
+      });
+    };
+
+    const queue = () => {
+      if (ticking) {
+        return;
+      }
+
+      ticking = true;
+      window.requestAnimationFrame(render);
+    };
+
+    render();
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+
+    let isDisposed = false;
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => {
+        if (!isDisposed) {
+          queue();
+        }
+      });
+    }
+
+    return () => {
+      isDisposed = true;
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
     };
   }, []);
 
@@ -227,7 +479,16 @@ export function MarketingPageRuntime({
       if (event.key !== "Escape") {
         return;
       }
-      controls.forEach((control) => setOpen(control, false));
+
+      const activeElement = document.activeElement;
+
+      controls.forEach((control) => {
+        setOpen(control, false);
+
+        if (activeElement instanceof HTMLElement && control.contains(activeElement)) {
+          activeElement.blur();
+        }
+      });
     };
 
     document.addEventListener("click", handleDocumentClick);
