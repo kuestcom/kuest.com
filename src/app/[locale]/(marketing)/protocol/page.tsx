@@ -241,7 +241,9 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
                         <ChevronRightIcon />
                       </a>
                     </div>
-                    <div className="hero-copy-proof protocol-proof-line">{messages.hero.proof}</div>
+                    <div className="hero-copy-proof font-mono text-[11px] uppercase tracking-[.16em] text-faint">
+                      {messages.hero.proof}
+                    </div>
                   </div>
                 </div>
                 <HeroMarketStage

@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       from: fromEmail,
       to: [toEmail],
       replyTo: email,
-      subject: `Kuest Protocol deck request - ${companyName}`,
+      subject: `Kuest Protocol deck request — ${companyName}`,
       text: [
         "New pitch deck request from /protocol",
         "",
