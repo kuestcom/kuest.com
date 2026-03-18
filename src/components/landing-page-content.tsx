@@ -312,7 +312,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                       />
                     </div>
                   </div>
-                  <div className="hero-kicker !mb-5 !gap-3 !opacity-100 !animate-none">
+                  <div className="hero-kicker mb-5! gap-3! opacity-100! animate-none!">
                     {bundle.hero.kicker}
                   </div>
                   <h1 className="hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
@@ -425,16 +425,18 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                   </article>
                 ))}
               </div>
-              <div className="r flex items-center justify-center gap-3 border-t border-white/6 pt-5 mt-6">
+              <div className="r flex items-center justify-center gap-3 border-t border-white/6 pt-5! mt-6!">
                 <div className="flex">
                   {EARLY_ACCESS_AVATAR_SRCS.map((src, index) => (
-                    <span
-                      key={src}
-                      className="inline-flex overflow-hidden rounded-full border-2 border-[#0e1117] bg-card"
-                      style={{ marginLeft: index === 0 ? 0 : -8 }}
-                    >
-                      <Image src={src} alt="" width={28} height={28} className="h-7 w-7 object-cover" />
-                    </span>
+                      <Image
+                          key={src}
+                          src={src}
+                          alt=""
+                          width={28}
+                          height={28}
+                          className="size-7 object-cover rounded-full border-2 border-[#0e1117]"
+                          style={{ marginLeft: index === 0 ? 0 : -8 }}
+                      />
                   ))}
                 </div>
                 <span className="font-mono text-[11px] uppercase tracking-[.12em] text-faint">
