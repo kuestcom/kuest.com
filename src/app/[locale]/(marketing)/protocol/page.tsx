@@ -16,6 +16,7 @@ import SiteFooter from "@/components/SiteFooter";
 import ProtocolPitchDeckModal from "@/components/ProtocolPitchDeckModal";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import {CONTACT_HREF} from "@/lib/constants";
+import TimelineSpine from "@/components/TimelineSpine";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/protocol'>): Promise<Metadata> {
   const { locale } = await params;
@@ -131,6 +132,8 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
               }),
             }}
         />
+
+        <TimelineSpine />
 
         <nav id="heroNav" className="hero-nav">
           <div className="nav-r">

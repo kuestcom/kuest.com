@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
+import Script from 'next/script'
 
 export async function generateViewport(): Promise<Viewport> {
   return {
@@ -53,6 +54,30 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
             {children}
           </NextIntlClientProvider>
         </body>
+        <Script
+            id="timeline"
+            dangerouslySetInnerHTML={{
+              __html: `const panels=[...document.querySelectorAll('.panel-wrap')].map(el=>el.id).filter(Boolean);
+                        const dots=document.querySelectorAll('.tl-dot');
+                        function updateSpine(){
+                          const mid=window.innerHeight/2+scrollY;
+                          let active=0;
+                          panels.forEach((id,i)=>{
+                            const el=document.getElementById(id);
+                            if(!el)return;
+                            const top=el.offsetTop,bot=top+el.offsetHeight;
+                            if(mid>=top&&mid<bot)active=i;
+                          });
+                          dots.forEach(d=>d.classList.toggle('a',Number(d.dataset.p)===active));
+                        }
+                        window.addEventListener('scroll',updateSpine,{passive:true});
+                        dots.forEach(d=>d.addEventListener('click',()=>{
+                          const id=panels[Number(d.dataset.p)];
+                          const el=id?document.getElementById(id):null;
+                          if(el)el.scrollIntoView({behavior:'smooth'});
+                        }));`,
+            }}
+        />
       </html>
   )
 }

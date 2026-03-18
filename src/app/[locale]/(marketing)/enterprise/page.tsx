@@ -27,6 +27,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SourceModal from "@/components/SourceModal";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import {CONTACT_HREF} from "@/lib/constants";
+import TimelineSpine from "@/components/TimelineSpine";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/enterprise'>): Promise<Metadata> {
   const { locale } = await params
@@ -89,6 +90,8 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
             id="enterprise-embed-preview"
             dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
         />
+
+        <TimelineSpine />
 
         <nav id="heroNav" className="hero-nav">
           <div className="nav-r">

@@ -28,6 +28,7 @@ import SitePreview from "@/components/SitePreview";
 import SiteFooter from "@/components/SiteFooter";
 import SourceModal from "@/components/SourceModal";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
+import TimelineSpine from "@/components/TimelineSpine";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = await params;
@@ -146,6 +147,8 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               }),
             }}
         />
+
+        <TimelineSpine />
 
         <nav id="heroNav" className="hero-nav">
           <div className="nav-r">
