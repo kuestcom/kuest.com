@@ -1,8 +1,8 @@
-import {localeHref, SiteLocale} from "@/i18n/site-config";
-import {LANGUAGE_OPTIONS} from "@/lib/marketing-shared-data";
+
 import Image from "next/image";
 import {ChevronDown} from "lucide-react";
 import {Link} from "@/i18n/navigation";
+import {LANGUAGE_OPTIONS, SupportedLocale} from "@/i18n/locales";
 
 export default function LanguageControl({
                                     locale,
@@ -14,7 +14,7 @@ export default function LanguageControl({
                                     labelId,
                                     ariaLabel,
                                 }: {
-    locale: SiteLocale;
+    locale: SupportedLocale;
     path: string;
     controlId: string;
     buttonId: string;
@@ -56,7 +56,7 @@ export default function LanguageControl({
                 {LANGUAGE_OPTIONS.map((option) => (
                     <Link
                         key={option.code}
-                        href={localeHref(option.code, path)}
+                        href={option.code}
                         className={`site-language-option${option.code === locale ? " is-selected" : ""}`}
                         role="option"
                         aria-selected={option.code === locale}

@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import {
-  getSiteOrigin,
-  localeHref, type SiteLocale,
-} from "@/i18n/site";
-import {
   buildEmbedPreviewBootstrapScript,
   buildThemeBootstrapScript,
   getDemoEmbedSrc,
@@ -27,11 +23,11 @@ import SiteFooter from "@/components/SiteFooter";
 import SourceModal from "@/components/SourceModal";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import TimelineSpine from "@/components/TimelineSpine";
-import {SUPPORTED_LOCALES} from "@/i18n/locales";
+import {SUPPORTED_LOCALES, SupportedLocale} from "@/i18n/locales";
 import {hasLocale} from "next-intl";
 import {routing} from "@/i18n/routing";
 import {getExtracted} from "next-intl/server";
-import {Link} from "@/i18n/navigation";
+import {getPathname, Link} from "@/i18n/navigation";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = await params;
@@ -42,7 +38,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
 
   const t = await getExtracted();
   const siteOrigin = process.env.SITE_URL;
-  const canonical = new URL(localeHref(locale), siteOrigin);
+  const canonical = new URL(getPathname({ href: '/', locale}), siteOrigin);
   const ogImage = new URL("/assets/images/your-predictoin-market-500mi-vol.png", siteOrigin);
 
   return {
@@ -93,7 +89,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
   }
 
   const t = await getExtracted()
-  const launchHref = localeHref(locale, "/launch");
+  const launchHref = getPathname({ href: "/launch", locale});
   const previewHref = getDemoHref(locale);
   const previewSrc = getDemoEmbedSrc(locale);
   const previewLabel = getDemoLabel(locale);
@@ -436,7 +432,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                 name: "Kuest",
                 applicationCategory: "BusinessApplication",
                 operatingSystem: "Web",
-                url: new URL(localeHref(locale), getSiteOrigin()).toString(),
+                url: new URL(process.env.SITE_URL!).toString(),
                 description: t('Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.'),
                 offers: {
                   "@type": "Offer",
@@ -478,9 +474,9 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
           </a>
           <div className="nav-r">
             <DockMenuControl
-                homeHref={localeHref(locale, "/")}
-                enterpriseHref={localeHref(locale, "/enterprise")}
-                protocolHref={localeHref(locale, "/protocol")}
+                homeHref="/"
+                enterpriseHref="/enterprise"
+                protocolHref="/protocol"
                 active="home"
                 openLabel={t('Open site navigation')}
                 menuAriaLabel={t('Site navigation')}
@@ -987,7 +983,7 @@ const EARLY_ACCESS_AVATAR_SRCS = [
   "https://avatars.githubusercontent.com/u/5?v=4",
 ] as const;
 
-function renderLandingHeroLine2(locale: SiteLocale, value: string) {
+function renderLandingHeroLine2(locale: SupportedLocale, value: string) {
   const accentText = getLandingHeroAccent(locale);
   const matchIndex = value.lastIndexOf(accentText);
 
