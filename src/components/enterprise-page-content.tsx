@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import {
   DockMenuControl,
   HeroMarketStage,
@@ -132,7 +132,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
           />
           <a href={CONTACT_HREF} className="nb nb-solid nav-cta">
             <span className="cta-label">{enterprise.hero.contactCta}</span>
-            <ArrowRight />
+            <ChevronRightIcon />
           </a>
         </div>
       </nav>
@@ -185,11 +185,11 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                   <div className="hero-copy-actions flex flex-wrap gap-3">
                     <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
                       <span className="cta-label">{enterprise.hero.contactCta}</span>
-                      <ArrowRight />
+                      <ChevronRightIcon />
                     </a>
                     <a href="#p3-demo" className="btn-cta btn-cta-secondary">
                       <span className="cta-label">{enterprise.hero.viewDemoCta}</span>
-                      <ArrowRight />
+                      <ChevronRightIcon />
                     </a>
                   </div>
                   <div className="hero-copy-proof font-mono text-[11px] uppercase tracking-[.16em] text-faint">
@@ -360,7 +360,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                     <div className="solution-cta-block solution-cta-block-inline">
                       <a href={CONTACT_HREF} className="btn-cta btn-cta-primary" id="solutionCtaBtn">
                         <span className="cta-label">{enterprise.solution.cta}</span>
-                        <ArrowRight />
+                        <ChevronRightIcon />
                       </a>
                       <div className="solution-cta-note" id="solutionCtaNote">
                         {enterprise.solution.note}
@@ -462,7 +462,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                 <div className="cta-btns">
                   <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
                     <span className="cta-label">{enterprise.finalCta.contactCta}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </a>
                   <a
                     href={getDemoHref(locale)}
@@ -471,7 +471,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                     className="btn-cta btn-cta-secondary"
                   >
                     <span className="cta-label">{enterprise.finalCta.viewLiveDemoCta}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </a>
                 </div>
               </div>

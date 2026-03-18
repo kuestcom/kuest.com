@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
-import {ArrowRight, Bot, ChevronRightIcon, Globe2, Share2, ShieldCheck, Trophy, Zap} from "lucide-react";
+import {Bot, ChevronRightIcon, Globe2, Share2, ShieldCheck, Trophy, Zap} from "lucide-react";
 import {
   DockMenuControl,
   HeroMarketStage,
