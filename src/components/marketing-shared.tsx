@@ -189,7 +189,7 @@ export function DockMenuControl({
       <button
         type="button"
         id="dockSiteNavButton"
-        className="dock-theme-toggle site-language-trigger site-nav-trigger"
+        className="dock-theme-toggle site-nav-trigger"
         aria-label={openLabel}
         aria-haspopup="menu"
         aria-expanded="false"
