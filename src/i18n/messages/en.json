@@ -145,7 +145,7 @@
         },
         {
           "title": "Shared liquidity from day one.",
-          "copy": "Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches with no cold start and no empty order books."
+          "copy": "Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches — no cold start, no empty order books."
         },
         {
           "title": "Leaderboard + PnL built in.",
@@ -153,15 +153,15 @@
         },
         {
           "title": "On-chain affiliate system.",
-          "copy": "Let others promote your market and earn a share of fees, settled trustlessly on-chain. No manual payouts and no spreadsheets."
+          "copy": "Let others promote your market and earn a share of fees — settled trustlessly on-chain. No manual payouts, no spreadsheets."
         },
         {
           "title": "Bot SDKs for automated trading.",
-          "copy": "Python and Rust SDKs let market makers and power users run bots directly on your platform, increasing volume and depth automatically."
+          "copy": "Python and Rust SDKs let market makers and power users run bots directly on your platform — increasing volume and depth automatically."
         },
         {
           "title": "OpenZeppelin-audited contracts.",
-          "copy": "Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this. It just works."
+          "copy": "Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this — it just works."
         }
       ]
     },
