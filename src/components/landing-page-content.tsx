@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
-import { ArrowRight, Bot, Globe2, Share2, ShieldCheck, Trophy, Zap } from "lucide-react";
+import {ArrowRight, Bot, ChevronRightIcon, Globe2, Share2, ShieldCheck, Trophy, Zap} from "lucide-react";
 import {
   DockMenuControl,
   HeroMarketStage,
@@ -277,7 +277,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
           />
           <a href={launchHref} className="nb nb-solid nav-cta">
             <span className="cta-label">{stripTrailingArrow(bundle.nav.cta)}</span>
-            <ArrowRight />
+            <ChevronRightIcon />
           </a>
         </div>
       </nav>
@@ -329,7 +329,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                   <div className="hero-copy-actions flex flex-wrap gap-3">
                     <a href={launchHref} className="btn-cta btn-cta-primary">
                       <span className="cta-label">{stripTrailingArrow(bundle.hero.cta)}</span>
-                      <ArrowRight />
+                      <ChevronRightIcon />
                     </a>
                   </div>
                   <div className="hero-copy-proof font-mono text-[11px] uppercase tracking-[.16em] text-faint">
@@ -515,7 +515,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                     <div className="solution-cta-block solution-cta-block-inline">
                       <a href={launchHref} className="btn-cta btn-cta-primary" id="solutionCtaBtn">
                         <span className="cta-label">{bundle.solution.cta}</span>
-                        <ArrowRight />
+                        <ChevronRightIcon />
                       </a>
                       <div className="solution-cta-note" id="solutionCtaNote">
                         {bundle.solution.note}
