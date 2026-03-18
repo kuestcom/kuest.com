@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: LandingPageProps): Promise<Me
   return buildLandingMetadata(locale);
 }
 
-export function generateViewport(): Viewport {
+export async function generateViewport(): Promise<Viewport> {
   return buildLandingViewport();
 }
 
