@@ -379,6 +379,12 @@ export function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
     .join("");
 }
 
+function extractVisibleTextFromHtml(html: string) {
+  const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
+
+  return document.body.textContent?.replace(/\s+/g, " ").trim() ?? "";
+}
+
 export function getDemoLocalePath(locale: SiteLocale) {
   return locale === defaultSiteLocale ? "" : `/${locale}`;
 }
@@ -457,9 +463,13 @@ export function buildLandingProofCards(
   bundle: LandingMessages,
   locale: SiteLocale,
 ): ProofCard[] {
-  return bundle.social.cards.map((card) => ({
-    label: card.label,
-    value: extractLargestMoneyToken(card.subHtml),
-    copyHtml: sanitizeTranslatedHtml(card.subHtml, locale),
-  }));
+  return bundle.social.cards.map((card) => {
+    const copyHtml = sanitizeTranslatedHtml(card.subHtml, locale);
+
+    return {
+      label: card.label,
+      value: extractLargestMoneyToken(extractVisibleTextFromHtml(copyHtml)),
+      copyHtml,
+    };
+  });
 }
