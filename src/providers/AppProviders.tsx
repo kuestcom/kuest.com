@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import AppKitProvider from "@/providers/app-kit-provider";
+import AppKitProvider from "@/providers/AppKitProvider";
 
 interface AppProvidersProps {
   children: ReactNode;

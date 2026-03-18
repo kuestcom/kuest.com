@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AppProviders } from "@/providers/app-providers";
+import { AppProviders } from "@/providers/AppProviders";
 
 interface AppRouteLayoutProps {
   children: ReactNode;

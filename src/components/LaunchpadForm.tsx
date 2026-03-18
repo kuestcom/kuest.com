@@ -18,7 +18,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
-import { useAppKit } from "@/hooks/use-app-kit";
+import { useAppKit } from "@/hooks/useAppKit";
 import { launchLocaleOptions, useLaunchI18n } from "@/i18n/launch";
 import { localeHref } from "@/i18n/site-config";
 import {
