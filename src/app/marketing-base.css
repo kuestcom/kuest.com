@@ -5794,7 +5794,7 @@ html.embed-preview .hero-stack-panel .panel-sticky {
   padding-top: 24px;
   padding-bottom: 28px;
 }
-.marketing-final-section .panel-sticky {
+#p9.marketing-final-section .panel-sticky {
   min-height: auto;
   padding-top: clamp(72px,8vw,112px);
   padding-bottom: clamp(48px,5vw,72px);
@@ -6270,8 +6270,8 @@ footer {
     padding-top: 28px;
     padding-bottom: 24px;
   }
-  .marketing-final-section .panel-sticky,
-  .enterprise-final-section .panel-sticky {
+  #p9.marketing-final-section .panel-sticky,
+  #p9.enterprise-final-section .panel-sticky {
     min-height: auto;
     padding-top: 48px;
     padding-bottom: 28px;
@@ -6737,6 +6737,79 @@ footer {
   }
   .dock-nav .nav-r {
     margin-left: auto;
+  }
+  .site-preview {
+    width: min(405px,calc(100vw - 24px));
+    padding: 6px;
+    border-radius: 44px;
+    border-color: var(--preview-mobile-shell-border);
+    background: var(--preview-mobile-shell-bg);
+    box-shadow: var(--preview-mobile-shell-shadow);
+  }
+  .site-preview::before,
+  .site-preview::after {
+    content: none;
+  }
+  .site-preview-head {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(336px,calc(100% - 24px));
+    bottom: 10px;
+    z-index: 5;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: minmax(0,1fr) auto auto;
+    gap: 8px;
+    padding: 8px 10px;
+    margin: 0;
+    border-bottom: none;
+    background: var(--preview-mobile-toolbar-bg);
+    border: 1px solid var(--preview-mobile-shell-border);
+    border-radius: 999px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--preview-mobile-toolbar-shadow);
+  }
+  .site-preview-dots {
+    display: none;
+  }
+  .site-preview-url {
+    width: 100%;
+    max-width: 190px;
+    min-width: 0;
+    justify-content: center;
+    flex: 0 1 auto;
+    padding-inline: 13px;
+    font-size: 10px;
+    background: var(--preview-mobile-url-bg);
+    backdrop-filter: blur(14px);
+  }
+  .site-preview-live {
+    gap: 6px;
+    font-size: 9px;
+    letter-spacing: .06em;
+  }
+  .site-preview-mode-btn {
+    display: none;
+  }
+  .site-preview-body {
+    display: block;
+    width: 100%;
+    aspect-ratio: 393/852;
+    height: auto;
+    max-height: calc(100vh - 132px);
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+  .site-preview-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    box-shadow: none;
   }
   .hero-title {
     font-size: clamp(28px,7.2vw,36px);

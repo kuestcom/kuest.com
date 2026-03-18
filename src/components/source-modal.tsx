@@ -64,14 +64,25 @@ export function SourceModal({
         return;
       }
 
-      event.preventDefault();
+      const isPlainLeftClick =
+        event.button === 0 &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.shiftKey &&
+        !event.altKey;
+
+      if (!isPlainLeftClick) {
+        return;
+      }
 
       const safeUrl = getSafeSourceUrl(link.getAttribute("href") ?? "");
 
       if (!safeUrl) {
+        event.preventDefault();
         return;
       }
 
+      event.preventDefault();
       setIsLoading(true);
       setSource({
         href: safeUrl.href,

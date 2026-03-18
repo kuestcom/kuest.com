@@ -72,9 +72,7 @@ function renderLandingHeroLine2(locale: SiteLocale, value: string) {
 }
 
 function renderSolutionCopyContent(titleRest: string[], subtitleLines: string[]) {
-  const [calloutLine, ...bodyLines] = subtitleLines;
-  const conclusionLine = bodyLines.length > 0 ? bodyLines[bodyLines.length - 1] : "";
-  const proseLines = conclusionLine ? bodyLines.slice(0, -1) : bodyLines;
+  const [calloutLine, ...proseLines] = subtitleLines;
 
   return (
     <>

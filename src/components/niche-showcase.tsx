@@ -32,7 +32,12 @@ export function NicheShowcase({
     };
   }, [isPaused, niches.length]);
 
-  const activeNiche = niches[activeIndex];
+  const safeActiveIndex = niches.length ? Math.min(activeIndex, niches.length - 1) : 0;
+  const activeNiche = niches[safeActiveIndex] ?? niches[0];
+
+  if (!activeNiche) {
+    return null;
+  }
 
   return (
     <div
@@ -46,11 +51,11 @@ export function NicheShowcase({
           <button
             key={niche.tag}
             type="button"
-            className={`niche-tab${index === activeIndex ? " is-active" : ""}`}
+            className={`niche-tab${index === safeActiveIndex ? " is-active" : ""}`}
             data-prediction-niche={index}
             onClick={() => setActiveIndex(index)}
             style={
-              index === activeIndex
+              index === safeActiveIndex
                 ? {
                     borderColor: `rgba(${niche.accentRgb},0.46)`,
                     background: `rgba(${niche.accentRgb},0.12)`,

@@ -434,6 +434,21 @@ export function MarketingPageRuntime({
       }
     };
 
+    const closeOtherControls = (activeControl: HTMLElement) => {
+      controls.forEach((control) => {
+        if (control === activeControl) {
+          return;
+        }
+
+        setOpen(control, false);
+
+        const activeElement = document.activeElement;
+        if (activeElement instanceof HTMLElement && control.contains(activeElement)) {
+          activeElement.blur();
+        }
+      });
+    };
+
     const buttonHandlers = controls
       .map((control) => {
         const button = control.querySelector<HTMLElement>(".site-language-trigger");
@@ -447,6 +462,11 @@ export function MarketingPageRuntime({
           event.preventDefault();
           event.stopPropagation();
           const nextOpen = control.dataset.open !== "true";
+
+          if (nextOpen) {
+            closeOtherControls(control);
+          }
+
           setOpen(control, nextOpen);
 
           if (!nextOpen && document.activeElement === button) {
