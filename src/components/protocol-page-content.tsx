@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
 import {
-  ArrowRight,
+  ChevronRightIcon,
   Banknote,
   Bot,
   Building2,
@@ -245,7 +245,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
           />
           <a href={CONTACT_HREF} className="nb nb-solid nav-cta">
             <span className="cta-label">{messages.nav.contactCta}</span>
-            <ArrowRight />
+            <ChevronRightIcon />
           </a>
         </div>
       </nav>
@@ -294,11 +294,11 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
                   <div className="hero-copy-actions protocol-action-row">
                     <button type="button" className="btn-cta btn-cta-primary" data-protocol-deck-open>
                       <span className="cta-label">{messages.hero.pitchDeckCta}</span>
-                      <ArrowRight />
+                      <ChevronRightIcon />
                     </button>
                     <a href={CONTACT_HREF} className="btn-cta btn-cta-secondary">
                       <span className="cta-label">{messages.hero.contactCta}</span>
-                      <ArrowRight />
+                      <ChevronRightIcon />
                     </a>
                   </div>
                   <div className="hero-copy-proof protocol-proof-line">{messages.hero.proof}</div>
@@ -591,20 +591,20 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
 
         <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="marketing-final-panel">
-              <div className="cta-content r py-12 protocol-final-cta">
+            <div className="marketing-final-panel justify-center">
+              <div className="cta-content r py-24! protocol-final-cta">
                 <h2 className="cta-h">{messages.finalCta.title}</h2>
                 <p className="cta-sub">{messages.finalCta.subtitle}</p>
                 <div className="protocol-final-primary">
                   <button type="button" className="btn-cta btn-cta-primary" data-protocol-deck-open>
                     <span className="cta-label">{messages.finalCta.requestDeckCta}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </button>
                 </div>
-                <div className="cta-btns protocol-final-actions">
+                <div className="cta-btns protocol-final-actions mt-6!">
                   <a href={CONTACT_HREF} className="btn-cta btn-cta-secondary">
                     <span className="cta-label">{messages.finalCta.contactCta}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </a>
                   <a
                     href={demoHref}
@@ -613,7 +613,7 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
                     className="btn-cta btn-cta-secondary"
                   >
                     <span className="cta-label">{messages.finalCta.viewDemoCta}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </a>
                 </div>
               </div>
