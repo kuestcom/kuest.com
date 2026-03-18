@@ -18,8 +18,8 @@ import {
   SiteFooter,
   ThemeToggle,
 } from "@/components/marketing-shared";
-import { MarketingPageRuntime } from "@/components/marketing-page-runtime";
-import { ProtocolPitchDeckModal } from "@/components/protocol-pitch-deck-modal";
+import MarketingPageRuntime from "@/components/MarketingPageRuntime";
+import ProtocolPitchDeckModal from "@/components/ProtocolPitchDeckModal";
 import {
   buildThemeBootstrapScript,
   getDemoHref,
@@ -33,7 +33,7 @@ import {
   type SiteLocale,
 } from "@/i18n/site";
 
-const CONTACT_HREF = "mailto:hello@kuest.com?subject=Kuest%20Protocol";
+const CONTACT_HREF = "mailto:hello@kuest.com";
 
 function ProtocolQuoteCard({
   quote,

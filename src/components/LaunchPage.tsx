@@ -1,7 +1,7 @@
 "use client";
 
-import BackgroundParticles from "@/components/background-particles";
-import LaunchpadForm from "@/components/launchpad-form";
+import BackgroundParticles from "@/components/BackgroundParticles";
+import LaunchpadForm from "@/components/LaunchpadForm";
 import { useLaunchI18n } from "@/i18n/launch";
 
 export default function LaunchPage() {

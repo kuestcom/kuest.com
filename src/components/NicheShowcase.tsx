@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { ShowcaseIcon } from "@/components/marketing-shared";
 import type { ShowcaseNiche } from "@/lib/marketing-shared-data";
 
-export function NicheShowcase({
+export default function NicheShowcase({
   niches,
   yesLabel,
   noLabel,

@@ -4,7 +4,7 @@ import {
   buildLandingMetadata,
   buildLandingViewport,
   LandingPageContent,
-} from "@/components/landing-page-content";
+} from "@/components/LandingPageContent";
 import {
   isSiteLocale,
 } from "@/i18n/site";

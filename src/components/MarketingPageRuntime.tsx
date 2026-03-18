@@ -25,7 +25,7 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-export function MarketingPageRuntime({
+export default function MarketingPageRuntime({
   nextSectionId,
   finalSectionId,
 }: {

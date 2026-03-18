@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LaunchPage from "@/components/launch-page";
+import LaunchPage from "@/components/LaunchPage";
 import { getSiteOrigin } from "@/i18n/site";
 
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME?.trim() || "Kuest";

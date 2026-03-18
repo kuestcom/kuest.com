@@ -3,7 +3,7 @@
 import { MonitorSmartphone } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export function SitePreview({
+export default function SitePreview({
   href,
   label,
   iframeSrc,

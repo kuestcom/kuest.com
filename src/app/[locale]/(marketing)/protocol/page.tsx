@@ -4,7 +4,7 @@ import {
   buildProtocolMetadata,
   buildProtocolViewport,
   ProtocolPageContent,
-} from "@/components/protocol-page-content";
+} from "@/components/ProtocolPageContent";
 import {
   isSiteLocale,
 } from "@/i18n/site";

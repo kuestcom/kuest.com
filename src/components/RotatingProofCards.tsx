@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ProofCard } from "@/lib/marketing-shared-data";
 
-export function RotatingProofCards({ cards }: { cards: ReadonlyArray<ProofCard> }) {
+export default function RotatingProofCards({ cards }: { cards: ReadonlyArray<ProofCard> }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const clampedActiveIndex = cards.length === 0 ? -1 : Math.min(activeIndex, cards.length - 1);
 

@@ -9,7 +9,7 @@ type SourceModalState = {
   domain: string;
 };
 
-export function SourceModal({
+export default function SourceModal({
   outlet,
   title,
   loading,

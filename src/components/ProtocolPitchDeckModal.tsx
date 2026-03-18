@@ -6,7 +6,7 @@ import type { ProtocolMessages } from "@/i18n/site";
 
 type DeckModalMessages = ProtocolMessages["deckModal"];
 
-export function ProtocolPitchDeckModal({
+export default function ProtocolPitchDeckModal({
   messages,
 }: {
   messages: DeckModalMessages;

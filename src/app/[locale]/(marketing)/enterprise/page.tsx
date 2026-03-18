@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import {
   buildEnterpriseMetadata,
   EnterprisePageContent,
-} from "@/components/enterprise-page-content";
+} from "@/components/EnterprisePageContent";
 import { isSiteLocale } from "@/i18n/site";
 
 interface EnterprisePageProps {
