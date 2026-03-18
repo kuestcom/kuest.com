@@ -7,6 +7,7 @@ import {
   siteRootViewport,
 } from "@/components/site-root-layout";
 import { getSiteMessages, isSiteLocale, siteLocales } from "@/i18n/site";
+import "@/app/globals.css";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;

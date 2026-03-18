@@ -28,6 +28,7 @@ import {
   stripTerminalPeriod,
   stripTrailingArrow,
 } from "@/lib/marketing-content";
+import { getLandingSolutionFlowTitle } from "@/lib/marketing-page-copy";
 import {
   defaultSiteLocale,
   getLandingMessages,
@@ -68,11 +69,6 @@ function renderLandingHeroLine2(locale: SiteLocale, value: string) {
       {text.slice(matchIndex + accentText.length)}
     </>
   );
-}
-
-function formatSolutionConclusionHeading(value?: string | null) {
-  const text = (value ?? "").trim();
-  return text ? `${text.replace(/[.:!?\u3002\uff01\uff1f]\s*$/, "").trim()}:` : "";
 }
 
 function renderSolutionCopyContent(titleRest: string[], subtitleLines: string[]) {
@@ -192,8 +188,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
-  const solutionBodyLines = solutionSubtitleLines.slice(1);
-  const solutionFlowHeading = formatSolutionConclusionHeading(solutionBodyLines[solutionBodyLines.length - 1]);
+  const solutionFlowHeading = getLandingSolutionFlowTitle(locale);
   const socialProofStats = bundle.socialProof.stats;
 
   return (
@@ -597,13 +592,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
             <div className="panel-inner max-w-[1180px] grid-cols-1 items-start">
               <div className="r faq-layout">
                 <div className="faq-head">
-                  <div className="slbl">{bundle.faq.eyebrow}</div>
-                  <h2
-                    className="sh"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizeTranslatedHtml(bundle.faq.titleHtml, locale),
-                    }}
-                  />
+                  <h2 className="sh">FAQ</h2>
                 </div>
                 <div className="faq-list">
                   {bundle.faq.items.map((item) => (

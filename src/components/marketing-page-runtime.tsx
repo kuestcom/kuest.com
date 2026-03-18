@@ -446,7 +446,12 @@ export function MarketingPageRuntime({
         const handler = (event: Event) => {
           event.preventDefault();
           event.stopPropagation();
-          setOpen(control, control.dataset.open !== "true");
+          const nextOpen = control.dataset.open !== "true";
+          setOpen(control, nextOpen);
+
+          if (!nextOpen && document.activeElement === button) {
+            button.blur();
+          }
         };
 
         button.addEventListener("click", handler);

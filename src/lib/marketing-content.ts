@@ -625,7 +625,7 @@ export function getDemoHref(locale: SiteLocale) {
 
 export function getDemoEmbedSrc(locale: SiteLocale) {
   const path = getDemoLocalePath(locale);
-  return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}?embed-preview=1`;
+  return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}`;
 }
 
 export function getDemoLabel(locale: SiteLocale) {
