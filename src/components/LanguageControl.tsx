@@ -2,7 +2,7 @@ import {localeHref, SiteLocale} from "@/i18n/site-config";
 import {LANGUAGE_OPTIONS} from "@/lib/marketing-shared-data";
 import Image from "next/image";
 import {ChevronDown} from "lucide-react";
-import Link from "next/link";
+import {Link} from "@/i18n/navigation";
 
 export default function LanguageControl({
                                     locale,
