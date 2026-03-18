@@ -24,7 +24,12 @@
       "chance": "de probabilidad"
     },
     "nav": {
-      "cta": "Lanza tu mercado →"
+      "cta": "Lanza tu mercado →",
+      "openMenuLabel": "Abrir navegación del sitio",
+      "menuAriaLabel": "Navegación del sitio",
+      "homeLabel": "Inicio",
+      "enterpriseLabel": "Empresas",
+      "protocolLabel": "El Protocolo"
     },
     "hero": {
       "kicker": "El Shopify de los mercados de predicción",
@@ -646,7 +651,12 @@
       ]
     },
     "nav": {
-      "contactCta": "Contáctanos"
+      "contactCta": "Contáctanos",
+      "openMenuLabel": "Abrir navegación del sitio",
+      "menuAriaLabel": "Navegación del sitio",
+      "homeLabel": "Inicio",
+      "enterpriseLabel": "Empresas",
+      "protocolLabel": "El Protocolo"
     },
     "hero": {
       "kicker": "KUEST PROTOCOL · RONDA SEED ABIERTA",

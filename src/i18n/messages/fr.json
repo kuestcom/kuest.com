@@ -24,7 +24,12 @@
       "chance": "de chances"
     },
     "nav": {
-      "cta": "Lancez votre marché →"
+      "cta": "Lancez votre marché →",
+      "openMenuLabel": "Ouvrir la navigation du site",
+      "menuAriaLabel": "Navigation du site",
+      "homeLabel": "Accueil",
+      "enterpriseLabel": "Entreprise",
+      "protocolLabel": "Le Protocole"
     },
     "hero": {
       "kicker": "Le Shopify des marchés de prédiction",
@@ -646,7 +651,12 @@
       ]
     },
     "nav": {
-      "contactCta": "Nous contacter"
+      "contactCta": "Nous contacter",
+      "openMenuLabel": "Ouvrir la navigation du site",
+      "menuAriaLabel": "Navigation du site",
+      "homeLabel": "Accueil",
+      "enterpriseLabel": "Entreprise",
+      "protocolLabel": "Le Protocole"
     },
     "hero": {
       "kicker": "KUEST PROTOCOL · TOUR SEED OUVERT",

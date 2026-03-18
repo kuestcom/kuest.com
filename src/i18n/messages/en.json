@@ -24,7 +24,12 @@
       "chance": "chance"
     },
     "nav": {
-      "cta": "Start your prediction market →"
+      "cta": "Start your prediction market →",
+      "openMenuLabel": "Open site navigation",
+      "menuAriaLabel": "Site navigation",
+      "homeLabel": "Home",
+      "enterpriseLabel": "Enterprise",
+      "protocolLabel": "The Protocol"
     },
     "hero": {
       "kicker": "The Shopify for Prediction Markets",
@@ -646,7 +651,12 @@
       ]
     },
     "nav": {
-      "contactCta": "Contact us"
+      "contactCta": "Contact us",
+      "openMenuLabel": "Open site navigation",
+      "menuAriaLabel": "Site navigation",
+      "homeLabel": "Home",
+      "enterpriseLabel": "Enterprise",
+      "protocolLabel": "The Protocol"
     },
     "hero": {
       "kicker": "KUEST PROTOCOL · SEED ROUND OPEN",

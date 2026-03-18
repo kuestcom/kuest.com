@@ -51,14 +51,8 @@ export function MarketingPageRuntime({
     );
 
     elements.forEach((element) => observer.observe(element));
-    const fallbackTimer = window.setTimeout(() => {
-      document.querySelectorAll<HTMLElement>(".r:not(.v)").forEach((element) => {
-        element.classList.add("v");
-      });
-    }, 400);
 
     return () => {
-      window.clearTimeout(fallbackTimer);
       observer.disconnect();
     };
   }, []);

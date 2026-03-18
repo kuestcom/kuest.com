@@ -249,6 +249,11 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
             enterpriseHref={localeHref(locale, "/enterprise")}
             protocolHref={localeHref(locale, "/protocol")}
             active="home"
+            openLabel={bundle.nav.openMenuLabel}
+            menuAriaLabel={bundle.nav.menuAriaLabel}
+            homeLabel={bundle.nav.homeLabel}
+            enterpriseLabel={bundle.nav.enterpriseLabel}
+            protocolLabel={bundle.nav.protocolLabel}
           />
           <LanguageControl
             locale={locale}

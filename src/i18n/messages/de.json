@@ -24,7 +24,12 @@
       "chance": "Chance"
     },
     "nav": {
-      "cta": "Prediction Market starten →"
+      "cta": "Prediction Market starten →",
+      "openMenuLabel": "Seitennavigation öffnen",
+      "menuAriaLabel": "Seitennavigation",
+      "homeLabel": "Start",
+      "enterpriseLabel": "Unternehmen",
+      "protocolLabel": "Das Protokoll"
     },
     "hero": {
       "kicker": "Das Shopify für Prediction Markets",
@@ -646,7 +651,12 @@
       ]
     },
     "nav": {
-      "contactCta": "Kontakt aufnehmen"
+      "contactCta": "Kontakt aufnehmen",
+      "openMenuLabel": "Seitennavigation öffnen",
+      "menuAriaLabel": "Seitennavigation",
+      "homeLabel": "Start",
+      "enterpriseLabel": "Unternehmen",
+      "protocolLabel": "Das Protokoll"
     },
     "hero": {
       "kicker": "KUEST PROTOCOL · SEED-RUNDE OFFEN",

@@ -221,6 +221,11 @@ export async function ProtocolPageContent({ locale }: { locale: SiteLocale }) {
             enterpriseHref={localeHref(locale, "/enterprise")}
             protocolHref={localeHref(locale, "/protocol")}
             active="protocol"
+            openLabel={messages.nav.openMenuLabel}
+            menuAriaLabel={messages.nav.menuAriaLabel}
+            homeLabel={messages.nav.homeLabel}
+            enterpriseLabel={messages.nav.enterpriseLabel}
+            protocolLabel={messages.nav.protocolLabel}
           />
           <LanguageControl
             locale={locale}

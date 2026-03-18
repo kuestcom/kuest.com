@@ -24,7 +24,12 @@
       "chance": "的概率"
     },
     "nav": {
-      "cta": "启动你的预测市场 →"
+      "cta": "启动你的预测市场 →",
+      "openMenuLabel": "打开站点导航",
+      "menuAriaLabel": "站点导航",
+      "homeLabel": "首页",
+      "enterpriseLabel": "企业版",
+      "protocolLabel": "协议"
     },
     "hero": {
       "kicker": "预测市场版 Shopify",
@@ -646,7 +651,12 @@
       ]
     },
     "nav": {
-      "contactCta": "联系我们"
+      "contactCta": "联系我们",
+      "openMenuLabel": "打开站点导航",
+      "menuAriaLabel": "站点导航",
+      "homeLabel": "首页",
+      "enterpriseLabel": "企业版",
+      "protocolLabel": "协议"
     },
     "hero": {
       "kicker": "KUEST PROTOCOL · SEED 轮开放中",

@@ -20,6 +20,7 @@ import {
   getDemoEmbedSrc,
   getDemoHref,
   getDemoLabel,
+  sanitizeTranslatedHtml,
 } from "@/lib/marketing-content";
 import { getEnterpriseContent } from "@/lib/marketing-page-copy";
 import {
@@ -102,6 +103,11 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
             enterpriseHref={localeHref(locale, "/enterprise")}
             protocolHref={localeHref(locale, "/protocol")}
             active="enterprise"
+            openLabel={bundle.nav.openMenuLabel}
+            menuAriaLabel={bundle.nav.menuAriaLabel}
+            homeLabel={bundle.nav.homeLabel}
+            enterpriseLabel={bundle.nav.enterpriseLabel}
+            protocolLabel={bundle.nav.protocolLabel}
           />
           <LanguageControl
             locale={locale}
@@ -426,7 +432,12 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                       <div className="faq-divider" aria-hidden="true" />
                       <div className="faq-panel">
                         <div className="faq-panel-inner">
-                          <div className="faq-a" dangerouslySetInnerHTML={{ __html: item.aHtml }} />
+                          <div
+                            className="faq-a"
+                            dangerouslySetInnerHTML={{
+                              __html: sanitizeTranslatedHtml(item.aHtml, locale),
+                            }}
+                          />
                         </div>
                       </div>
                     </details>

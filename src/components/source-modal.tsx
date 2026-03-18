@@ -161,7 +161,7 @@ export function SourceModal({
             className="source-modal-frame"
             title="Source preview"
             src={source?.href ?? "about:blank"}
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+            sandbox="allow-scripts allow-forms allow-popups"
             referrerPolicy="strict-origin-when-cross-origin"
             onLoad={() => setIsLoading(false)}
           />
