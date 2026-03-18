@@ -439,6 +439,22 @@
     "midCta": {
       "title": "Ready to turn your audience into a revenue stream?",
       "cta": "Launch my market - it's free"
+    },
+    "heroStage": {
+      "cards": [
+        "Will Bitcoin trade above $150K before Q3?",
+        "Will the Fed cut rates before July?",
+        "Will Uniswap v4 launch on mainnet before Q2?",
+        "Will Ethereum outperform Bitcoin this quarter?",
+        "Will Elon Musk's net worth exceed $500B this year?",
+        "Will Trump announce a U.S. Bitcoin reserve this year?",
+        "Will the community reach 50K members before Q4?",
+        "Will Brazil elect a market-friendly president in 2026?",
+        "Will Donald Trump win the next U.S. election?",
+        "Will a Russia-Ukraine ceasefire be announced before year-end?",
+        "Will Labour win the next UK general election?",
+        "Will the next Marvel film open above $200M?"
+      ]
     }
   },
   "launch": {

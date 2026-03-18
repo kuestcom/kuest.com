@@ -439,6 +439,22 @@
     "midCta": {
       "title": "¿Listo para convertir tu audiencia en una fuente de ingresos?",
       "cta": "Lanzar mi mercado - es gratis"
+    },
+    "heroStage": {
+      "cards": [
+        "¿Bitcoin superará los $150K antes del Q3?",
+        "¿La Fed recortará tasas antes de julio?",
+        "¿Uniswap v4 saldrá en mainnet antes del Q2?",
+        "¿Ethereum superará a Bitcoin este trimestre?",
+        "¿El patrimonio neto de Elon Musk superará los $500B este año?",
+        "¿Trump anunciará una reserva de Bitcoin de EE. UU. este año?",
+        "¿La comunidad llegará a 50 mil miembros antes del Q4?",
+        "¿Brasil elegirá a un presidente promercado en 2026?",
+        "¿Donald Trump ganará la próxima elección de EE. UU.?",
+        "¿Se anunciará un alto el fuego entre Rusia y Ucrania antes de fin de año?",
+        "¿Ganará el Partido Laborista la próxima elección general del Reino Unido?",
+        "¿La próxima película de Marvel abrirá por encima de $200M?"
+      ]
     }
   },
   "launch": {

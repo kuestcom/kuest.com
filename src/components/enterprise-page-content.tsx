@@ -16,6 +16,7 @@ import { RotatingProofCards } from "@/components/rotating-proof-cards";
 import { SitePreview } from "@/components/site-preview";
 import { SourceModal } from "@/components/source-modal";
 import {
+  buildEmbedPreviewBootstrapScript,
   buildThemeBootstrapScript,
   getDemoEmbedSrc,
   getDemoHref,
@@ -75,6 +76,10 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
       <script
         id="enterprise-theme-bootstrap"
         dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
+      />
+      <script
+        id="enterprise-embed-preview"
+        dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
       />
 
       <nav id="heroNav" className="hero-nav">

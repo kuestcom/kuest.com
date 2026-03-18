@@ -439,6 +439,22 @@
     "midCta": {
       "title": "Pronto para transformar sua audiência em uma fonte de receita?",
       "cta": "Lançar meu mercado - é grátis"
+    },
+    "heroStage": {
+      "cards": [
+        "O Bitcoin passa de $150K antes do 3º tri?",
+        "O Fed corta juros antes de julho?",
+        "Uniswap v4 entra em mainnet antes do 2º tri?",
+        "O Ethereum supera o Bitcoin neste trimestre?",
+        "O patrimônio líquido de Elon Musk ultrapassa $500B este ano?",
+        "Trump vai anunciar uma reserva de Bitcoin dos EUA este ano?",
+        "A comunidade chega a 50 mil membros antes do 4º tri?",
+        "O Brasil elege um presidente pró-mercado em 2026?",
+        "Donald Trump vence a próxima eleição dos EUA?",
+        "Um cessar-fogo entre Rússia e Ucrânia é anunciado antes do fim do ano?",
+        "O Partido Trabalhista vence a próxima eleição geral do Reino Unido?",
+        "O próximo filme da Marvel estreia acima de $200M?"
+      ]
     }
   },
   "launch": {

@@ -8,21 +8,6 @@ import {
 
 export const DEMO_ORIGIN = "https://demo.kuest.com";
 
-export const DEFAULT_HERO_MARKET_TITLES = [
-  "",
-  "Will the Fed cut rates before July?",
-  "",
-  "",
-  "",
-  "Will Trump announce a U.S. Bitcoin reserve this year?",
-  "",
-  "",
-  "",
-  "Will a Russia-Ukraine ceasefire be announced before year-end?",
-  "",
-  "",
-] as const;
-
 const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SiteLocale, string> = {
   en: "Free",
   de: "Kostenlos",
@@ -107,6 +92,10 @@ const LANDING_NICHE_STATIC = [
 
 export function buildThemeBootstrapScript() {
   return "(function(){var root=document.documentElement;var meta=document.querySelector('meta[name=\"theme-color\"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta){var fallback=mode==='dark'?'#CDFF00':'#0e1117';try{var accent=getComputedStyle(root).getPropertyValue('--color-accent').trim();meta.setAttribute('content',accent||fallback);}catch(error){meta.setAttribute('content',fallback);}}})();";
+}
+
+export function buildEmbedPreviewBootstrapScript() {
+  return "if(new URLSearchParams(window.location.search).has('embed-preview')){document.documentElement.classList.add('embed-preview');}";
 }
 
 export function serializeJsonForHtmlScript(value: unknown) {
@@ -400,7 +389,7 @@ export function getDemoHref(locale: SiteLocale) {
 
 export function getDemoEmbedSrc(locale: SiteLocale) {
   const path = getDemoLocalePath(locale);
-  return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}`;
+  return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}?embed-preview=1`;
 }
 
 export function getDemoLabel(locale: SiteLocale) {

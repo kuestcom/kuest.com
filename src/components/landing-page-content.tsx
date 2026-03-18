@@ -15,10 +15,10 @@ import { RotatingProofCards } from "@/components/rotating-proof-cards";
 import { SitePreview } from "@/components/site-preview";
 import { SourceModal } from "@/components/source-modal";
 import {
+  buildEmbedPreviewBootstrapScript,
   buildLandingNiches,
   buildLandingProofCards,
   buildThemeBootstrapScript,
-  DEFAULT_HERO_MARKET_TITLES,
   getDemoEmbedSrc,
   getDemoHref,
   getDemoLabel,
@@ -196,6 +196,10 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
       />
       <script
+        id="landing-embed-preview"
+        dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
+      />
+      <script
         id="landing-structured-data"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -334,7 +338,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
                 </div>
               </div>
               <HeroMarketStage
-                titles={DEFAULT_HERO_MARKET_TITLES}
+                titles={bundle.heroStage.cards}
                 yesLabel={bundle.common.yes}
                 noLabel={bundle.common.no}
               />

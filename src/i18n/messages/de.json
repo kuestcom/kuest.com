@@ -439,6 +439,22 @@
     "midCta": {
       "title": "Bereit, deine Community in eine Umsatzquelle zu verwandeln?",
       "cta": "Meinen Markt starten - kostenlos"
+    },
+    "heroStage": {
+      "cards": [
+        "Steigt Bitcoin vor Q3 über $150K?",
+        "Senkt die Fed die Zinsen vor Juli?",
+        "Kommt Uniswap v4 vor Q2 auf Mainnet?",
+        "Übertrifft Ethereum Bitcoin in diesem Quartal?",
+        "Übersteigt Elon Musks Nettovermögen dieses Jahr $500B?",
+        "Wird Trump dieses Jahr eine US-Bitcoin-Reserve ankündigen?",
+        "Erreicht die Community vor Q4 50.000 Mitglieder?",
+        "Wählt Brasilien 2026 einen marktfreundlichen Präsidenten?",
+        "Gewinnt Donald Trump die nächste US-Wahl?",
+        "Wird vor Jahresende ein Waffenstillstand zwischen Russland und der Ukraine angekündigt?",
+        "Gewinnt die Labour Party die nächste britische Parlamentswahl?",
+        "Startet der nächste Marvel-Film über $200M?"
+      ]
     }
   },
   "launch": {

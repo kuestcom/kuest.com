@@ -2,14 +2,19 @@
 
 import { useEffect } from "react";
 
+type AttentionScrollNode<T extends HTMLElement> = {
+  node: T;
+  offsetTop: number;
+};
+
 type AttentionScrollStep =
   | {
       type: "brands";
-      brands: HTMLElement[];
+      brands: AttentionScrollNode<HTMLElement>[];
     }
   | {
       type: "line";
-      words: HTMLSpanElement[];
+      words: AttentionScrollNode<HTMLSpanElement>[];
     };
 
 const ATTENTION_PUNCTUATION_TOKEN_RE = /^[.,!?;:…%]+$/u;
@@ -101,8 +106,9 @@ export function MarketingPageRuntime({
     const steps = section
       ? Array.from(section.querySelectorAll<HTMLElement>("[data-attention-step]"))
       : [];
+    const sticky = section?.querySelector<HTMLElement>(".panel-sticky");
 
-    if (!section || !steps.length) {
+    if (!section || !sticky || !steps.length) {
       return;
     }
 
@@ -153,7 +159,7 @@ export function MarketingPageRuntime({
       const segments = segmenter
         ? Array.from(segmenter.segment(text), (part) => part.segment)
         : text.split(/(\s+)/);
-      const words: HTMLSpanElement[] = [];
+      const words: AttentionScrollNode<HTMLSpanElement>[] = [];
       let previousWasWhitespace = false;
 
       segments.forEach((segment) => {
@@ -168,7 +174,7 @@ export function MarketingPageRuntime({
         }
 
         if (ATTENTION_PUNCTUATION_TOKEN_RE.test(segment) && !previousWasWhitespace && words.length) {
-          words[words.length - 1].textContent += segment;
+          words[words.length - 1].node.textContent += segment;
           previousWasWhitespace = false;
           return;
         }
@@ -177,7 +183,7 @@ export function MarketingPageRuntime({
         word.className = "attention-scroll-word";
         word.textContent = segment;
         line.append(word);
-        words.push(word);
+        words.push({ node: word, offsetTop: 0 });
         previousWasWhitespace = false;
       });
 
@@ -188,7 +194,10 @@ export function MarketingPageRuntime({
       if (step.dataset.attentionStep === "brands") {
         return {
           type: "brands",
-          brands: Array.from(step.querySelectorAll<HTMLElement>(".attention-scroll-brand")),
+          brands: Array.from(step.querySelectorAll<HTMLElement>(".attention-scroll-brand"), (brand) => ({
+            node: brand,
+            offsetTop: 0,
+          })),
         };
       }
 
@@ -197,6 +206,14 @@ export function MarketingPageRuntime({
         words: splitLine(step),
       };
     });
+
+    const layout = {
+      sectionTop: section.offsetTop,
+      firstCenter: 0,
+      lastCenter: 0,
+      travel: 1,
+      copyOffsetTop: 0,
+    };
 
     const applyColor = (target: HTMLElement, progress: number) => {
       const eased = progress * progress * (3 - 2 * progress);
@@ -213,7 +230,10 @@ export function MarketingPageRuntime({
       target.style.setProperty("text-stroke-color", strokeColor);
     };
 
-    const measure = () => {
+    const remeasure = () => {
+      readPalette();
+      const previousTransform = copy.style.transform;
+      copy.style.transform = "translate3d(0, 0, 0)";
       const firstBlock = blocks[0];
       const lastBlock = blocks[blocks.length - 1];
       const firstCenter = firstBlock.offsetTop + firstBlock.offsetHeight / 2;
@@ -223,22 +243,42 @@ export function MarketingPageRuntime({
       const hold = window.innerHeight * ATTENTION_SCROLL_HOLD_FACTOR;
 
       section.style.height = `${Math.ceil(window.innerHeight + travel + hold)}px`;
+      layout.sectionTop = section.offsetTop;
+      layout.firstCenter = firstCenter;
+      layout.lastCenter = lastCenter;
+      layout.travel = travel;
 
-      return { firstCenter, lastCenter, travel };
+      const copyRect = copy.getBoundingClientRect();
+      const stickyTop = sticky.getBoundingClientRect().top;
+      layout.copyOffsetTop = copyRect.top - stickyTop;
+
+      stepData.forEach((step) => {
+        if (step.type === "brands") {
+          step.brands.forEach((brand) => {
+            brand.offsetTop = brand.node.getBoundingClientRect().top - copyRect.top;
+          });
+          return;
+        }
+
+        step.words.forEach((word) => {
+          word.offsetTop = word.node.getBoundingClientRect().top - copyRect.top;
+        });
+      });
+
+      copy.style.transform = previousTransform;
     };
 
     const render = () => {
       ticking = false;
-      readPalette();
-
-      const metrics = measure();
-      const trackProgress = clamp((window.scrollY - section.offsetTop) / metrics.travel, 0, 1);
+      const trackProgress = clamp((window.scrollY - layout.sectionTop) / layout.travel, 0, 1);
       const dockRect =
         dockNav && dockNav.classList.contains("is-visible") ? dockNav.getBoundingClientRect() : null;
+      const stickyTop = sticky.getBoundingClientRect().top;
+      const copyBaseTop = stickyTop + layout.copyOffsetTop;
       const anchorY = dockRect ? dockRect.top - 16 : window.innerHeight * 0.8;
       const fadeRange = Math.max(84, window.innerHeight * 0.14);
-      const startShift = window.innerHeight * 0.5 - metrics.firstCenter;
-      const endShift = window.innerHeight * 0.5 - metrics.lastCenter;
+      const startShift = window.innerHeight * 0.5 - layout.firstCenter;
+      const endShift = window.innerHeight * 0.5 - layout.lastCenter;
       const shift = startShift + (endShift - startShift) * trackProgress;
 
       copy.style.transform = `translate3d(0, ${shift}px, 0)`;
@@ -246,17 +286,17 @@ export function MarketingPageRuntime({
       stepData.forEach((step) => {
         if (step.type === "brands") {
           step.brands.forEach((brand, brandIndex) => {
-            const rect = brand.getBoundingClientRect();
-            const brandProgress = clamp((anchorY - (rect.top + brandIndex * 12)) / fadeRange, 0, 1);
-            brand.style.opacity = String(0.12 + brandProgress * 0.88);
+            const brandTop = copyBaseTop + shift + brand.offsetTop;
+            const brandProgress = clamp((anchorY - (brandTop + brandIndex * 12)) / fadeRange, 0, 1);
+            brand.node.style.opacity = String(0.12 + brandProgress * 0.88);
           });
           return;
         }
 
         step.words.forEach((word, wordIndex) => {
-          const rect = word.getBoundingClientRect();
-          const wordProgress = clamp((anchorY - (rect.top + wordIndex * 3)) / fadeRange, 0, 1);
-          applyColor(word, wordProgress);
+          const wordTop = copyBaseTop + shift + word.offsetTop;
+          const wordProgress = clamp((anchorY - (wordTop + wordIndex * 3)) / fadeRange, 0, 1);
+          applyColor(word.node, wordProgress);
         });
       });
     };
@@ -270,24 +310,40 @@ export function MarketingPageRuntime({
       window.requestAnimationFrame(render);
     };
 
+    const remeasureAndQueue = () => {
+      remeasure();
+      queue();
+    };
+
+    const rootObserver = new MutationObserver(() => {
+      readPalette();
+      queue();
+    });
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme-mode"],
+    });
+
+    remeasure();
     render();
     window.addEventListener("scroll", queue, { passive: true });
-    window.addEventListener("resize", queue);
+    window.addEventListener("resize", remeasureAndQueue);
 
     let isDisposed = false;
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => {
         if (!isDisposed) {
-          queue();
+          remeasureAndQueue();
         }
       });
     }
 
     return () => {
       isDisposed = true;
+      rootObserver.disconnect();
       window.removeEventListener("scroll", queue);
-      window.removeEventListener("resize", queue);
+      window.removeEventListener("resize", remeasureAndQueue);
     };
   }, []);
 
