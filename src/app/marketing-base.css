@@ -5788,7 +5788,7 @@ html.embed-preview .hero-stack-panel .panel-sticky {
 }
 #p9 .panel-sticky {
   min-height: 84vh;
-  padding: 52px 0 48px;
+  padding: 52px 0 0 !important;
 }
 #p9 .cta-content {
   padding-top: 24px;

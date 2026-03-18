@@ -628,14 +628,14 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
 
         <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="marketing-final-panel">
-              <div className="cta-content r py-12">
+            <div className="marketing-final-panel justify-center">
+              <div className="cta-content r py-48!">
                 <h2 className="cta-h">{bundle.finalCta.title}</h2>
                 <p className="cta-sub">{bundle.finalCta.subtitle}</p>
                 <div className="cta-btns">
                   <a href={launchHref} className="btn-cta btn-cta-primary">
                     <span className="cta-label">{stripTrailingArrow(bundle.finalCta.cta)}</span>
-                    <ArrowRight />
+                    <ChevronRightIcon />
                   </a>
                 </div>
               </div>
