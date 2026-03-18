@@ -2199,6 +2199,32 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
   display: grid;
   gap: 18px;
 }
+
+#p-market-today .panel-sticky {
+  min-height: auto;
+  align-items: flex-start;
+  padding: 18px 0 28px;
+}
+
+#p-market-today .panel-inner {
+  gap: 18px;
+}
+
+#p-market-today .slbl {
+  width: 100%;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-copy {
+  right: -54px;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-title {
+  max-width: 21ch;
+}
+
+#p3 .solution-timeline-step-top .solution-timeline-text {
+  max-width: 44ch;
+}
 .preview-panel-copy {
   margin-inline: auto;
   display: grid;

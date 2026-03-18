@@ -32,7 +32,7 @@ import {
   type SiteLocale,
 } from "@/i18n/site";
 
-const CONTACT_HREF = "mailto:hello@kuest.com?subject=Enterprise%20Demo";
+const CONTACT_HREF = "mailto:hello@kuest.com";
 
 export async function buildEnterpriseMetadata(locale: SiteLocale): Promise<Metadata> {
   const siteOrigin = getSiteOrigin();
@@ -167,7 +167,7 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                       />
                     </div>
                   </div>
-                  <div className="hero-kicker !mb-5 !gap-3 !opacity-100 !animate-none">
+                  <div className="hero-kicker mb-5! gap-3! opacity-100! animate-none!">
                     {enterprise.hero.kicker}
                   </div>
                   <h1 className="hero-title enterprise-hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
@@ -325,9 +325,6 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
                   <div className="solution-copy-lead">
                     <p className="bt">{enterprise.solution.lead}</p>
                   </div>
-                  <div className="solution-proof-pane enterprise-solution-proof-pane">
-                    <RotatingProofCards cards={enterprise.proofCards} />
-                  </div>
                 </div>
                 <div
                   className="solution-timeline enterprise-solution-timeline"
@@ -455,8 +452,8 @@ export async function EnterprisePageContent({ locale }: { locale: SiteLocale }) 
 
         <section className="panel-wrap panel-static panel-compact marketing-final-section enterprise-final-section" id="p9">
           <div className="panel-sticky">
-            <div className="marketing-final-panel enterprise-final-panel">
-              <div className="cta-content enterprise-cta-content r py-12">
+            <div className="marketing-final-panel enterprise-final-panel justify-center">
+              <div className="cta-content enterprise-cta-content r py-36!">
                 <h2 className="cta-h">{enterprise.finalCta.title}</h2>
                 <p className="cta-sub">{enterprise.finalCta.subtitle}</p>
                 <div className="cta-btns">

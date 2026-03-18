@@ -629,7 +629,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
         <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
           <div className="panel-sticky">
             <div className="marketing-final-panel justify-center">
-              <div className="cta-content r py-48!">
+              <div className="cta-content r py-36!">
                 <h2 className="cta-h">{bundle.finalCta.title}</h2>
                 <p className="cta-sub">{bundle.finalCta.subtitle}</p>
                 <div className="cta-btns">

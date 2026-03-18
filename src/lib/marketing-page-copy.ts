@@ -133,7 +133,7 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
       titleLine2: "is forming.",
       titleAccent: "Be the platform.",
       subtitle:
-        "Prediction markets already process billions in monthly volume - and 66% of that demand comes from outside the US, without a single local operator. Kuest lets financial institutions, brokerages, and media companies launch their own branded prediction market: audited infrastructure, shared liquidity, your fee on every trade.",
+        "Prediction markets already process billions in monthly volume — and 66% of that demand comes from outside the US, without a single local operator. Kuest lets financial institutions, brokerages, and media companies launch their own branded prediction market: audited infrastructure, shared liquidity, your fee on every trade.",
       contactCta: "Contact us",
       viewDemoCta: "View demo",
       proof: "$18B combined monthly volume - OpenZeppelin audited - White-label ready",
@@ -194,7 +194,7 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
       kicker: "A NEW FINANCIAL INSTRUMENT - ALREADY LIVE AT SCALE",
       title: "Prediction Market",
       subtitle:
-        "Think of it as a binary derivative on future events. People trade positions on outcomes using real money, in a live order book. Because financial stakes force discipline, the prices generated consistently outperform polls, analyst forecasts, and expert panels. The trading volume it generates goes to whoever owns the platform.",
+        "Think of it as a binary derivative on future events. People trade positions on outcomes — who wins an election, whether a rate is cut, if a company hits an earnings target — using real money, in a live order book. Because financial stakes force discipline, the prices generated consistently outperform polls, analyst forecasts, and expert panels. The data is used by hedge funds, central banks, and policy teams to anticipate outcomes before they happen. The trading volume it generates goes to whoever owns the platform.",
     },
     niches: [
       {
@@ -421,9 +421,9 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
       },
     ],
     solution: {
-      title: "From signed agreement to live platform - in days, not quarters.",
+      title: "From signed agreement to live platform — in days, not quarters.",
       lead:
-        "Audited smart contracts, shared liquidity from day one, full white-label - your team signs off on the brand, we handle everything else.",
+        "Audited smart contracts, shared liquidity from day one, full white-label — your team signs off on the brand, we handle everything else.",
       timelineAriaLabel: "How Kuest works",
       points: [
         {
@@ -472,7 +472,7 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
           icon: "activity",
           title: "CLOB engine + relayer + matching",
           copy:
-            "Central limit order book, relayer infrastructure, and matching engine - the same architecture powering Polymarket, running on Polygon mainnet.",
+            "Central limit order book, relayer infrastructure, and matching engine — the same architecture powering Polymarket, running on Polygon mainnet.",
         },
         {
           icon: "shield-check",
@@ -484,7 +484,7 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
           icon: "users",
           title: "Shared liquidity from day one",
           copy:
-            "Mirror live Polymarket markets with existing order flow. Your platform launches with real depth - no cold start, no market maker recruitment required initially.",
+            "Mirror live Polymarket markets with existing order flow. Your platform launches with real depth — no cold start, no market maker recruitment required initially.",
         },
         {
           icon: "bot",
@@ -496,7 +496,7 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
           icon: "globe-2",
           title: "Full white-label frontend",
           copy:
-            "Your domain, your brand, your language. Multi-language UI with built-in i18n. Custom event categories. Looks and feels like a native product of your institution - not a Kuest deployment.",
+            "Your domain, your brand, your language. Multi-language UI with built-in i18n. Custom event categories. Looks and feels like a native product of your institution — not a Kuest deployment.",
         },
         {
           icon: "server",
@@ -517,41 +517,41 @@ const ENTERPRISE_CONTENT: Record<SiteLocale, EnterpriseContent> = {
         {
           q: "What exactly is a prediction market - and how is it different from a betting platform?",
           aHtml:
-            "A prediction market is a live order book where participants buy and sell positions on the outcome of real-world events - using the same binary contract mechanics as financial derivatives. Unlike sports betting, where the house sets odds and takes the other side, a prediction market is peer-to-peer: prices are set by supply and demand in real time. The platform operator earns a fee on each trade, not on who wins.",
+            "A prediction market is a live order book where participants buy and sell positions on the outcome of real-world events — using the same binary contract mechanics as financial derivatives. Unlike sports betting, where the house sets odds and takes the other side, a prediction market is peer-to-peer: prices are set by supply and demand in real time. The platform operator earns a fee on each trade, not on who wins. This distinction matters legally, commercially, and reputationally: operators are not the counterparty, and the model is structurally closer to an exchange than a bookmaker.",
         },
         {
           q: "Who are Kalshi and Polymarket, and why are they relevant here?",
           aHtml:
-            "Kalshi is a US-regulated exchange focused on event contracts. Polymarket is a decentralized prediction market running on Polygon. Together they demonstrated that prediction markets are not a niche - they are a new financial primitive. Both are closed platforms; Kuest provides the same infrastructure in an open, white-label model.",
+            "Kalshi is a US-regulated exchange (CFTC-licensed) focused on event contracts — \"Will the Fed cut rates?\", \"Will there be a recession?\" — valued at over $2 billion and growing 200x in annual trading volume. Polymarket is a decentralized prediction market running on Polygon, drawing over 32 million monthly visits globally, used by traders, journalists, and policymakers as a real-time probability layer. Together they generated $18.3 billion in combined trading volume in a single quarter (Q1 2026). Both are closed platforms: you can trade on them, but you cannot build branded products on top of them or capture their fee revenue. Kuest provides the same infrastructure in an open, white-label model.",
         },
         {
           q: "What's happening in the market right now that makes this timely?",
           aHtml:
-            "Kalshi and Polymarket are in active fundraising rounds at $20B valuations each. B3 is entering the category in Brazil. Kalshi signed its first international institutional deal with XP International. The institutional infrastructure question is being decided right now, and most local markets still have no operator.",
+            "Several signals are converging: Kalshi and Polymarket are in active fundraising rounds at $20 billion valuations each. B3, Brazil's main stock exchange, launched its first prediction market products in early 2026 under CVM supervision. Kalshi signed its first international institutional deal — with XP International, one of Brazil's largest brokerages with 4.7 million clients and R$1.8 trillion under management — specifically to expand outside the US. CME Group and Bloomberg now publish prediction market data as institutional reference. The regulatory direction in the US, Brazil, and EU is moving toward formal recognition of event contracts. The institutional infrastructure question is being decided right now, and most local markets still have no operator.",
         },
         {
           q: "What types of institutions are already moving into this space?",
           aHtml:
-            "Brokerages, exchanges, financial media groups, sports analytics companies, and institutional trading desks are all testing event contracts. The demand exists in every major market, but very few local operators have built the infrastructure.",
+            "Beyond Kalshi and Polymarket themselves: B3 launched binary option contracts on the dollar, Ibovespa, and Bitcoin. Bloomberg integrates Kalshi market data into terminal products. Brokerages in Germany, India, and Israel — Polymarket's top non-US markets — have no local branded platform yet. Financial media companies with large audiences (Reuters, FT, regional equivalents) are evaluating prediction market embeds as interactive revenue products. Sports analytics and media companies are early movers in fan-facing prediction products. The pattern is consistent: the demand exists in every major market, but no local operator has built the infrastructure.",
         },
         {
           q: "Can we create markets exclusive to our platform and client base?",
           aHtml:
-            "Yes. You can create proprietary markets on macro, politics, rates, commodities, crypto, or any category aligned with your institution. Mirrored markets from Polymarket are available from day one for immediate liquidity depth.",
+            "Yes. You can create proprietary markets on any question — rate decisions, earnings outcomes, macro indicators, political events, or themes exclusive to your institution's positioning. Mirrored markets from Polymarket are available from day one for immediate liquidity depth. Custom markets draw from your client base, with optional cross-market liquidity sharing across the Kuest operator network.",
         },
         {
           q: "What are the fee economics for the operator?",
           aHtml:
-            "You set your own trading fee rate - typically 0.5% to 3% per trade. Every transaction on your platform routes that fee directly to your institution. Kuest retains a small protocol fee on top.",
+            "You set your own trading fee rate — typically 0.5% to 3% per trade. Every transaction on your platform routes that fee directly to your institution. Kuest retains a small protocol fee on top. No revenue share, no minimums, no lock-in period. You control the rate and can configure it by market category or event type. Enterprise agreements with custom SLAs are available.",
         },
         {
           q: "What does our team actually need to do to deploy?",
           aHtml:
-            "Your team provides brand assets, defines the initial event scope, and reviews the fee structure. Kuest handles contract deployment, infrastructure configuration, liquidity bootstrapping, and frontend deployment.",
+            "Your team provides brand assets (logo, colors, domain), defines the initial event scope, and reviews the fee structure. Kuest handles contract deployment, infrastructure configuration, liquidity bootstrapping, and frontend deployment. No internal blockchain engineers required. No cloud infrastructure to manage. Ongoing operations — gas costs, settlement, scalability, monitoring — are fully managed on our side.",
         },
         {
           q: "What is the technical and compliance foundation?",
-          aHtml: `Smart contracts are derived from Polymarket's CLOB architecture and use UMA-based resolution rails. The codebase is open source under the <a href="${LICENSE_HREF}" target="_blank" rel="noopener">Kuest MIT+Commons license</a>. Custom compliance configurations and enterprise infrastructure agreements are available - <a href="mailto:hello@kuest.com">contact us</a> to discuss your regulatory environment.`,
+          aHtml: `Smart contracts are derived from Polymarket's CLOB architecture — the stack that has processed billions in verified volume — audited by OpenZeppelin, the institutional standard for on-chain infrastructure. Settlement uses UMA-based resolution rails for transparent, verifiable outcomes. The codebase is open source under the <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">Kuest MIT+Commons license</a> for full auditability. Custom compliance configurations and enterprise infrastructure agreements are available — <a href="mailto:hello@kuest.com">contact us</a> to discuss your regulatory environment.`,
         },
       ],
     },
