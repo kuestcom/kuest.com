@@ -1,14 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
 import {Bot, ChevronRightIcon, Globe2, Share2, ShieldCheck, Trophy, Zap} from "lucide-react";
-import {
-  DockMenuControl,
-  HeroMarketStage,
-  KuestMark,
-  LanguageControl,
-  SiteFooter,
-  ThemeToggle,
-} from "@/components/marketing-shared";
+import ThemeToggle from "@/components/ThemeToggle";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import NicheShowcase from "@/components/NicheShowcase";
 import RotatingProofCards from "@/components/RotatingProofCards";
@@ -37,6 +30,11 @@ import {
   siteLocales,
   type SiteLocale,
 } from "@/i18n/site";
+import SiteFooter from "@/components/SiteFooter";
+import LanguageControl from "@/components/LanguageControl";
+import DockMenuControl from "@/components/DockMenuControl";
+import HeroMarketStage from "@/components/HeroMarketStage";
+import KuestMark from "@/components/KuestMark";
 
 const FEATURE_ICONS = [Globe2, Zap, Trophy, Share2, Bot, ShieldCheck] as const;
 const EARLY_ACCESS_AVATAR_SRCS = [

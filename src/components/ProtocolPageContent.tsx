@@ -10,14 +10,7 @@ import {
   Globe2,
   Newspaper,
 } from "lucide-react";
-import {
-  DockMenuControl,
-  HeroMarketStage,
-  KuestMark,
-  LanguageControl,
-  SiteFooter,
-  ThemeToggle,
-} from "@/components/marketing-shared";
+import ThemeToggle from "@/components/ThemeToggle";
 import MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import ProtocolPitchDeckModal from "@/components/ProtocolPitchDeckModal";
 import {
@@ -32,6 +25,11 @@ import {
   siteLocales,
   type SiteLocale,
 } from "@/i18n/site";
+import SiteFooter from "@/components/SiteFooter";
+import LanguageControl from "@/components/LanguageControl";
+import DockMenuControl from "@/components/DockMenuControl";
+import HeroMarketStage from "@/components/HeroMarketStage";
+import KuestMark from "@/components/KuestMark";
 
 const CONTACT_HREF = "mailto:hello@kuest.com";
 

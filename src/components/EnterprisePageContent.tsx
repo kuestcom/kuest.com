@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ChevronRightIcon } from "lucide-react";
-import {
-  DockMenuControl,
-  HeroMarketStage,
-  KuestMark,
-  LanguageControl,
-  ShowcaseIcon,
-  SiteFooter,
-  ThemeToggle,
-} from "@/components/marketing-shared";
+import ThemeToggle from "@/components/ThemeToggle";
 import  MarketingPageRuntime from "@/components/MarketingPageRuntime";
 import  NicheShowcase  from "@/components/NicheShowcase";
 import SitePreview from "@/components/SitePreview";
@@ -30,6 +22,12 @@ import {
   siteLocales,
   type SiteLocale,
 } from "@/i18n/site";
+import SiteFooter from "@/components/SiteFooter";
+import ShowcaseIcon from "@/components/ShowcaseIcon";
+import LanguageControl from "@/components/LanguageControl";
+import DockMenuControl from "@/components/DockMenuControl";
+import HeroMarketStage from "@/components/HeroMarketStage";
+import KuestMark from "@/components/KuestMark";
 
 const CONTACT_HREF = "mailto:hello@kuest.com";
 

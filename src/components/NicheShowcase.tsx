@@ -3,8 +3,8 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
-import { ShowcaseIcon } from "@/components/marketing-shared";
 import type { ShowcaseNiche } from "@/lib/marketing-shared-data";
+import ShowcaseIcon from "@/components/ShowcaseIcon";
 
 export default function NicheShowcase({
   niches,
