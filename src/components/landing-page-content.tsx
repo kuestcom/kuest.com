@@ -589,7 +589,7 @@ export async function LandingPageContent({ locale }: { locale: SiteLocale }) {
               <div className="cta-btns">
                 <a href={launchHref} className="btn-cta btn-cta-primary">
                   <span className="cta-label">{bundle.midCta.cta}</span>
-                  <ArrowRight />
+                  <ChevronRightIcon />
                 </a>
               </div>
             </div>
