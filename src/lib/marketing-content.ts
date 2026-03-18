@@ -1,10 +1,6 @@
 import { parseHTML } from "linkedom/worker";
-import type { LandingMessages, SiteLocale } from "@/i18n/site";
+import type { SiteLocale } from "@/i18n/site";
 import { defaultSiteLocale, localeHref } from "@/i18n/site";
-import {
-  type ProofCard,
-  type ShowcaseNiche,
-} from "@/lib/marketing-shared-data";
 
 export const DEMO_ORIGIN = "https://demo.kuest.com";
 
@@ -16,79 +12,6 @@ const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SiteLocale, string> = {
   fr: "Gratuit",
   zh: "免费开始",
 };
-
-const LANDING_NICHE_STATIC = [
-  {
-    accent: "#f7931a",
-    accentRgb: "247,147,26",
-    icon: "bitcoin" as const,
-    cards: [
-      { type: "single", img: "/assets/images/bitcoin-150k.png", pct: 61, volValue: "$42k" },
-      { type: "single", img: "/assets/images/ethereum-flippening.png", pct: 18, volValue: "$29k" },
-      { type: "multi", img: "/assets/images/fed-rate-move.png", rowPcts: [42, 51, 7], volValue: "$31k" },
-    ],
-  },
-  {
-    accent: "#34d07f",
-    accentRgb: "52,208,127",
-    icon: "trophy" as const,
-    cards: [
-      {
-        type: "multi",
-        img: "/assets/images/champions-league-top-scorer.png",
-        rowPcts: [34, 28, 19],
-        volValue: "$18k",
-      },
-      { type: "single", img: "/assets/images/warriors-playoffs.png", pct: 55, volValue: "$11k" },
-      { type: "single", img: "/assets/images/daniel-negranu-wsop.png", pct: 38, volValue: "$8k" },
-    ],
-  },
-  {
-    accent: "#8b5cf6",
-    accentRgb: "139,92,246",
-    icon: "landmark" as const,
-    cards: [
-      { type: "single", img: "/assets/images/elon-usa-election.png", pct: 42, volValue: "$331k" },
-      { type: "single", img: "/assets/images/russia-x-ukraine.png", pct: 34, volValue: "$22k" },
-      { type: "multi", img: "/assets/images/uk-general-election.png", rowPcts: [58, 28, 14], volValue: "$19k" },
-    ],
-  },
-  {
-    accent: "#f43f5e",
-    accentRgb: "244,63,94",
-    icon: "clapperboard" as const,
-    cards: [
-      { type: "single", img: "/assets/images/marvel-opening-weekend.png", pct: 70, volValue: "$9k" },
-      { type: "multi", img: "/assets/images/big-brother-brasil.png", rowPcts: [41, 33, 26], volValue: "$14k" },
-      { type: "single", img: "/assets/images/taylor-swift-album.png", pct: 55, volValue: "$6k" },
-    ],
-  },
-  {
-    accent: "#4f8ef7",
-    accentRgb: "79,142,247",
-    icon: "users" as const,
-    cards: [
-      { type: "single", img: "/assets/images/uniswap-v4-mainnet.png", pct: 73, volValue: "$7k" },
-      {
-        type: "multi",
-        img: "/assets/images/governance-vote-chain.png",
-        rowPcts: [55, 30, 15],
-        volValue: "$5k",
-      },
-      { type: "single", img: "/assets/images/discord-50k-members.png", pct: 44, volValue: "$3k" },
-    ],
-  },
-  {
-    accent: "#f5c842",
-    accentRgb: "245,200,66",
-    icon: "zap" as const,
-    cards: [
-      { type: "single", img: "/assets/images/mrbeast-vs-tseries.png", pct: 67, volValue: "$21k" },
-      { type: "single", img: "/assets/images/elon-500b-net-worth.png", pct: 38, volValue: "$15k" },
-      { type: "single", img: "/assets/images/pop-star-arrest.png", pct: 12, volValue: "$9k" },
-    ],
-  },
-] as const;
 
 export function buildThemeBootstrapScript() {
   return "(function(){var root=document.documentElement;var meta=document.querySelector('meta[name=\"theme-color\"]');var mode='dark';try{var saved=window.localStorage.getItem('kuest-theme-mode');if(saved==='dark'||saved==='light')mode=saved;}catch(error){}root.setAttribute('data-theme-mode',mode);if(meta){var fallback=mode==='dark'?'#CDFF00':'#0e1117';try{var accent=getComputedStyle(root).getPropertyValue('--color-accent').trim();meta.setAttribute('content',accent||fallback);}catch(error){meta.setAttribute('content',fallback);}}})();";
@@ -105,145 +28,6 @@ export function serializeJsonForHtmlScript(value: unknown) {
     .replaceAll("&", "\\u0026")
     .replaceAll("\u2028", "\\u2028")
     .replaceAll("\u2029", "\\u2029");
-}
-
-export function stripTrailingArrow(value?: string | null) {
-  return (value ?? "").replace(/\s*→\s*$/, "");
-}
-
-export function stripTerminalPeriod(value?: string | null) {
-  return (value ?? "").replace(/[.。]\s*$/, "");
-}
-
-const MONEY_SUFFIX_PATTERN = [
-  "trillion(?:s)?",
-  "billion(?:s)?",
-  "million(?:s)?",
-  "thousand",
-  "milliarde?n?",
-  "millionen",
-  "millon(?:es)?",
-  "milh(?:ão|ões|ao|oes)",
-  "bilh(?:ão|ões|ao|oes)",
-  "billones?",
-  "mrd\\.?",
-  "mio\\.?",
-  "tn",
-  "bn",
-  "mn",
-  "mil",
-  "t",
-  "b",
-  "m",
-  "k",
-].join("|");
-
-const MONEY_TOKEN_RE = new RegExp(
-  `\\$\\s*\\d(?:[\\d.,\\s\\u00A0]*\\d)?(?:\\s*(?:${MONEY_SUFFIX_PATTERN}))?`,
-  "giu",
-);
-
-function normalizeMoneyAmountText(value: string) {
-  const compact = value.replaceAll(/\s|\u00A0/g, "");
-  const hasComma = compact.includes(",");
-  const hasDot = compact.includes(".");
-
-  if (hasComma && hasDot) {
-    const decimalSeparator = compact.lastIndexOf(",") > compact.lastIndexOf(".") ? "," : ".";
-    const thousandsSeparator = decimalSeparator === "," ? "." : ",";
-
-    return compact.replaceAll(thousandsSeparator, "").replace(decimalSeparator, ".");
-  }
-
-  const normalizeSingleSeparator = (separator: "," | ".") => {
-    const parts = compact.split(separator);
-
-    if (parts.length === 1) {
-      return compact;
-    }
-
-    const fractionalPart = parts[parts.length - 1] ?? "";
-    const useAsThousandsSeparator =
-      fractionalPart.length === 3 && parts.slice(0, -1).every((part, index) => (index === 0 ? part.length > 0 : part.length === 3));
-
-    return useAsThousandsSeparator ? parts.join("") : `${parts.slice(0, -1).join("")}.${fractionalPart}`;
-  };
-
-  if (hasComma) {
-    return normalizeSingleSeparator(",");
-  }
-
-  if (hasDot) {
-    return normalizeSingleSeparator(".");
-  }
-
-  return compact;
-}
-
-function normalizeMoneySuffix(value: string) {
-  return value
-    .toLowerCase()
-    .replaceAll(".", "")
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-}
-
-export function extractLargestMoneyToken(value?: string | null) {
-  const matches = Array.from((value ?? "").matchAll(MONEY_TOKEN_RE), (match) => match[0].trim());
-
-  if (!matches?.length) {
-    return "";
-  }
-
-  const multiplierBySuffix: Record<string, number> = {
-    k: 1_000,
-    thousand: 1_000,
-    mil: 1_000,
-    m: 1_000_000,
-    mn: 1_000_000,
-    mio: 1_000_000,
-    million: 1_000_000,
-    millions: 1_000_000,
-    millionen: 1_000_000,
-    millon: 1_000_000,
-    millones: 1_000_000,
-    milhao: 1_000_000,
-    milhoes: 1_000_000,
-    b: 1_000_000_000,
-    bn: 1_000_000_000,
-    billion: 1_000_000_000,
-    billions: 1_000_000_000,
-    billones: 1_000_000_000,
-    mrd: 1_000_000_000,
-    milliard: 1_000_000_000,
-    milliarde: 1_000_000_000,
-    milliarden: 1_000_000_000,
-    bilhao: 1_000_000_000,
-    bilhoes: 1_000_000_000,
-    t: 1_000_000_000_000,
-    tn: 1_000_000_000_000,
-    trillion: 1_000_000_000_000,
-    trillions: 1_000_000_000_000,
-  };
-
-  const best = matches.reduce<{ token: string; value: number } | null>((largest, token) => {
-    const suffixMatch = token.match(new RegExp(`(${MONEY_SUFFIX_PATTERN})$`, "iu"));
-    const suffix = normalizeMoneySuffix(suffixMatch?.[0] ?? "");
-    const amountText = token
-      .replace(/^\$\s*/, "")
-      .slice(0, suffixMatch ? -suffixMatch[0].length : undefined)
-      .trim();
-    const numericValue =
-      Number(normalizeMoneyAmountText(amountText)) * (multiplierBySuffix[suffix] ?? 1);
-
-    if (!largest || numericValue > largest.value) {
-      return { token, value: numericValue };
-    }
-
-    return largest;
-  }, null);
-
-  return best?.token ?? matches[0];
 }
 
 function escapeHtml(value: string) {
@@ -379,12 +163,6 @@ export function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
     .join("");
 }
 
-function extractVisibleTextFromHtml(html: string) {
-  const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
-
-  return document.body.textContent?.replace(/\s+/g, " ").trim() ?? "";
-}
-
 export function getDemoLocalePath(locale: SiteLocale) {
   return locale === defaultSiteLocale ? "" : `/${locale}`;
 }
@@ -404,72 +182,4 @@ export function getDemoLabel(locale: SiteLocale) {
 
 export function getLandingHeroAccent(locale: SiteLocale) {
   return LANDING_HERO_TITLE_ACCENT_BY_LOCALE[locale];
-}
-
-export function buildLandingNiches(
-  bundle: LandingMessages,
-  fallbackBundle: LandingMessages,
-): ShowcaseNiche[] {
-  return LANDING_NICHE_STATIC.map((staticNiche, nicheIndex) => {
-    const fallbackTranslated = fallbackBundle.niches.data[nicheIndex];
-    const translated = bundle.niches.data[nicheIndex] ?? fallbackTranslated;
-
-    return {
-      tag: translated?.tag ?? fallbackTranslated?.tag ?? bundle.niches.tabs[nicheIndex] ?? "",
-      accent: staticNiche.accent,
-      accentRgb: staticNiche.accentRgb,
-      tagline: translated?.tagline ?? fallbackTranslated?.tagline ?? "",
-      icon: staticNiche.icon,
-      cards: staticNiche.cards.map((staticCard, cardIndex) => {
-        const fallbackCard = fallbackTranslated?.cards[cardIndex];
-        const translatedCard = translated?.cards[cardIndex] ?? fallbackCard;
-        const base = {
-          type: staticCard.type,
-          img: staticCard.img,
-          title: translatedCard?.title ?? fallbackCard?.title ?? "",
-          vol: `${staticCard.volValue} ${bundle.niches.volumeSuffix ?? fallbackBundle.niches.volumeSuffix}`,
-          cat: translatedCard?.cat ?? fallbackCard?.cat ?? "",
-        };
-
-        if (staticCard.type === "single") {
-          return {
-            ...base,
-            type: "single" as const,
-            pct: staticCard.pct,
-          };
-        }
-
-        const rowLabels: string[] =
-          translatedCard && "rows" in translatedCard
-            ? translatedCard.rows ?? []
-            : fallbackCard && "rows" in fallbackCard
-              ? fallbackCard.rows ?? []
-              : [];
-
-        return {
-          ...base,
-          type: "multi" as const,
-          rows: staticCard.rowPcts.map((pct, rowIndex) => ({
-            label: rowLabels[rowIndex] ?? "",
-            pct,
-          })),
-        };
-      }),
-    };
-  });
-}
-
-export function buildLandingProofCards(
-  bundle: LandingMessages,
-  locale: SiteLocale,
-): ProofCard[] {
-  return bundle.social.cards.map((card) => {
-    const copyHtml = sanitizeTranslatedHtml(card.subHtml, locale);
-
-    return {
-      label: card.label,
-      value: extractLargestMoneyToken(extractVisibleTextFromHtml(copyHtml)),
-      copyHtml,
-    };
-  });
 }

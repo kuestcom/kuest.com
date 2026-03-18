@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
   reactStrictMode: false,
   env: {
+    SITE_URL: process.env.production ? 'https://kuest.com' : 'http://localhost:3000',
     CLOB_URL: process.env.CLOB_URL ?? "https://clob.kuest.com",
     RELAYER_URL: process.env.RELAYER_URL ?? "https://relayer.kuest.com",
   },

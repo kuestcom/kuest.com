@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import './globals.css?v=1'
+import './globals.css'
 
 interface Props {
   children: ReactNode

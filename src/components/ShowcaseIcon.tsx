@@ -19,6 +19,7 @@ import {
     Trophy,
     Users,
     Zap,
+    FlameIcon,
 } from "lucide-react";
 const showcaseIconMap: Record<ShowcaseIconName, ComponentType<{ className?: string }>> = {
     activity: Activity,
@@ -39,6 +40,7 @@ const showcaseIconMap: Record<ShowcaseIconName, ComponentType<{ className?: stri
     "trending-up": TrendingUp,
     users: Users,
     zap: Zap,
+    flame: FlameIcon,
 };
 
 export default function ShowcaseIcon({name}: { name: ShowcaseIconName }) {

@@ -47,6 +47,7 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
       <html
           lang={locale}
           className={`${openSauceOne.variable} ${geistMono.variable}`}
+          data-theme-mode="dark"
           suppressHydrationWarning
       >
         <body className="flex min-h-screen flex-col font-sans">

@@ -27,7 +27,8 @@ export type ShowcaseIconName =
   | "trophy"
   | "trending-up"
   | "users"
-  | "zap";
+  | "zap"
+  | "flame";
 
 export const HERO_MARKET_SCENES = [
   {
