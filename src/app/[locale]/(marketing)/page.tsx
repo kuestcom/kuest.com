@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
   }
 
   const t = await getExtracted();
-  const siteOrigin = process.env.SITE_URL;
+  const siteOrigin = process.env.SITE_URL!;
   const canonical = new URL(getPathname({ href: '/', locale}), siteOrigin);
   const ogImage = new URL("/assets/images/your-predictoin-market-500mi-vol.png", siteOrigin);
 

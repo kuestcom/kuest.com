@@ -1,16 +1,11 @@
 "use client";
 
 import { useEffect, useId, useState, type FormEvent } from "react";
-import { ArrowRight } from "lucide-react";
-import type { ProtocolMessages } from "@/i18n/site";
+import { ChevronRightIcon } from "lucide-react";
+import {useExtracted} from "next-intl";
 
-type DeckModalMessages = ProtocolMessages["deckModal"];
-
-export default function ProtocolPitchDeckModal({
-  messages,
-}: {
-  messages: DeckModalMessages;
-}) {
+export default function ProtocolPitchDeckModal() {
+  const t = useExtracted()
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
@@ -105,19 +100,19 @@ export default function ProtocolPitchDeckModal({
         | null;
 
       if (!response.ok || !payload?.ok) {
-        throw new Error(payload?.error || messages.error);
+        throw new Error(payload?.error || t("We couldn't send your request. Please try again."));
       }
 
       setStatus({
         kind: "success",
-        message: messages.success,
+        message: t('Request sent. We\'ll reach out by email.'),
       });
       setCompanyName("");
       setEmail("");
     } catch (error) {
       setStatus({
         kind: "error",
-        message: error instanceof Error && error.message ? error.message : messages.error,
+        message: error instanceof Error && error.message ? error.message : t("We couldn't send your request. Please try again."),
       });
     } finally {
       setIsSubmitting(false);
@@ -129,7 +124,7 @@ export default function ProtocolPitchDeckModal({
       <button
         type="button"
         className="protocol-deck-modal-backdrop"
-        aria-label={messages.close}
+        aria-label={t('Close modal')}
         onClick={closeModal}
       />
       <div
@@ -142,39 +137,39 @@ export default function ProtocolPitchDeckModal({
         <button
           type="button"
           className="protocol-deck-modal-close"
-          aria-label={messages.close}
+          aria-label={t('Close modal')}
           onClick={closeModal}
         >
           ×
         </button>
-        <div className="protocol-deck-modal-kicker">{messages.kicker}</div>
+        <div className="protocol-deck-modal-kicker">{t('REQUEST DECK')}</div>
         <h3 id={titleId} className="protocol-deck-modal-title">
-          {messages.title}
+          {t('Request the Kuest Protocol pitch deck')}
         </h3>
         <p id={descriptionId} className="protocol-deck-modal-description">
-          {messages.description}
+          {t('Leave your company name and email and we\'ll route the request to the team.')}
         </p>
 
         <form className="protocol-deck-form" onSubmit={handleSubmit}>
           <label className="protocol-deck-field">
-            <span>{messages.companyLabel}</span>
+            <span>{t('Company name')}</span>
             <input
               type="text"
               value={companyName}
               onChange={(event) => setCompanyName(event.target.value)}
-              placeholder={messages.companyPlaceholder}
+              placeholder={t('Your company')}
               autoComplete="organization"
               required
             />
           </label>
 
           <label className="protocol-deck-field">
-            <span>{messages.emailLabel}</span>
+            <span>{t('Work email')}</span>
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder={messages.emailPlaceholder}
+              placeholder={t('you@company.com')}
               autoComplete="email"
               required
             />
@@ -194,15 +189,15 @@ export default function ProtocolPitchDeckModal({
               className="btn-cta btn-cta-secondary protocol-deck-action"
               onClick={closeModal}
             >
-              <span className="cta-label">{messages.cancel}</span>
+              <span className="cta-label">{t('Cancel')}</span>
             </button>
             <button
               type="submit"
               className="btn-cta btn-cta-primary protocol-deck-action"
               disabled={isSubmitting}
             >
-              <span className="cta-label">{isSubmitting ? messages.submitting : messages.submit}</span>
-              <ArrowRight />
+              <span className="cta-label">{isSubmitting ? t('Sending...') : t('Send request')}</span>
+              <ChevronRightIcon />
             </button>
           </div>
         </form>
