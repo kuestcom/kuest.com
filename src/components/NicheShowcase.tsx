@@ -51,7 +51,7 @@ export default function NicheShowcase({
           <button
             key={niche.tag}
             type="button"
-            className={`niche-tab${index === safeActiveIndex ? 'is-active' : ''}`}
+            className={`niche-tab ${index === safeActiveIndex ? 'is-active' : ''}`}
             data-prediction-niche={index}
             onClick={() => setActiveIndex(index)}
             style={
