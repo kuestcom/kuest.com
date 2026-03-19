@@ -718,10 +718,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
                       <p className="bt">{t('Audited smart contracts, shared liquidity from day one, full white-label — your team signs off on the brand, we handle everything else.')}</p>
                     </div>
                   </div>
-                  <div
-                      className="solution-timeline enterprise-solution-timeline"
-                      aria-label={t('How Kuest works')}
-                  >
+                  <div className="solution-timeline lg:mt-24!" aria-label={t('How Kuest works')}>
                     <div className="solution-timeline-rail" aria-hidden="true">
                       <span className="solution-timeline-head" />
                     </div>
