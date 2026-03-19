@@ -1,5 +1,3 @@
-import type {SiteLocale} from "@/i18n/site-config";
-
 export const SUPPORTED_LOCALES = ['en', 'de', 'es', 'pt', 'fr', 'zh'] as const
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
@@ -13,4 +11,4 @@ export const LANGUAGE_OPTIONS = [
   {code: "pt", label: "Português", flagSrc: "/assets/flags/pt.svg"},
   {code: "fr", label: "Français", flagSrc: "/assets/flags/fr.svg"},
   {code: "zh", label: "中文", flagSrc: "/assets/flags/zh.svg"},
-] as const satisfies ReadonlyArray<{ code: SiteLocale; label: string; flagSrc: string }>;
+] as const satisfies ReadonlyArray<{ code: SupportedLocale; label: string; flagSrc: string }>;

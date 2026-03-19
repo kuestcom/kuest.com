@@ -83,13 +83,14 @@ export default function AppKitProvider({ children }: { children: ReactNode }) {
         setAppKitThemeMode('dark')
         setCanSyncTheme(true)
         setAppKitValue({
-          open: async (options: never) => {
+          open: async (options) => {
             await instance.open(options)
           },
           close: async () => {
             await instance.close()
           },
           isReady: true,
+          error: null
         })
       })
     }

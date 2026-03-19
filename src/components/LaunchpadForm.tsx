@@ -19,7 +19,6 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
 import { useAppKit } from "@/hooks/useAppKit";
-import { launchLocaleOptions, useLaunchI18n } from "@/i18n/launch";
 import {
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
@@ -35,6 +34,8 @@ import type {
   OAuthStatusResponse,
   VercelDomainResponse,
 } from "@/lib/launch-types";
+import {useExtracted, useLocale} from "next-intl";
+import {LANGUAGE_OPTIONS, SUPPORTED_LOCALES, SupportedLocale} from "@/i18n/locales";
 
 interface FormState {
   vercelAccessToken: string;
@@ -106,12 +107,10 @@ const SUPABASE_CREATE_NEW_OPTION = "__create_new__";
 const FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v4";
 const LEGACY_FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v3";
 const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod =
-  process.env.NEXT_PUBLIC_VERCEL_AUTH_MODE?.trim().toLowerCase() === "token" ? "token" : "oauth";
+    process.env.NEXT_PUBLIC_VERCEL_AUTH_MODE?.trim().toLowerCase() === "token" ? "token" : "oauth";
 const ALLOW_VERCEL_TOKEN_FALLBACK =
-  process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== "false";
+    process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== "false";
 const FOOTER_BRAND_NAME = "Kuest";
-
-const BASE_TIMELINE = ["validation", "vercel", "database", "deploy"] as const;
 
 const DEFAULT_FORM: FormState = {
   vercelAccessToken: "",
@@ -140,16 +139,16 @@ const DEFAULT_FORM: FormState = {
 
 function slugify(input: string) {
   const slug = input
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, "-")
+      .replace(/-{2,}/g, "-")
+      .replace(/^-+|-+$/g, "");
   return (slug || "kuest-market").slice(0, 96);
 }
 
 function randomString(length: number) {
   const alphabet =
-    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789-_!@#%*";
+      "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789-_!@#%*";
   const bytes = new Uint32Array(length);
   crypto.getRandomValues(bytes);
   return Array.from(bytes, (value) => alphabet[value % alphabet.length]).join("");
@@ -158,10 +157,10 @@ function randomString(length: number) {
 function parseExtraEnv(extraEnvText: string) {
   const env: Record<string, string> = {};
   const lines = extraEnvText
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .filter((line) => !line.startsWith("#"));
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .filter((line) => !line.startsWith("#"));
 
   for (const line of lines) {
     const separator = line.indexOf("=");
@@ -232,49 +231,45 @@ function mapTimeline(status: TimelineStatus, index: number, runningIndex: number
   return "idle";
 }
 
-function LogList({ logs }: { logs: LaunchLogEntry[] }) {
-  const { locale } = useLaunchI18n();
-
+function LogList({ locale, logs }: { locale: SupportedLocale, logs: LaunchLogEntry[] }) {
   return (
-    <ul className="space-y-2">
-      {logs.map((entry, index) => (
-        <li
-          key={`${entry.at}-${entry.step}-${index}`}
-          className="rounded-lg border border-border/70 p-3"
-        >
-          <div className="text-xs text-muted-foreground">
-            {new Date(entry.at).toLocaleString(locale)}
-          </div>
-          <div className="text-sm font-semibold text-foreground">
-            [{entry.step}] {" "}
-            <span
-              className={
-                entry.level === "error"
-                  ? "text-destructive"
-                  : entry.level === "warning"
-                    ? "text-primary/90"
-                    : "text-primary"
-              }
+      <ul className="space-y-2">
+        {logs.map((entry, index) => (
+            <li
+                key={`${entry.at}-${entry.step}-${index}`}
+                className="rounded-lg border border-border/70 p-3"
             >
+              <div className="text-xs text-muted-foreground">
+                {new Date(entry.at).toLocaleString(locale)}
+              </div>
+              <div className="text-sm font-semibold text-foreground">
+                [{entry.step}] {" "}
+                <span
+                    className={
+                      entry.level === "error"
+                          ? "text-destructive"
+                          : entry.level === "warning"
+                              ? "text-primary/90"
+                              : "text-primary"
+                    }
+                >
               {entry.level.toUpperCase()}
             </span>
-          </div>
-          <div className="text-sm text-muted-foreground">{entry.message}</div>
-        </li>
-      ))}
-    </ul>
+              </div>
+              <div className="text-sm text-muted-foreground">{entry.message}</div>
+            </li>
+        ))}
+      </ul>
   );
 }
 
 function InfoTip({ text }: { text: string }) {
-  const { messages } = useLaunchI18n();
-
   return (
-    <span className="launch-info-tip">
+      <span className="launch-info-tip">
       <button
-        type="button"
-        className="launch-info-tip-button"
-        aria-label={messages.common.moreInfo}
+          type="button"
+          className="launch-info-tip-button"
+          aria-label="More info"
       >
         <InfoIcon className="size-3.5" />
       </button>
@@ -284,67 +279,77 @@ function InfoTip({ text }: { text: string }) {
 }
 
 function ActionPrompt({
-  open,
-  title,
-  description,
-  showConnectedWalletIcon = false,
-  allowClose = false,
-  onClose,
-}: ActionPromptProps) {
-  const { messages } = useLaunchI18n();
+                        open,
+                        title,
+                        description,
+                        showConnectedWalletIcon = false,
+                        allowClose = false,
+                        onClose,
+                      }: ActionPromptProps) {
+  const t = useExtracted();
 
   if (!open) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-background/85 px-4 py-6 backdrop-blur-md">
-      <div className="relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6 text-center shadow-2xl">
-        {allowClose && onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
-            aria-label={messages.common.closeWaitingModal}
-          >
-            <XIcon className="size-4" />
-          </button>
-        )}
+      <div className="fixed inset-0 z-80 flex items-center justify-center bg-background/85 px-4 py-6 backdrop-blur-md">
+        <div className="relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6 text-center shadow-2xl">
+          {allowClose && onClose && (
+              <button
+                  type="button"
+                  onClick={onClose}
+                  className="absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
+                  aria-label={t('Close waiting modal')}
+              >
+                <XIcon className="size-4" />
+              </button>
+          )}
 
-        <h3 className="text-xl font-semibold text-foreground">{title}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+          <h3 className="text-xl font-semibold text-foreground">{title}</h3>
+          <p className="mt-2 text-sm text-muted-foreground">{description}</p>
 
-        <div className="mt-5 flex justify-center">
-          <div className="relative size-36 overflow-hidden rounded-[30px] bg-background text-primary">
-            <div className="pointer-events-none absolute inset-0 animate-[spin_1500ms_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_288deg,currentColor_320deg,currentColor_350deg,transparent_360deg)]" />
-            <div className="absolute inset-[3px] rounded-[26px] bg-background" />
-            <div className="relative flex size-full items-center justify-center">
-              <div className="flex size-[88%] items-center justify-center">
-                {showConnectedWalletIcon ? (
-                  <ActionPromptWalletIcon />
-                ) : (
-                  <WalletIcon className="size-16 text-primary" strokeWidth={1.7} />
-                )}
+          <div className="mt-5 flex justify-center">
+            <div className="relative size-36 overflow-hidden rounded-[30px] bg-background text-primary">
+              <div className="pointer-events-none absolute inset-0 animate-[spin_1500ms_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_288deg,currentColor_320deg,currentColor_350deg,transparent_360deg)]" />
+              <div className="absolute inset-0.75 rounded-[26px] bg-background" />
+              <div className="relative flex size-full items-center justify-center">
+                <div className="flex size-[88%] items-center justify-center">
+                  {showConnectedWalletIcon ? (
+                      <ActionPromptWalletIcon />
+                  ) : (
+                      <WalletIcon className="size-16 text-primary" strokeWidth={1.7} />
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
-          <Loader2Icon className="size-4 animate-spin text-primary" />
-          <span>{messages.common.waitingForWalletApproval}</span>
+          <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
+            <Loader2Icon className="size-4 animate-spin text-primary" />
+            <span>{t('Waiting for wallet approval...')}</span>
+          </div>
         </div>
       </div>
-    </div>
   );
 }
 
+function formatMessage(template: string, values?: Record<string, string | number>) {
+  if (!values) {
+    return template;
+  }
+
+  return Object.entries(values).reduce((result, [key, value]) => {
+    return result.replaceAll(`{${key}}`, String(value));
+  }, template);
+}
+
 function ActionPromptWalletIcon({
-  className = "size-16",
-  rounded = true,
-  fit = "cover",
-}: ActionPromptWalletIconProps) {
-  const { messages, formatMessage } = useLaunchI18n();
+                                  className = "size-16",
+                                  rounded = true,
+                                  fit = "cover",
+                                }: ActionPromptWalletIconProps) {
+  const t = useExtracted()
   const { walletInfo } = useWalletInfo();
   const [failedIconUrl, setFailedIconUrl] = useState<string | null>(null);
   const walletName = typeof walletInfo?.name === "string" ? walletInfo.name : undefined;
@@ -355,28 +360,28 @@ function ActionPromptWalletIcon({
   }
 
   return (
-    <Image
-      key={walletIconUrl}
-      src={walletIconUrl}
-      alt={
-        walletName
-          ? formatMessage(messages.modals.walletIconAltNamed, { walletName })
-          : messages.modals.walletIconAltFallback
-      }
-      width={64}
-      height={64}
-      unoptimized
-      className={`${className} ${rounded ? "rounded-2xl" : ""} ${
-        fit === "contain" ? "object-contain" : "object-cover"
-      }`}
-      onError={() => setFailedIconUrl(walletIconUrl)}
-    />
+      <Image
+          key={walletIconUrl}
+          src={walletIconUrl}
+          alt={
+            walletName
+                ? t('{walletName} wallet icon', { walletName })
+                : t('Connected wallet icon')
+          }
+          width={64}
+          height={64}
+          unoptimized
+          className={`${className} ${rounded ? "rounded-2xl" : ""} ${
+              fit === "contain" ? "object-contain" : "object-cover"
+          }`}
+          onError={() => setFailedIconUrl(walletIconUrl)}
+      />
   );
 }
 
 function StepFooterBrand() {
   return (
-    <span className="launch-footer-brand" aria-hidden="true">
+      <span className="launch-footer-brand" aria-hidden="true">
       <span className="launch-footer-brand-logo" />
       <span className="launch-footer-brand-text">{FOOTER_BRAND_NAME}</span>
     </span>
@@ -384,12 +389,12 @@ function StepFooterBrand() {
 }
 
 function StepFooterLanguageControl() {
-  const { locale, setLocale, messages } = useLaunchI18n();
+  const t = useExtracted();
+  const locale = useLocale()
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const controlRef = useRef<HTMLDivElement | null>(null);
-  const currentLocaleOption =
-    launchLocaleOptions.find((option) => option.code === locale) ?? launchLocaleOptions[0];
+  const currentLocaleOption = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
 
   useEffect(() => {
     if (!open) {
@@ -420,79 +425,78 @@ function StepFooterLanguageControl() {
   }, [open]);
 
   return (
-    <div className="launch-step-footer-language">
-      <div
-        ref={controlRef}
-        className="launch-language-control"
-        data-open={open ? "true" : "false"}
-      >
-        <button
-          type="button"
-          className="launch-language-trigger"
-          aria-label={messages.languageSelector.ariaLabel}
-          aria-haspopup="listbox"
-          aria-expanded={open}
-          onClick={() => setOpen((previous) => !previous)}
+      <div className="launch-step-footer-language">
+        <div
+            ref={controlRef}
+            className="launch-language-control"
+            data-open={open ? "true" : "false"}
         >
+          <button
+              type="button"
+              className="launch-language-trigger"
+              aria-label={t('Change launch app language')}
+              aria-haspopup="listbox"
+              aria-expanded={open}
+              onClick={() => setOpen((previous) => !previous)}
+          >
           <span className="launch-language-trigger-content">
             <Image
-              src={currentLocaleOption.flagSrc}
-              alt=""
-              width={18}
-              height={12}
-              sizes="18px"
-              className="launch-language-flag"
+                src={currentLocaleOption.flagSrc}
+                alt=""
+                width={18}
+                height={12}
+                sizes="18px"
+                className="launch-language-flag"
             />
             <span className="launch-language-label">{currentLocaleOption.label}</span>
           </span>
-          <span className="launch-language-icon" aria-hidden="true">
+            <span className="launch-language-icon" aria-hidden="true">
             <ChevronDownIcon className="size-3.5" />
           </span>
-        </button>
-        <div className="launch-language-menu" role="listbox" aria-label={messages.languageSelector.ariaLabel}>
-          {launchLocaleOptions.map((option) => {
-            const isSelected = option.code === locale;
+          </button>
+          <div className="launch-language-menu" role="listbox" aria-label={t('Change launch app language')}>
+            {LANGUAGE_OPTIONS.map((option) => {
+              const isSelected = option.code === locale;
 
-            return (
-              <button
-                key={option.code}
-                type="button"
-                role="option"
-                aria-selected={isSelected}
-                className={`launch-language-option${isSelected ? " is-selected" : ""}`}
-                onClick={() => {
-                  setLocale(option.code);
-                  setOpen(false);
-                  router.push("/launch");
-                }}
-              >
+              return (
+                  <button
+                      key={option.code}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      className={`launch-language-option${isSelected ? " is-selected" : ""}`}
+                      onClick={() => {
+                        setOpen(false);
+                        router.push("/launch");
+                      }}
+                  >
                 <span className="launch-language-option-row">
                   <Image
-                    src={option.flagSrc}
-                    alt=""
-                    width={18}
-                    height={12}
-                    sizes="18px"
-                    className="launch-language-flag"
+                      src={option.flagSrc}
+                      alt=""
+                      width={18}
+                      height={12}
+                      sizes="18px"
+                      className="launch-language-flag"
                   />
                   <span>{option.label}</span>
                 </span>
-              </button>
-            );
-          })}
+                  </button>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
   );
 }
 
-export default function LaunchpadForm() {
+export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
+  const t = useExtracted()
   const account = useAccount();
   const { disconnect, status: disconnectStatus } = useDisconnect();
   const { switchChain } = useSwitchChain();
   const { signTypedDataAsync } = useSignTypedData();
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit();
-  const { messages, formatMessage } = useLaunchI18n();
   const pathname = usePathname();
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
@@ -501,7 +505,7 @@ export default function LaunchpadForm() {
   const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false);
   const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false);
   const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(
-    DEFAULT_VERCEL_AUTH_METHOD,
+      DEFAULT_VERCEL_AUTH_METHOD,
   );
   const [oauthStatus, setOAuthStatus] = useState<OAuthStatusResponse | null>(null);
   const [oauthStatusLoading, setOAuthStatusLoading] = useState(false);
@@ -525,41 +529,62 @@ export default function LaunchpadForm() {
   const [domainActionLoading, setDomainActionLoading] = useState<"add" | "verify" | null>(null);
   const [domainActionError, setDomainActionError] = useState<string | null>(null);
   const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null);
+
+  const TIMELINE = [
+    {
+      id: "validation",
+      label: t("Validate launch setting"),
+    },
+    {
+      id: "vercel",
+      label: t("Prepare or reuse Vercel project"),
+    },
+    {
+      id: "database",
+      label: t("Attach Supabase database"),
+    },
+    {
+      id: "deploy",
+      label: t("Trigger deployment"),
+    }
+  ]
+
   const [timeline, setTimeline] = useState<TimelineEntry[]>(
-    BASE_TIMELINE.map((id) => ({
-      id,
-      label: messages.timeline[id],
-      status: "idle",
-    })),
+      TIMELINE.map((item) => ({
+        id: item.id,
+        label: item.label,
+        status: "idle",
+      })),
   );
 
   const timelineIntervalRef = useRef<number | null>(null);
   const timelineIndexRef = useRef(0);
   const handleConnectOrSignRef = useRef<
-    ((options?: { autoProgress?: boolean }) => Promise<void>) | null
+      ((options?: { autoProgress?: boolean }) => Promise<void>) | null
   >(null);
 
   useEffect(() => {
+    // @ts-expect-error ignore
     setTimeline((previous) =>
-      previous.map((entry) => ({
-        ...entry,
-        label: messages.timeline[entry.id as keyof typeof messages.timeline],
-      })),
+        previous.map((entry) => ({
+          ...entry,
+          label: TIMELINE.find(item => item.id === entry.id)?.label,
+        })),
     );
-  }, [messages]);
+  }, [TIMELINE]);
 
   const isConnected = account.status === "connected" && Boolean(account.address);
   const onRequiredChain =
-    isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false;
+      isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false;
 
   const step1Complete =
-    Boolean(form.env.KUEST_ADDRESS) &&
-    Boolean(form.env.KUEST_API_KEY) &&
-    Boolean(form.env.KUEST_API_SECRET) &&
-    Boolean(form.env.KUEST_PASSPHRASE);
+      Boolean(form.env.KUEST_ADDRESS) &&
+      Boolean(form.env.KUEST_API_KEY) &&
+      Boolean(form.env.KUEST_API_SECRET) &&
+      Boolean(form.env.KUEST_PASSPHRASE);
   const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected);
   const vercelOauthIdentity =
-    oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || "";
+      oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || "";
 
   const resolvedProjectSlug = useMemo(() => {
     if (form.projectSlugOverride.trim()) {
@@ -586,8 +611,8 @@ export default function LaunchpadForm() {
   useEffect(() => {
     try {
       const raw =
-        window.sessionStorage.getItem(FORM_SESSION_STORAGE_KEY) ||
-        window.sessionStorage.getItem(LEGACY_FORM_SESSION_STORAGE_KEY);
+          window.sessionStorage.getItem(FORM_SESSION_STORAGE_KEY) ||
+          window.sessionStorage.getItem(LEGACY_FORM_SESSION_STORAGE_KEY);
       window.sessionStorage.removeItem(LEGACY_FORM_SESSION_STORAGE_KEY);
       if (!raw) {
         return;
@@ -601,36 +626,36 @@ export default function LaunchpadForm() {
         ...previous,
         brandName: typeof parsed.brandName === "string" ? parsed.brandName : previous.brandName,
         projectSlugOverride:
-          typeof parsed.projectSlugOverride === "string"
-            ? parsed.projectSlugOverride
-            : previous.projectSlugOverride,
+            typeof parsed.projectSlugOverride === "string"
+                ? parsed.projectSlugOverride
+                : previous.projectSlugOverride,
         gitRepo: typeof parsed.gitRepo === "string" ? parsed.gitRepo : previous.gitRepo,
         gitBranch: typeof parsed.gitBranch === "string" ? parsed.gitBranch : previous.gitBranch,
         vercelTeamId:
-          typeof parsed.vercelTeamId === "string" ? parsed.vercelTeamId : previous.vercelTeamId,
+            typeof parsed.vercelTeamId === "string" ? parsed.vercelTeamId : previous.vercelTeamId,
         supabaseRegion:
-          typeof parsed.supabaseRegion === "string"
-            ? parsed.supabaseRegion
-            : previous.supabaseRegion,
+            typeof parsed.supabaseRegion === "string"
+                ? parsed.supabaseRegion
+                : previous.supabaseRegion,
         supabaseResourceId:
-          typeof parsed.supabaseResourceId === "string"
-            ? parsed.supabaseResourceId
-            : previous.supabaseResourceId,
+            typeof parsed.supabaseResourceId === "string"
+                ? parsed.supabaseResourceId
+                : previous.supabaseResourceId,
         keyNonce: typeof parsed.keyNonce === "string" ? parsed.keyNonce : previous.keyNonce,
         env: {
           ...previous.env,
           REOWN_APPKIT_PROJECT_ID:
-            parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.REOWN_APPKIT_PROJECT_ID === "string"
-              ? parsed.env.REOWN_APPKIT_PROJECT_ID
-              : previous.env.REOWN_APPKIT_PROJECT_ID,
+              parsed.env &&
+              typeof parsed.env === "object" &&
+              typeof parsed.env.REOWN_APPKIT_PROJECT_ID === "string"
+                  ? parsed.env.REOWN_APPKIT_PROJECT_ID
+                  : previous.env.REOWN_APPKIT_PROJECT_ID,
           SITE_URL:
-            parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.SITE_URL === "string"
-              ? parsed.env.SITE_URL
-              : previous.env.SITE_URL,
+              parsed.env &&
+              typeof parsed.env === "object" &&
+              typeof parsed.env.SITE_URL === "string"
+                  ? parsed.env.SITE_URL
+                  : previous.env.SITE_URL,
         },
       }));
     } catch {
@@ -666,12 +691,12 @@ export default function LaunchpadForm() {
       }
     } catch (error) {
       setOAuthStatusError(
-        error instanceof Error ? error.message : messages.step2.checkOauthStatusFailed,
+          error instanceof Error ? error.message : t('Unable to check OAuth connection status.'),
       );
     } finally {
       setOAuthStatusLoading(false);
     }
-  }, [messages.step2.checkOauthStatusFailed]);
+  }, [t]);
 
   useEffect(() => {
     void refreshOAuthStatus();
@@ -719,10 +744,10 @@ export default function LaunchpadForm() {
       await refreshOAuthStatus();
     } catch (error) {
       setOAuthStatusError(
-        error instanceof Error ? error.message : messages.step2.disconnectVercelOauthFailed,
+          error instanceof Error ? error.message : t('Failed to disconnect Vercel OAuth.'),
       );
     }
-  }, [messages.step2.disconnectVercelOauthFailed, refreshOAuthStatus]);
+  }, [t, refreshOAuthStatus]);
 
   function startVercelOAuth() {
     setOAuthStatusError(null);
@@ -744,97 +769,94 @@ export default function LaunchpadForm() {
   }
 
   const loadSupabaseResources = useCallback(
-    async (options?: { silentIfNoToken?: boolean }) => {
-      const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : "";
-      const requiresToken = vercelAuthMethod === "token";
-      const requiresOAuth = vercelAuthMethod === "oauth";
+      async (options?: { silentIfNoToken?: boolean }) => {
+        const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : "";
+        const requiresToken = vercelAuthMethod === "token";
+        const requiresOAuth = vercelAuthMethod === "oauth";
 
-      if (requiresToken && !token) {
-        setSupabaseResources([]);
-        setForm((previous) => ({
-          ...previous,
-          supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-        }));
-        if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError(messages.step2.pasteVercelTokenFirst);
-        } else {
-          setSupabaseResourcesError(null);
+        if (requiresToken && !token) {
+          setSupabaseResources([]);
+          setForm((previous) => ({
+            ...previous,
+            supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+          }));
+          if (!options?.silentIfNoToken) {
+            setSupabaseResourcesError(t('Paste your Vercel Access Token first.'));
+          } else {
+            setSupabaseResourcesError(null);
+          }
+          return;
         }
-        return;
-      }
-      if (requiresOAuth && !vercelOauthConnected) {
-        setSupabaseResources([]);
-        setForm((previous) => ({
-          ...previous,
-          supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-        }));
-        if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError(messages.step2.connectVercelFirst);
-        } else {
-          setSupabaseResourcesError(null);
+        if (requiresOAuth && !vercelOauthConnected) {
+          setSupabaseResources([]);
+          setForm((previous) => ({
+            ...previous,
+            supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+          }));
+          if (!options?.silentIfNoToken) {
+            setSupabaseResourcesError(t('Connect Vercel OAuth first.'));
+          } else {
+            setSupabaseResourcesError(null);
+          }
+          return;
         }
-        return;
-      }
 
-      setIsLoadingSupabaseResources(true);
-      setSupabaseResourcesError(null);
+        setIsLoadingSupabaseResources(true);
+        setSupabaseResourcesError(null);
 
-      try {
-        const response = await fetch("/api/vercel/supabase-resources", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token || undefined,
-            teamId: form.vercelTeamId.trim() || undefined,
-          }),
-        });
+        try {
+          const response = await fetch("/api/vercel/supabase-resources", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: token || undefined,
+              teamId: form.vercelTeamId.trim() || undefined,
+            }),
+          });
 
-        const json = (await response.json()) as SupabaseResourcesResponse;
-        const resources = Array.isArray(json.resources) ? json.resources : [];
-        setSupabaseResources(resources);
-        setForm((previous) => ({
-          ...previous,
-          supabaseResourceId:
-            previous.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION &&
-            resources.some((resource) => resource.id === previous.supabaseResourceId)
-              ? previous.supabaseResourceId
-              : SUPABASE_CREATE_NEW_OPTION,
-        }));
+          const json = (await response.json()) as SupabaseResourcesResponse;
+          const resources = Array.isArray(json.resources) ? json.resources : [];
+          setSupabaseResources(resources);
+          setForm((previous) => ({
+            ...previous,
+            supabaseResourceId:
+                previous.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION &&
+                resources.some((resource) => resource.id === previous.supabaseResourceId)
+                    ? previous.supabaseResourceId
+                    : SUPABASE_CREATE_NEW_OPTION,
+          }));
 
-        if (!response.ok) {
-          setSupabaseResourcesError(json.error ?? messages.step2.listSupabaseFailed);
-        } else if (!resources.length) {
-          setSupabaseResourcesError(messages.step2.noExistingDatabase);
-        } else {
-          setSupabaseResourcesError(null);
+          if (!response.ok) {
+            setSupabaseResourcesError(json.error ?? t('Failed to list Supabase databases.'));
+          } else if (!resources.length) {
+            setSupabaseResourcesError(t('No existing database found. You can still create a new one.'));
+          } else {
+            setSupabaseResourcesError(null);
+          }
+        } catch (error) {
+          setSupabaseResources([]);
+          setSupabaseResourcesError(
+              error instanceof Error ? error.message : t('Failed to list Supabase databases.'),
+          );
+        } finally {
+          setIsLoadingSupabaseResources(false);
         }
-      } catch (error) {
-        setSupabaseResources([]);
-        setSupabaseResourcesError(
-          error instanceof Error ? error.message : messages.step2.listSupabaseFailed,
-        );
-      } finally {
-        setIsLoadingSupabaseResources(false);
-      }
-    },
-    [
-      form.vercelAccessToken,
-      form.vercelTeamId,
-      messages.step2.connectVercelFirst,
-      messages.step2.listSupabaseFailed,
-      messages.step2.noExistingDatabase,
-      messages.step2.pasteVercelTokenFirst,
-      vercelAuthMethod,
-      vercelOauthConnected,
-    ],
+      },
+      [
+        t,
+        form.vercelAccessToken,
+        form.vercelTeamId,
+        vercelAuthMethod,
+        vercelOauthConnected,
+      ],
   );
 
   useEffect(() => {
     const tokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused;
     const hasAuth =
-      vercelAuthMethod === "oauth" ? vercelOauthConnected : tokenReady;
+        vercelAuthMethod === "oauth" ? vercelOauthConnected : tokenReady;
 
     if (!hasAuth) {
       setSupabaseResources([]);
@@ -863,9 +885,9 @@ export default function LaunchpadForm() {
       return previousValue;
     }
     const values = previousValue
-      .split(",")
-      .map((value) => value.trim())
-      .filter(Boolean);
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean);
     if (values.some((value) => value.toLowerCase() === normalizedTarget)) {
       return values.join(",");
     }
@@ -922,8 +944,8 @@ export default function LaunchpadForm() {
     } catch (error) {
       // Email save is optional and must never block key generation.
       console.warn(
-        "[launch] Optional email save failed:",
-        error instanceof Error ? error.message : error,
+          "[launch] Optional email save failed:",
+          error instanceof Error ? error.message : error,
       );
     }
   }
@@ -964,11 +986,11 @@ export default function LaunchpadForm() {
             return;
           }
           if (message.includes("Minting")) {
-            setWalletInfo(messages.wallet.creatingAccount);
+            setWalletInfo(t('Creating your account...'));
             return;
           }
           if (message.includes("sign")) {
-            setWalletInfo(messages.wallet.checkWalletConfirm);
+            setWalletInfo(t('Check your wallet and confirm.'));
             return;
           }
           setWalletInfo(message);
@@ -979,11 +1001,11 @@ export default function LaunchpadForm() {
       if (advancedToStep2) {
         setWalletInfo(null);
       } else {
-        setWalletInfo(messages.wallet.walletConnectedEnterSiteName);
+        setWalletInfo(t('Wallet connected. Enter your site name to continue.'));
       }
     } catch (error) {
       setWalletError(
-        error instanceof Error ? error.message : messages.wallet.failedGenerateBrowserWallet,
+          error instanceof Error ? error.message : t('Failed to generate credentials with browser wallet.'),
       );
     } finally {
       setWalletActionLoading(false);
@@ -992,7 +1014,7 @@ export default function LaunchpadForm() {
 
   async function handleEnsureRequiredNetwork() {
     if (!isConnected) {
-      throw new Error(messages.wallet.connectBeforeSwitchingNetwork);
+      throw new Error(t('Connect wallet before switching network.'));
     }
     if (onRequiredChain) {
       return;
@@ -1001,11 +1023,7 @@ export default function LaunchpadForm() {
     if (!switchChain) {
       const provider = readInjectedProvider();
       if (!provider) {
-        throw new Error(
-          formatMessage(messages.wallet.switchToNetworkSettings, {
-            network: REQUIRED_CHAIN_LABEL,
-          }),
-        );
+        throw new Error(t('Switch to {network} in your wallet settings.', { network: REQUIRED_CHAIN_LABEL}));
       }
       await ensureRequiredNetworkViaProvider(provider);
       return;
@@ -1016,11 +1034,7 @@ export default function LaunchpadForm() {
     } catch {
       const provider = readInjectedProvider();
       if (!provider) {
-        throw new Error(
-          formatMessage(messages.wallet.unableToSwitchNetwork, {
-            network: REQUIRED_CHAIN_LABEL,
-          }),
-        );
+        throw new Error(t('Unable to switch to {network}.', { network: REQUIRED_CHAIN_LABEL}));
       }
       await ensureRequiredNetworkViaProvider(provider);
     }
@@ -1037,7 +1051,7 @@ export default function LaunchpadForm() {
     setWalletError(null);
 
     if (!isConnected) {
-      setWalletInfo(messages.wallet.openWalletApproveConnection);
+      setWalletInfo(t('Open your wallet and approve the connection.'));
       setConnectPromptOpen(true);
       try {
         await openAppKit();
@@ -1050,19 +1064,11 @@ export default function LaunchpadForm() {
 
     if (!onRequiredChain) {
       setWalletActionLoading(true);
-      setWalletInfo(
-        formatMessage(messages.wallet.switchingNetwork, {
-          network: REQUIRED_CHAIN_LABEL,
-        }),
-      );
+      setWalletInfo(t('Switching to {network}...', { network: REQUIRED_CHAIN_LABEL}));
       try {
         await handleEnsureRequiredNetwork();
         if (!autoProgress) {
-          setWalletInfo(
-            formatMessage(messages.wallet.networkActiveClickSign, {
-              network: REQUIRED_CHAIN_LABEL,
-            }),
-          );
+          setWalletInfo(t('{network} is active. Click Sign to continue.', { network: REQUIRED_CHAIN_LABEL}));
         }
       } finally {
         setWalletActionLoading(false);
@@ -1073,7 +1079,7 @@ export default function LaunchpadForm() {
     }
 
     if (!account.address || account.chainId === undefined) {
-      throw new Error(messages.wallet.walletConnectionNotReady);
+      throw new Error(t('Wallet connection is not ready.'));
     }
 
     const nonce = sanitizeNonce(form.keyNonce);
@@ -1082,7 +1088,7 @@ export default function LaunchpadForm() {
 
     setWalletActionLoading(true);
     setSignPromptOpen(true);
-    setWalletInfo(messages.wallet.approveSignature);
+    setWalletInfo(t('Approve one signature to generate credentials.'));
 
     try {
       const signature = await signTypedDataAsync({
@@ -1108,7 +1114,7 @@ export default function LaunchpadForm() {
         },
       });
 
-      setWalletInfo(messages.wallet.mintingCredentials);
+      setWalletInfo(t('Minting Kuest credentials...'));
       const generated = await mintKuestKeysFromSignature({
         address: account.address,
         signature,
@@ -1121,11 +1127,11 @@ export default function LaunchpadForm() {
       if (advancedToStep2) {
         setWalletInfo(null);
       } else {
-        setWalletInfo(messages.wallet.walletConnectedEnterSiteName);
+        setWalletInfo(t('Wallet connected. Enter your site name to continue.'));
       }
     } catch (error) {
       setWalletError(
-        error instanceof Error ? error.message : messages.wallet.unableToSignAndGenerate,
+          error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
       );
     } finally {
       setSignPromptOpen(false);
@@ -1147,7 +1153,7 @@ export default function LaunchpadForm() {
       } catch (error) {
         if (!cancelled) {
           setWalletError(
-            error instanceof Error ? error.message : messages.wallet.unableContinueWalletFlow,
+              error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
           );
         }
       } finally {
@@ -1161,9 +1167,9 @@ export default function LaunchpadForm() {
       cancelled = true;
     };
   }, [
+    t,
     autoSignAfterConnect,
     isConnected,
-    messages.wallet.unableContinueWalletFlow,
     step1Complete,
     walletActionLoading,
   ]);
@@ -1176,23 +1182,22 @@ export default function LaunchpadForm() {
 
     timelineIndexRef.current = 0;
     setTimeline(
-      BASE_TIMELINE.map((id, index) => ({
-        id,
-        label: messages.timeline[id],
-        status: index === 0 ? "running" : "idle",
-      })),
+        TIMELINE.map((item, index) => ({
+          ...item,
+          status: index === 0 ? "running" : "idle",
+        })),
     );
 
     timelineIntervalRef.current = window.setInterval(() => {
       timelineIndexRef.current = Math.min(
-        timelineIndexRef.current + 1,
-        BASE_TIMELINE.length - 1,
+          timelineIndexRef.current + 1,
+          TIMELINE.length - 1,
       );
       setTimeline((previous) =>
-        previous.map((entry, index) => ({
-          ...entry,
-          status: mapTimeline(entry.status, index, timelineIndexRef.current),
-        })),
+          previous.map((entry, index) => ({
+            ...entry,
+            status: mapTimeline(entry.status, index, timelineIndexRef.current),
+          })),
       );
     }, 1500);
   }
@@ -1205,24 +1210,24 @@ export default function LaunchpadForm() {
 
     if (success) {
       setTimeline((previous) =>
-        previous.map((entry) => ({
-          ...entry,
-          status: "done",
-        })),
+          previous.map((entry) => ({
+            ...entry,
+            status: "done",
+          })),
       );
       return;
     }
 
     setTimeline((previous) =>
-      previous.map((entry, index) => {
-        if (index < timelineIndexRef.current) {
-          return { ...entry, status: "done" };
-        }
-        if (index === timelineIndexRef.current) {
-          return { ...entry, status: "error" };
-        }
-        return { ...entry, status: "idle" };
-      }),
+        previous.map((entry, index) => {
+          if (index < timelineIndexRef.current) {
+            return { ...entry, status: "done" };
+          }
+          if (index === timelineIndexRef.current) {
+            return { ...entry, status: "error" };
+          }
+          return { ...entry, status: "idle" };
+        }),
     );
   }
 
@@ -1231,62 +1236,61 @@ export default function LaunchpadForm() {
   }
 
   const handleDomainAction = useCallback(
-    async (action: "add" | "verify") => {
-      if (!result?.ok) {
-        return;
-      }
-
-      const domain = normalizeCustomDomain(customDomain);
-      if (!domain) {
-        setDomainActionError(messages.domain.enterDomainFirst);
-        return;
-      }
-
-      setDomainActionLoading(action);
-      setDomainActionError(null);
-
-      try {
-        const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
-        const response = await fetch("/api/vercel/domain", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action,
-            token,
-            domain,
-            projectId: result.projectId,
-            projectName: result.projectName || resolvedProjectSlug,
-            teamId: result.resolvedTeamId || form.vercelTeamId.trim() || undefined,
-          }),
-        });
-
-        const json = (await response.json()) as VercelDomainApiResponse;
-        if (!response.ok || !json.domain) {
-          throw new Error(json.error ?? messages.domain.domainActionFailed);
+      async (action: "add" | "verify") => {
+        if (!result?.ok) {
+          return;
         }
 
-        setDomainState(json.domain);
-        setCustomDomain(json.domain.name);
-      } catch (error) {
-        setDomainActionError(
-          error instanceof Error ? error.message : messages.domain.domainActionFailed,
-        );
-      } finally {
-        setDomainActionLoading(null);
-      }
-    },
-    [
-      customDomain,
-      form.vercelAccessToken,
-      form.vercelTeamId,
-      messages.domain.domainActionFailed,
-      messages.domain.enterDomainFirst,
-      resolvedProjectSlug,
-      result,
-      vercelAuthMethod,
-    ],
+        const domain = normalizeCustomDomain(customDomain);
+        if (!domain) {
+          setDomainActionError(t('Enter a domain first.'));
+          return;
+        }
+
+        setDomainActionLoading(action);
+        setDomainActionError(null);
+
+        try {
+          const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
+          const response = await fetch("/api/vercel/domain", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              action,
+              token,
+              domain,
+              projectId: result.projectId,
+              projectName: result.projectName || resolvedProjectSlug,
+              teamId: result.resolvedTeamId || form.vercelTeamId.trim() || undefined,
+            }),
+          });
+
+          const json = (await response.json()) as VercelDomainApiResponse;
+          if (!response.ok || !json.domain) {
+            throw new Error(json.error ?? t('Domain action failed.'));
+          }
+
+          setDomainState(json.domain);
+          setCustomDomain(json.domain.name);
+        } catch (error) {
+          setDomainActionError(
+              error instanceof Error ? error.message : t('Domain action failed.'),
+          );
+        } finally {
+          setDomainActionLoading(null);
+        }
+      },
+      [
+          t,
+        customDomain,
+        form.vercelAccessToken,
+        form.vercelTeamId,
+        resolvedProjectSlug,
+        result,
+        vercelAuthMethod,
+      ],
   );
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -1303,7 +1307,7 @@ export default function LaunchpadForm() {
 
     try {
       const resolvedVercelToken =
-        vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
+          vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
       const payload = {
         brandName: form.brandName,
         projectName: resolvedProjectSlug,
@@ -1314,9 +1318,9 @@ export default function LaunchpadForm() {
         supabase: {
           region: form.supabaseRegion.trim() || undefined,
           existingResourceId:
-            form.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION
-              ? form.supabaseResourceId
-              : undefined,
+              form.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION
+                  ? form.supabaseResourceId
+                  : undefined,
         },
         tokens: {
           vercel: resolvedVercelToken,
@@ -1340,13 +1344,13 @@ export default function LaunchpadForm() {
       setResult(json);
 
       if (!response.ok || !json.ok) {
-        setRequestError(json.error ?? messages.step3.launchFailed);
+        setRequestError(json.error ?? t('Launch failed.'));
         stopTimelineAnimation(false);
       } else {
         stopTimelineAnimation(true);
       }
     } catch (error) {
-      setRequestError(error instanceof Error ? error.message : messages.step3.failedCallApi);
+      setRequestError(error instanceof Error ? error.message : t('Failed to call API.'));
       stopTimelineAnimation(false);
     } finally {
       setIsLaunching(false);
@@ -1361,19 +1365,19 @@ export default function LaunchpadForm() {
   const stepItems = [
     {
       number: 1,
-      title: messages.stepper.step1,
+      title: t('Site + Admin wallet'),
       done: step1Complete && Boolean(form.brandName.trim()),
       active: activeStep === 1,
     },
     {
       number: 2,
-      title: messages.stepper.step2,
+      title: t('Host + Database'),
       done: step2VercelReady && step2ReownReady,
       active: activeStep === 2,
     },
     {
       number: 3,
-      title: messages.stepper.step3,
+      title: t('Deploy'),
       done: Boolean(result?.ok),
       active: activeStep === 3,
     },
@@ -1381,967 +1385,956 @@ export default function LaunchpadForm() {
 
   const storedStep1Address = form.env.KUEST_ADDRESS.trim();
   const connectedAddressMatchesStep1 =
-    !isConnected ||
-    !account.address ||
-    storedStep1Address.toLowerCase() === account.address.toLowerCase();
+      !isConnected ||
+      !account.address ||
+      storedStep1Address.toLowerCase() === account.address.toLowerCase();
   const showSignedWalletState =
-    step1Complete &&
-    Boolean(storedStep1Address) &&
-    connectedAddressMatchesStep1;
+      step1Complete &&
+      Boolean(storedStep1Address) &&
+      connectedAddressMatchesStep1;
   const brandNameReady = Boolean(form.brandName.trim());
   const step1PrimaryLabel = !isAppKitReady
-    ? messages.wallet.useBrowserWallet
-    : !isConnected
-      ? messages.wallet.connect
-      : !onRequiredChain
-        ? formatMessage(messages.wallet.switchToNetworkButton, {
-            network: REQUIRED_CHAIN_LABEL,
-          })
-        : messages.wallet.sign;
+      ? t('Use browser wallet')
+      : !isConnected
+          ? t('Connect')
+          : !onRequiredChain
+              ? t('Switch to {network}', { network: REQUIRED_CHAIN_LABEL})
+              : t('Sign');
   const step1WalletLabel = showSignedWalletState
-    ? `${shortAddress(storedStep1Address)} · ${account.chain?.name ?? REQUIRED_CHAIN_LABEL}`
-    : "";
+      ? `${shortAddress(storedStep1Address)} · ${account.chain?.name ?? REQUIRED_CHAIN_LABEL}`
+      : "";
   const canContinueStep2 = showSignedWalletState && brandNameReady;
   const canContinueStep3 = canContinueStep2 && step2VercelReady && step2ReownReady;
 
   return (
-    <form onSubmit={onSubmit} className="launch-shell">
-      <div className={`launch-stepper launch-stepper-active-${activeStep}`}>
-        {stepItems.map((step) => (
-          <button
-            key={step.number}
-            type="button"
-            className={`launch-step ${step.active ? "is-active" : ""} ${step.done ? "is-done" : ""}`}
-            onClick={() => {
-              if (step.number === 1) {
-                setActiveStep(1);
-                return;
-              }
-              if (step.number === 2 && canContinueStep2) {
-                setActiveStep(2);
-                return;
-              }
-              if (step.number === 3 && canContinueStep3) {
-                setActiveStep(3);
-              }
-            }}
-            disabled={
-              step.number === 2 ? !canContinueStep2 : step.number === 3 ? !canContinueStep3 : false
-            }
-          >
-            <span className="launch-step-index">{step.number}</span>
-            <span className="launch-step-title">{step.title}</span>
-          </button>
-        ))}
-      </div>
-
-      {activeStep === 1 && (
-        <section className="launch-island launch-step1-island">
-          <h2 className="sr-only">{messages.step1.srTitle}</h2>
-
-          <div className="mt-5 launch-grid launch-step1-brand-grid">
-            <label className="launch-field launch-step1-brand-field">
-              <span className="launch-field-label">
-                <span>{messages.step1.siteNameLabel}</span>
-                <InfoTip text={messages.wallet.brandNameInfo} />
-              </span>
-              <input
-                value={form.brandName}
-                onChange={(event) =>
-                  setForm((previous) => ({
-                    ...previous,
-                    brandName: event.target.value,
-                  }))
-                }
-                placeholder={messages.step1.siteNamePlaceholder}
-                required
-              />
-            </label>
-          </div>
-
-          <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 px-5 py-5">
-            <div className="mb-2 flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-foreground">
-                {messages.step1.adminWalletTitle}
-              </h3>
-              <InfoTip text={messages.wallet.adminWalletInfo} />
-            </div>
-            {!isConnected && (
-              <>
-                <p className="text-xs text-muted-foreground">
-                  {messages.wallet.metamaskPrefix}{" "}
-                  <a
-                    className="launch-link"
-                    href="https://metamask.io/download"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span className="hidden sm:inline">{messages.wallet.metamaskExtension}</span>
-                    <span className="sm:hidden">{messages.wallet.metamaskApp}</span>
-                  </a>
-                  . {messages.wallet.metamaskSuffix}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {messages.wallet.autoSwitchHelp}
-                </p>
-              </>
-            )}
-
-            {showSignedWalletState ? (
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5">
-                  <ActionPromptWalletIcon className="size-8" rounded={false} fit="contain" />
-                  <p className="text-sm font-semibold text-foreground">{step1WalletLabel}</p>
-                </div>
-
-                {isConnected && account.address && (
-                  <button
-                    type="button"
-                    className="launch-mini-button"
-                  onClick={handleWalletDisconnect}
-                  disabled={disconnectStatus === "pending"}
-                >
-                  {messages.common.disconnect}
-                </button>
-              )}
-            </div>
-            ) : (
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                <button
+      <form onSubmit={onSubmit} className="launch-shell">
+        <div className={`launch-stepper launch-stepper-active-${activeStep}`}>
+          {stepItems.map((step) => (
+              <button
+                  key={step.number}
                   type="button"
-                  className="launch-cta launch-cta-compact"
+                  className={`launch-step ${step.active ? "is-active" : ""} ${step.done ? "is-done" : ""}`}
                   onClick={() => {
-                    if (!step1Complete && isAppKitReady && !isConnected) {
-                      setAutoSignAfterConnect(true);
+                    if (step.number === 1) {
+                      setActiveStep(1);
+                      return;
                     }
-                    void handleConnectOrSign();
+                    if (step.number === 2 && canContinueStep2) {
+                      setActiveStep(2);
+                      return;
+                    }
+                    if (step.number === 3 && canContinueStep3) {
+                      setActiveStep(3);
+                    }
                   }}
-                  disabled={walletActionLoading}
-                >
-                  {walletActionLoading ? (
-                    <span className="inline-flex items-center gap-2">
-                      <Loader2Icon className="size-4 animate-spin" />
-                      {messages.common.working}
-                    </span>
-                  ) : (
-                    step1PrimaryLabel
-                  )}
-                </button>
+                  disabled={
+                    step.number === 2 ? !canContinueStep2 : step.number === 3 ? !canContinueStep3 : false
+                  }
+              >
+                <span className="launch-step-index">{step.number}</span>
+                <span className="launch-step-title">{step.title}</span>
+              </button>
+          ))}
+        </div>
 
-                {isConnected && account.address && (
-                  <button
-                    type="button"
-                    className="launch-mini-button"
-                    onClick={handleWalletDisconnect}
-                    disabled={disconnectStatus === "pending"}
-                  >
-                    {messages.common.disconnect}
-                  </button>
-                )}
+        {activeStep === 1 && (
+            <section className="launch-island launch-step1-island">
+              <h2 className="sr-only">{t('Step 1. Site + Admin wallet')}</h2>
+
+              <div className="mt-5 launch-grid launch-step1-brand-grid">
+                <label className="launch-field launch-step1-brand-field">
+              <span className="launch-field-label">
+                <span>{t('Site name')}</span>
+                <InfoTip text={t('This is your brand name.')} />
+              </span>
+                  <input
+                      value={form.brandName}
+                      onChange={(event) =>
+                          setForm((previous) => ({
+                            ...previous,
+                            brandName: event.target.value,
+                          }))
+                      }
+                      placeholder={t('Your Prediction Market Site Name')}
+                      required
+                  />
+                </label>
               </div>
-            )}
 
-            {appKitError && !isAppKitReady && (
-              <p className="mt-3 text-sm text-primary/90">{appKitError}</p>
-            )}
-            {walletInfo && <p className="mt-3 text-sm text-primary">{walletInfo}</p>}
-            {walletError && <p className="mt-3 text-sm text-destructive">{walletError}</p>}
-            <div className="mt-4 border-t border-border/60 pt-4">
-              <button
-                type="button"
-                className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
-                onClick={() => setStep1AdvancedOpen((previous) => !previous)}
-              >
-                <span>{messages.common.advancedOptions}</span>
-                <ChevronDownIcon
-                  className={`size-4 transition-transform ${step1AdvancedOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {step1AdvancedOpen && (
-                <div className="mt-4 launch-grid">
-                  <label className="launch-field">
-                    <span>{messages.step1.emailLabel}</span>
-                    <input
-                      type="email"
-                      value={form.contactEmail}
-                      placeholder={messages.step1.emailPlaceholder}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          contactEmail: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step1.nonceLabel}</span>
-                    <input
-                      value={form.keyNonce}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          keyNonce: event.target.value.replace(/\D+/g, "") || "0",
-                        }))
-                      }
-                      placeholder={messages.step1.noncePlaceholder}
-                      inputMode="numeric"
-                    />
-                  </label>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">
-            <StepFooterLanguageControl />
-            <StepFooterBrand />
-            <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">{messages.common.continue}</span>
-              <button type="button" className="launch-choice-button launch-choice-no" disabled>
-                <ArrowLeftIcon className="size-3.5" />
-                {messages.common.no}
-              </button>
-              <button
-                type="button"
-                className="launch-choice-button launch-choice-yes"
-                disabled={!canContinueStep2}
-                onClick={() => setActiveStep(2)}
-              >
-                {messages.common.yes}
-                <ArrowRightIcon className="size-3.5" />
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {activeStep === 2 && (
-        <section className="launch-island launch-step2-island">
-          <h2 className="sr-only">{messages.step2.srTitle}</h2>
-
-          <div className="launch-stack mt-5 space-y-3">
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
+              <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 px-5 py-5">
+                <div className="mb-2 flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">
-                    {messages.step2.vercelAuthenticationTitle}
+                    {t('Admin wallet')}
                   </h3>
-                  <InfoTip text={messages.step2.vercelAuthenticationInfo} />
+                  <InfoTip text={t('One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.')} />
                 </div>
-                {step2VercelReady ? (
-                  <CircleCheckIcon className="size-5 text-primary" />
-                ) : (
-                  <CircleIcon className="size-5 text-muted-foreground" />
+                {!isConnected && (
+                    <>
+                      <p className="text-xs text-muted-foreground">
+                        {t('For the simplest setup, use')}{" "}
+                        <a
+                            className="launch-link"
+                            href="https://metamask.io/download"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                          <span className="hidden sm:inline">{t('MetaMask browser extension')}</span>
+                          <span className="sm:hidden">{t('MetaMask app')}</span>
+                        </a>
+                        . {t('No balance required, no funds moved, no gas fees.')}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {t('We try to switch to Polygon Amoy automatically and add the network when needed.')}
+                      </p>
+                    </>
                 )}
-              </div>
-              {ALLOW_VERCEL_TOKEN_FALLBACK && !step2VercelReady && (
-                <div className="mb-3 flex flex-wrap gap-2">
+
+                {showSignedWalletState ? (
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5">
+                        <ActionPromptWalletIcon className="size-8" rounded={false} fit="contain" />
+                        <p className="text-sm font-semibold text-foreground">{step1WalletLabel}</p>
+                      </div>
+
+                      {isConnected && account.address && (
+                          <button
+                              type="button"
+                              className="launch-mini-button"
+                              onClick={handleWalletDisconnect}
+                              disabled={disconnectStatus === "pending"}
+                          >
+                            {t('Disconnect')}
+                          </button>
+                      )}
+                    </div>
+                ) : (
+                    <div className="mt-4 flex flex-wrap items-center gap-3">
+                      <button
+                          type="button"
+                          className="launch-cta launch-cta-compact"
+                          onClick={() => {
+                            if (!step1Complete && isAppKitReady && !isConnected) {
+                              setAutoSignAfterConnect(true);
+                            }
+                            void handleConnectOrSign();
+                          }}
+                          disabled={walletActionLoading}
+                      >
+                        {walletActionLoading ? (
+                            <span className="inline-flex items-center gap-2">
+                      <Loader2Icon className="size-4 animate-spin" />
+                              {t('Working...')}
+                    </span>
+                        ) : (
+                            step1PrimaryLabel
+                        )}
+                      </button>
+
+                      {isConnected && account.address && (
+                          <button
+                              type="button"
+                              className="launch-mini-button"
+                              onClick={handleWalletDisconnect}
+                              disabled={disconnectStatus === "pending"}
+                          >
+                            {t('Disconnect')}
+                          </button>
+                      )}
+                    </div>
+                )}
+
+                {appKitError && !isAppKitReady && (
+                    <p className="mt-3 text-sm text-primary/90">{appKitError}</p>
+                )}
+                {walletInfo && <p className="mt-3 text-sm text-primary">{walletInfo}</p>}
+                {walletError && <p className="mt-3 text-sm text-destructive">{walletError}</p>}
+                <div className="mt-4 border-t border-border/60 pt-4">
                   <button
-                    type="button"
-                    className="launch-mini-button"
-                    onClick={() => switchVercelAuthMethod("oauth")}
-                    disabled={vercelAuthMethod === "oauth"}
+                      type="button"
+                      className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
+                      onClick={() => setStep1AdvancedOpen((previous) => !previous)}
                   >
-                    {messages.common.oauth}
+                    <span>{t('Advanced options')}</span>
+                    <ChevronDownIcon
+                        className={`size-4 transition-transform ${step1AdvancedOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {step1AdvancedOpen && (
+                      <div className="mt-4 launch-grid">
+                        <label className="launch-field">
+                          <span>{t('Email (optional)')}</span>
+                          <input
+                              type="email"
+                              value={form.contactEmail}
+                              placeholder={t('you@team.com')}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    contactEmail: event.target.value,
+                                  }))
+                              }
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Nonce')}</span>
+                          <input
+                              value={form.keyNonce}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    keyNonce: event.target.value.replace(/\D+/g, "") || "0",
+                                  }))
+                              }
+                              placeholder="0"
+                              inputMode="numeric"
+                          />
+                        </label>
+                      </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">
+                <StepFooterLanguageControl />
+                <StepFooterBrand />
+                <div className="launch-step-footer-control launch-binary-nav">
+                  <span className="launch-binary-label">{t('Continue')}</span>
+                  <button type="button" className="launch-choice-button launch-choice-no" disabled>
+                    <ArrowLeftIcon className="size-3.5" />
+                    {t('No')}
                   </button>
                   <button
-                    type="button"
-                    className="launch-mini-button"
-                    onClick={() => switchVercelAuthMethod("token")}
-                    disabled={vercelAuthMethod === "token"}
+                      type="button"
+                      className="launch-choice-button launch-choice-yes"
+                      disabled={!canContinueStep2}
+                      onClick={() => setActiveStep(2)}
                   >
-                    {messages.common.accessToken}
+                    {t('Yes')}
+                    <ArrowRightIcon className="size-3.5" />
                   </button>
                 </div>
-              )}
+              </div>
+            </section>
+        )}
 
-              {vercelAuthMethod === "oauth" ? (
-                <>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
-                      <Image
-                        src="/images/vercel.svg"
-                        alt="Vercel"
-                        width={14}
-                        height={14}
-                        className="size-3.5"
-                      />
-                    </span>
-                    {vercelOauthConnected ? (
-                      <span className="text-xs font-medium text-foreground">
-                        {vercelOauthIdentity || messages.common.connectedAccount}
-                      </span>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">
-                        {messages.common.notConnected}
-                      </span>
-                    )}
+        {activeStep === 2 && (
+            <section className="launch-island launch-step2-island">
+              <h2 className="sr-only">{t('Step 2. Host + Database')}</h2>
 
-                    {vercelOauthConnected ? (
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={() => {
-                          void disconnectVercelOAuth();
-                        }}
-                        disabled={oauthStatusLoading}
-                      >
-                        {messages.common.disconnect}
-                      </button>
+              <div className="launch-stack mt-5 space-y-3">
+                <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        {t('Vercel authentication')}
+                      </h3>
+                      <InfoTip text={t('Vercel is where your prediction market website is hosted.')} />
+                    </div>
+                    {step2VercelReady ? (
+                        <CircleCheckIcon className="size-5 text-primary" />
                     ) : (
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={startVercelOAuth}
-                        disabled={oauthStatusLoading}
-                      >
-                        {oauthStatusLoading
-                          ? messages.common.checking
-                          : messages.step2.connectVercel}
-                      </button>
+                        <CircleIcon className="size-5 text-muted-foreground" />
                     )}
                   </div>
-
-                  {oauthStatusError && (
-                    <p className="mt-2 text-xs font-medium text-primary/90">{oauthStatusError}</p>
+                  {ALLOW_VERCEL_TOKEN_FALLBACK && !step2VercelReady && (
+                      <div className="mb-3 flex flex-wrap gap-2">
+                        <button
+                            type="button"
+                            className="launch-mini-button"
+                            onClick={() => switchVercelAuthMethod("oauth")}
+                            disabled={vercelAuthMethod === "oauth"}
+                        >
+                          OAuth
+                        </button>
+                        <button
+                            type="button"
+                            className="launch-mini-button"
+                            onClick={() => switchVercelAuthMethod("token")}
+                            disabled={vercelAuthMethod === "token"}
+                        >
+                          {t('Access Token')}
+                        </button>
+                      </div>
                   )}
-                </>
-              ) : (
-                <>
-                  {step2TokenReady ? (
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
-                        <Image
+
+                  {vercelAuthMethod === "oauth" ? (
+                      <>
+                        <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
+                      <Image
                           src="/images/vercel.svg"
                           alt="Vercel"
                           width={14}
                           height={14}
                           className="size-3.5"
+                      />
+                    </span>
+                          {vercelOauthConnected ? (
+                              <span className="text-xs font-medium text-foreground">
+                        {vercelOauthIdentity || t('Connected account')}
+                      </span>
+                          ) : (
+                              <span className="text-xs text-muted-foreground">
+                        {t('Not connected')}
+                      </span>
+                          )}
+
+                          {vercelOauthConnected ? (
+                              <button
+                                  type="button"
+                                  className="launch-mini-button"
+                                  onClick={() => {
+                                    void disconnectVercelOAuth();
+                                  }}
+                                  disabled={oauthStatusLoading}
+                              >
+                                {t('Disconnect')}
+                              </button>
+                          ) : (
+                              <button
+                                  type="button"
+                                  className="launch-mini-button"
+                                  onClick={startVercelOAuth}
+                                  disabled={oauthStatusLoading}
+                              >
+                                {oauthStatusLoading
+                                    ? t('Checking...')
+                                    : t('Connect Vercel')}
+                              </button>
+                          )}
+                        </div>
+
+                        {oauthStatusError && (
+                            <p className="mt-2 text-xs font-medium text-primary/90">{oauthStatusError}</p>
+                        )}
+                      </>
+                  ) : (
+                      <>
+                        {step2TokenReady ? (
+                            <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
+                        <Image
+                            src="/images/vercel.svg"
+                            alt="Vercel"
+                            width={14}
+                            height={14}
+                            className="size-3.5"
                         />
                       </span>
-                      <span className="text-xs font-medium text-foreground">
+                              <span className="text-xs font-medium text-foreground">
                         {maskToken(form.vercelAccessToken)}
                       </span>
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={() =>
-                          setForm((previous) => ({
-                            ...previous,
-                            vercelAccessToken: "",
-                            supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                          }))
-                        }
-                      >
-                        {messages.common.disconnect}
-                      </button>
+                              <button
+                                  type="button"
+                                  className="launch-mini-button"
+                                  onClick={() =>
+                                      setForm((previous) => ({
+                                        ...previous,
+                                        vercelAccessToken: "",
+                                        supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                      }))
+                                  }
+                              >
+                                {t('Disconnect')}
+                              </button>
+                            </div>
+                        ) : (
+                            <>
+                              <label className="launch-field">
+                                <span className="sr-only">{t('Vercel Access Token')}</span>
+                                <input
+                                    type="password"
+                                    value={form.vercelAccessToken}
+                                    onChange={(event) => {
+                                      setForm((previous) => ({
+                                        ...previous,
+                                        vercelAccessToken: event.target.value,
+                                        supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                      }));
+                                    }}
+                                    onFocus={() => setIsVercelTokenInputFocused(true)}
+                                    onBlur={() => setIsVercelTokenInputFocused(false)}
+                                    placeholder={t('Paste Vercel Access Token')}
+                                    required
+                                />
+                              </label>
+                              <p className="mt-2 text-xs text-muted-foreground">
+                                <a
+                                    className="launch-link"
+                                    href="https://vercel.com/account/tokens"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                  {t('Create token in Vercel')}
+                                </a>
+                              </p>
+                            </>
+                        )}
+
+                      </>
+                  )}
+                </div>
+
+                <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        {t('Reown Project ID')}
+                      </h3>
+                      <InfoTip text={t('Reown Project ID enables wallet login for your end users.')} />
                     </div>
-                  ) : (
-                    <>
-                      <label className="launch-field">
-                        <span className="sr-only">{messages.step2.vercelAccessTokenLabel}</span>
-                        <input
-                          type="password"
-                          value={form.vercelAccessToken}
-                          onChange={(event) => {
+                    {step2ReownReady ? (
+                        <CircleCheckIcon className="size-5 text-primary" />
+                    ) : (
+                        <CircleIcon className="size-5 text-muted-foreground" />
+                    )}
+                  </div>
+                  <label className="launch-field">
+                    <span className="sr-only">{t('Reown Project ID')}</span>
+                    <input
+                        value={form.env.REOWN_APPKIT_PROJECT_ID}
+                        onChange={(event) =>
                             setForm((previous) => ({
                               ...previous,
-                              vercelAccessToken: event.target.value,
-                              supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                            }));
-                          }}
-                          onFocus={() => setIsVercelTokenInputFocused(true)}
-                          onBlur={() => setIsVercelTokenInputFocused(false)}
-                          placeholder={messages.step2.vercelAccessTokenPlaceholder}
-                          required
+                              env: {
+                                ...previous.env,
+                                REOWN_APPKIT_PROJECT_ID: event.target.value,
+                              },
+                            }))
+                        }
+                        placeholder={t('Required')}
+                        required
+                    />
+                  </label>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {t('Get it at')}{" "}
+                    <a
+                        className="launch-link"
+                        href="https://cloud.reown.com"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                      cloud.reown.com
+                    </a>
+                    {" "}{t('→ create/select project → copy Project ID.')}
+                  </p>
+                </div>
+
+                <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        {t('Supabase database')}
+                      </h3>
+                      <InfoTip text={t('Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.')} />
+                    </div>
+                    {step2DatabaseReady ? (
+                        <CircleCheckIcon className="size-5 text-primary" />
+                    ) : (
+                        <CircleIcon className="size-5 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="launch-field-inline">
+                    <select
+                        className="launch-inline-control"
+                        value={form.supabaseResourceId}
+                        onChange={(event) =>
+                            setForm((previous) => ({
+                              ...previous,
+                              supabaseResourceId: event.target.value,
+                            }))
+                        }
+                        disabled={isLoadingSupabaseResources}
+                    >
+                      <option value={SUPABASE_CREATE_NEW_OPTION}>
+                        {t('CREATE NEW DATABASE')}
+                      </option>
+                      {supabaseResources.map((resource, index) => (
+                          <option key={resource.id} value={resource.id}>
+                            {t('SUPABASE DATABASE {index} - {name}', { index: `${index + 1}`, name: resource.name })}
+                          </option>
+                      ))}
+                    </select>
+                    <button
+                        type="button"
+                        className="launch-mini-button"
+                        onClick={() => {
+                          void loadSupabaseResources();
+                        }}
+                        disabled={!step2VercelReady || isLoadingSupabaseResources}
+                    >
+                      {isLoadingSupabaseResources
+                          ? t('Refreshing...')
+                          : t('Refresh')}
+                    </button>
+                  </div>
+                  {supabaseResourcesError && (
+                      <p className="mt-2 text-xs font-medium text-primary/90">{supabaseResourcesError}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-4">
+                <button
+                    type="button"
+                    className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
+                    onClick={() => setStep2AdvancedOpen((previous) => !previous)}
+                >
+                  <span>{t('Advanced options')}</span>
+                  <ChevronDownIcon
+                      className={`size-4 transition-transform ${step2AdvancedOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {step2AdvancedOpen && (
+                    <div className="mt-4 border-t border-border/60 pt-4">
+                      <div className="launch-grid">
+                        <label className="launch-field">
+                          <span>{t('Project slug (auto)')}</span>
+                          <input value={resolvedProjectSlug} readOnly />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Project slug override')}</span>
+                          <input
+                              value={form.projectSlugOverride}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    projectSlugOverride: event.target.value,
+                                  }))
+                              }
+                              placeholder={t('optional')}
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Repository')}</span>
+                          <input
+                              value={form.gitRepo}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    gitRepo: event.target.value,
+                                  }))
+                              }
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Branch')}</span>
+                          <input
+                              value={form.gitBranch}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    gitBranch: event.target.value,
+                                  }))
+                              }
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Vercel Team ID')}</span>
+                          <input
+                              value={form.vercelTeamId}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    vercelTeamId: event.target.value,
+                                    supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                  }))
+                              }
+                              placeholder={t('empty = personal account')}
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('Supabase region')}</span>
+                          <input
+                              value={form.supabaseRegion}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    supabaseRegion: event.target.value,
+                                  }))
+                              }
+                              placeholder="us-east-1"
+                          />
+                        </label>
+                        <label className="launch-field">
+                          <span>BETTER_AUTH_SECRET</span>
+                          <div className="launch-field-inline">
+                            <input
+                                value={form.env.BETTER_AUTH_SECRET}
+                                onChange={(event) =>
+                                    setForm((previous) => ({
+                                      ...previous,
+                                      env: {
+                                        ...previous.env,
+                                        BETTER_AUTH_SECRET: event.target.value,
+                                      },
+                                    }))
+                                }
+                                placeholder={t('empty = auto generated by API')}
+                            />
+                            <button
+                                type="button"
+                                className="launch-mini-button"
+                                onClick={() =>
+                                    setForm((previous) => ({
+                                      ...previous,
+                                      env: {
+                                        ...previous.env,
+                                        BETTER_AUTH_SECRET: randomString(40),
+                                      },
+                                    }))
+                                }
+                            >
+                              {t('Generate')}
+                            </button>
+                          </div>
+                        </label>
+                        <label className="launch-field">
+                          <span>CRON_SECRET</span>
+                          <div className="launch-field-inline">
+                            <input
+                                value={form.env.CRON_SECRET}
+                                onChange={(event) =>
+                                    setForm((previous) => ({
+                                      ...previous,
+                                      env: {
+                                        ...previous.env,
+                                        CRON_SECRET: event.target.value,
+                                      },
+                                    }))
+                                }
+                                placeholder={t('empty = auto generated by API')}
+                            />
+                            <button
+                                type="button"
+                                className="launch-mini-button"
+                                onClick={() =>
+                                    setForm((previous) => ({
+                                      ...previous,
+                                      env: {
+                                        ...previous.env,
+                                        CRON_SECRET: randomString(28),
+                                      },
+                                    }))
+                                }
+                            >
+                              {t('Generate')}
+                            </button>
+                          </div>
+                        </label>
+                        <label className="launch-field">
+                          <span>{t('SITE_URL override')}</span>
+                          <input
+                              value={form.env.SITE_URL}
+                              onChange={(event) =>
+                                  setForm((previous) => ({
+                                    ...previous,
+                                    env: {
+                                      ...previous.env,
+                                      SITE_URL: event.target.value,
+                                    },
+                                  }))
+                              }
+                              placeholder={computedSiteUrl}
+                          />
+                        </label>
+                      </div>
+                      <label className="launch-field mt-4">
+                        <span>{t('Extra env vars (.env format)')}</span>
+                        <textarea
+                            value={form.extraEnvText}
+                            onChange={(event) =>
+                                setForm((previous) => ({
+                                  ...previous,
+                                  extraEnvText: event.target.value,
+                                }))
+                            }
+                            rows={5}
+                            placeholder={'OPENROUTER_API_KEY=...\nSENTRY_DSN=...'}
                         />
                       </label>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        <a
-                          className="launch-link"
-                          href="https://vercel.com/account/tokens"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {messages.step2.createTokenInVercel}
-                        </a>
-                      </p>
-                    </>
-                  )}
-
-                </>
-              )}
-            </div>
-
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {messages.step2.reownProjectIdTitle}
-                  </h3>
-                  <InfoTip text={messages.step2.reownProjectIdInfo} />
-                </div>
-                {step2ReownReady ? (
-                  <CircleCheckIcon className="size-5 text-primary" />
-                ) : (
-                  <CircleIcon className="size-5 text-muted-foreground" />
+                    </div>
                 )}
               </div>
-              <label className="launch-field">
-                <span className="sr-only">{messages.step2.reownProjectIdLabel}</span>
-                <input
-                  value={form.env.REOWN_APPKIT_PROJECT_ID}
-                  onChange={(event) =>
-                    setForm((previous) => ({
-                      ...previous,
-                      env: {
-                        ...previous.env,
-                        REOWN_APPKIT_PROJECT_ID: event.target.value,
-                      },
-                    }))
-                  }
-                  placeholder={messages.common.required}
-                  required
-                />
-              </label>
-              <p className="mt-2 text-xs text-muted-foreground">
-                {messages.step2.reownProjectIdHelpPrefix}{" "}
-                <a
-                  className="launch-link"
-                  href="https://cloud.reown.com"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  cloud.reown.com
-                </a>
-                {" "}{messages.step2.reownProjectIdHelpSuffix}
-              </p>
-            </div>
 
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {messages.step2.supabaseDatabaseTitle}
-                  </h3>
-                  <InfoTip text={messages.step2.supabaseDatabaseInfo} />
+              <div className="launch-step-actions launch-step-footer mt-6">
+                <StepFooterLanguageControl />
+                <StepFooterBrand />
+                <div className="launch-step-footer-control launch-binary-nav">
+                  <span className="launch-binary-label">{t('Continue')}</span>
+                  <button
+                      type="button"
+                      className="launch-choice-button launch-choice-no"
+                      onClick={() => setActiveStep(1)}
+                  >
+                    <ArrowLeftIcon className="size-3.5" />
+                    {t('No')}
+                  </button>
+                  <button
+                      type="button"
+                      className="launch-choice-button launch-choice-yes"
+                      disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
+                      onClick={() => setActiveStep(3)}
+                  >
+                    {t('Yes')}
+                    <ArrowRightIcon className="size-3.5" />
+                  </button>
                 </div>
-                {step2DatabaseReady ? (
-                  <CircleCheckIcon className="size-5 text-primary" />
-                ) : (
-                  <CircleIcon className="size-5 text-muted-foreground" />
-                )}
               </div>
-              <div className="launch-field-inline">
-                <select
-                  className="launch-inline-control"
-                  value={form.supabaseResourceId}
-                  onChange={(event) =>
-                    setForm((previous) => ({
-                      ...previous,
-                      supabaseResourceId: event.target.value,
-                    }))
-                  }
-                  disabled={isLoadingSupabaseResources}
-                >
-                  <option value={SUPABASE_CREATE_NEW_OPTION}>
-                    {messages.common.createNewDatabase}
-                  </option>
-                  {supabaseResources.map((resource, index) => (
-                    <option key={resource.id} value={resource.id}>
-                      {formatMessage(messages.common.supabaseDatabaseOption, {
-                        index: index + 1,
-                        name: resource.name,
-                      })}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  type="button"
-                  className="launch-mini-button"
-                  onClick={() => {
-                    void loadSupabaseResources();
-                  }}
-                  disabled={!step2VercelReady || isLoadingSupabaseResources}
-                >
-                  {isLoadingSupabaseResources
-                    ? messages.common.refreshing
-                    : messages.common.refresh}
-                </button>
-              </div>
-              {supabaseResourcesError && (
-                <p className="mt-2 text-xs font-medium text-primary/90">{supabaseResourcesError}</p>
-              )}
-            </div>
-          </div>
+            </section>
+        )}
 
-          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-4">
-            <button
-              type="button"
-              className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
-              onClick={() => setStep2AdvancedOpen((previous) => !previous)}
-            >
-              <span>{messages.common.advancedOptions}</span>
-              <ChevronDownIcon
-                className={`size-4 transition-transform ${step2AdvancedOpen ? "rotate-180" : ""}`}
-              />
-            </button>
+        {activeStep === 3 && (
+            <section className="launch-island launch-step3-island">
+              <h2 className="sr-only">{t('Step 3. Deploy')}</h2>
 
-            {step2AdvancedOpen && (
-              <div className="mt-4 border-t border-border/60 pt-4">
-                <div className="launch-grid">
-                  <label className="launch-field">
-                    <span>{messages.step2.projectSlugAuto}</span>
-                    <input value={resolvedProjectSlug} readOnly />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.projectSlugOverride}</span>
-                    <input
-                      value={form.projectSlugOverride}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          projectSlugOverride: event.target.value,
-                        }))
-                      }
-                      placeholder={messages.step2.projectSlugOverridePlaceholder}
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.repository}</span>
-                    <input
-                      value={form.gitRepo}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          gitRepo: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.branch}</span>
-                    <input
-                      value={form.gitBranch}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          gitBranch: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.vercelTeamId}</span>
-                    <input
-                      value={form.vercelTeamId}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          vercelTeamId: event.target.value,
-                          supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                        }))
-                      }
-                      placeholder={messages.step2.vercelTeamIdPlaceholder}
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.supabaseRegion}</span>
-                    <input
-                      value={form.supabaseRegion}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          supabaseRegion: event.target.value,
-                        }))
-                      }
-                      placeholder={messages.step2.supabaseRegionPlaceholder}
-                    />
-                  </label>
-                  <label className="launch-field">
-                    <span>BETTER_AUTH_SECRET</span>
-                    <div className="launch-field-inline">
-                      <input
-                        value={form.env.BETTER_AUTH_SECRET}
-                        onChange={(event) =>
-                          setForm((previous) => ({
-                            ...previous,
-                            env: {
-                              ...previous.env,
-                              BETTER_AUTH_SECRET: event.target.value,
-                            },
-                          }))
-                        }
-                        placeholder={messages.step2.betterAuthSecretPlaceholder}
-                      />
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={() =>
-                          setForm((previous) => ({
-                            ...previous,
-                            env: {
-                              ...previous.env,
-                              BETTER_AUTH_SECRET: randomString(40),
-                            },
-                          }))
-                        }
-                      >
-                        {messages.common.generate}
-                      </button>
-                    </div>
-                  </label>
-                  <label className="launch-field">
-                    <span>CRON_SECRET</span>
-                    <div className="launch-field-inline">
-                      <input
-                        value={form.env.CRON_SECRET}
-                        onChange={(event) =>
-                          setForm((previous) => ({
-                            ...previous,
-                            env: {
-                              ...previous.env,
-                              CRON_SECRET: event.target.value,
-                            },
-                          }))
-                        }
-                        placeholder={messages.step2.cronSecretPlaceholder}
-                      />
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={() =>
-                          setForm((previous) => ({
-                            ...previous,
-                            env: {
-                              ...previous.env,
-                              CRON_SECRET: randomString(28),
-                            },
-                          }))
-                        }
-                      >
-                        {messages.common.generate}
-                      </button>
-                    </div>
-                  </label>
-                  <label className="launch-field">
-                    <span>{messages.step2.siteUrlOverride}</span>
-                    <input
-                      value={form.env.SITE_URL}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          env: {
-                            ...previous.env,
-                            SITE_URL: event.target.value,
-                          },
-                        }))
-                      }
-                      placeholder={computedSiteUrl}
-                    />
-                  </label>
-                </div>
-                <label className="launch-field mt-4">
-                  <span>{messages.step2.extraEnvVars}</span>
-                  <textarea
-                    value={form.extraEnvText}
-                    onChange={(event) =>
-                      setForm((previous) => ({
-                        ...previous,
-                        extraEnvText: event.target.value,
-                      }))
-                    }
-                    rows={5}
-                    placeholder={messages.step2.extraEnvPlaceholder}
-                  />
-                </label>
-              </div>
-            )}
-          </div>
-
-          <div className="launch-step-actions launch-step-footer mt-6">
-            <StepFooterLanguageControl />
-            <StepFooterBrand />
-            <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">{messages.common.continue}</span>
-              <button
-                type="button"
-                className="launch-choice-button launch-choice-no"
-                onClick={() => setActiveStep(1)}
-              >
-                <ArrowLeftIcon className="size-3.5" />
-                {messages.common.no}
-              </button>
-              <button
-                type="button"
-                className="launch-choice-button launch-choice-yes"
-                disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
-                onClick={() => setActiveStep(3)}
-              >
-                {messages.common.yes}
-                <ArrowRightIcon className="size-3.5" />
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {activeStep === 3 && (
-        <section className="launch-island launch-step3-island">
-          <h2 className="sr-only">{messages.step3.srTitle}</h2>
-
-          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-5">
-            <div className="space-y-3">
-              {timeline.map((entry) => (
-                <div key={entry.id} className="flex items-center gap-3 text-sm">
+              <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-5">
+                <div className="space-y-3">
+                  {timeline.map((entry) => (
+                      <div key={entry.id} className="flex items-center gap-3 text-sm">
                   <span
-                    className={`launch-timeline-dot ${
-                      entry.status === "done"
-                        ? "is-done"
-                        : entry.status === "running"
-                          ? "is-running"
-                          : entry.status === "error"
-                            ? "is-error"
-                            : ""
-                    }`}
+                      className={`launch-timeline-dot ${
+                          entry.status === "done"
+                              ? "is-done"
+                              : entry.status === "running"
+                                  ? "is-running"
+                                  : entry.status === "error"
+                                      ? "is-error"
+                                      : ""
+                      }`}
                   >
                     {entry.status === "done" ? <CheckIcon className="size-3" /> : null}
                   </span>
-                  <span
-                    className={
-                      entry.status === "error"
-                        ? "text-destructive"
-                        : entry.status === "running"
-                          ? "text-primary"
-                          : "text-muted-foreground"
-                    }
-                  >
+                        <span
+                            className={
+                              entry.status === "error"
+                                  ? "text-destructive"
+                                  : entry.status === "running"
+                                      ? "text-primary"
+                                      : "text-muted-foreground"
+                            }
+                        >
                     {entry.label}
                   </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="launch-step-actions launch-step-footer mt-6">
-              <StepFooterLanguageControl />
-              <StepFooterBrand />
-              <div className="launch-step-footer-control launch-binary-nav">
-                <span className="launch-binary-label">{messages.common.deploy}</span>
-                <button
-                  type="button"
-                  className="launch-choice-button launch-choice-no"
-                  onClick={() => setActiveStep(2)}
-                >
-                  <ArrowLeftIcon className="size-3.5" />
-                  {messages.common.no}
-                </button>
-                <button
-                  type="submit"
-                  className="launch-choice-button launch-choice-yes"
-                  disabled={
-                    isLaunching ||
-                    !canContinueStep3 ||
-                    !form.env.REOWN_APPKIT_PROJECT_ID.trim()
-                  }
-                >
-                  {isLaunching ? (
-                    <span className="inline-flex items-center gap-2">
-                      <Loader2Icon className="size-4 animate-spin" />
-                      {messages.common.yes}
-                    </span>
-                  ) : (
-                    <>
-                      <RocketIcon className="size-3.5" />
-                      {messages.common.yes}
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {requestError && (
-            <div className="mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive">
-              {requestError}
-            </div>
-          )}
-
-          {result && (
-            <section className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
-              <h3 className="text-base font-semibold text-foreground">{messages.common.result}</h3>
-              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <div>
-                  {messages.common.status}:{" "}
-                  <strong className={result.ok ? "text-primary" : "text-destructive"}>
-                    {result.ok ? messages.common.success : messages.common.failed}
-                  </strong>
-                </div>
-                <div>
-                  {messages.common.project}: <strong>{result.projectName ?? messages.common.none}</strong>
-                </div>
-                <div>
-                  {messages.common.url}:{" "}
-                  {result.projectUrl ? (
-                    <a className="launch-link" href={result.projectUrl} target="_blank" rel="noreferrer">
-                      {result.projectUrl}
-                    </a>
-                  ) : (
-                    messages.common.none
-                  )}
-                </div>
-                <div>
-                  {messages.common.vercelDashboard}:{" "}
-                  {result.vercelDashboardUrl ? (
-                    <a
-                      className="launch-link"
-                      href={result.vercelDashboardUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {result.vercelDashboardUrl}
-                    </a>
-                  ) : (
-                    messages.common.none
-                  )}
-                </div>
-                <div>
-                  {messages.common.supabaseDashboard}:{" "}
-                  {result.supabaseDashboardUrl ? (
-                    <a
-                      className="launch-link"
-                      href={result.supabaseDashboardUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {result.supabaseDashboardUrl}
-                    </a>
-                  ) : (
-                    messages.common.none
-                  )}
-                </div>
-                <div>
-                  {messages.common.duration}: {Math.round(result.durationMs / 100) / 10}s
-                </div>
-              </div>
-
-              {result.ok && result.projectName && (
-                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-foreground">
-                        {messages.domain.customDomainOptional}
-                      </h4>
-                      <InfoTip text={messages.domain.customDomainInfo} />
-                    </div>
-                    {domainState && (
-                      <span
-                        className={`text-xs font-semibold ${
-                          domainState.verified ? "text-primary" : "text-muted-foreground"
-                        }`}
-                      >
-                        {domainState.verified
-                          ? messages.common.verified
-                          : messages.common.pendingVerification}
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-3 launch-field-inline">
-                    <input
-                      className="launch-inline-control"
-                      value={customDomain}
-                      onChange={(event) => setCustomDomain(event.target.value)}
-                      placeholder={messages.domain.customDomainPlaceholder}
-                    />
-                    <button
-                      type="button"
-                      className="launch-mini-button"
-                      onClick={() => {
-                        void handleDomainAction("add");
-                      }}
-                      disabled={domainActionLoading !== null}
-                    >
-                      {domainActionLoading === "add"
-                        ? messages.common.adding
-                        : messages.common.addDomain}
-                    </button>
-                    <button
-                      type="button"
-                      className="launch-mini-button"
-                      onClick={() => {
-                        void handleDomainAction("verify");
-                      }}
-                      disabled={domainActionLoading !== null || !customDomain.trim()}
-                    >
-                      {domainActionLoading === "verify"
-                        ? messages.common.verifying
-                        : messages.common.verify}
-                    </button>
-                  </div>
-                  {domainActionError && (
-                    <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
-                  )}
-                  {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
-                    <div className="launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
-                      <p className="font-semibold text-foreground">
-                        {messages.domain.nameserversLabel}
-                      </p>
-                      <div className="mt-1 space-y-1">
-                        {domainState.nameservers.map((nameServer) => (
-                          <p key={nameServer} className="font-mono text-[11px] leading-4">
-                            {nameServer}
-                          </p>
-                        ))}
                       </div>
-                    </div>
-                  )}
-                  {domainState && !domainState.verified && domainState.verification.length > 0 && (
-                    <div className="mt-3 space-y-2">
-                      {domainState.verification.map((record, index) => (
-                        <div
-                          key={`${record.type ?? "record"}-${record.domain ?? "domain"}-${index}`}
-                          className="launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
-                        >
-                          <span className="font-semibold text-foreground">
-                            {record.type || messages.common.dns}:
-                          </span>{" "}
-                          {record.domain || "@"} {"->"}{" "}
-                          {record.value || messages.domain.checkVercelDnsInstructions}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  ))}
                 </div>
+
+                <div className="launch-step-actions launch-step-footer mt-6">
+                  <StepFooterLanguageControl />
+                  <StepFooterBrand />
+                  <div className="launch-step-footer-control launch-binary-nav">
+                    <span className="launch-binary-label">{t('Deploy')}</span>
+                    <button
+                        type="button"
+                        className="launch-choice-button launch-choice-no"
+                        onClick={() => setActiveStep(2)}
+                    >
+                      <ArrowLeftIcon className="size-3.5" />
+                      {t('No')}
+                    </button>
+                    <button
+                        type="submit"
+                        className="launch-choice-button launch-choice-yes"
+                        disabled={
+                            isLaunching ||
+                            !canContinueStep3 ||
+                            !form.env.REOWN_APPKIT_PROJECT_ID.trim()
+                        }
+                    >
+                      {isLaunching ? (
+                          <span className="inline-flex items-center gap-2">
+                      <Loader2Icon className="size-4 animate-spin" />
+                            {t('Yes')}
+                    </span>
+                      ) : (
+                          <>
+                            <RocketIcon className="size-3.5" />
+                            {t('Yes')}
+                          </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {requestError && (
+                  <div className="mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive">
+                    {requestError}
+                  </div>
               )}
 
-              <div className="mt-5">
-                <h4 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                  {messages.common.logs}
-                </h4>
-                <LogList logs={result.logs} />
-              </div>
+              {result && (
+                  <section className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
+                    <h3 className="text-base font-semibold text-foreground">{t('Result')}</h3>
+                    <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      <div>
+                        {t('Status')}:{" "}
+                        <strong className={result.ok ? "text-primary" : "text-destructive"}>
+                          {result.ok ? t('success') : t('failed')}
+                        </strong>
+                      </div>
+                      <div>
+                        {t('Project')}: <strong>{result.projectName ?? '-'}</strong>
+                      </div>
+                      <div>
+                        URL:{" "}
+                        {result.projectUrl ? (
+                            <a className="launch-link" href={result.projectUrl} target="_blank" rel="noreferrer">
+                              {result.projectUrl}
+                            </a>
+                        ) : '-'}
+                      </div>
+                      <div>
+                        {t('Vercel dashboard')}:{" "}
+                        {result.vercelDashboardUrl ? (
+                            <a
+                                className="launch-link"
+                                href={result.vercelDashboardUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                              {result.vercelDashboardUrl}
+                            </a>
+                        ) : '-'}
+                      </div>
+                      <div>
+                        {t('Supabase dashboard')}:{" "}
+                        {result.supabaseDashboardUrl ? (
+                            <a
+                                className="launch-link"
+                                href={result.supabaseDashboardUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                              {result.supabaseDashboardUrl}
+                            </a>
+                        ) : '-'}
+                      </div>
+                      <div>
+                        {t('Duration')}: {Math.round(result.durationMs / 100) / 10}s
+                      </div>
+                    </div>
+
+                    {result.ok && result.projectName && (
+                        <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-sm font-semibold text-foreground">
+                                {t('Custom domain (optional)')}
+                              </h4>
+                              <InfoTip text={t('Use your own domain after deploy. Add it first, then verify DNS records.')} />
+                            </div>
+                            {domainState && (
+                                <span
+                                    className={`text-xs font-semibold ${
+                                        domainState.verified ? "text-primary" : "text-muted-foreground"
+                                    }`}
+                                >
+                        {domainState.verified
+                            ? t('Verified')
+                            : t('Pending verification')}
+                      </span>
+                            )}
+                          </div>
+                          <div className="mt-3 launch-field-inline">
+                            <input
+                                className="launch-inline-control"
+                                value={customDomain}
+                                onChange={(event) => setCustomDomain(event.target.value)}
+                                placeholder="app.yourdomain.com"
+                            />
+                            <button
+                                type="button"
+                                className="launch-mini-button"
+                                onClick={() => {
+                                  void handleDomainAction("add");
+                                }}
+                                disabled={domainActionLoading !== null}
+                            >
+                              {domainActionLoading === "add"
+                                  ? t('Adding...')
+                                  : t('Add domain')}
+                            </button>
+                            <button
+                                type="button"
+                                className="launch-mini-button"
+                                onClick={() => {
+                                  void handleDomainAction("verify");
+                                }}
+                                disabled={domainActionLoading !== null || !customDomain.trim()}
+                            >
+                              {domainActionLoading === "verify"
+                                  ? t('Verifying...')
+                                  : t('Verify')}
+                            </button>
+                          </div>
+                          {domainActionError && (
+                              <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
+                          )}
+                          {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
+                              <div className="launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
+                                <p className="font-semibold text-foreground">
+                                  {t('Nameservers to set at your registrar:')}
+                                </p>
+                                <div className="mt-1 space-y-1">
+                                  {domainState.nameservers.map((nameServer) => (
+                                      <p key={nameServer} className="font-mono text-[11px] leading-4">
+                                        {nameServer}
+                                      </p>
+                                  ))}
+                                </div>
+                              </div>
+                          )}
+                          {domainState && !domainState.verified && domainState.verification.length > 0 && (
+                              <div className="mt-3 space-y-2">
+                                {domainState.verification.map((record, index) => (
+                                    <div
+                                        key={`${record.type ?? "record"}-${record.domain ?? "domain"}-${index}`}
+                                        className="launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
+                                    >
+                          <span className="font-semibold text-foreground">
+                            {record.type || 'DNS'}:
+                          </span>{" "}
+                                      {record.domain || "@"} {"->"}{" "}
+                                      {record.value || t('check Vercel DNS instructions')}
+                                    </div>
+                                ))}
+                              </div>
+                          )}
+                        </div>
+                    )}
+
+                    <div className="mt-5">
+                      <h4 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                        Logs
+                      </h4>
+                      <LogList locale={locale} logs={result.logs} />
+                    </div>
+                  </section>
+              )}
             </section>
-          )}
-        </section>
-      )}
+        )}
 
-      <ActionPrompt
-        open={connectPromptOpen}
-        title={messages.modals.connectingWalletTitle}
-        description={messages.modals.connectingWalletDescription}
-        showConnectedWalletIcon={isAppKitReady}
-        allowClose
-        onClose={() => setConnectPromptOpen(false)}
-      />
+        <ActionPrompt
+            open={connectPromptOpen}
+            title={t('Connecting wallet')}
+            description={t('Open your wallet and approve the connection to continue.')}
+            showConnectedWalletIcon={isAppKitReady}
+            allowClose
+            onClose={() => setConnectPromptOpen(false)}
+        />
 
-      <ActionPrompt
-        open={signPromptOpen}
-        title={messages.modals.waitingForSignatureTitle}
-        description={messages.modals.waitingForSignatureDescription}
-        showConnectedWalletIcon={isAppKitReady}
-        allowClose
-        onClose={() => setSignPromptOpen(false)}
-      />
-    </form>
+        <ActionPrompt
+            open={signPromptOpen}
+            title={t('Waiting for signature')}
+            description={t('Approve the signature in your wallet to continue.')}
+            showConnectedWalletIcon={isAppKitReady}
+            allowClose
+            onClose={() => setSignPromptOpen(false)}
+        />
+      </form>
   );
 }

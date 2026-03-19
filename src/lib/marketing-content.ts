@@ -1,10 +1,9 @@
 import { parseHTML } from "linkedom/worker";
-import type { SiteLocale } from "@/i18n/site";
-import { defaultSiteLocale, localeHref } from "@/i18n/site";
+import {DEFAULT_LOCALE, SupportedLocale} from "@/i18n/locales";
 
 export const DEMO_ORIGIN = "https://demo.kuest.com";
 
-const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SiteLocale, string> = {
+const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SupportedLocale, string> = {
   en: "Free",
   de: "Kostenlos",
   es: "Gratis",
@@ -39,9 +38,9 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-function sanitizeTranslatedHref(href: string, locale: SiteLocale) {
+function sanitizeTranslatedHref(href: string, locale: SupportedLocale) {
   const trimmedHref = href.trim();
-  const localizedHref = trimmedHref === "/launch" ? localeHref(locale, "/launch") : trimmedHref;
+  const localizedHref = trimmedHref === "/launch" ? '/launch' : trimmedHref;
 
   if (!localizedHref) {
     return null;
@@ -95,7 +94,7 @@ function sanitizeTranslatedRel(rel: string | null, target: string | null) {
   return relTokens.size > 0 ? Array.from(relTokens).join(" ") : null;
 }
 
-function sanitizeTranslatedNode(node: ChildNode, locale: SiteLocale): string {
+function sanitizeTranslatedNode(node: ChildNode, locale: SupportedLocale): string {
   if (node.nodeType === 3) {
     return escapeHtml(node.textContent ?? "");
   }
@@ -155,7 +154,7 @@ function sanitizeTranslatedNode(node: ChildNode, locale: SiteLocale): string {
   return childMarkup;
 }
 
-export function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
+export function sanitizeTranslatedHtml(html: string, locale: SupportedLocale) {
   const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
 
   return Array.from(document.body.childNodes)
@@ -163,23 +162,23 @@ export function sanitizeTranslatedHtml(html: string, locale: SiteLocale) {
     .join("");
 }
 
-export function getDemoLocalePath(locale: SiteLocale) {
-  return locale === defaultSiteLocale ? "" : `/${locale}`;
+export function getDemoLocalePath(locale: SupportedLocale) {
+  return locale === DEFAULT_LOCALE ? "" : `/${locale}`;
 }
 
-export function getDemoHref(locale: SiteLocale) {
+export function getDemoHref(locale: SupportedLocale) {
   return `${DEMO_ORIGIN}${getDemoLocalePath(locale)}`;
 }
 
-export function getDemoEmbedSrc(locale: SiteLocale) {
+export function getDemoEmbedSrc(locale: SupportedLocale) {
   const path = getDemoLocalePath(locale);
   return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}?embed-preview=1`;
 }
 
-export function getDemoLabel(locale: SiteLocale) {
+export function getDemoLabel(locale: SupportedLocale) {
   return `demo.kuest.com${getDemoLocalePath(locale)}`;
 }
 
-export function getLandingHeroAccent(locale: SiteLocale) {
+export function getLandingHeroAccent(locale: SupportedLocale) {
   return LANDING_HERO_TITLE_ACCENT_BY_LOCALE[locale];
 }
