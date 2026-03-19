@@ -2,10 +2,11 @@ import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
-import { Link } from '@/i18n/navigation'
+import { getPathname } from '@/i18n/navigation'
 
 export default function LanguageControl({
   locale,
+  path,
   controlId,
   buttonId,
   menuId,
@@ -53,9 +54,9 @@ export default function LanguageControl({
       </button>
       <div id={menuId} className="site-language-menu" role="listbox" aria-label={ariaLabel}>
         {LANGUAGE_OPTIONS.map(option => (
-          <Link
+          <a
             key={option.code}
-            href={option.code}
+            href={getPathname({ href: path, locale: option.code })}
             className={`site-language-option ${option.code === locale ? 'is-selected' : ''}`}
             role="option"
             aria-selected={option.code === locale}
@@ -64,13 +65,13 @@ export default function LanguageControl({
               <Image
                 className="site-language-flag"
                 src={option.flagSrc}
-                alt=""
+                alt={option.label}
                 width={18}
                 height={12}
               />
               <span>{option.label}</span>
             </span>
-          </Link>
+          </a>
         ))}
       </div>
     </div>
