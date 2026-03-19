@@ -521,7 +521,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
         </div>
       </nav>
 
-      <main id="page-top" className="page">
+      <main id="page-top" className="page enterprise-page">
         <section className="panel-wrap panel-static hero-stack-panel" id="p0">
           <div className="panel-sticky">
             <div className="panel-inner hero-stack">
@@ -722,12 +722,10 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
         <section className="panel-wrap panel-static" id="p3">
           <div className="panel-sticky">
             <div className="panel-inner max-w-295 grid-cols-1 gap-10">
-              <div className="solution-split enterprise-solution-split r">
-                <div className="solution-head">
+              <div className="solution-flow-stage enterprise-solution-flow-stage r">
+                <div className="solution-flow-head enterprise-solution-flow-head">
                   <h2 className="sh">{t('From signed agreement to live platform — in days, not quarters.')}</h2>
-                </div>
-                <div className="solution-body enterprise-solution-body">
-                  <div className="solution-copy-lead">
+                  <div className="solution-copy-lead enterprise-solution-flow-copy">
                     <p className="bt">{t('Audited smart contracts, shared liquidity from day one, full white-label — your team signs off on the brand, we handle everything else.')}</p>
                   </div>
                 </div>

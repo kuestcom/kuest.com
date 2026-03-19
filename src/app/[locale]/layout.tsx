@@ -3,7 +3,6 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { notFound } from 'next/navigation'
-import Script from 'next/script'
 import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
@@ -46,7 +45,7 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
     <html
       lang={locale}
       className={`${openSauceOne.variable} ${geistMono.variable}`}
-      data-theme-mode="light"
+      data-theme-mode="dark"
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans">
@@ -54,7 +53,7 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
           attribute="data-theme-mode"
           storageKey="kuest-theme-mode"
           enableSystem={false}
-          defaultTheme="light"
+          defaultTheme="dark"
           disableTransitionOnChange
         >
           <NextIntlClientProvider locale={locale}>
@@ -62,30 +61,6 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
-      <Script
-        id="timeline"
-        dangerouslySetInnerHTML={{
-          __html: `const panels=[...document.querySelectorAll('.panel-wrap')].map(el=>el.id).filter(Boolean);
-                        const dots=document.querySelectorAll('.tl-dot');
-                        function updateSpine(){
-                          const mid=window.innerHeight/2+scrollY;
-                          let active=0;
-                          panels.forEach((id,i)=>{
-                            const el=document.getElementById(id);
-                            if(!el)return;
-                            const top=el.offsetTop,bot=top+el.offsetHeight;
-                            if(mid>=top&&mid<bot)active=i;
-                          });
-                          dots.forEach(d=>d.classList.toggle('a',Number(d.dataset.p)===active));
-                        }
-                        window.addEventListener('scroll',updateSpine,{passive:true});
-                        dots.forEach(d=>d.addEventListener('click',()=>{
-                          const id=panels[Number(d.dataset.p)];
-                          const el=id?document.getElementById(id):null;
-                          if(el)el.scrollIntoView({behavior:'smooth'});
-                        }));`,
-        }}
-      />
     </html>
   )
 }

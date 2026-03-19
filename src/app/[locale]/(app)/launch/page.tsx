@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { hasLocale } from 'next-intl'
 import { getExtracted } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import BackgroundParticles from '@/components/BackgroundParticles'
 import LaunchpadForm from '@/components/LaunchpadForm'
 import { routing } from '@/i18n/routing'
 
@@ -38,9 +37,7 @@ export default async function LaunchPage({ params }: PageProps<'/[locale]/launch
   const t = await getExtracted()
 
   return (
-    <main className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-8 sm:py-16">
-      <BackgroundParticles />
-
+    <main className="launch-page relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-8 sm:py-16">
       <section className="relative z-1 mb-10">
         <h1 className="launch-hero-title text-center">{t('Launch your Prediction Market')}</h1>
         <p className="launch-hero-subtitle mx-auto mt-4 max-w-3xl text-center">

@@ -1,7 +1,7 @@
 'use client'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function ThemeToggle({
   id,
@@ -15,17 +15,20 @@ export default function ThemeToggle({
   labelToLight: string
 }) {
   const { setTheme, resolvedTheme } = useTheme()
-
-  const mode = useMemo<'light' | 'dark'>(() => {
-    if (resolvedTheme === 'dark') {
-      return 'dark'
-    }
-    return 'light'
-  }, [resolvedTheme])
+  const [isMounted, setIsMounted] = useState(false)
+  const mode: 'light' | 'dark' = isMounted && resolvedTheme === 'dark' ? 'dark' : 'light'
 
   const label = mode === 'dark' ? labelToLight : labelToDark
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) {
+      return
+    }
+
     // Keep browser UI theme color in sync with the current site theme.
     const themeMeta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null
     if (!themeMeta) {
@@ -35,7 +38,7 @@ export default function ThemeToggle({
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim()
     const fallback = mode === 'dark' ? '#CDFF00' : '#0e1117'
     themeMeta.setAttribute('content', accent || fallback)
-  }, [mode])
+  }, [isMounted, mode])
 
   return (
     <button

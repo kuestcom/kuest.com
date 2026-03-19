@@ -237,6 +237,38 @@
 }
 
 /* Launchpad UI layer */
+.launch-page {
+  isolation: isolate;
+  overflow: clip;
+}
+
+.launch-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top center, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 40%),
+    radial-gradient(circle at 14% 18%, color-mix(in oklab, var(--foreground) 5%, transparent) 0%, transparent 24%),
+    radial-gradient(circle at 86% 10%, color-mix(in oklab, var(--primary) 8%, transparent) 0%, transparent 22%),
+    linear-gradient(180deg, color-mix(in oklab, var(--background) 96%, transparent) 0%, color-mix(in oklab, var(--card) 88%, transparent) 100%);
+}
+
+.launch-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 72%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--border) 56%, transparent) 1px, transparent 1px);
+  background-size: 128px 128px;
+  mask-image: radial-gradient(circle at center, black 0%, black 56%, transparent 88%);
+  opacity: 0.24;
+}
+
 .launch-shell {
   border: 1px solid color-mix(in oklab, var(--border) 92%, transparent);
   border-radius: 1.5rem;
@@ -1184,6 +1216,11 @@
 }
 
 @media (max-width: 768px) {
+  .launch-page::after {
+    background-size: 88px 88px;
+    opacity: 0.16;
+  }
+
   .launch-hero-title {
     font-size: 48px;
   }

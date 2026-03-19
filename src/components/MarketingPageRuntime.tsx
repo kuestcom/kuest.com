@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
 interface AttentionScrollNode<T extends HTMLElement> {
@@ -18,8 +19,14 @@ type AttentionScrollStep
   }
 
 const ATTENTION_PUNCTUATION_TOKEN_RE = /^[.,!?;:…%]+$/u
-const ATTENTION_SCROLL_TRAVEL_FACTOR = 1
-const ATTENTION_SCROLL_HOLD_FACTOR = 0.02
+const ATTENTION_SCROLL_TRAVEL_FACTOR = 0.74
+const ATTENTION_SCROLL_MIN_TRAVEL_FACTOR = 0.3
+const ATTENTION_SCROLL_MAX_TRAVEL_FACTOR = 0.58
+const ATTENTION_SCROLL_HOLD_FACTOR = 0.012
+const ENTERPRISE_ATTENTION_SCROLL_TRAVEL_FACTOR = 0.66
+const ENTERPRISE_ATTENTION_SCROLL_MIN_TRAVEL_FACTOR = 0.24
+const ENTERPRISE_ATTENTION_SCROLL_MAX_TRAVEL_FACTOR = 0.44
+const ENTERPRISE_ATTENTION_SCROLL_HOLD_FACTOR = 0.006
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -32,6 +39,8 @@ export default function MarketingPageRuntime({
   nextSectionId: string
   finalSectionId?: string
 }) {
+  const pathname = usePathname()
+
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.r'))
 
@@ -60,7 +69,7 @@ export default function MarketingPageRuntime({
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     const timelines = Array.from(document.querySelectorAll<HTMLElement>('.solution-timeline'))
@@ -99,7 +108,68 @@ export default function MarketingPageRuntime({
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [pathname])
+
+  useEffect(() => {
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('.panel-wrap')).filter(panel => Boolean(panel.id))
+    const dots = Array.from(document.querySelectorAll<HTMLElement>('.tl-dot'))
+
+    if (!panels.length || !dots.length) {
+      return
+    }
+
+    let ticking = false
+
+    function update() {
+      ticking = false
+
+      const midpoint = window.scrollY + window.innerHeight / 2
+      let activeIndex = panels.findIndex((panel) => {
+        const top = panel.offsetTop
+        const bottom = top + panel.offsetHeight
+
+        return midpoint >= top && midpoint < bottom
+      })
+
+      if (activeIndex === -1) {
+        activeIndex = midpoint < panels[0].offsetTop ? 0 : panels.length - 1
+      }
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('a', index === activeIndex)
+      })
+    }
+
+    function queueUpdate() {
+      if (ticking) {
+        return
+      }
+
+      ticking = true
+      window.requestAnimationFrame(update)
+    }
+
+    const clickHandlers = dots.map((dot, index) => {
+      function handleClick() {
+        panels[index]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+
+      dot.addEventListener('click', handleClick)
+      return { dot, handleClick }
+    })
+
+    update()
+    window.addEventListener('scroll', queueUpdate, { passive: true })
+    window.addEventListener('resize', queueUpdate)
+
+    return () => {
+      clickHandlers.forEach(({ dot, handleClick }) => {
+        dot.removeEventListener('click', handleClick)
+      })
+      window.removeEventListener('scroll', queueUpdate)
+      window.removeEventListener('resize', queueUpdate)
+    }
+  }, [pathname])
 
   useEffect(() => {
     const section = document.getElementById('p1-scroll')
@@ -120,6 +190,7 @@ export default function MarketingPageRuntime({
     const blocks = Array.from(section.querySelectorAll<HTMLElement>('.attention-scroll-block'))
     const copy = section.querySelector<HTMLElement>('.attention-scroll-copy')
     const dockNav = document.getElementById('dockNav')
+    const isEnterprisePage = Boolean(section.closest('.enterprise-page'))
 
     if (!copy || !blocks.length) {
       return
@@ -247,8 +318,16 @@ export default function MarketingPageRuntime({
       const firstCenter = firstBlock.offsetTop + firstBlock.offsetHeight / 2
       const lastCenter = lastBlock.offsetTop + lastBlock.offsetHeight / 2
       const contentTravel = Math.max(lastCenter - firstCenter, 1)
-      const travel = Math.max(contentTravel * ATTENTION_SCROLL_TRAVEL_FACTOR, 1)
-      const hold = window.innerHeight * ATTENTION_SCROLL_HOLD_FACTOR
+      const travelFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_TRAVEL_FACTOR : ATTENTION_SCROLL_TRAVEL_FACTOR
+      const minTravelFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_MIN_TRAVEL_FACTOR : ATTENTION_SCROLL_MIN_TRAVEL_FACTOR
+      const maxTravelFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_MAX_TRAVEL_FACTOR : ATTENTION_SCROLL_MAX_TRAVEL_FACTOR
+      const holdFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_HOLD_FACTOR : ATTENTION_SCROLL_HOLD_FACTOR
+      const travel = clamp(
+        contentTravel * travelFactor,
+        window.innerHeight * minTravelFactor,
+        window.innerHeight * maxTravelFactor,
+      )
+      const hold = window.innerHeight * holdFactor
 
       section.style.height = `${Math.ceil(window.innerHeight + travel + hold)}px`
       layout.sectionTop = section.offsetTop
@@ -357,7 +436,7 @@ export default function MarketingPageRuntime({
       window.removeEventListener('scroll', queue)
       window.removeEventListener('resize', remeasureAndQueue)
     }
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     const heroNav = document.getElementById('heroNav')
@@ -389,7 +468,7 @@ export default function MarketingPageRuntime({
       window.removeEventListener('scroll', sync)
       window.removeEventListener('resize', sync)
     }
-  }, [finalSectionId, nextSectionId])
+  }, [finalSectionId, nextSectionId, pathname])
 
   useEffect(() => {
     const controls = Array.from(document.querySelectorAll<HTMLElement>('.site-language-control')).filter(
@@ -511,7 +590,7 @@ export default function MarketingPageRuntime({
       document.removeEventListener('click', handleDocumentClick)
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [])
+  }, [pathname])
 
   return null
 }
