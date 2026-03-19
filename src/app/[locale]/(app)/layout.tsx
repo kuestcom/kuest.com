@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-import { AppProviders } from "@/providers/app-providers";
+import type { ReactNode } from 'react'
+import { AppProviders } from '@/providers/AppProviders'
 
 interface AppRouteLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function AppRouteLayout({ children }: AppRouteLayoutProps) {
-  return <AppProviders>{children}</AppProviders>;
+  return <AppProviders>{children}</AppProviders>
 }

@@ -1,936 +1,545 @@
 {
-  "landing": {
-    "meta": {
-      "title": "Kuest — 创建你自己的白标预测市场",
-      "description": "15 分钟创建你自己的白标预测市场：用你的品牌、你的域名、你的手续费，并从第一天开始接入共享流动性。",
-      "ogTitle": "Kuest — 创建你自己的白标预测市场",
-      "ogDescription": "15 分钟创建你自己的预测市场，拥有共享流动性、专属品牌，以及归你所有的手续费收入。",
-      "twitterTitle": "Kuest — 创建你自己的白标预测市场",
-      "twitterDescription": "15 分钟创建你自己的预测市场，拥有共享流动性、专属品牌，以及归你所有的手续费收入。"
-    },
-    "languageSelector": {
-      "ariaLabel": "切换站点语言"
-    },
-    "preview": {
-      "title": "你的站点将会是这样。",
-      "subtitle": "这是一个可用的功能演示，展示了镜像自 Polymarket 的市场。你可以浏览、交易，并想象它换成你的品牌、你的受众和你的问题会是什么样子。",
-      "switchToDesktop": "切换到桌面预览",
-      "switchToMobile": "切换到手机预览"
-    },
-    "common": {
-      "yes": "是",
-      "no": "否",
-      "chance": "的概率"
-    },
-    "nav": {
-      "cta": "启动你的预测市场 →"
-    },
-    "hero": {
-      "kicker": "预测市场版 Shopify",
-      "titleLine1": "你的专属 Polymarket。",
-      "titleLine2": "15 分钟上线，免费开始。",
-      "subtitle": "你的受众每天都在表达观点、预测结果。现在你可以为加密、体育、政治或任何垂直赛道搭一个属于自己的预测市场，并从每笔交易里收取手续费。",
-      "cta": "启动你的预测市场 →",
-      "proof": "免费启动 • 无需代码 • 几分钟上线",
-      "previewUrl": "demo.kuest.com"
-    },
-    "attentionScroll": {
-      "block1": {
-        "line1": "很多年里，钱总是追着注意力走。",
-        "line2": "联盟分销、Dropshipping、在线课程、博彩。",
-        "line3": "每一波浪潮都打开过一扇窗，但很快又关上了。",
-        "line4": "你是提早入场，还是等到赛道已经挤满了才赶来？"
-      },
-      "block2": {
-        "line1": "今天，只有两个平台在控制一个数十亿美元的市场。",
-        "brand1": "Polymarket.",
-        "brand2": "Kalshi.",
-        "line3": "49% 的访问量仍然只来自 5 个国家。",
-        "line4": "世界其他地方几乎还没发现这件事。"
-      },
-      "block3": {
-        "lead": "你可以选择：",
-        "line2": "继续做一个试图押中下一次预测的交易者 —",
-        "line3": "或者搭建起那座让所有人都来下注的房子。"
-      }
-    },
-    "social": {
-      "eyebrow": "真的可以预测未来吗？",
-      "title": "预测市场",
-      "subtitle": "它的运作方式很像证券交易所，只不过交易的是未来事件。人们会拿真金白银去交易诸如“谁会赢得选举？”或“比特币会突破 $100k 吗？”这样的结果。因为有真实资金在承担风险，这些预测往往会变得惊人地准确，甚至比民调或专家判断更准。政府、企业和投资者已经在用这些数据，在事实发生之前先做决策。",
-      "badge": "市场里早已有数十亿美元在流动",
-      "cards": [
-        {
-          "label": "2025 年成交量",
-          "subHtml": "根据 <a href=\"https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf\" class=\"source-link\" data-source-outlet=\"CertiK Research\" data-source-title=\"2025 Skynet Prediction Markets Report\">CertiK</a>，2025 年预测市场成交量达到 $63.5B。"
-        },
-        {
-          "label": "Polymarket 估值",
-          "subHtml": "据 <a href=\"https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg\" class=\"source-link\" data-source-outlet=\"CoinDesk\" data-source-title=\"Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg\">CoinDesk</a> 援引 Bloomberg 报道，Polymarket 的估值讨论接近 $15B。"
-        },
-        {
-          "label": "Kalshi 估值",
-          "subHtml": "根据 <a href=\"https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/\" class=\"source-link\" data-source-outlet=\"TechCrunch\" data-source-title=\"Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round\">TechCrunch</a>，Kalshi 以 $11B 估值完成了 $1B 融资。"
-        },
-        {
-          "label": "周成交量",
-          "subHtml": "据 <a href=\"https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume\" class=\"source-link\" data-source-outlet=\"Decrypt\" data-source-title=\"Prediction Market Trading Volume Hits All-Time High\">Decrypt</a> 报道，在周期高点时周成交量已超过 $2B。"
-        }
-      ]
-    },
-    "problems": {
-      "eyebrow": "是不是很熟悉？",
-      "title": "你有受众，缺的是一个能规模化变现的方式。",
-      "subtitle": "广告赚不了多少，赞助也不稳定，课程产品又要做很久。与此同时，你的受众每天都在讨论、判断和预测，但这些热度并没有真正变成你的收入。",
-      "cards": [
-        {
-          "title": "你熟悉的每种变现方式都有天花板",
-          "copy": "广告按点击计费，赞助按内容付费。预测市场则会在每一笔交易中持续产生手续费——7x24 小时运转，上线后也不用你不断追加投入。"
-        },
-        {
-          "title": "你的受众本来就在预测，只是不是发生在你的品牌里",
-          "copy": "他们在评论区、社群和 X 上讨论结果。Kuest 把这股注意力变成一个市场，让每一笔交易都有机会为你带来收入。"
-        },
-        {
-          "title": "你不用懂交易，也能把市场搭起来",
-          "copy": "不需要加密背景，不需要技术团队，也不用花几个月搭基础设施。你只需要自己的赛道、自己的问题，以及 15 分钟。"
-        }
-      ]
-    },
-    "solution": {
-      "eyebrow": "",
-      "title": "这是一个规模已达数十亿美元、却仍被两家公司把持的市场。\nPolymarket 和 Kalshi 占据主导地位，但它们都是封闭平台。你只能在上面交易，没法在上面搭自己的产品。",
-      "subtitle": "Kuest 就是为了解决这件事而生。\n只要点几下，你就能上线自己的预测市场，带着自己的品牌、分类和问题。智能合约、基础设施、流动性和各种集成由我们负责。你只需要经营自己的受众，并从网站上的每一笔交易中收取手续费。\n不用写代码。不用管服务器。也不用被技术问题拖住。",
-      "cta": "开始从我的受众中赚钱",
-      "note": "免费 · Kuest 基础设施 · 含流动性",
-      "points": [
-        {
-          "title": "选好赛道，提出你的问题",
-          "copy": "体育、加密、政治、流行文化、梗图都可以。只要你的受众本来就在讨论，这里就能变成市场。问题、费率和品牌呈现都由你决定。"
-        },
-        {
-          "title": "一键上线，底层能力我们来扛",
-          "copy": "结算、钱包、流动性和区块链基础设施，在你完成配置前就已经就位。你的市场最快 15 分钟内就能上线，全程不用写代码。"
-        },
-        {
-          "title": "每一笔交易都在为你赚钱",
-          "copy": "你的受众参与交易，手续费直接进入你的钱包。没有中间商，没有收入分成，也不用等。"
-        }
-      ],
-      "mock": {
-        "title": "你的预测市场能在 2027 年 1 月前做到 $500M 成交量吗？",
-        "chanceSuffix": "概率",
-        "logoLabel": "你的 Logo",
-        "metaHtml": "成交量 $4,679.80 &nbsp;·&nbsp; 截止于 2027 年 1 月 1 日",
-        "yesButton": "是 67¢",
-        "noButton": "否 33¢"
-      }
-    },
-    "features": {
-      "eyebrow": "你已经拥有的能力",
-      "title": "团队要花几个月做的三件事，你 15 分钟就能完成。",
-      "subtitle": "不用工程师。不用懂区块链。不用从空市场开始。",
-      "cards": [
-        {
-          "title": "你的网站。你的语言。你的赛道。",
-          "copy": "自定义域名、Logo、配色和本地化语境。可以用中文、英文，或你的受众最熟悉的语言上线。"
-        },
-        {
-          "title": "问你的受众最在意的问题。",
-          "copy": "问题由你来定。你的受众在“是”和“否”之间做交易。每一笔操作都可能直接为你的钱包带来手续费收入。",
-          "question": "“GTA 6 会在 2025 年 7 月前发布吗？”"
-        },
-        {
-          "title": "从第 1 天就有交易活跃度",
-          "copy": "借助镜像市场带来的共享流动性，你的市场一上线就有交易动态。大多数产品最难的冷启动，在这里不是问题。",
-          "feedLabel": "实时动态",
-          "feedStatus": "第 1 天",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "买入了",
-              "side": "否",
-              "sideClass": "no",
-              "entry": "价格 72¢（$4）"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "卖出了",
-              "side": "是",
-              "sideClass": "yes",
-              "entry": "价格 41¢（$9）"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "买入了",
-              "side": "是",
-              "sideClass": "yes",
-              "entry": "价格 18¢（$2）"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "卖出了",
-              "side": "否",
-              "sideClass": "no",
-              "entry": "价格 63¢（$11）"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "买入了",
-              "side": "是",
-              "sideClass": "yes",
-              "entry": "价格 81¢（$7）"
-            }
-          ]
-        }
-      ]
-    },
-    "calculator": {
-      "eyebrow": "算一算",
-      "title": "你的市场可能赚多少钱？",
-      "dailyVolumeLabel": "日交易量",
-      "dailyVolumeAriaLabel": "日交易量",
-      "feeLabel": "交易手续费",
-      "decreaseFeeAriaLabel": "降低手续费",
-      "increaseFeeAriaLabel": "提高手续费",
-      "resultLabel": "预估月度手续费收入",
-      "note": "这里按所选日交易量估算 30 天收入。实际收入会受交易量、定价、推荐分成和 VIP 折扣影响。",
-      "ctaPrompt": "如果这个结果打动你，你的市场可能会在下一杯咖啡喝完前就上线。"
-    },
-    "whyNow": {
-      "eyebrow": "为什么是现在",
-      "title": "大多数垂直赛道还没有预测市场。你的可以先一步。",
-      "subtitle": "Polymarket 做大选，Kalshi 做宏观。你的垂直赛道，仍然空着。",
-      "cards": [
-        {
-          "label": "仍然没有头部玩家的赛道",
-          "sub": "还没有人在你的受众身上赚取交易手续费。这就是机会窗口。"
-        },
-        {
-          "label": "用 Kuest 上线需要多久",
-          "sub": "从注册到市场上线，不需要工程团队介入。"
-        },
-        {
-          "label": "启动成本",
-          "sub": "可以免费开始，做大之后再按使用量付费。"
-        },
-        {
-          "label": "市场如何带来收入",
-          "sub": "每一笔交易都会产生手续费。成交量增长，而固定成本不会同比飙升。"
-        }
-      ]
-    },
-    "niches": {
-      "eyebrow": "选择你的赛道",
-      "title": "只要你的受众有观点，就能围绕它做出一个市场。",
-      "ctaPrompt": "你的赛道。你的品牌。每一笔交易里属于你的那一份。",
-      "volumeSuffix": "成交量",
-      "tabs": [
-        "加密与金融",
-        "体育",
-        "政治",
-        "娱乐",
-        "社区",
-        "迷因与其他"
-      ],
-      "data": [
-        {
-          "tag": "加密与金融",
-          "tagline": "为你的社区打造专属 Polymarket。",
-          "cards": [
-            {
-              "title": "比特币会在第三季度前突破 $150K 吗？",
-              "cat": "加密"
-            },
-            {
-              "title": "以太坊会在 2025 年反超比特币市值吗？",
-              "cat": "加密"
-            },
-            {
-              "title": "美联储下一次利率动作",
-              "cat": "金融",
-              "rows": [
-                "降息",
-                "不变",
-                "加息"
-              ]
-            }
-          ]
-        },
-        {
-          "tag": "体育",
-          "tagline": "任何比赛都能开盘，手续费归你。",
-          "cards": [
-            {
-              "title": "欧冠决赛最佳射手",
-              "cat": "体育",
-              "rows": [
-                "Mbappé",
-                "Vinicius",
-                "Bellingham"
-              ]
-            },
-            {
-              "title": "勇士会进入 2025 年季后赛吗？",
-              "cat": "NBA"
-            },
-            {
-              "title": "Daniel Negreanu 会打进 2026 年 WSOP 主赛事决赛桌吗？",
-              "cat": "扑克"
-            }
-          ]
-        },
-        {
-          "tag": "政治",
-          "tagline": "你的受众做判断，你来赚钱。",
-          "cards": [
-            {
-              "title": "Elon Musk 会赢得 2028 年美国总统大选吗？",
-              "cat": "政治"
-            },
-            {
-              "title": "俄罗斯和乌克兰会在 2026 年 12 月 31 日前达成停火吗？",
-              "cat": "地缘政治"
-            },
-            {
-              "title": "谁会赢得英国大选？",
-              "cat": "英国",
-              "rows": [
-                "工党",
-                "保守党",
-                "其他"
-              ]
-            }
-          ]
-        },
-        {
-          "tag": "娱乐",
-          "tagline": "有争议，就有市场。",
-          "cards": [
-            {
-              "title": "新的漫威电影首映票房会超过 $200M 吗？",
-              "cat": "电影"
-            },
-            {
-              "title": "谁会赢得 2025 年巴西老大哥？",
-              "cat": "真人秀",
-              "rows": [
-                "Beatriz",
-                "Davi",
-                "其他"
-              ]
-            },
-            {
-              "title": "Taylor Swift 会在 2025 年发布新专辑吗？",
-              "cat": "音乐"
-            }
-          ]
-        },
-        {
-          "tag": "社区与 DAO",
-          "tagline": "把你的 Discord 变成一个预测市场。",
-          "cards": [
-            {
-              "title": "Uniswap v4 会在第二季度前上线主网吗？",
-              "cat": "DeFi"
-            },
-            {
-              "title": "下一次治理投票会在哪条链上进行？",
-              "cat": "DAO",
-              "rows": [
-                "Ethereum",
-                "Arbitrum",
-                "Polygon"
-              ]
-            },
-            {
-              "title": "我们的 Discord 本月会达到 5 万成员吗？",
-              "cat": "社区"
-            }
-          ]
-        },
-        {
-          "tag": "迷因与其他",
-          "tagline": "只要互联网在争论，它就可能变成一个市场。",
-          "cards": [
-            {
-              "title": "MrBeast 会在 2025 年 7 月前超越 T-Series 成为 YouTube 第一频道吗？",
-              "cat": "互联网"
-            },
-            {
-              "title": "Elon Musk 会在 2025 年底前身价超过 $500B 吗？",
-              "cat": "亿万富翁"
-            },
-            {
-              "title": "会有美国歌手在 2026 年 12 月前被逮捕，且其粉丝超过 1000 万吗？",
-              "cat": "开放"
-            }
-          ]
-        }
-      ]
-    },
-    "faq": {
-      "eyebrow": "在你开口之前",
-      "titleHtml": "常见问题，<em>直接回答。</em>",
-      "items": [
-        {
-          "q": "上线要多久？需要技术能力吗？",
-          "aHtml": "大多数市场都能在 15 分钟内上线。你可以直接通过 <a href=\"/launch\">/launch</a> 按引导完成配置——无需写代码、无需部署合约，也不用处理 DevOps。只要你能搭一个 Shopify 店铺，就能上线一个 Kuest 市场。"
-        },
-        {
-          "q": "我能把 Polymarket 的市场展示在自己的网站上吗？",
-          "aHtml": "可以。你可以镜像 Polymarket 上已经活跃的市场——可以是全部分类，也可以只选与你赛道相关的分类，比如加密、体育或政治。这些镜像市场从第一天就带着共享流动性，所以你的网站一上线就会显得是活的。"
-        },
-        {
-          "q": "我能创建自己的市场吗？流动性由谁提供？",
-          "aHtml": "可以。你可以围绕任何问题创建自定义市场。镜像的 Polymarket 市场本身就带有共享流动性。你自己创建的市场则取决于你的受众是否愿意交易——也就是说，成交量主要由你的内容和社区驱动。你也可以选择为创作者市场开启跨市场流动性共享。"
-        },
-        {
-          "q": "我怎么赚钱？手续费可以自己定吗？",
-          "aHtml": "你可以自己设置市场的交易手续费，通常在 0.5% 到 3% 之间。每次有人交易，这笔手续费都会直接进入你的钱包。没有分成、没有中间商、也不用等待。费率由你控制，而且随时可以修改。"
-        },
-        {
-          "q": "我可以使用自己的域名和品牌吗？",
-          "aHtml": "可以。你可以使用自己的域名、Logo、配色和分类结构，让这个市场看起来完全属于你的品牌，而不是 Kuest 的白标页面。"
-        },
-        {
-          "q": "市场如何结算？",
-          "aHtml": "Kuest 使用基于 UMA 的结算轨道，实现透明且可验证的清算。底层智能合约源自 Polymarket 的那套体系，并经过 OpenZeppelin 审计，同时又被改造成支持多个市场之间的共享流动性。你不需要理解这些技术细节也能直接使用，但这意味着你市场背后的金融基础设施，本质上就是那套已经处理过数十亿美元交易量的系统。"
-        },
-        {
-          "q": "启动有成本吗？",
-          "aHtml": "启动流程本身免费。生产环境基础设施按使用量计费——也就是等你做大了再付费。"
-        },
-        {
-          "q": "我可以自己托管 Kuest 吗？",
-          "aHtml": "代码库以 <a href=\"https://github.com/kuestcom/prediction-market/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">Kuest MIT+Commons 许可</a> 开源。你可以 fork 来做品牌、前端和自定义 UX 的修改。但生产环境部署必须使用 Kuest 基础设施。若要独立运行一整套交易系统，则需要单独的 <a href=\"mailto:hello@kuest.com\">商业协议</a>。"
-        }
-      ]
-    },
-    "finalCta": {
-      "eyebrow": "",
-      "title": "你的市场，你的受众，你的规则。",
-      "subtitle": "免费开始。无需信用卡。",
-      "cta": "创建我的 prediction market →",
-      "note": ""
-    },
-    "footer": {
-      "launch": "启动",
-      "demo": "演示",
-      "docs": "文档",
-      "contact": "联系",
-      "live": "Polygon"
-    },
-    "sourceModal": {
-      "outlet": "来源",
-      "title": "来源标题",
-      "loading": "正在加载来源…",
-      "note": "如果该媒体禁止嵌入，请使用下方的外部链接。",
-      "external": "在新标签页打开来源",
-      "back": "返回页面",
-      "dynamicNote": "{{domain}} 的嵌入预览。如果该媒体禁止嵌入，请使用下方的外部链接。"
-    }
-  },
-  "launch": {
-    "hero": {
-      "title": "上线你的预测市场",
-      "subtitle": "从 0 到上线，不到 15 分钟"
-    },
-    "languageSelector": {
-      "ariaLabel": "切换 Launchpad 语言"
-    },
-    "common": {
-      "moreInfo": "更多信息",
-      "closeWaitingModal": "关闭等待弹窗",
-      "waitingForWalletApproval": "等待钱包确认中...",
-      "yes": "是",
-      "no": "否",
-      "continue": "继续",
-      "deploy": "上线",
-      "working": "处理中...",
-      "disconnect": "断开连接",
-      "advancedOptions": "高级设置",
-      "oauth": "OAuth",
-      "accessToken": "Access Token",
-      "checking": "检查中...",
-      "required": "必填",
-      "refresh": "刷新",
-      "refreshing": "刷新中...",
-      "generate": "生成",
-      "optional": "可选",
-      "notConnected": "未连接",
-      "connectedAccount": "已连接账号",
-      "verified": "已验证",
-      "pendingVerification": "等待验证",
-      "addDomain": "添加域名",
-      "adding": "添加中...",
-      "verify": "验证",
-      "verifying": "验证中...",
-      "result": "结果",
-      "status": "状态",
-      "project": "项目",
-      "url": "链接",
-      "vercelDashboard": "Vercel 控制台",
-      "supabaseDashboard": "Supabase 控制台",
-      "duration": "耗时",
-      "logs": "日志",
-      "success": "成功",
-      "failed": "失败",
-      "dns": "DNS",
-      "none": "-",
-      "createNewDatabase": "创建新数据库",
-      "supabaseDatabaseOption": "SUPABASE 数据库 {index} - {name}"
-    },
-    "stepper": {
-      "step1": "品牌 + 管理钱包",
-      "step2": "托管 + 数据库",
-      "step3": "上线"
-    },
-    "timeline": {
-      "validation": "检查 launch 配置",
-      "vercel": "准备或复用 Vercel 项目",
-      "database": "连接 Supabase 数据库",
-      "deploy": "触发部署"
-    },
-    "modals": {
-      "connectingWalletTitle": "正在连接钱包",
-      "connectingWalletDescription": "打开你的钱包并确认连接后继续。",
-      "waitingForSignatureTitle": "等待签名",
-      "waitingForSignatureDescription": "请在钱包里确认签名后继续。",
-      "walletIconAltNamed": "{walletName} 钱包图标",
-      "walletIconAltFallback": "已连接钱包图标"
-    },
-    "wallet": {
-      "brandNameInfo": "这是用户会看到的品牌名。",
-      "adminWalletInfo": "只需签一次名，就能生成你的 Kuest CLOB 凭证；这个钱包也会成为项目管理员钱包。",
-      "metamaskPrefix": "想最快开始，建议使用",
-      "metamaskExtension": "MetaMask 浏览器插件",
-      "metamaskApp": "MetaMask App",
-      "metamaskSuffix": "不需要余额，不会转走资金，也不用花 gas。",
-      "autoSwitchHelp": "我们会尽量自动切换到 Polygon Amoy，并在需要时帮你添加网络。",
-      "creatingAccount": "正在创建你的账户...",
-      "checkWalletConfirm": "请检查钱包并确认。",
-      "walletConnectedEnterSiteName": "钱包已连接，接下来填写站点名称即可。",
-      "openWalletApproveConnection": "打开你的钱包并确认连接后继续。",
-      "approveSignature": "确认一次签名以生成你的凭证。",
-      "mintingCredentials": "正在生成 Kuest 凭证...",
-      "connectBeforeSwitchingNetwork": "切换网络前请先连接钱包。",
-      "switchToNetworkSettings": "请在钱包设置里切换到 {network}。",
-      "unableToSwitchNetwork": "无法切换到 {network}。",
-      "switchingNetwork": "正在切换到 {network}...",
-      "networkActiveClickSign": "{network} 已就绪，点击“签名”继续。",
-      "walletConnectionNotReady": "钱包连接还没准备好。",
-      "failedGenerateBrowserWallet": "无法通过浏览器钱包生成凭证。",
-      "unableToSignAndGenerate": "无法完成签名并生成凭证。",
-      "unableContinueWalletFlow": "无法继续钱包签名流程。",
-      "useBrowserWallet": "使用浏览器钱包",
-      "connect": "连接",
-      "sign": "签名",
-      "switchToNetworkButton": "切换到 {network}"
-    },
-    "step1": {
-      "srTitle": "第 1 步：品牌 + 管理钱包",
-      "siteNameLabel": "站点名称",
-      "siteNamePlaceholder": "你的预测市场站点名称",
-      "adminWalletTitle": "管理钱包",
-      "emailLabel": "邮箱（可选）",
-      "emailPlaceholder": "you@team.com",
-      "nonceLabel": "Nonce",
-      "noncePlaceholder": "0"
-    },
-    "step2": {
-      "srTitle": "第 2 步：托管 + 数据库",
-      "vercelAuthenticationTitle": "Vercel 连接",
-      "vercelAuthenticationInfo": "你的网站会部署在 Vercel 上。",
-      "checkOauthStatusFailed": "无法检查 OAuth 连接状态。",
-      "connectVercel": "连接 Vercel",
-      "connectVercelFirst": "请先连接 Vercel，才能继续。",
-      "disconnectVercelOauthFailed": "断开 Vercel OAuth 失败。",
-      "pasteVercelTokenFirst": "请先粘贴你的 Vercel Access Token。",
-      "listSupabaseFailed": "加载 Supabase 数据库列表失败。",
-      "noExistingDatabase": "没有找到现成数据库，不过你仍然可以新建一个。",
-      "vercelAccessTokenLabel": "Vercel Access Token",
-      "vercelAccessTokenPlaceholder": "粘贴 Vercel Access Token",
-      "createTokenInVercel": "去 Vercel 创建 token",
-      "reownProjectIdTitle": "Reown Project ID",
-      "reownProjectIdInfo": "这个 ID 用来给你的终端用户开启钱包登录。",
-      "reownProjectIdLabel": "Reown Project ID",
-      "reownProjectIdHelpPrefix": "前往",
-      "reownProjectIdHelpSuffix": "→ 创建或选择项目 → 复制 Project ID。",
-      "supabaseDatabaseTitle": "Supabase 数据库",
-      "supabaseDatabaseInfo": "Supabase 用来保存用户、会话和应用数据。你可以通过 Vercel 集成来创建或连接数据库。",
-      "projectSlugAuto": "项目 slug（自动）",
-      "projectSlugOverride": "项目 slug（手动）",
-      "projectSlugOverridePlaceholder": "可选",
-      "repository": "仓库",
-      "branch": "分支",
-      "vercelTeamId": "Vercel Team ID",
-      "vercelTeamIdPlaceholder": "留空 = 个人账号",
-      "supabaseRegion": "Supabase 区域",
-      "supabaseRegionPlaceholder": "us-east-1",
-      "betterAuthSecretPlaceholder": "留空 = 由 API 自动生成",
-      "cronSecretPlaceholder": "留空 = 由 API 自动生成",
-      "siteUrlOverride": "手动设置 SITE_URL",
-      "extraEnvVars": "额外环境变量（.env 格式）",
-      "extraEnvPlaceholder": "OPENROUTER_API_KEY=...\nSENTRY_DSN=..."
-    },
-    "step3": {
-      "srTitle": "第 3 步：上线",
-      "launchFailed": "Launch 没有完成。",
-      "failedCallApi": "调用 API 失败。"
-    },
-    "domain": {
-      "enterDomainFirst": "请先输入域名。",
-      "domainActionFailed": "域名操作失败。",
-      "customDomainOptional": "自定义域名（可选）",
-      "customDomainInfo": "部署完成后，你可以接入自己的域名。先添加，再按提示验证 DNS。",
-      "customDomainPlaceholder": "app.yourdomain.com",
-      "nameserversLabel": "需要在域名注册商处设置的 nameserver：",
-      "checkVercelDnsInstructions": "查看 Vercel 的 DNS 指引"
-    }
-  },
-  "protocol": {
-    "meta": {
-      "title": "Kuest Protocol - 预测市场基础设施",
-      "description": "Kuest 是一个 white-label 预测市场协议，让金融机构、媒体公司和创作者都能推出自有品牌市场，并获得共享流动性与协议级基础设施。",
-      "keywords": [
-        "预测市场基础设施",
-        "white-label 预测市场协议",
-        "预测市场 API",
-        "共享流动性协议",
-        "机构级预测市场",
-        "预测市场 seed round"
-      ],
-      "ogImageAlt": "Kuest Protocol 概览"
-    },
-    "structuredData": {
-      "description": "面向运营方的 white-label 预测市场协议，提供品牌化市场、共享流动性和协议基础设施。",
-      "featureList": [
-        "运营方 white-label 部署",
-        "跨运营方前端的共享流动性",
-        "源自 Polymarket 的智能合约架构",
-        "兼容 Polymarket 的 API 与机器人工具",
-        "面向生产环境运营方的按使用量计费基础设施"
-      ]
-    },
-    "languageSelector": {
-      "ariaLabel": "切换网站语言"
-    },
-    "themeToggle": {
-      "toDark": "切换到深色模式",
-      "toLight": "切换到浅色模式"
-    },
-    "common": {
-      "yes": "是",
-      "no": "否"
-    },
-    "heroStage": {
-      "cards": [
-        "比特币会在第三季度前突破 $150K 吗？",
-        "美联储会在 7 月前降息吗？",
-        "Uniswap v4 会在第二季度前上线主网吗？",
-        "Ethereum 本季度会跑赢 Bitcoin 吗？",
-        "Elon Musk 的净资产今年会超过 $500B 吗？",
-        "特朗普今年会宣布美国比特币储备吗？",
-        "社区会在第四季度前达到 5 万成员吗？",
-        "巴西会在 2026 年选出一位亲市场总统吗？",
-        "Donald Trump 会赢下下一届美国大选吗？",
-        "俄罗斯与乌克兰会在年底前宣布停火吗？",
-        "工党会赢得下一次英国大选吗？",
-        "下一部漫威电影首周票房会超过 $200M 吗？"
-      ]
-    },
-    "nav": {
-      "contactCta": "联系我们"
-    },
-    "hero": {
-      "kicker": "KUEST PROTOCOL · SEED 轮开放中",
-      "titleLine1": "Polymarket 已经验证了这个模式。",
-      "titleLine2BeforeAccent": "我们正在把它变成",
-      "titleLine2Accent": "基础设施。",
-      "subtitle": "Kuest 是一个 white-label 预测市场协议，它让任何金融机构、媒体公司或创作者都能推出自己的品牌市场、共享流动性并赚取交易手续费。它建立在已经处理过数十亿美元成交量的同类智能合约架构之上，今天就能用。",
-      "pitchDeckCta": "查看 pitch deck",
-      "contactCta": "联系我们",
-      "proof": "MVP 已运行 · SEED 轮开放中 · 开源"
-    },
-    "deckModal": {
-      "kicker": "索取 DECK",
-      "title": "索取 Kuest Protocol pitch deck",
-      "description": "留下你的公司名称和邮箱，我们会把请求转给团队。",
-      "companyLabel": "公司名称",
-      "companyPlaceholder": "你的公司",
-      "emailLabel": "工作邮箱",
-      "emailPlaceholder": "you@company.com",
-      "cancel": "取消",
-      "submit": "发送请求",
-      "submitting": "发送中...",
-      "success": "请求已发送。我们会通过邮箱联系你。",
-      "error": "请求发送失败，请重试。",
-      "close": "关闭弹窗"
-    },
-    "opportunity": {
-      "badge": "市场机会",
-      "title": "一个 200 亿美元级别的行业正在实时形成，而全球 95% 的人还没有真正进入其中。",
-      "stats": [
-        {
-          "value": "$18.3B",
-          "label": "Kalshi + Polymarket 合计月交易量，2026 年 2 月",
-          "sourceLabel": "来源：The Block",
-          "sourceHref": "https://www.theblock.co/post/392755"
-        },
-        {
-          "value": "96.7M",
-          "label": "Polymarket 在 3 个月内获得的访问量，其中美国只占 20%。",
-          "sourceLabel": "来源：SimilarWeb，2026 年 2 月",
-          "sourceHref": "https://www.similarweb.com/website/polymarket.com/"
-        },
-        {
-          "value": "200x",
-          "label": "Kalshi 在过去 12 个月中的交易量增长",
-          "sourceLabel": "来源：PYMNTS / Kalshi 新闻稿",
-          "sourceHref": "https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/"
-        },
-        {
-          "value": "$20B",
-          "label": "Kalshi 和 Polymarket 当前融资中的目标估值",
-          "sourceLabel": "来源：CoinDesk via WSJ，2026 年 3 月",
-          "sourceHref": "https://www.coindesk.com/business/2026/03/07/kalshi-polymarket-seeking-usd20-billion-valuations-in-fundraising-talks-wsj"
-        }
-      ],
-      "body": "目前这个行业由两个平台主导。作为受监管的美国交易所，Kalshi 最近已经达到年化 $1B-$1.5B 的收入 run rate。运行在 Polygon 上的 Polymarket 在全球每月吸引超过 3200 万访问。它们共同证明，预测市场不是小众赛道，而是一种新的金融原语。问题在于：它们都是封闭平台。你只能在上面交易，不能基于它们去构建。"
-    },
-    "whyNow": {
-      "badge": "为什么是现在",
-      "title": "XP + Kalshi 的合作刚刚验证了我们一开始就在为之构建的方向。",
-      "paragraphs": [
-        "2026 年 3 月 9 日，Kalshi 宣布了其首次与美国以外金融机构达成的战略合作：XP International。XP 是巴西最大的券商之一，拥有超过 470 万活跃客户和 1.8 万亿雷亚尔的管理资产。",
-        "在这项合作中，XP 负责本地分发和客户关系，Kalshi 提供交易技术与市场设计。这正是通过本地金融平台输出预测市场基础设施的典型模式。",
-        "巴西目前仍缺乏针对预测市场的明确监管，但 Kalshi 和 Polymarket 已经上线了与巴西相关的合约。巴西证券交易所 B3 也计划进入这一市场，财政部正在密切关注这个行业。Kalshi 的联合创始人把巴西称为“预测市场几年前在美国所处的位置”。",
-        "Kalshi 需要 XP，是因为它是平台，而不是基础设施。它们一次只能扩一个国家、做一个机构合作。Kuest 则是那层基础设施，它让每一个市场里的 XP 类机构都能成为预测市场运营方，而不必排队等 Kalshi 的合作名额。"
-      ],
-      "quote": {
-        "imageSrc": "/assets/images/kalshi-logo.svg",
-        "imageAlt": "Kalshi",
-        "quote": "通过这些国际合作伙伴来进入市场，对我们来说很合理。他们已经拥有客户和品牌。",
-        "attribution": "Luana Lopes Lara，Kalshi 联合创始人兼 COO",
-        "sourceLabel": "来源：Finance Magnates，2026 年 3 月",
-        "sourceHref": "https://www.financemagnates.com/fintech/kalshi-taps-brazils-xp-to-take-prediction-markets-global/",
-        "isLogo": true
-      },
-      "followup": "这正是 Kuest 所提供的能力，而且是协议级规模，不是一单一单去做。"
-    },
-    "protocol": {
-      "badge": "协议定位",
-      "title": "我们不是一个预测市场。我们是用来启动预测市场的基础设施。",
-      "cards": [
-        {
-          "title": "平台 vs. 协议",
-          "body": "Polymarket 是单一 venue。Kalshi 也是单一 venue。Kuest 是底层协议层，任何运营方都可以部署自己的前端、自己的品牌、自己的市场，并从第一天起与所有 Kuest 驱动的网站共享流动性。",
-          "tags": [
-            "自有品牌",
-            "共享流动性"
-          ]
-        },
-        {
-          "title": "Shopify 类比",
-          "body": "Shopify 并没有和 Amazon 竞争。它让数百万原本不存在的店铺成为可能。Kuest 也不与 Polymarket 竞争。我们让接下来的 1000 个预测市场运营方成为可能，包括媒体公司、券商、社区平台和创作者。",
-          "tags": [
-            "运营方",
-            "分发",
-            "网络规模"
-          ]
-        },
-        {
-          "title": "已经建好的部分",
-          "body": "CLOB engine、relayer、智能合约、兼容 Polymarket 的 API、Vercel + Supabase 部署栈、共享流动性层、SDK、机器人基础设施、market maker 集成以及多语言前端都已经就绪。在线演示见 demo.kuest.com。",
-          "tags": [
-            "SDK",
-            "Bots",
-            "API",
-            "Mainnet"
-          ]
-        }
-      ]
-    },
-    "architecture": {
-      "badge": "为什么是这套架构",
-      "title": "这是战略选择，不是走捷径。",
-      "paragraphs": [
-        "Kuest 的智能合约源自 Polymarket 的 CLOB 架构，也就是那个已经处理过数十亿美元已验证成交量的设计。核心合约以 OpenZeppelin 的审计验证为基础。我们在其上做了适配，使其能够支持多个运营方前端之间的共享流动性，这正是协议模式得以成立的架构原语。",
-        "选择 Polygon 同样是有意为之。现有预测市场的大部分流动性已经在 Polygon 上。交易者已经在那里持有 USDC，做市机器人也已经在这个环境里运行。如果换一条链，就等于要求所有流动性提供者重新开始。我们的创新重点放在分发和基础设施，而不是重新发明一个已经被大规模验证的交易引擎。",
-        "最终得到的是一个能够立即兼容现有交易策略、机器人基础设施和做市工具的协议，这显著降低了新运营方部署时冷启动流动性的门槛。"
-      ],
-      "quote": {
-        "imageSrc": "/assets/images/polymarket-logo.svg",
-        "imageAlt": "Polymarket",
-        "quote": "Polymarket 证明了这个模式。我们正把这套基础设施变成一个协议，让任何人都能推出共享流动性的市场。",
-        "attribution": "Kuest 协议论点",
-        "isLogo": true
-      }
-    },
-    "businessModel": {
-      "badge": "协议如何赚钱",
-      "title": "三层收入来源，一套基础设施栈。",
-      "cards": [
-        {
-          "title": "运营方手续费",
-          "body": "运营方自行设置交易手续费，通常在 0.5%-3% 之间。Kuest 会在全网每笔交易中保留一小部分协议费。随着运营方数量增长，这会形成一个与单一运营方表现无关、按总体交易量聚合的收入流。",
-          "tags": [
-            "运营方费率 0.5%-3%",
-            "协议抽成"
-          ]
-        },
-        {
-          "title": "基础设施",
-          "body": "启动免费。生产级基础设施按使用量收费，运营方在规模起来后再付费。服务器成本、gas 管理、结算基础设施和扩展性都由 Kuest 处理。运营方专注于自己的用户，我们来运行整套栈。",
-          "tags": [
-            "免费启动",
-            "按使用量计费"
-          ]
-        },
-        {
-          "title": "流动性服务",
-          "body": "在 Kuest 网络中提供流动性的 market maker 可以赚取 spread。Kuest 负责撮合并在基础设施层捕获价值。随着运营方网络扩大，流动性效率也会提高，形成复利式网络效应。",
-          "tags": [
-            "Spread 捕获",
-            "网络效应"
-          ]
-        }
-      ],
-      "context": "目前基础设施成本可控且可预测。它会随着交易量增长而增长，但协议收入也会按比例同步增长。成本结构不是天花板，而是一个随增长变化的变量。"
-    },
-    "partners": {
-      "badge": "我们在寻找谁",
-      "title": "三类伙伴，全部都需要，而且彼此互补。",
-      "cards": [
-        {
-          "title": "投资人",
-          "body": "我们正在寻找 seed 阶段资金，用于加速运营方获取、market maker 激励计划以及协议加固。预测市场行业正在迅速从实验阶段走向机构化。我们正处在基础设施层项目开始被定价的拐点，而不是事后再追。"
-        },
-        {
-          "title": "Market Makers",
-          "body": "新预测市场最大的冷启动问题是流动性。我们通过全网共享流动性来解决它，但仍需要初始的 market maker 合作，为新部署提供深度。如果你已经在 Polymarket 或 Kalshi 上跑机器人或提供流动性，那么你已经具备在 Kuest 上运行所需的一切。预估 APY 取决于策略和成交量，但在克隆 Polymarket 风格的市场中，对于能够高效循环库存的做市团队，spread 与换手率的组合收益可能超过被动 stablecoin 收益。"
-        },
-        {
-          "title": "机构运营方",
-          "body": "XP + Kalshi 的合作证明了这个模式：金融机构希望接入预测市场，但需要一个本地化、品牌化、可控的环境。Kuest 无需你和 Kalshi 单独谈判，就能提供这层能力。银行、券商、投资平台以及拥有金融受众的媒体集团，都可以把 Kuest 作为它们预测市场产品的基础设施层。巴西在这方面尤其具备条件：B3 正在准备进入这一类别，XP 已与 Kalshi 合作，财政部也在密切观察这一行业。率先布局运营方的窗口期已经打开。"
-        }
-      ]
-    },
-    "strategicQuestion": {
-      "badge": "战略问题的答案",
-      "title": "Polymarket 为什么不自己做这件事？",
-      "intro": "他们的目标是成为全球最好的预测市场平台。这和一家专注于成为全球最佳预测市场基础设施公司的目标完全不同。Polymarket 需要保护自己估值 $9B 的消费品牌产品，他们不会去做一个给竞争对手赋能的 SDK。",
-      "applicationLayer": {
-        "tag": "应用层",
-        "title": "平台公司优化的是把流量留在自己的终点。",
-        "body": "Polymarket 和 Kalshi 的胜法，是集中用户、保护品牌，并在自己的 venue 上不断加深流动性。",
-        "items": [
-          {
-            "label": "消费品牌",
-            "value": "核心资产就是平台本身"
-          },
-          {
-            "label": "单位经济",
-            "value": "绑定在自己的订单流上"
-          },
-          {
-            "label": "扩张方式",
-            "value": "一次做一个合作"
-          }
-        ]
-      },
-      "protocolLayer": {
-        "tag": "协议层",
-        "title": "基础设施公司优化的是运营方规模。",
-        "body": "Kuest 的胜法，是让成千上万的运营方推出共享流动性的市场，而 Kuest 负责底层整套栈。",
-        "items": [
-          {
-            "label": "运营方网络",
-            "value": "每个品牌都成为一个分发节点"
-          },
-          {
-            "label": "经济模型",
-            "value": "对聚合交易量收取协议费"
-          },
-          {
-            "label": "规模能力",
-            "value": "同时完成大量部署"
-          }
-        ]
-      },
-      "outro": "这种动态并不新鲜。Uniswap 让数千个代币市场成为可能，却没有与每个项目竞争。AWS 赋能了数百万家公司，却没有试图自己变成它们。XP + Kalshi 的合作验证了需求，同时也暴露了瓶颈：Kalshi 一次只能做一个机构合作。我们可以同时做成千上万个，因为我们是协议，而不是交易对手方。"
-    },
-    "status": {
-      "badge": "我们现在处于什么阶段",
-      "title": "MVP 已上线，协议已运行，正在寻找合适的伙伴一起扩张。",
-      "items": [
-        {
-          "label": "智能合约已部署",
-          "detail": "Polygon 主网，架构经 OpenZeppelin 验证",
-          "complete": true
-        },
-        {
-          "label": "CLOB engine + relayer 已运行",
-          "detail": "核心交易栈已经在线",
-          "complete": true
-        },
-        {
-          "label": "兼容 Polymarket 的 API",
-          "detail": "第一天就具备跨平台流动性",
-          "complete": true
-        },
-        {
-          "label": "White-label 前端",
-          "detail": "15 分钟内无代码部署",
-          "complete": true
-        },
-        {
-          "label": "SDK + 机器人基础设施",
-          "detail": "已可用于运营方和 market maker 集成",
-          "complete": true
-        },
-        {
-          "label": "在线 Demo",
-          "detail": "demo.kuest.com",
-          "complete": true
-        },
-        {
-          "label": "开源",
-          "detail": "github.com/kuestcom/prediction-market",
-          "complete": true
-        },
-        {
-          "label": "Market maker 计划",
-          "detail": "正在积极招募",
-          "complete": false
-        },
-        {
-          "label": "Seed 轮",
-          "detail": "开放中",
-          "complete": false
-        }
-      ]
-    },
-    "finalCta": {
-      "title": "预测市场的基础设施层，正在此刻被搭建出来。",
-      "subtitle": "我们更愿意在正确的时间和正确的伙伴一起推进，而不是在缺乏一致性的情况下盲目求快。如果你是投资人、market maker 或机构运营方，欢迎联系。",
-      "requestDeckCta": "索取 pitch deck",
-      "contactCta": "联系团队",
-      "viewDemoCta": "查看在线 Demo",
-      "proof": "构建于源自 POLYMARKET 的合约架构之上 · 核心合约经 OPENZEPPELIN 审计验证 · 开源：GITHUB.COM/KUESTCOM · DEMO：DEMO.KUEST.COM"
-    },
-    "footer": {
-      "note": "基于源自 Polymarket 的合约构建，并由 OpenZeppelin 完成审计验证",
-      "docsLabel": "文档",
-      "contactLabel": "联系",
-      "xLabel": "X",
-      "discordLabel": "Discord"
-    }
-  }
+  "KdGjGW": "Kuest – 创建预测市场",
+  "AMrtpn": "Kuest 引导式启动流程，集成钱包、Vercel 和 Supabase。",
+  "aERc4I": "启动你的预测市场",
+  "p5WHCU": "从零到上线，不超过 15 分钟",
+  "DLs8Nl": "Kuest 企业版",
+  "myS5BP": "面向金融机构、媒体平台和企业运营商的白标预测市场基础设施。",
+  "7j5FXr": "Kuest 企业版预览",
+  "FjhDLC": "月度综合交易量，Kalshi + Polymarket",
+  "Di7k2F": "来源：The Block，2026 年 Q1",
+  "G+h9HA": "Kalshi 年度交易量增长，2024–2025",
+  "jQtAmW": "来源：PYMNTS，2026 年",
+  "MTDi1D": "Polymarket 流量来自美国以外地区",
+  "kHqx89": "来源：SimilarWeb，2026 年 2 月",
+  "3wGZQ1": "当前融资轮目标估值",
+  "0/St/8": "来源：CoinDesk，转引自 WSJ",
+  "Z9oW03": "加密与资产",
+  "vAMglD": "以你的品牌围绕加密货币和数字资产推出市场。",
+  "8y8aor": "比特币能在 Q4 前收于 15 万美元以上吗？",
+  "TdtZQ5": "加密货币",
+  "n9+N3m": "以太坊能在 2026 年超越比特币的市值吗？",
+  "D1aUB4": "下一季度哪个资产类别的净流入领先？",
+  "d1uESJ": "资产",
+  "/VnDMl": "其他",
+  "pRVXiT": "选举与政策",
+  "bD1KHp": "在你的市场中主导政治和公共政策走势。",
+  "rnVGa+": "执政联盟能否保住执政多数席位？",
+  "0siT4z": "政治",
+  "p8MVWc": "下一届美国政府会建立战略性 BTC 储备吗？",
+  "o1vbho": "公共政策",
+  "3uvVDx": "谁将赢得下一届英国大选？",
+  "PFkA4/": "工党",
+  "LmULx9": "保守党",
+  "0YhrGt": "宏观与利率",
+  "FqkCAC": "直接在你的平台上对宏观经济结果定价。",
+  "BDNMVC": "美联储下次决议",
+  "C9QQ8s": "利率",
+  "ZMgm9u": "降息",
+  "Y922+y": "维持不变",
+  "N3X/Sq": "加息",
+  "PV4t7T": "停火协议能否在年底前压低全球能源价格？",
+  "8QPOWk": "宏观",
+  "BFLBgt": "实际利率能在 Q1 前降至 1% 以下吗？",
+  "Wcj7x9": "大宗商品",
+  "0WshaQ": "将大宗商品波动转化为客户参与度和手续费收入。",
+  "UEhN8y": "黄金本季度能创历史新高吗？",
+  "5wy7ax": "布伦特原油能在年底前收于 100 美元以上吗？",
+  "lYwk2j": "石油",
+  "+/YBN4": "下个月哪种大宗商品表现最佳？",
+  "GwqiOt": "黄金",
+  "1uHzGr": "铜",
+  "qEuXjx": "体育",
+  "pCaWrP": "在你自己的受监管平台上推出体育市场。",
+  "HHqDnP": "欧冠决赛最佳射手",
+  "Cnonl3": "勇士队能进季后赛吗？",
+  "uSbqYE": "丹尼尔·内格里亚努能晋级世界扑克大赛决赛桌吗？",
+  "Aukweq": "自定义市场",
+  "iGhQNK": "创建专为你的受众量身定制的独家活动合约。",
+  "8DfmYV": "我们的私人客户社区本季度能达到 5 万名成员吗？",
+  "4CrCbD": "社区",
+  "qh5WG0": "旗舰本地 IPO 的定价会高于发行区间吗？",
+  "Sjo1P4": "自定义",
+  "8fDRcr": "哪个定制宏观情景会首先出现？",
+  "5m4j06": "情景",
+  "Amhv7h": "软着陆",
+  "gjNRCE": "再通胀",
+  "yID93P": "冲击",
+  "7CU/Cr": "定义你的市场范围和费用模型",
+  "qXq5W5": "选择你的客户关注的活动类别——宏观经济、利率、政治、大宗商品、加密货币、体育。创建平台专属的自有市场。设置你的费率。我们将围绕你的品牌和监管边界完成所有配置。",
+  "E9D7ZS": "我们部署完整的技术栈——无需工程投入",
+  "08sUiQ": "智能合约、CLOB 引擎、结算通道、钱包基础设施、流动性——一切就绪，在你的团队完成入职培训之前即可运行。合约源自 Polymarket 架构，经 OpenZeppelin 审计。无需内部区块链团队，无需基础设施冲刺。",
+  "NVapmL": "你的平台自动在每笔交易中获得手续费",
+  "7nuXum": "你的客户执行的每笔交易都会直接向你的机构产生手续费——无中间商，无收入分成，无结算延迟。这与月处理量合计超过 180 亿美元的平台所采用的基础设施模型完全相同。",
+  "xbsWeb": "CLOB 引擎 + 中继器 + 撮合",
+  "+gsTEY": "中央限价订单簿、中继器基础设施和撮合引擎——与 Polymarket 所用的相同架构，运行在 Polygon 主网上。",
+  "ym+AoZ": "经 OpenZeppelin 审计的合约",
+  "apsIk5": "智能合约源自 Polymarket 经审计的架构，针对多个运营商前端之间的共享流动性进行了适配。基于 UMA 的解析机制确保结算可验证。",
+  "A4VaIn": "从第一天起共享流动性",
+  "jDzeQm": "镜像 Polymarket 的实时市场及现有订单流。你的平台上线即具备真实深度——无冷启动，无需初期招募做市商。",
+  "JHPjBF": "面向机构交易者的 Bot SDK",
+  "5ROrP0": "Python 和 Rust SDK 兼容现有 Polymarket Bot 策略。已在 Polymarket 上运营的做市商无需重建即可迁移到你的平台。",
+  "ur7vLd": "完整白标前端",
+  "Oi1CEw": "你的域名、你的品牌、你的语言。多语言界面，内置 i18n。自定义活动类别。外观和体验完全像你机构的原生产品——而非 Kuest 的部署。",
+  "zinr+4": "完全托管的基础设施",
+  "jnd443": "Gas 费用、结算、扩展性、监控——全由我们负责。内部无需区块链团队，无需管理云基础设施。你专注于分发。",
+  "tgkJm2": "预测市场究竟是什么？它与博彩平台有何不同？",
+  "1RFWTQ": "预测市场是一个实时订单簿，参与者在其中买卖真实世界事件结果的仓位——使用与金融衍生品相同的二元合约机制。与体育博彩不同，博彩中庄家设定赔率并充当对手方，而预测市场是点对点的：价格由实时供需决定。平台运营商在每笔交易中赚取手续费，而非根据谁赢来分配。这一区别在法律、商业和声誉层面都至关重要：运营商不是对手方，其模式在结构上更接近交易所而非博彩公司。",
+  "tV5BF8": "Kalshi 和 Polymarket 是谁？它们与这里有何关联？",
+  "G6buRq": "Kalshi 是美国受监管的交易所（持 CFTC 牌照），专注于事件合约——\"美联储会降息吗？\"\"会出现经济衰退吗？\"——估值超过 20 亿美元，年交易量增长了 200 倍。Polymarket 是运行在 Polygon 上的去中心化预测市场，每月全球访问量超过 3200 万，被交易者、记者和政策制定者用作实时概率层。两者合计在单一季度（2026 年 Q1）产生了 183 亿美元的综合交易量。两者均为封闭平台：你可以在上面交易，但无法在其上构建品牌产品或获取其手续费收入。Kuest 以开放的白标模式提供相同的基础设施。",
+  "1GU1Fs": "当前市场正在发生什么，使得这一时机如此关键？",
+  "BlvguA": "多个信号正在汇聚：Kalshi 和 Polymarket 分别以 200 亿美元估值进行融资。巴西主要证券交易所 B3 于 2026 年初在 CVM 监管下推出了首批预测市场产品。Kalshi 签署了首个国际机构合作协议——与巴西最大券商之一 XP International 合作，后者拥有 470 万客户和 1.8 万亿雷亚尔在管资产——目的就是拓展美国以外的市场。CME 集团和彭博社现已将预测市场数据作为机构参考数据发布。美国、巴西和欧盟的监管方向正朝着对事件合约的正式认可推进。机构基础设施的问题正在当下被决定，而大多数本地市场仍没有运营商。",
+  "oLhwX4": "哪些类型的机构已经在进入这一领域？",
+  "fuEcUl": "除 Kalshi 和 Polymarket 本身外：B3 推出了美元、Ibovespa 和比特币的二元期权合约。彭博社将 Kalshi 市场数据整合进终端产品。德国、印度和以色列的券商——Polymarket 排名靠前的非美国市场——尚无本地品牌平台。拥有大量受众的金融媒体公司（路透社、FT 及各地区同类机构）正在评估将预测市场嵌入作为互动收入产品。体育分析和媒体公司是面向球迷预测产品的早期入场者。规律一致：每个主要市场都存在需求，但没有任何本地运营商构建了基础设施。",
+  "V4QfrC": "我们能否创建专属于我们平台和客户群的市场？",
+  "8fcPoM": "可以。你可以围绕任何问题创建自有市场——利率决策、盈利结果、宏观指标、政治事件，或专属于你机构定位的主题。第一天起即可使用 Polymarket 镜像市场，享有即时流动性深度。自定义市场依赖于你的客户群进行交易，并可选择加入 Kuest 运营商网络的跨市场流动性共享。",
+  "aI2m/I": "运营商的费用经济学如何？",
+  "PLUmVj": "你设置自己的交易费率——通常为每笔交易的 0.5% 至 3%。你平台上的每笔交易都会将该费用直接路由至你的机构。Kuest 在此之上保留一小笔协议费。无收入分成，无最低要求，无锁定期。你控制费率，可按市场类别或活动类型进行配置。支持自定义 SLA 的企业级协议可按需签订。",
+  "qwjsFN": "我们的团队实际需要做什么来完成部署？",
+  "JY6ZtB": "你的团队提供品牌素材（Logo、颜色、域名），定义初始活动范围，并审核费用结构。Kuest 负责合约部署、基础设施配置、流动性引导和前端部署。无需内部区块链工程师，无需管理云基础设施。持续运营——Gas 费用、结算、扩展性、监控——完全由我们负责。",
+  "35Z3xD": "技术和合规基础是什么？",
+  "uFWL2p": "智能合约源自 Polymarket 的 CLOB 架构——该技术栈已处理数十亿经过核实的交易量——经 OpenZeppelin 审计，这是链上基础设施的机构标准。结算使用基于 UMA 的解析通道，确保结果透明可验证。代码库以 <license>Kuest MIT+Commons 许可证</license>开源，支持完整审计。自定义合规配置和企业级基础设施协议均可提供——<contact>联系我们</contact>讨论你的监管环境。",
+  "WP1tqU": "更改网站语言",
+  "32Lig0": "打开网站导航",
+  "gcGXho": "网站导航",
+  "ejEGdx": "首页",
+  "CDLJ0W": "企业版",
+  "63eSsB": "协议",
+  "Y6tZmW": "切换至深色模式",
+  "8I/DPV": "切换至浅色模式",
+  "WnQ/AZ": "联系我们",
+  "ucZP0h": "白标预测市场基础设施",
+  "VVPEYI": "一种新的金融工具",
+  "rb4a4G": "正在形成",
+  "a7s9x9": "成为那个平台",
+  "beziVT": "预测市场的月度交易量已达数十亿美元——其中 66% 的需求来自美国以外，却没有任何本地运营商。Kuest 让金融机构、券商和媒体公司能够推出自己的品牌预测市场：经过审计的基础设施、共享流动性、每笔交易都归你的手续费。",
+  "iIm1KO": "查看演示",
+  "3JP2iy": "月度综合交易量 180 亿美元 — 经 OpenZeppelin 审计 — 白标即用",
+  "PnamuS": "美联储会在 7 月前降息吗？",
+  "VbTSNg": "特朗普今年会宣布美国比特币储备吗？",
+  "hHjff/": "俄乌停火协议会在年底前宣布吗？",
+  "a5msuh": "是",
+  "oUWADl": "否",
+  "LIl367": "预测市场的机遇",
+  "nqBDLl": "你的客户已经在 Polymarket 上交易了。",
+  "JYawHv": "选举。利率。比特币价格。经济结果。",
+  "XBilFi": "他们在一个美国平台上这样做。在你的生态系统之外。把手续费付给了别人。",
+  "XhaefJ": "你对此毫无可见度，没有任何收入，而且它正在快速增长。",
+  "cDE7/8": "Polymarket 和 Kalshi 现在每月处理超过 180 亿美元的交易量。",
+  "XrlxrZ": "他们 66% 的用户在美国以外——就在你的市场里。",
+  "HuEBsI": "却没有任何一家本地机构捕获这些需求。",
+  "uhwrqS": "巴西最大券商 XP International 刚刚与 Kalshi 达成合作，正是为了解决这个问题。",
+  "PqRXI6": "他们看到交易量正在流出自己的生态系统，决定掌控这一基础设施。",
+  "dEEJ59": "你不需要等待 Kalshi 来找你。",
+  "F0WGpM": "今日市场",
+  "IpMeiC": "一种新的金融工具——已在规模化运行",
+  "lRKcMy": "预测市场",
+  "5gBXPN": "将其理解为针对未来事件的二元衍生品。人们用真实资金在实时订单簿中交易结果仓位——谁赢得选举、利率是否下调、某家公司是否达到盈利目标。由于金融风险强制约束纪律，由此产生的价格始终优于民调、分析师预测和专家小组。这些数据被对冲基金、央行和政策团队用于在事件发生前预判结果。产生的交易量归平台所有者所有。",
+  "i6kD3y": "从签署协议到平台上线——以天计，而非以季度计。",
+  "BsQ4qo": "经审计的智能合约、第一天起的共享流动性、完整白标——你的团队确认品牌，其余全由我们处理。",
+  "h/hJkd": "Kuest 的运作方式",
+  "ILqI3A": "白标 — 已审计合约 — 流动性已包含",
+  "GbRaXY": "已经投入运营的内容",
+  "EYnbJo": "完整的交易技术栈。无需工程冲刺。",
+  "e3ak9B": "你的机构从零开始需要构建的一切——已经上线、已经审计，可在你的品牌下立即部署。",
+  "m+308Y": "这就是你的客户将要使用的产品。",
+  "a9Cr1H": "一个完全可用的演示，运行着从 Polymarket 镜像的实时市场。你的部署将使用你的域名、你的品牌、你选择的活动类别——以及你的客户每笔交易所产生的手续费。",
+  "Nmh8WN": "实时演示",
+  "WlOoAs": "切换至桌面预览",
+  "LcRyTJ": "切换至移动端预览",
+  "W8nHSd": "常见问题",
+  "XAeeb3": "你的客户已经在 Polymarket 上交易了。问题是这是否发生在你的平台上。",
+  "0EC+wg": "基础设施已就绪。预测市场的先发优势窗口关闭得很快。",
+  "bgrRaS": "查看实时演示",
+  "SQO2YP": "基于 Polymarket 衍生合约构建，经 OpenZeppelin 审计",
+  "/6/sPX": "文档",
+  "zFegDD": "联系",
+  "aH4De2": "来源",
+  "wBsRx0": "来源标题",
+  "mcBIQs": "正在加载来源...",
+  "APPbCy": "如果该发布者屏蔽了嵌入，请使用下方的外部链接。",
+  "7uSrhx": "在新标签页中打开来源",
+  "LJAV5r": "返回页面",
+  "A6W7tq": "Kuest — 创建你自己的白标预测市场",
+  "TYPG+r": "15 分钟内创建你自己的白标预测市场。以你的品牌上线，设置你的手续费，使用你的域名，从第一天起即享共享流动性。",
+  "4d3ACW": "15 分钟内创建属于你的预测市场，享有共享流动性、自定义品牌和你自己的交易手续费。",
+  "7PC2tX": "加密与金融",
+  "/xhYL3": "属于你社区的专属 Polymarket。",
+  "MrfaRW": "比特币能在 Q3 前交易于 15 万美元以上吗？",
+  "aiAlJb": "以太坊能在 2025 年超越比特币的市值吗？",
+  "p/x8qk": "美联储下次利率动向",
+  "Fm3M+y": "金融",
+  "nBpd9c": "押注任何比赛，手续费归你。",
+  "ZBBXgk": "欧冠决赛最佳射手",
+  "8PMGfD": "勇士队能进 2025 年季后赛吗？",
+  "kp19aM": "丹尼尔·内格里亚努能晋级 2026 年世界扑克大赛主赛决赛桌吗？",
+  "XbyQz2": "你的受众来预测，你来收费。",
+  "0rY0CQ": "埃隆·马斯克会赢得 2028 年美国大选吗？",
+  "rttfyH": "俄罗斯和乌克兰能在 2026 年 12 月 31 日前达成停火吗？",
+  "0VcR2M": "地缘政治",
+  "rFNCNF": "谁会赢得下一届英国大选？",
+  "u/dKXG": "保守党",
+  "93dz0a": "娱乐",
+  "4VqsYK": "如果他们在争论，他们就会来交易。",
+  "VVxly3": "新漫威电影首映票房会超过 2 亿美元吗？",
+  "tgatbD": "电影",
+  "6gZx82": "谁会赢得 2025 年巴西老大哥？",
+  "5eaB1A": "真人秀",
+  "RVL+fB": "泰勒·斯威夫特会在 2025 年宣布新专辑吗？",
+  "79lLl+": "音乐",
+  "7KXsY9": "社区",
+  "rttcdh": "将你的 Discord 变成预测市场。",
+  "jKA+OJ": "Uniswap v4 会在 Q2 前在主网上线吗？",
+  "GXMV48": "哪条链将举办下一次治理投票？",
+  "D4kFIt": "我们的 Discord 本月能达到 5 万名成员吗？",
+  "8ksNrl": "表情包与其他",
+  "57EU2a": "你的想象力是唯一的限制。互联网在争论什么，那就是一个市场。",
+  "UNmNRK": "MrBeast 会在 2025 年 7 月前超越 T-Series 成为 YouTube 第一频道吗？",
+  "QKFeMq": "互联网",
+  "UFS2Ay": "埃隆·马斯克的净资产会在 2025 年底前超过 5000 亿美元吗？",
+  "IzefVn": "亿万富翁",
+  "u/2heB": "2026 年 12 月前会有拥有 1000 万以上粉丝的美国歌手被捕吗？",
+  "jYfyyU": "外卡",
+  "dsqVtR": "成交量",
+  "RXIj62": "一个价值数十亿美元的市场。集中在两家公司。直到现在。\nPolymarket 和 Kalshi 占据主导——但它们是封闭的。你在上面交易，而不是与它们合作。",
+  "z7q/BG": "Kuest 就是为了改变这一切而生的。\n只需几次点击，你就能推出自己的预测市场网站：用你的品牌、你的类别、你的自定义市场。我们负责智能合约、基础设施、流动性和集成。你专注于你的受众——并从网站上每一笔交易中收取手续费。",
+  "afntHn": "无需代码。无需服务器。无技术烦恼。",
+  "RhMnI3": "已在测试网上启动的市场",
+  "rzIHfe": "每笔交易的手续费，直达你的钱包",
+  "c+TiLJ": "平均上线时间",
+  "cuWWeF": "启动费用，规模化后按使用量计费",
+  "3OlZjI": "选择你的细分领域，设定你的问题",
+  "pw+prO": "体育、加密、政治、表情包——任何你的受众已经在争论的话题。由你设定问题、费率和品牌。",
+  "dZs0ZT": "上线运行——我们负责基础设施",
+  "2M8Qvt": "结算、钱包、流动性、区块链——在你完成设置之前一切就绪。无需代码，15 分钟内你的市场即可上线。",
+  "Yg8iPR": "每笔交易直接向你支付",
+  "v/knx3": "你的受众下注。手续费直接进入你的钱包。无中间商，无收入分成，无需等待。",
+  "XeylhZ": "你的域名。你的品牌。任何语言。",
+  "BlMris": "自定义域名、Logo、颜色和界面语言。开箱即支持英语、葡萄牙语、西班牙语、德语、法语和中文。",
+  "Aimhsc": "从第一天起共享流动性。",
+  "qPpK38": "镜像 Polymarket 的活跃市场，内置订单流。你的网站在发布的那一刻就充满活力——无冷启动，无空订单簿。",
+  "ycKp7R": "内置排行榜 + 盈亏统计。",
+  "q8maJg": "交易者排名、盈亏追踪和动态信息流默认开启。你的社区有理由持续回访。",
+  "ebHaXo": "链上联盟系统。",
+  "MPOBeh": "让他人推广你的市场并赚取手续费分成——通过链上无信任地结算。无需手动支付，无需电子表格。",
+  "hcQStK": "自动化交易 Bot SDK。",
+  "iQD24y": "Python 和 Rust SDK 让做市商和高级用户可以直接在你的平台上运行 Bot——自动增加交易量和深度。",
+  "Qd/J5U": "经 OpenZeppelin 审计的合约。",
+  "D5dgnq": "智能合约源自 Polymarket 架构。基于 UMA 的解析机制确保市场结算透明可验证。你无需了解这些细节——它会直接运作。",
+  "c85IL9": "需要多长时间？我需要具备技术能力吗？",
+  "a/nLti": "大多数市场在 15 分钟内上线。你从 <link>/launch</link> 启动，有引导式设置——无需代码、无需合约部署、无需 DevOps。如果你能搭建一个 Shopify 店铺，你就能启动一个 Kuest 市场。",
+  "0al3rb": "我可以在我的网站上展示 Polymarket 的市场吗？",
+  "Q87wQp": "可以。你可以镜像 Polymarket 的活跃市场——所有类别，或仅限与你的细分领域相关的类别（加密、体育、政治等）。这些镜像市场从第一天起即带有共享流动性，让你的网站从发布之时起就充满活力。",
+  "EYr4Uc": "我可以创建自己的市场吗？谁提供流动性？",
+  "y46QfQ": "可以。你可以围绕任何你选择的问题创建自定义市场。Polymarket 镜像市场内置共享流动性。你自己创建的市场取决于你的受众进行交易——因此你自己的内容和社区推动那里的交易量。你也可以为创作者市场选择加入跨市场流动性共享。",
+  "R1GU/L": "我如何赚钱？我可以设置自己的手续费吗？",
+  "UDxavK": "你在市场上设置交易手续费率——通常在 0.5% 到 3% 之间。每次有人交易，该手续费直接进入你的钱包。无收入分成，无中间商，无需等待。你控制费率，可以随时更改。",
+  "VIFaMd": "我可以使用自己的域名和品牌吗？",
+  "VUT7QQ": "可以。你可以用自己的域名、Logo、颜色和类别结构上线，让市场完全像你品牌的原生产品——而非 Kuest 白标。",
+  "HEb7Qz": "市场如何结算？",
+  "3J6QOd": "Kuest 使用基于 UMA 的解析通道进行透明可验证的结算。智能合约源自 Polymarket——经 OpenZeppelin 审计——并针对跨市场共享流动性进行了适配。你无需了解这些细节即可使用，但这意味着你的市场底层金融基础设施是处理了数十亿交易量的同一技术栈。",
+  "QAO2mS": "启动需要付费吗？",
+  "azarTV": "启动流程免费开始。生产基础设施采用按使用量计费的模式——规模化时再付费，不是上来就付。",
+  "21kVMo": "我可以自行托管 Kuest 吗？",
+  "Sm0k12": "代码库以 <license>Kuest MIT+Commons 许可证</license>开源。欢迎为品牌调整、前端修改和自定义 UX 进行 Fork。但生产环境部署必须使用 Kuest 基础设施。运行独立交易技术栈需要另行签订<contact>商业协议</contact>。",
+  "GxSfX/": "开始你的预测市场",
+  "/GjKw4": "预测市场的 Shopify",
+  "6rTAPi": "你自己的 Polymarket",
+  "4M9G7K": "15 分钟上线。免费",
+  "E8yhd0": "你的受众每天都在做预测。为任何细分领域——加密、体育、政治、任何话题——推出你自己的市场，并在每笔交易中收取手续费。",
+  "O0W+Rn": "免费启动 • 无需代码 • 数分钟内上线",
+  "1lcF/G": "以太坊本季度能超越比特币吗？",
+  "MWAedt": "埃隆·马斯克今年净资产会超过 5000 亿美元吗？",
+  "JtIR4g": "社区能在 Q4 前达到 5 万名成员吗？",
+  "dOiofi": "巴西会在 2026 年选出一位亲市场的总统吗？",
+  "VDwYlH": "唐纳德·特朗普会赢得下一届美国大选吗？",
+  "iJJZkg": "工党会赢得下一届英国大选吗？",
+  "SDjO/I": "下一部漫威电影首映票房会超过 2 亿美元吗？",
+  "nVE+Ar": "注意力的转移创造机会窗口",
+  "DX+HgM": "多年来，金钱追随注意力。",
+  "7I9Aje": "联盟营销。代发货。在线课程。博彩。",
+  "meOBrx": "每一波浪潮打开一扇窗——然后迅速关闭。",
+  "cI7N+J": "你是早早入局，还是等到已经饱和才到来？",
+  "UY3F4v": "如今，两个平台控制着一个价值数十亿美元的市场。",
+  "CYuTk4": "49% 的访问量仍然来自仅 5 个国家。",
+  "+RjDIA": "世界上的其余地区几乎还没有发现这一点。",
+  "OtJeRc": "你可以选择：",
+  "k7/ifQ": "成为又一个试图预测下一个结果的交易者——",
+  "L64V8y": "或者建造所有人都在里面玩的房子。",
+  "YhMVOB": "已有 100 余名运营商加入早期体验",
+  "6EYj7H": "你的受众已经在这样做了——而且是免费的",
+  "YJP+OI": "你的粉丝每天都在做预测。谁赢得下一场选举。比特币会不会到 10 万美元。本周谁被淘汰。他们在你的评论区、私信、社区里争论这些——而这些精力没有给你带来一分钱。预测市场将这种信念转化为真实的交易，用真实的金钱。每笔交易支付手续费，手续费归你。",
+  "YBSi4S": "开始从我的受众中获益",
+  "pPMDr3": "免费 · 无需代码 · 15 分钟上线",
+  "6UWuVC": "一切已就绪",
+  "XB6CyQ": "完整的技术栈。随时可以上线。",
+  "5EF4TX": "从交易引擎到排行榜，你期望从交易平台获得的每一项功能都已运行就绪。你只需添加你的品牌。",
+  "JDczvY": "这就是你的网站的样子。",
+  "RDnFgG": "这是一个运行着 Polymarket 镜像市场的功能性演示。探索它、在上面交易，然后想象它配上你的品牌、你的受众和你的问题会是什么样子。",
+  "eK4U/k": "准备好将你的受众变成收入来源了吗？",
+  "M4B6m7": "启动我的市场——免费",
+  "htGae5": "你的市场，你的受众，你的规则。",
+  "YHZxEt": "免费开始。无需信用卡。",
+  "8tITje": "创建我的预测市场",
+  "S4tHED": "Kuest 协议 — 预测市场基础设施",
+  "nID/1N": "Kuest 是一个白标预测市场协议，让机构、媒体公司和创作者能够推出拥有自己品牌、共享流动性和协议级基础设施的市场。",
+  "gDgBbN": "Kuest 协议概览",
+  "kI9wMe": "2026 年 3 月 9 日，Kalshi 宣布与美国以外的金融机构达成首个战略合作：巴西最大券商之一 XP International，拥有超过 470 万活跃客户和 1.8 万亿雷亚尔在管资产。",
+  "lKZmM2": "根据安排，XP 负责本地分发和客户关系，而 Kalshi 提供交易技术和市场设计——这是通过本地金融平台输出预测市场基础设施的一种模式。",
+  "IfnF7u": "巴西目前尚无针对预测市场的具体监管，但 Kalshi 和 Polymarket 等平台已托管与该国相关的合约。B3 也计划进入这一市场，财政部正在密切关注该行业。Kalshi 的联合创始人称巴西是\"多年前美国预测市场的样子\"。",
+  "i+kvE+": "Kalshi 需要 XP，因为它是一个平台，而非基础设施。它只能一次扩展一个国家，一次处理一个机构合作。Kuest 是使每个市场中每个 XP 同类企业都能成为潜在预测市场运营商的那一层——无需等待 Kalshi 的合作队列。",
+  "r2aT9g": "Kuest 的智能合约源自 Polymarket 的 CLOB 架构——同一设计已处理了数十亿经过核实的交易量。核心合约以 OpenZeppelin 的审计验证为基础。我们对其进行了适配，以支持多个运营商前端之间的共享流动性——这是使协议模式成为可能的架构原语。",
+  "sZLS1j": "选择 Polygon 同样是深思熟虑的结果。现有预测市场流动性的大部分已经在 Polygon 上。交易者已经在那里持有 USDC 余额。做市 Bot 已经在这个环境中运行。在不同的链上构建意味着要求每个流动性提供者重新开始。我们将创新聚焦于分发和基础设施——而非重新发明一个已经在规模化运行的交易引擎。",
+  "iKNqzA": "其结果是一个与现有交易策略、Bot 基础设施和做市商工具立即兼容的协议——大幅降低了新运营商部署时流动性引导的门槛。",
+  "bbEO9p": "月度综合交易量，Kalshi + Polymarket，2026 年 2 月",
+  "wSNkp5": "来源：The Block",
+  "UJk49y": "3 个月内对 Polymarket 的访问量。美国仅占流量的 20%。",
+  "bmisVV": "过去 12 个月 Kalshi 交易量增长",
+  "31LJPe": "来源：PYMNTS / Kalshi 新闻稿",
+  "njIzyP": "Kalshi 和 Polymarket 在当前融资轮中的目标估值",
+  "QG0yxg": "来源：CoinDesk，转引自 WSJ，2026 年 3 月",
+  "plIFr9": "平台 vs. 协议",
+  "PVsHz/": "Polymarket 是单一场所，Kalshi 也是单一场所。Kuest 是底层那一层——任何运营商都可以部署自己的前端、品牌和市场，并从第一天起与所有其他 Kuest 驱动的网站共享流动性。",
+  "X2PsIL": "自有品牌",
+  "XVe6bE": "共享流动性",
+  "VkJg0U": "Shopify 类比",
+  "X10nMp": "Shopify 没有与亚马逊竞争。它让数百万原本无法存在的店铺得以存在。Kuest 不与 Polymarket 竞争。我们让下一个 1000 个预测市场运营商——媒体公司、券商、社区平台、创作者——得以存在。",
+  "FZjV1g": "运营商",
+  "Orc8Zk": "分发",
+  "CMmwBo": "网络规模",
+  "0OMn/f": "已构建的内容",
+  "b573DP": "CLOB 引擎、中继器、智能合约、兼容 Polymarket 的 API、Vercel + Supabase 部署栈、共享流动性层、SDK、Bot 基础设施、做市商集成以及多语言前端。实时演示见 demo.kuest.com。",
+  "4+ppNT": "SDK",
+  "LlNItA": "Bot",
+  "xwEc8K": "API",
+  "NZYRdf": "主网",
+  "+KWmZ5": "运营商费用",
+  "8ht7FO": "运营商设置自己的交易手续费率，通常为 0.5%–3%。Kuest 在网络中每笔交易上保留一小笔协议费。随着运营商数量的增加，这将成为与任何单一运营商表现无关的聚合交易量收入来源。",
+  "YtSkEh": "运营商费用 0.5%–3%",
+  "ofV4Sb": "协议抽成",
+  "dA+hnZ": "基础设施",
+  "Ar2FCa": "启动免费。生产基础设施按使用量计费——运营商规模化时才付费。服务器费用、Gas 管理、结算基础设施和扩展性由 Kuest 负责。运营商专注于分发，我们运行技术栈。",
+  "0AJH+W": "免费启动",
+  "0Y2ESX": "按使用量计费",
+  "A7VFC4": "流动性服务",
+  "vuWEB0": "在 Kuest 网络中提供流动性的做市商赚取价差。Kuest 促成这种撮合并在基础设施层捕获价值。随着运营商网络的增长，流动性效率提升——形成复利网络效应。",
+  "iIilaQ": "价差捕获",
+  "UliaFd": "网络效应",
+  "zdIaHp": "投资者",
+  "/2ghUG": "种子阶段资本，用于加速运营商获取、做市商激励计划和协议加固。预测市场行业正在从实验性迅速转向机构化。我们正处于基础设施层投注被定价的拐点，而非事后回望。",
+  "X5JgG1": "做市商",
+  "/RLjyd": "新预测市场的冷启动问题是流动性。我们通过运营商网络的共享流动性来解决这个问题——但我们需要初始做市商合作来为新部署注入深度。如果你在 Polymarket 或 Kalshi 上运行 Bot 或提供流动性，你已经具备在 Kuest 上运营所需的一切。预估 APY 取决于策略和交易量，但在克隆 Polymarket 风格的市场上，对于高效循环库存的交易台而言，价差和换手率组合可以超过稳定币被动收益。",
+  "eroA5t": "机构运营商",
+  "DKf/mU": "XP + Kalshi 的合作验证了这一模式：一家金融机构希望获得预测市场准入，但需要本地化、有品牌、可控的环境。Kuest 无需与 Kalshi 签订双边协议即可提供这一环境。拥有金融受众的银行、券商、投资平台和媒体集团都可以将 Kuest 作为其基础设施层。巴西为此尤为成熟：B3 正在为这一类别做准备，XP 已有 Kalshi 合作，财政部也在密切关注这一行业。运营商早期定位的窗口是开放的。",
+  "wFn0+c": "消费者品牌",
+  "zXSCJJ": "核心资产是平台本身",
+  "MQCEtF": "单位经济",
+  "B0UKaq": "与自身订单流挂钩",
+  "EVWF4d": "扩张",
+  "a1qjBE": "一次一个合作",
+  "CDdLkR": "运营商网络",
+  "VGQQV+": "每个品牌成为一个分发节点",
+  "KOuDOE": "经济性",
+  "/7jdO/": "基于聚合交易量的协议费",
+  "qFTxb3": "规模",
+  "7NyfzS": "同时进行多个部署",
+  "kZ1GFT": "智能合约已部署",
+  "Ts8P/L": "Polygon 主网，经 OpenZeppelin 验证的架构",
+  "DbSiJf": "CLOB 引擎 + 中继器已运行",
+  "zzWggU": "核心交易技术栈已在运行",
+  "+SJ5F1": "兼容 Polymarket 的 API",
+  "oky9BL": "第一天起即实现跨平台流动性",
+  "ffjoNl": "白标前端",
+  "+XPM9V": "无需代码，15 分钟内完成部署",
+  "4y3Hgp": "SDK + Bot 基础设施",
+  "fVyIDm": "可用于运营商和做市商集成",
+  "k6I8wU": "实时演示",
+  "92MheG": "<link>demo.kuest.com</link>",
+  "rCSmI9": "开源",
+  "WWNjAD": "<link>github.com/kuestcom/prediction-market</link>",
+  "iGlk8r": "做市商计划",
+  "gL8/Fi": "积极招募中",
+  "vp4QDF": "种子轮",
+  "JfG49w": "开放中",
+  "GJHHhS": "面向运营商的白标预测市场协议，提供品牌市场、共享流动性和协议基础设施。",
+  "0ISd8Y": "KUEST 协议 · 种子轮开放中",
+  "4RXdli": "Polymarket 证明了这一模式。",
+  "OzUJqO": "我们正将其转化为",
+  "ojk2Te": "基础设施。",
+  "jk01y5": "Kuest 是一个白标预测市场协议——让任何金融机构、媒体公司或创作者都能推出自己的品牌市场、共享流动性并赚取交易手续费的那一层。构建于同一智能合约架构之上，已处理数十亿交易量。今天即可使用。",
+  "CaOX4s": "查看路演材料",
+  "bRIuPj": "MVP 已运行 · 种子轮开放 · 开源",
+  "r3NIzv": "机遇所在",
+  "AATgTA": "一个正在实时形成的 200 亿美元行业——而全球 95% 的地区还未触及。",
+  "dPQ1/w": "目前有两个平台主导这一行业。受监管的美国交易所 Kalshi 最近年化收入跨越了 10–15 亿美元。运行在 Polygon 上的 Polymarket 每月在全球吸引超过 3200 万次访问。两者共同证明预测市场并非利基市场——它们是新的金融原语。问题在于：两者均为封闭平台。你在上面交易，无法与它们共建。",
+  "e96g//": "为何是现在",
+  "858n82": "XP + Kalshi 的合作刚好印证了我们早已为之构建的一切。",
+  "lychXS": "通过这些国际合作伙伴来开展业务对我们来说是有意义的。他们已经拥有客户和品牌。",
+  "P44lyQ": "Luana Lopes Lara，Kalshi 联合创始人兼 COO",
+  "Qw8qhv": "来源：Finance Magnates，2026 年 3 月",
+  "Jzev1e": "这正是 Kuest 所实现的——在协议规模上，而非逐笔协议地实现。",
+  "N5DjPm": "协议",
+  "/3D/7f": "我们不是预测市场，我们是启动它们的基础设施。",
+  "sd5Ekg": "为何选择这一架构",
+  "uIQvXZ": "这是一个战略决策，而非捷径。",
+  "799dG0": "Polymarket 证明了这一模式。我们正将该基础设施转化为一个协议，让任何人都能推出共享流动性的市场。",
+  "wl/NTj": "Kuest 协议论点",
+  "zBvcJr": "协议如何盈利",
+  "Mnuh9y": "三层收入。一套基础设施栈。",
+  "6LMh6M": "目前，基础设施成本可控且可预测。它们会随交易量增长——但协议收入也会按比例增长。成本结构不是上限，而是跟随增长的变量。",
+  "1+3tOb": "我们在寻找谁",
+  "TZCl6o": "三类合作伙伴。缺一不可。相互补充。",
+  "ncAbx2": "战略问题的答案",
+  "JGLCPa": "为什么 Polymarket 不直接自己做？",
+  "7ZMpCt": "他们专注于成为世界上最好的预测市场平台。这与专注于成为世界上最好的预测市场基础设施层是两家不同的公司。Polymarket 有一个价值 90 亿美元的品牌消费产品需要保护，他们不会构建驱动竞争对手的 SDK。",
+  "NKK5WE": "应用层",
+  "e16ptT": "平台公司优化目标流量。",
+  "54FWPX": "Polymarket 和 Kalshi 通过聚集用户、保护品牌、在自己的平台上加深流动性来获胜。",
+  "+lr/x1": "协议层",
+  "0qFMbc": "基础设施公司优化运营商规模。",
+  "HdsAzY": "Kuest 通过让数千家运营商推出共享流动性的市场、同时由 Kuest 运行底层技术栈来获胜。",
+  "6C1ocU": "这不是什么新动态。Uniswap 在不与其上的每个项目竞争的情况下开启了数千个代币市场。AWS 在不试图成为所有人的情况下赋能了数百万家企业。XP + Kalshi 的合作验证了需求，但也揭示了瓶颈：Kalshi 一次只能做一个机构合作。Kuest 可以同时做数千个，因为我们是协议——而非对手方。",
+  "fJZtI8": "我们今天所处的位置",
+  "yxsvlY": "MVP 已上线。协议已运行。正在寻找合适的合作伙伴来扩大规模。",
+  "A5FQh0": "预测市场的基础设施层正在此刻被构建。",
+  "QANYbD": "我们宁愿在正确的时机找到正确的合作伙伴，也不愿在未对齐的情况下快速推进。如果你是投资者、做市商或机构运营商——请与我们联系。",
+  "mSzw4X": "申请路演材料",
+  "zg5lAT": "联系团队",
+  "nWro61": "关闭等待弹窗",
+  "sM5VEn": "等待钱包授权...",
+  "13XKf3": "{walletName} 钱包图标",
+  "NAkpsP": "已连接钱包图标",
+  "2kRw24": "更改启动应用语言",
+  "RaCrar": "验证启动设置",
+  "MfDeYZ": "准备或复用 Vercel 项目",
+  "7Jtqaz": "关联 Supabase 数据库",
+  "FjEvuc": "触发部署",
+  "4vZQNh": "无法检查 OAuth 连接状态。",
+  "UC/gLn": "断开 Vercel OAuth 失败。",
+  "f/uMj5": "请先粘贴你的 Vercel 访问令牌。",
+  "bx5KHy": "请先连接 Vercel OAuth。",
+  "oynMeY": "列出 Supabase 数据库失败。",
+  "s0PxJX": "未找到现有数据库，你仍可以创建新数据库。",
+  "w9v7ZD": "正在创建你的账户...",
+  "A9PC2i": "请检查你的钱包并确认。",
+  "DWfV34": "钱包已连接。请输入你的网站名称以继续。",
+  "3Ll1Pj": "使用浏览器钱包生成凭据失败。",
+  "0hUaQW": "请先连接钱包，再切换网络。",
+  "TXNH2b": "请在钱包设置中切换到 {network}。",
+  "VXbkiS": "无法切换到 {network}。",
+  "Dx0Zqz": "请打开你的钱包并批准连接。",
+  "Tx+Kp8": "正在切换到 {network}...",
+  "DGUtsP": "{network} 已激活。点击签名以继续。",
+  "woyk9c": "钱包连接尚未就绪。",
+  "niyBLs": "批准一次签名以生成凭据。",
+  "jHeWfn": "正在生成 Kuest 凭据...",
+  "muHAfE": "无法签名并生成密钥。",
+  "Bd8XSS": "无法继续钱包签名流程。",
+  "0A2I8p": "请先输入域名。",
+  "08UIj9": "域名操作失败。",
+  "PkGA+i": "启动失败。",
+  "8cTVo0": "调用 API 失败。",
+  "MBy3Yi": "网站 + 管理员钱包",
+  "Zo/YYU": "主机 + 数据库",
+  "556JQK": "部署",
+  "C73rHj": "使用浏览器钱包",
+  "+vVZ/G": "连接",
+  "rztPaw": "切换到 {network}",
+  "gDXziV": "签名",
+  "nmao86": "第 1 步：网站 + 管理员钱包",
+  "IMXP52": "网站名称",
+  "OZXD4R": "这是你的品牌名称。",
+  "QxT4ZN": "你的预测市场网站名称",
+  "vMldOp": "管理员钱包",
+  "xY7X9W": "一次钱包签名将创建你的 Kuest CLOB 凭据。此钱包将成为管理员。",
+  "8hYFBP": "最简单的设置方式，请使用",
+  "VC8FDa": "MetaMask 浏览器扩展",
+  "KqC9yz": "MetaMask 应用",
+  "tlW3DB": "无需余额，不移动资金，无 Gas 费用。",
+  "hocCQQ": "我们会尝试自动切换到 Polygon Amoy，并在需要时添加该网络。",
+  "qj1uhz": "断开连接",
+  "H6RqOb": "处理中...",
+  "0cEOKu": "高级选项",
+  "prQUX/": "电子邮件（可选）",
+  "K5fuRA": "you@team.com",
+  "t47277": "Nonce",
+  "acrOoz": "继续",
+  "D+JEoM": "第 2 步：主机 + 数据库",
+  "mVzSRB": "Vercel 认证",
+  "fsOAyk": "Vercel 是你的预测市场网站的托管平台。",
+  "hKIibs": "访问令牌",
+  "6b2Rzi": "已连接账户",
+  "PuU15u": "未连接",
+  "1SvspN": "验证中...",
+  "9PVJKb": "连接 Vercel",
+  "mcokwM": "Vercel 访问令牌",
+  "Z+OezR": "粘贴 Vercel 访问令牌",
+  "XM9kIZ": "在 Vercel 中创建令牌",
+  "6Zx4Oe": "Reown 项目 ID",
+  "5iXKi9": "Reown 项目 ID 为你的终端用户启用钱包登录。",
+  "Seanpx": "必填",
+  "jqQKl+": "获取地址",
+  "J/Nfwe": "→ 创建/选择项目 → 复制项目 ID。",
+  "fLjvv3": "Supabase 数据库",
+  "JxfOZc": "Supabase 存储用户、会话和应用数据，通过你的 Vercel 集成进行连接或创建。",
+  "IQSlJx": "创建新数据库",
+  "5u/VkJ": "SUPABASE 数据库 {index} - {name}",
+  "o9y8/n": "刷新中...",
+  "rELDbB": "刷新",
+  "ML2QY8": "项目 Slug（自动）",
+  "Y7m6lU": "覆盖项目 Slug",
+  "V4KNjk": "可选",
+  "UxeJFE": "代码仓库",
+  "8dAyZI": "分支",
+  "agfbrA": "Vercel 团队 ID",
+  "hmgIL5": "留空 = 个人账户",
+  "Mk8C5M": "Supabase 区域",
+  "ybPOMT": "留空 = 由 API 自动生成",
+  "Pc+tM3": "生成",
+  "FHpick": "覆盖 SITE_URL",
+  "OAzJmS": "额外环境变量（.env 格式）",
+  "r277ta": "第 3 步：部署",
+  "ZpQ6us": "结果",
+  "tzMNF3": "状态",
+  "Uehd61": "成功",
+  "7ATNns": "失败",
+  "k36uSw": "项目",
+  "+geK0q": "Vercel 控制台",
+  "rCKbVC": "Supabase 控制台",
+  "IuFETn": "耗时",
+  "7ejcQr": "自定义域名（可选）",
+  "o+c/uY": "部署后可使用你自己的域名。先添加域名，然后验证 DNS 记录。",
+  "Z8971h": "已验证",
+  "n6KNWj": "待验证",
+  "Nvr5Ce": "添加中...",
+  "EkcNZU": "添加域名",
+  "8nqlNv": "验证中...",
+  "q5Xl0M": "验证",
+  "bG/kQ6": "需要在你的域名注册商处设置的域名服务器：",
+  "NgBkH4": "查看 Vercel DNS 说明",
+  "W+ZsR7": "正在连接钱包",
+  "L96RsX": "请打开你的钱包并批准连接以继续。",
+  "zmWQIG": "等待签名",
+  "hhet2D": "请在钱包中批准签名以继续。",
+  "+F4irl": "无法发送你的请求，请重试。",
+  "epzd31": "请求已发送，我们将通过电子邮件与你联系。",
+  "sNwsMv": "关闭弹窗",
+  "TvpSYF": "申请路演材料",
+  "5U5kOI": "申请 Kuest 协议路演材料",
+  "K7k8pF": "留下你的公司名称和电子邮件，我们将把请求转交给团队。",
+  "FPGwAt": "公司名称",
+  "lvutaP": "你的公司",
+  "HHRIuR": "工作邮箱",
+  "VvR2rk": "you@company.com",
+  "47FYwb": "取消",
+  "82Y7Sa": "发送中...",
+  "PoX2HN": "发送申请",
+  "aBfpIb": "2025 年交易量",
+  "1+9TxU": "据 <link>CertiK</link> 数据，预测市场 2025 年交易量达 635 亿美元。",
+  "I++gEQ": "Polymarket 谈判",
+  "7g7MKo": "彭博社援引 <link>CoinDesk</link> 报道，Polymarket 谈判估值接近 150 亿美元。",
+  "FSPG53": "Kalshi 估值",
+  "IKYdr/": "据 <link>TechCrunch</link> 报道，Kalshi 以 110 亿美元估值完成 10 亿美元融资。",
+  "m1UlGM": "周度交易量",
+  "uEzk8y": "据 <link>Decrypt</link> 报道，周度交易量在周期顶点突破 20 亿美元。"
 }

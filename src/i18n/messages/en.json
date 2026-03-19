@@ -1,936 +1,545 @@
 {
-  "landing": {
-    "meta": {
-      "title": "Kuest — Create Your Own White-Label Prediction Market",
-      "description": "Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.",
-      "ogTitle": "Kuest — Create Your Own White-Label Prediction Market",
-      "ogDescription": "Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.",
-      "twitterTitle": "Kuest — Create Your Own White-Label Prediction Market",
-      "twitterDescription": "Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees."
-    },
-    "languageSelector": {
-      "ariaLabel": "Change site language"
-    },
-    "preview": {
-      "title": "This is what your site will look like.",
-      "subtitle": "This is a functional demo with mirrored Polymarket markets. Explore it, trade on it, and imagine it with your brand, your audience, and your questions.",
-      "switchToDesktop": "Switch to desktop preview",
-      "switchToMobile": "Switch to mobile preview"
-    },
-    "common": {
-      "yes": "Yes",
-      "no": "No",
-      "chance": "chance"
-    },
-    "nav": {
-      "cta": "Start your prediction market →"
-    },
-    "hero": {
-      "kicker": "The Shopify for Prediction Markets",
-      "titleLine1": "Your own Polymarket.",
-      "titleLine2": "Live in 15 minutes. Free.",
-      "subtitle": "Your audience already predicts things every day. Launch your own market for any niche — crypto, sports, politics, anything — and earn a fee on every trade.",
-      "cta": "Start your prediction market →",
-      "proof": "Free launch • No code • Live in minutes",
-      "previewUrl": "demo.kuest.com"
-    },
-    "attentionScroll": {
-      "block1": {
-        "line1": "For years, money followed attention.",
-        "line2": "Affiliates. Dropshipping. Online courses. Betting.",
-        "line3": "Each wave opened a window — and closed right after.",
-        "line4": "Did you get in early, or arrive when it was already saturated?"
-      },
-      "block2": {
-        "line1": "Today, two platforms control a market worth billions.",
-        "brand1": "Polymarket.",
-        "brand2": "Kalshi.",
-        "line3": "49% of visits still come from just 5 countries.",
-        "line4": "The rest of the world has barely discovered this."
-      },
-      "block3": {
-        "lead": "You can choose:",
-        "line2": "be one more trader trying to call the next prediction —",
-        "line3": "or build the house where everyone else plays."
-      }
-    },
-    "social": {
-      "eyebrow": "IS IT POSSIBLE TO PREDICT THE FUTURE?",
-      "title": "Prediction Market",
-      "subtitle": "It works like a stock exchange, but for future events. People trade with real money on outcomes like \"Who wins the election?\" or \"Does Bitcoin go above $100k?\" Because real money is at stake, forecasts become surprisingly accurate, often outperforming polls or experts. Governments, companies, and investors already use this data to make decisions before the facts unfold.",
-      "badge": "Billions are already trading",
-      "cards": [
-        {
-          "label": "2025 volume",
-          "subHtml": "Prediction market volume hit $63.5B in 2025, according to <a href=\"https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf\" class=\"source-link\" data-source-outlet=\"CertiK Research\" data-source-title=\"2025 Skynet Prediction Markets Report\">CertiK</a>."
-        },
-        {
-          "label": "Polymarket talks",
-          "subHtml": "Bloomberg put Polymarket talks near $15B, via <a href=\"https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg\" class=\"source-link\" data-source-outlet=\"CoinDesk\" data-source-title=\"Polymarket Seeks Investment at Valuation of $12B-$15B: Bloomberg\">CoinDesk</a>."
-        },
-        {
-          "label": "Kalshi valuation",
-          "subHtml": "Kalshi raised $1B at an $11B valuation, according to <a href=\"https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/\" class=\"source-link\" data-source-outlet=\"TechCrunch\" data-source-title=\"Kalshi's Valuation Jumps to $11B After Raising Massive $1B Round\">TechCrunch</a>."
-        },
-        {
-          "label": "Weekly volume",
-          "subHtml": "Weekly volume moved past $2B at the cycle peak, according to <a href=\"https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume\" class=\"source-link\" data-source-outlet=\"Decrypt\" data-source-title=\"Prediction Market Trading Volume Hits All-Time High\">Decrypt</a>."
-        }
-      ]
-    },
-    "problems": {
-      "eyebrow": "Sound familiar?",
-      "title": "You have an audience. You just can't make it pay.",
-      "subtitle": "Ads pay pennies. Sponsors are unpredictable. Courses take months to build. Meanwhile your audience argues, predicts, debates every day — and none of that energy earns you a cent.",
-      "cards": [
-        {
-          "title": "Every revenue model you know already has a hard ceiling",
-          "copy": "Ads pay per click. Sponsors pay per post. A prediction market earns a fee on every single trade — 24/7, with no effort from you after launch."
-        },
-        {
-          "title": "Your audience already predicts — you just don't own it",
-          "copy": "They debate outcomes in your comments, in your DMs, in your community. Kuest turns that energy into a market where every trade pays you."
-        },
-        {
-          "title": "You don't need to understand prediction markets to launch one",
-          "copy": "No trading knowledge. No crypto background. No dev team. Just your niche, your questions, and 15 minutes to go live."
-        }
-      ]
-    },
-    "solution": {
-      "eyebrow": "",
-      "title": "A billion-dollar market. Concentrated in two companies. Until now.\nPolymarket and Kalshi dominate — but they are closed. You trade on them. Not with them.",
-      "subtitle": "Kuest was built to change that.\nIn just a few clicks, you launch your own prediction market site: with your brand, your categories, and your custom markets. We handle the smart contracts, infrastructure, liquidity, and integrations. You focus on your audience — and collect fees from every trade that happens on your site.\nNo code. No server. No technical headaches.",
-      "cta": "Start earning from my audience",
-      "note": "Free · Kuest infrastructure · Liquidity included",
-      "points": [
-        {
-          "title": "Pick your niche and write your questions",
-          "copy": "Sports, crypto, politics, memes — anything your audience already argues about. You set the questions, the fee rate, and your brand."
-        },
-        {
-          "title": "Go live — we handle the infrastructure",
-          "copy": "Settlement, wallets, liquidity, blockchain — all running before you finish setup. Your market is live in under 15 minutes with no code."
-        },
-        {
-          "title": "Every trade pays you directly",
-          "copy": "Your audience bets. The fee goes straight to your wallet. No intermediary, no revenue share, no waiting."
-        }
-      ],
-      "mock": {
-        "title": "Will your prediction market hit $500M in volume by January 2027?",
-        "chanceSuffix": "chance",
-        "logoLabel": "Your Logo",
-        "metaHtml": "$4,679.80 Vol. &nbsp;·&nbsp; Closes Jan 01, 2027",
-        "yesButton": "Yes 67¢",
-        "noButton": "No 33¢"
-      }
-    },
-    "features": {
-      "eyebrow": "What's included",
-      "title": "Three things that would take a team months. Done in 15 minutes.",
-      "subtitle": "No engineers. No blockchain knowledge. No cold start.",
-      "cards": [
-        {
-          "title": "Your site. Your language. Your niche.",
-          "copy": "Custom domain, logo, and colors. Create markets in any language and build around your local sports team, regional politics, or community events."
-        },
-        {
-          "title": "Ask anything. Your audience decides.",
-          "copy": "You write the question — about anything you cover. Your audience bets yes or no. Every trade earns you a fee, straight to your wallet with no intermediary.",
-          "question": "\"Will GTA 6 launch before July 2025?\""
-        },
-        {
-          "title": "Alive from day one. No empty market problem.",
-          "copy": "Shared liquidity via mirrored markets gives your market activity before the first visitor arrives. The cold start problem that kills most platforms doesn't exist here.",
-          "feedLabel": "Live activity",
-          "feedStatus": "Day 1",
-          "trades": [
-            {
-              "avatar": "J",
-              "name": "John",
-              "action": "bought",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "at 72¢ ($4)"
-            },
-            {
-              "avatar": "M",
-              "name": "Maria",
-              "action": "sold",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 41¢ ($9)"
-            },
-            {
-              "avatar": "S",
-              "name": "Steve",
-              "action": "bought",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 18¢ ($2)"
-            },
-            {
-              "avatar": "N",
-              "name": "Nina",
-              "action": "sold",
-              "side": "No",
-              "sideClass": "no",
-              "entry": "at 63¢ ($11)"
-            },
-            {
-              "avatar": "A",
-              "name": "Alex",
-              "action": "bought",
-              "side": "Yes",
-              "sideClass": "yes",
-              "entry": "at 81¢ ($7)"
-            }
-          ]
-        }
-      ]
-    },
-    "calculator": {
-      "eyebrow": "Run the numbers",
-      "title": "How much could your market earn?",
-      "dailyVolumeLabel": "Daily trading volume",
-      "dailyVolumeAriaLabel": "Daily trading volume",
-      "feeLabel": "Trading fee",
-      "decreaseFeeAriaLabel": "Decrease fee rate",
-      "increaseFeeAriaLabel": "Increase fee rate",
-      "resultLabel": "Estimated monthly fee revenue",
-      "note": "Example estimate using the selected daily volume over 30 days. Actual revenue varies with volume, pricing, referrals and VIP discounts.",
-      "ctaPrompt": "Convinced? Your market could be live before you finish your next coffee."
-    },
-    "whyNow": {
-      "eyebrow": "Why now",
-      "title": "Most niches still have no prediction market. Yours could be first.",
-      "subtitle": "Polymarket covers elections. Kalshi covers macro. Your niche? Still open.",
-      "cards": [
-        {
-          "label": "Verticals with no dominant player yet",
-          "sub": "No one is earning fees from your audience yet. That's the gap."
-        },
-        {
-          "label": "Time to launch with Kuest",
-          "sub": "From signup to live market. No engineering required."
-        },
-        {
-          "label": "Cost to start your own prediction market",
-          "sub": "Launch free. Pay only when you scale."
-        },
-        {
-          "label": "How your market generates revenue",
-          "sub": "Every trade earns a fee. Volume grows, cost stays flat."
-        }
-      ]
-    },
-    "niches": {
-      "eyebrow": "Pick your niche",
-      "title": "If your audience has opinions, you can build a market around it.",
-      "ctaPrompt": "Your niche. Your brand. Your cut of every trade.",
-      "volumeSuffix": "Vol.",
-      "tabs": [
-        "Crypto & Finance",
-        "Sports",
-        "Politics",
-        "Entertainment",
-        "Communities",
-        "Memes & Others"
-      ],
-      "data": [
-        {
-          "tag": "Crypto & Finance",
-          "tagline": "Your own Polymarket for your community.",
-          "cards": [
-            {
-              "title": "Will Bitcoin trade above $150K before Q3?",
-              "cat": "Crypto"
-            },
-            {
-              "title": "Will Ethereum flip Bitcoin's market cap in 2025?",
-              "cat": "Crypto"
-            },
-            {
-              "title": "Next Fed rate move",
-              "cat": "Finance",
-              "rows": [
-                "Cut",
-                "Hold",
-                "Hike"
-              ]
-            }
-          ]
-        },
-        {
-          "tag": "Sports",
-          "tagline": "Bet on any game. Keep the fees.",
-          "cards": [
-            {
-              "title": "Top scorer — Champions League final",
-              "cat": "Sports",
-              "rows": [
-                "Mbappé",
-                "Vinicius",
-                "Bellingham"
-              ]
-            },
-            {
-              "title": "Will the Warriors make the 2025 playoffs?",
-              "cat": "NBA"
-            },
-            {
-              "title": "Will Daniel Negreanu make the final table of the 2026 WSOP Main Event?",
-              "cat": "Poker"
-            }
-          ]
-        },
-        {
-          "tag": "Politics",
-          "tagline": "Your audience predicts. You get paid.",
-          "cards": [
-            {
-              "title": "Will Elon Musk win the 2028 U.S. election?",
-              "cat": "Politics"
-            },
-            {
-              "title": "Will Russia and Ukraine reach a ceasefire by December 31, 2026?",
-              "cat": "Geopolitics"
-            },
-            {
-              "title": "Who wins the UK general election?",
-              "cat": "UK",
-              "rows": [
-                "Labour",
-                "Conservatives",
-                "Other"
-              ]
-            }
-          ]
-        },
-        {
-          "tag": "Entertainment",
-          "tagline": "If they argue about it, they'll trade it.",
-          "cards": [
-            {
-              "title": "Will the new Marvel film open above $200M?",
-              "cat": "Film"
-            },
-            {
-              "title": "Who wins Big Brother Brasil 2025?",
-              "cat": "Reality TV",
-              "rows": [
-                "Beatriz",
-                "Davi",
-                "Others"
-              ]
-            },
-            {
-              "title": "Will Taylor Swift announce a new album in 2025?",
-              "cat": "Music"
-            }
-          ]
-        },
-        {
-          "tag": "Communities & DAOs",
-          "tagline": "Turn your Discord into a prediction market.",
-          "cards": [
-            {
-              "title": "Will Uniswap v4 launch on mainnet before Q2?",
-              "cat": "DeFi"
-            },
-            {
-              "title": "Which chain will host the next governance vote?",
-              "cat": "DAO",
-              "rows": [
-                "Ethereum",
-                "Arbitrum",
-                "Polygon"
-              ]
-            },
-            {
-              "title": "Will our Discord hit 50K members this month?",
-              "cat": "Community"
-            }
-          ]
-        },
-        {
-          "tag": "Memes & Others",
-          "tagline": "Imagination is your only limit. If the internet argues about it, it's a market.",
-          "cards": [
-            {
-              "title": "Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?",
-              "cat": "Internet"
-            },
-            {
-              "title": "Will Elon Musk be worth over $500B before end of 2025?",
-              "cat": "Billionaires"
-            },
-            {
-              "title": "Will any U.S. singer with 10M+ followers be arrested by December 2026?",
-              "cat": "Wildcard"
-            }
-          ]
-        }
-      ]
-    },
-    "faq": {
-      "eyebrow": "Before you ask",
-      "titleHtml": "Common questions, <em>answered.</em>",
-      "items": [
-        {
-          "q": "How long does it take, and do I need technical skills?",
-          "aHtml": "Most markets go live in under 15 minutes. You launch from <a href=\"/launch\">/launch</a> with a guided setup — no code, no contract deployment, no DevOps. If you can set up a Shopify store, you can launch a Kuest market."
-        },
-        {
-          "q": "Can I show Polymarket markets on my site?",
-          "aHtml": "Yes. You can mirror active markets from Polymarket — either all categories or only the ones relevant to your niche (crypto, sports, politics, etc.). These mirrored markets come with shared liquidity from day one, so your site feels live from the moment it's published."
-        },
-        {
-          "q": "Can I create my own markets? Who provides the liquidity?",
-          "aHtml": "Yes. You can create custom markets around any question you choose. Mirrored Polymarket markets have shared liquidity built in. Markets you create yourself depend on your audience trading — so your own content and community drive the volume there. You can also opt into cross-market liquidity sharing for creator markets."
-        },
-        {
-          "q": "How do I make money, and can I set my own fees?",
-          "aHtml": "You set a trading fee rate on your market — typically between 0.5% and 3%. Every time someone trades, that fee goes directly to your wallet. No revenue share, no intermediary, no waiting. You control the rate and can change it at any time."
-        },
-        {
-          "q": "Can I use my own domain and branding?",
-          "aHtml": "Yes. You can launch with your own domain, logo, colors, and category structure so the market feels entirely native to your brand — not a Kuest white-label."
-        },
-        {
-          "q": "How are markets resolved?",
-          "aHtml": "Kuest uses UMA-based resolution rails for transparent, verifiable settlement. The smart contracts are derived from Polymarket's — audited by OpenZeppelin — and adapted to support shared liquidity across markets. You don't need to understand any of this to use it, but it means the financial infrastructure under your market is the same stack that's processed billions in volume."
-        },
-        {
-          "q": "Is there a cost to launch?",
-          "aHtml": "The launch flow is free to start. Production infrastructure pricing is usage-based — you pay when you scale, not before."
-        },
-        {
-          "q": "Can I self-host Kuest?",
-          "aHtml": "The codebase is open source under the <a href=\"https://github.com/kuestcom/prediction-market/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">Kuest MIT+Commons license</a>. Forks for branding, frontend changes, and custom UX are welcome. Production deployments, however, must use Kuest infrastructure. Running an independent trading stack requires a separate <a href=\"mailto:hello@kuest.com\">commercial agreement</a>."
-        }
-      ]
-    },
-    "finalCta": {
-      "eyebrow": "",
-      "title": "Your market, your audience, your rules.",
-      "subtitle": "Start free. No credit card required.",
-      "cta": "Create my prediction market →",
-      "note": ""
-    },
-    "footer": {
-      "launch": "Launch",
-      "demo": "Demo",
-      "docs": "Docs",
-      "contact": "Contact",
-      "live": "Polygon"
-    },
-    "sourceModal": {
-      "outlet": "Source",
-      "title": "Source title",
-      "loading": "Loading source…",
-      "note": "If this publisher blocks embeds, use the external link below.",
-      "external": "Open source in new tab",
-      "back": "Back to page",
-      "dynamicNote": "Embedded preview for {{domain}}. If the publisher blocks embeds, use the external link below."
-    }
-  },
-  "launch": {
-    "hero": {
-      "title": "Launch your Prediction Market",
-      "subtitle": "From zero to live in under 15 minutes"
-    },
-    "languageSelector": {
-      "ariaLabel": "Change launch app language"
-    },
-    "common": {
-      "moreInfo": "More info",
-      "closeWaitingModal": "Close waiting modal",
-      "waitingForWalletApproval": "Waiting for wallet approval...",
-      "yes": "Yes",
-      "no": "No",
-      "continue": "Continue",
-      "deploy": "Deploy",
-      "working": "Working...",
-      "disconnect": "Disconnect",
-      "advancedOptions": "Advanced options",
-      "oauth": "OAuth",
-      "accessToken": "Access Token",
-      "checking": "Checking...",
-      "required": "Required",
-      "refresh": "Refresh",
-      "refreshing": "Refreshing...",
-      "generate": "Generate",
-      "optional": "optional",
-      "notConnected": "Not connected",
-      "connectedAccount": "Connected account",
-      "verified": "Verified",
-      "pendingVerification": "Pending verification",
-      "addDomain": "Add domain",
-      "adding": "Adding...",
-      "verify": "Verify",
-      "verifying": "Verifying...",
-      "result": "Result",
-      "status": "Status",
-      "project": "Project",
-      "url": "URL",
-      "vercelDashboard": "Vercel dashboard",
-      "supabaseDashboard": "Supabase dashboard",
-      "duration": "Duration",
-      "logs": "Logs",
-      "success": "success",
-      "failed": "failed",
-      "dns": "DNS",
-      "none": "-",
-      "createNewDatabase": "CREATE NEW DATABASE",
-      "supabaseDatabaseOption": "SUPABASE DATABASE {index} - {name}"
-    },
-    "stepper": {
-      "step1": "Site + Admin wallet",
-      "step2": "Host + Database",
-      "step3": "Deploy"
-    },
-    "timeline": {
-      "validation": "Validate launch settings",
-      "vercel": "Prepare or reuse Vercel project",
-      "database": "Attach Supabase database",
-      "deploy": "Trigger deployment"
-    },
-    "modals": {
-      "connectingWalletTitle": "Connecting wallet",
-      "connectingWalletDescription": "Open your wallet and approve the connection to continue.",
-      "waitingForSignatureTitle": "Waiting for signature",
-      "waitingForSignatureDescription": "Approve the signature in your wallet to continue.",
-      "walletIconAltNamed": "{walletName} wallet icon",
-      "walletIconAltFallback": "Connected wallet icon"
-    },
-    "wallet": {
-      "brandNameInfo": "This is your brand name.",
-      "adminWalletInfo": "One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.",
-      "metamaskPrefix": "For the simplest setup, use",
-      "metamaskExtension": "MetaMask browser extension",
-      "metamaskApp": "MetaMask app",
-      "metamaskSuffix": "No balance required, no funds moved, no gas fees.",
-      "autoSwitchHelp": "We try to switch to Polygon Amoy automatically and add the network when needed.",
-      "creatingAccount": "Creating your account...",
-      "checkWalletConfirm": "Check your wallet and confirm.",
-      "walletConnectedEnterSiteName": "Wallet connected. Enter your site name to continue.",
-      "openWalletApproveConnection": "Open your wallet and approve the connection.",
-      "approveSignature": "Approve one signature to generate credentials.",
-      "mintingCredentials": "Minting Kuest credentials...",
-      "connectBeforeSwitchingNetwork": "Connect wallet before switching network.",
-      "switchToNetworkSettings": "Switch to {network} in your wallet settings.",
-      "unableToSwitchNetwork": "Unable to switch to {network}.",
-      "switchingNetwork": "Switching to {network}...",
-      "networkActiveClickSign": "{network} is active. Click Sign to continue.",
-      "walletConnectionNotReady": "Wallet connection is not ready.",
-      "failedGenerateBrowserWallet": "Failed to generate credentials with browser wallet.",
-      "unableToSignAndGenerate": "Unable to sign and generate keys.",
-      "unableContinueWalletFlow": "Unable to continue wallet signing flow.",
-      "useBrowserWallet": "Use browser wallet",
-      "connect": "Connect",
-      "sign": "Sign",
-      "switchToNetworkButton": "Switch to {network}"
-    },
-    "step1": {
-      "srTitle": "Step 1. Site + Admin wallet",
-      "siteNameLabel": "Site name",
-      "siteNamePlaceholder": "Your Prediction Market Site Name",
-      "adminWalletTitle": "Admin wallet",
-      "emailLabel": "Email (optional)",
-      "emailPlaceholder": "you@team.com",
-      "nonceLabel": "Nonce",
-      "noncePlaceholder": "0"
-    },
-    "step2": {
-      "srTitle": "Step 2. Host + Database",
-      "vercelAuthenticationTitle": "Vercel authentication",
-      "vercelAuthenticationInfo": "Vercel is where your prediction market website is hosted.",
-      "checkOauthStatusFailed": "Unable to check OAuth connection status.",
-      "connectVercel": "Connect Vercel",
-      "connectVercelFirst": "Connect Vercel OAuth first.",
-      "disconnectVercelOauthFailed": "Failed to disconnect Vercel OAuth.",
-      "pasteVercelTokenFirst": "Paste your Vercel Access Token first.",
-      "listSupabaseFailed": "Failed to list Supabase databases.",
-      "noExistingDatabase": "No existing database found. You can still create a new one.",
-      "vercelAccessTokenLabel": "Vercel Access Token",
-      "vercelAccessTokenPlaceholder": "Paste Vercel Access Token",
-      "createTokenInVercel": "Create token in Vercel",
-      "reownProjectIdTitle": "Reown Project ID",
-      "reownProjectIdInfo": "Reown Project ID enables wallet login for your end users.",
-      "reownProjectIdLabel": "Reown Project ID",
-      "reownProjectIdHelpPrefix": "Get it at",
-      "reownProjectIdHelpSuffix": "→ create/select project → copy Project ID.",
-      "supabaseDatabaseTitle": "Supabase database",
-      "supabaseDatabaseInfo": "Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.",
-      "projectSlugAuto": "Project slug (auto)",
-      "projectSlugOverride": "Project slug override",
-      "projectSlugOverridePlaceholder": "optional",
-      "repository": "Repository",
-      "branch": "Branch",
-      "vercelTeamId": "Vercel Team ID",
-      "vercelTeamIdPlaceholder": "empty = personal account",
-      "supabaseRegion": "Supabase region",
-      "supabaseRegionPlaceholder": "us-east-1",
-      "betterAuthSecretPlaceholder": "empty = auto generated by API",
-      "cronSecretPlaceholder": "empty = auto generated by API",
-      "siteUrlOverride": "SITE_URL override",
-      "extraEnvVars": "Extra env vars (.env format)",
-      "extraEnvPlaceholder": "OPENROUTER_API_KEY=...\nSENTRY_DSN=..."
-    },
-    "step3": {
-      "srTitle": "Step 3. Deploy",
-      "launchFailed": "Launch failed.",
-      "failedCallApi": "Failed to call API."
-    },
-    "domain": {
-      "enterDomainFirst": "Enter a domain first.",
-      "domainActionFailed": "Domain action failed.",
-      "customDomainOptional": "Custom domain (optional)",
-      "customDomainInfo": "Use your own domain after deploy. Add it first, then verify DNS records.",
-      "customDomainPlaceholder": "app.yourdomain.com",
-      "nameserversLabel": "Nameservers to set at your registrar:",
-      "checkVercelDnsInstructions": "check Vercel DNS instructions"
-    }
-  },
-  "protocol": {
-    "meta": {
-      "title": "Kuest Protocol - Prediction Market Infrastructure",
-      "description": "Kuest is a white-label prediction market protocol that lets institutions, media companies, and creators launch branded markets with shared liquidity and protocol-level infrastructure.",
-      "keywords": [
-        "prediction market infrastructure",
-        "white label prediction market protocol",
-        "prediction market API",
-        "shared liquidity protocol",
-        "institutional prediction markets",
-        "prediction market seed round"
-      ],
-      "ogImageAlt": "Kuest protocol overview"
-    },
-    "structuredData": {
-      "description": "White-label prediction market protocol for operators who want branded markets, shared liquidity, and protocol infrastructure.",
-      "featureList": [
-        "White-label operator deployments",
-        "Shared liquidity across operator frontends",
-        "Polymarket-derived smart contract architecture",
-        "Polymarket-compatible APIs and bot tooling",
-        "Usage-based infrastructure for production operators"
-      ]
-    },
-    "languageSelector": {
-      "ariaLabel": "Change site language"
-    },
-    "themeToggle": {
-      "toDark": "Switch to dark mode",
-      "toLight": "Switch to light mode"
-    },
-    "common": {
-      "yes": "Yes",
-      "no": "No"
-    },
-    "heroStage": {
-      "cards": [
-        "Will Bitcoin trade above $150K before Q3?",
-        "Will the Fed cut rates before July?",
-        "Will Uniswap v4 launch on mainnet before Q2?",
-        "Will Ethereum outperform Bitcoin this quarter?",
-        "Will Elon Musk's net worth exceed $500B this year?",
-        "Will Trump announce a U.S. Bitcoin reserve this year?",
-        "Will the community reach 50K members before Q4?",
-        "Will Brazil elect a market-friendly president in 2026?",
-        "Will Donald Trump win the next U.S. election?",
-        "Will a Russia-Ukraine ceasefire be announced before year-end?",
-        "Will Labour win the next UK general election?",
-        "Will the next Marvel film open above $200M?"
-      ]
-    },
-    "nav": {
-      "contactCta": "Contact us"
-    },
-    "hero": {
-      "kicker": "KUEST PROTOCOL · SEED ROUND OPEN",
-      "titleLine1": "Polymarket proved the model.",
-      "titleLine2BeforeAccent": "We're turning it into ",
-      "titleLine2Accent": "infrastructure.",
-      "subtitle": "Kuest is a white-label prediction market protocol - the layer that lets any financial institution, media company, or creator launch their own branded market, share liquidity, and earn trading fees. Built on the same smart contract architecture that processed billions in volume. Ready today.",
-      "pitchDeckCta": "View pitch deck",
-      "contactCta": "Contact us",
-      "proof": "MVP OPERATIONAL · SEED ROUND OPEN · OPEN SOURCE"
-    },
-    "deckModal": {
-      "kicker": "REQUEST DECK",
-      "title": "Request the Kuest Protocol pitch deck",
-      "description": "Leave your company name and email and we'll route the request to the team.",
-      "companyLabel": "Company name",
-      "companyPlaceholder": "Your company",
-      "emailLabel": "Work email",
-      "emailPlaceholder": "you@company.com",
-      "cancel": "Cancel",
-      "submit": "Send request",
-      "submitting": "Sending...",
-      "success": "Request sent. We'll reach out by email.",
-      "error": "We couldn't send your request. Please try again.",
-      "close": "Close modal"
-    },
-    "opportunity": {
-      "badge": "THE OPPORTUNITY",
-      "title": "A $20 billion industry forming in real time - and 95% of the world hasn't accessed it yet.",
-      "stats": [
-        {
-          "value": "$18.3B",
-          "label": "Combined monthly trading volume, Kalshi + Polymarket, Feb 2026",
-          "sourceLabel": "Source: The Block",
-          "sourceHref": "https://www.theblock.co/post/392755"
-        },
-        {
-          "value": "96.7M",
-          "label": "Visits to Polymarket in 3 months. The US accounts for only 20% of traffic.",
-          "sourceLabel": "Source: SimilarWeb, Feb 2026",
-          "sourceHref": "https://www.similarweb.com/website/polymarket.com/"
-        },
-        {
-          "value": "200x",
-          "label": "Kalshi trading volume growth in the past 12 months",
-          "sourceLabel": "Source: PYMNTS / Kalshi press release",
-          "sourceHref": "https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/"
-        },
-        {
-          "value": "$20B",
-          "label": "Target valuation for both Kalshi and Polymarket in current fundraising rounds",
-          "sourceLabel": "Source: CoinDesk via WSJ, Mar 2026",
-          "sourceHref": "https://www.coindesk.com/business/2026/03/07/kalshi-polymarket-seeking-usd20-billion-valuations-in-fundraising-talks-wsj"
-        }
-      ],
-      "body": "Two platforms currently dominate this sector. Kalshi, the regulated US exchange, recently crossed a $1-1.5B annualized revenue run rate. Polymarket, running on Polygon, draws over 32 million monthly visits globally. Together, they've demonstrated that prediction markets are not a niche - they are a new financial primitive. The problem: both are closed platforms. You trade on them. You do not build with them."
-    },
-    "whyNow": {
-      "badge": "WHY NOW",
-      "title": "The XP + Kalshi deal just confirmed what we already built for.",
-      "paragraphs": [
-        "On March 9, 2026, Kalshi announced its first-ever strategic partnership with a financial institution outside the United States: XP International, one of Brazil's largest brokerages, with over 4.7 million active clients and R$1.8 trillion under management.",
-        "Under the arrangement, XP manages local distribution and client relationships, while Kalshi provides the trading technology and market design - a model for exporting prediction market infrastructure through local financial platforms.",
-        "Brazil still lacks specific regulation for prediction markets, but platforms like Kalshi and Polymarket already host contracts related to the country. B3 also plans to enter this market, and the Ministry of Finance is closely monitoring the sector. Kalshi's co-founder called Brazil \"the way the US was years ago with prediction markets.\"",
-        "Kalshi needed XP because they are a platform, not infrastructure. They can only expand one country at a time, one institutional deal at a time. Kuest is the layer that makes every XP-equivalent in every market a potential prediction market operator - without waiting for Kalshi's partnership queue."
-      ],
-      "quote": {
-        "imageSrc": "/assets/images/kalshi-logo.svg",
-        "imageAlt": "Kalshi",
-        "quote": "It makes sense for us to go through these international partners. They already have the customers and the brand.",
-        "attribution": "Luana Lopes Lara, co-founder & COO, Kalshi",
-        "sourceLabel": "Source: Finance Magnates, March 2026",
-        "sourceHref": "https://www.financemagnates.com/fintech/kalshi-taps-brazils-xp-to-take-prediction-markets-global/",
-        "isLogo": true
-      },
-      "followup": "That's exactly what Kuest enables - at protocol scale, not deal by deal."
-    },
-    "protocol": {
-      "badge": "THE PROTOCOL",
-      "title": "We are not a prediction market. We are the infrastructure that launches them.",
-      "cards": [
-        {
-          "title": "Platform vs. Protocol",
-          "body": "Polymarket is a single venue. Kalshi is a single venue. Kuest is the layer underneath - any operator can deploy their own frontend, their own brand, their own markets, and share liquidity with every other Kuest-powered site from day one.",
-          "tags": [
-            "Own brand",
-            "Shared liquidity"
-          ]
-        },
-        {
-          "title": "The Shopify Analogy",
-          "body": "Shopify did not compete with Amazon. They enabled millions of stores that could not exist otherwise. Kuest does not compete with Polymarket. We enable the next 1,000 prediction market operators - media companies, brokerages, community platforms, creators - to exist.",
-          "tags": [
-            "Operators",
-            "Distribution",
-            "Network scale"
-          ]
-        },
-        {
-          "title": "What's Already Built",
-          "body": "CLOB engine, relayer, smart contracts, Polymarket-compatible APIs, Vercel + Supabase deployment stack, shared liquidity layer, SDK, bots infrastructure, market maker integrations, and a multi-language frontend. Live demo at demo.kuest.com.",
-          "tags": [
-            "SDK",
-            "Bots",
-            "API",
-            "Mainnet"
-          ]
-        }
-      ]
-    },
-    "architecture": {
-      "badge": "WHY THIS ARCHITECTURE",
-      "title": "A strategic decision, not a shortcut.",
-      "paragraphs": [
-        "Kuest's smart contracts are derived from Polymarket's CLOB architecture - the same design that has processed billions in verified trading volume. The core contracts carry OpenZeppelin's audit validation as their foundation. We adapted them to support shared liquidity across multiple operator frontends, which is the architectural primitive that makes the protocol model possible.",
-        "The choice of Polygon was equally deliberate. Most existing prediction market liquidity already sits on Polygon. Traders already hold USDC balances there. Market-making bots already operate in this environment. Building on a different chain would mean asking every liquidity provider to start over. We focused our innovation on distribution and infrastructure - not on reinventing a trading engine that already works at scale.",
-        "The result is a protocol that is immediately compatible with existing trading strategies, bot infrastructure, and market maker tooling - dramatically lowering the barrier to liquidity bootstrapping for new operator deployments."
-      ],
-      "quote": {
-        "imageSrc": "/assets/images/polymarket-logo.svg",
-        "imageAlt": "Polymarket",
-        "quote": "Polymarket proved the model. We're turning that infrastructure into a protocol so anyone can launch markets that share liquidity.",
-        "attribution": "Kuest protocol thesis",
-        "isLogo": true
-      }
-    },
-    "businessModel": {
-      "badge": "HOW THE PROTOCOL MAKES MONEY",
-      "title": "Three revenue layers. One infrastructure stack.",
-      "cards": [
-        {
-          "title": "Operator Fees",
-          "body": "Operators set their own trading fee, typically 0.5%-3%. A small protocol fee is retained by Kuest on each trade across the network. As the number of operators scales, this becomes a volume-aggregated revenue stream independent of any single operator's performance.",
-          "tags": [
-            "0.5%-3% operator fee",
-            "Protocol take rate"
-          ]
-        },
-        {
-          "title": "Infrastructure",
-          "body": "Launch is free. Production infrastructure is usage-based - operators pay when they scale. Server costs, gas management, settlement infrastructure, and scalability are handled by Kuest. Operators focus on distribution. We run the stack.",
-          "tags": [
-            "Free launch",
-            "Usage-based"
-          ]
-        },
-        {
-          "title": "Liquidity Services",
-          "body": "Market makers who provide liquidity across the Kuest network earn spreads. Kuest facilitates this matching and captures value at the infrastructure layer. As the operator network grows, liquidity efficiency increases - a compounding network effect.",
-          "tags": [
-            "Spread capture",
-            "Network effects"
-          ]
-        }
-      ],
-      "context": "Currently, infrastructure costs are manageable and predictable. They will scale with volume - but so does protocol revenue, proportionally. The cost structure is not a ceiling; it is a variable that tracks growth."
-    },
-    "partners": {
-      "badge": "WHO WE'RE LOOKING FOR",
-      "title": "Three types of partners. All necessary. All complementary.",
-      "cards": [
-        {
-          "title": "Investors",
-          "body": "Seed-stage capital to accelerate operator acquisition, market maker incentive programs, and protocol hardening. The prediction market sector is moving from experimental to institutional quickly. We are at the inflection point where infrastructure layer plays are valued, not after the fact."
-        },
-        {
-          "title": "Market Makers",
-          "body": "The cold-start problem for new prediction markets is liquidity. We solve it through shared liquidity across the operator network - but we need initial market maker partnerships to seed depth on new deployments. If you run bots or provide liquidity on Polymarket or Kalshi, you already have what you need to operate on Kuest. Estimated APY is strategy- and volume-dependent, but on cloned Polymarket-style markets the spread-and-turnover profile can exceed passive stablecoin yield for desks that recycle inventory efficiently."
-        },
-        {
-          "title": "Institutional Operators",
-          "body": "The XP + Kalshi deal demonstrates the model: a financial institution wants prediction market access but needs a local, branded, controlled environment. Kuest provides that without requiring a bilateral deal with Kalshi. Banks, brokerages, investment platforms, and media groups with financial audiences can use Kuest as their infrastructure layer. Brazil is specifically primed for this: B3 is preparing for the category, XP has the Kalshi partnership, and the Ministry of Finance is watching the sector closely. The window for early operator positioning is open."
-        }
-      ]
-    },
-    "strategicQuestion": {
-      "badge": "THE STRATEGIC QUESTION ANSWERED",
-      "title": "Why won't Polymarket just do this?",
-      "intro": "They are focused on being the best prediction market platform in the world. That is a different company from one focused on being the best prediction market infrastructure layer in the world. Polymarket has a $9B branded consumer product to protect. They do not build the SDK that powers their competitors.",
-      "applicationLayer": {
-        "tag": "Application layer",
-        "title": "Platform companies optimize for destination traffic.",
-        "body": "Polymarket and Kalshi win by concentrating users, protecting brand, and deepening liquidity on their own venues.",
-        "items": [
-          {
-            "label": "Consumer brand",
-            "value": "core asset is the venue itself"
-          },
-          {
-            "label": "Unit economics",
-            "value": "tied to their own order flow"
-          },
-          {
-            "label": "Expansion",
-            "value": "one partnership at a time"
-          }
-        ]
-      },
-      "protocolLayer": {
-        "tag": "Protocol layer",
-        "title": "Infrastructure companies optimize for operator scale.",
-        "body": "Kuest wins by letting thousands of operators launch markets that share liquidity while Kuest runs the underlying stack.",
-        "items": [
-          {
-            "label": "Operator network",
-            "value": "every brand becomes a distribution node"
-          },
-          {
-            "label": "Economics",
-            "value": "protocol fees across aggregated volume"
-          },
-          {
-            "label": "Scale",
-            "value": "many deployments simultaneously"
-          }
-        ]
-      },
-      "outro": "This is not a new dynamic. Uniswap enabled thousands of token markets without competing with every project listed on it. AWS enabled millions of businesses without trying to be all of them. The XP + Kalshi deal validates demand, but it also reveals the bottleneck: Kalshi can do one institutional partnership at a time. Kuest can do thousands simultaneously, because we are the protocol - not the counterparty."
-    },
-    "status": {
-      "badge": "WHERE WE ARE TODAY",
-      "title": "MVP live. Protocol operational. Looking for the right partners to scale.",
-      "items": [
-        {
-          "label": "Smart contracts deployed",
-          "detail": "Polygon mainnet, OpenZeppelin-validated architecture",
-          "complete": true
-        },
-        {
-          "label": "CLOB engine + relayer operational",
-          "detail": "Core trading stack is already running",
-          "complete": true
-        },
-        {
-          "label": "Polymarket-compatible API",
-          "detail": "Cross-platform liquidity from day one",
-          "complete": true
-        },
-        {
-          "label": "White-label frontend",
-          "detail": "Deploy in under 15 minutes with no code",
-          "complete": true
-        },
-        {
-          "label": "SDK + bot infrastructure",
-          "detail": "Available for operator and market maker integrations",
-          "complete": true
-        },
-        {
-          "label": "Live demo",
-          "detail": "demo.kuest.com",
-          "complete": true
-        },
-        {
-          "label": "Open source",
-          "detail": "github.com/kuestcom/prediction-market",
-          "complete": true
-        },
-        {
-          "label": "Market maker program",
-          "detail": "Active recruitment",
-          "complete": false
-        },
-        {
-          "label": "Seed round",
-          "detail": "Open",
-          "complete": false
-        }
-      ]
-    },
-    "finalCta": {
-      "title": "The infrastructure layer for prediction markets is being built right now.",
-      "subtitle": "We'd rather have the right partners at the right moment than move fast without alignment. If you're an investor, market maker, or institutional operator - let's talk.",
-      "requestDeckCta": "Request pitch deck",
-      "contactCta": "Contact the team",
-      "viewDemoCta": "View live demo",
-      "proof": "BUILT ON POLYMARKET-DERIVED CONTRACTS · CORE AUDITED BY OPENZEPPELIN · OPEN SOURCE: GITHUB.COM/KUESTCOM · DEMO: DEMO.KUEST.COM"
-    },
-    "footer": {
-      "note": "Built on Polymarket-derived contracts, audited by OpenZeppelin",
-      "docsLabel": "Docs",
-      "contactLabel": "Contact",
-      "xLabel": "X",
-      "discordLabel": "Discord"
-    }
-  }
+  "KdGjGW": "Kuest Create Prediction Market",
+  "AMrtpn": "Guided Kuest launch flow with wallet, Vercel, and Supabase integration.",
+  "aERc4I": "Launch your Prediction Market",
+  "p5WHCU": "From zero to live in under 15 minutes",
+  "DLs8Nl": "Kuest Enterprise",
+  "myS5BP": "White-label prediction market infrastructure for financial institutions, media platforms, and enterprise operators.",
+  "7j5FXr": "Kuest Enterprise preview",
+  "FjhDLC": "combined monthly volume, Kalshi + Polymarket",
+  "Di7k2F": "Source: The Block, Q1 2026",
+  "G+h9HA": "Kalshi annual volume growth, 2024-2025",
+  "jQtAmW": "Source: PYMNTS, 2026",
+  "MTDi1D": "of Polymarket traffic from outside the US",
+  "kHqx89": "Source: SimilarWeb, Feb 2026",
+  "3wGZQ1": "target valuation in current fundraising rounds",
+  "0/St/8": "Source: CoinDesk via WSJ",
+  "Z9oW03": "Crypto & Assets",
+  "vAMglD": "Deploy a branded market around crypto and digital assets.",
+  "8y8aor": "Will Bitcoin close above $150K before Q4?",
+  "TdtZQ5": "Crypto",
+  "n9+N3m": "Will Ethereum flip Bitcoin's market cap in 2026?",
+  "D1aUB4": "Which asset class leads net inflows next quarter?",
+  "d1uESJ": "Assets",
+  "/VnDMl": "Other",
+  "pRVXiT": "Elections & Policy",
+  "bD1KHp": "Own political and public policy flows in your market.",
+  "rnVGa+": "Will the incumbent coalition keep a governing majority?",
+  "0siT4z": "Politics",
+  "p8MVWc": "Will the next U.S. administration create a strategic BTC reserve?",
+  "o1vbho": "Policy",
+  "3uvVDx": "Who wins the next UK general election?",
+  "PFkA4/": "Labour",
+  "LmULx9": "Conservative",
+  "0YhrGt": "Macro & Rates",
+  "FqkCAC": "Price macro outcomes directly on your own platform.",
+  "BDNMVC": "Next Fed decision",
+  "C9QQ8s": "Rates",
+  "ZMgm9u": "Cut",
+  "Y922+y": "Hold",
+  "N3X/Sq": "Hike",
+  "PV4t7T": "Will a ceasefire lower global energy prices before year-end?",
+  "8QPOWk": "Macro",
+  "BFLBgt": "Will real rates fall below 1% before Q1?",
+  "Wcj7x9": "Commodities",
+  "0WshaQ": "Turn volatility in commodities into client engagement and fees.",
+  "UEhN8y": "Will gold hit a new all-time high this quarter?",
+  "5wy7ax": "Will Brent close above $100 before year-end?",
+  "lYwk2j": "Oil",
+  "+/YBN4": "Which commodity outperforms next month?",
+  "GwqiOt": "Gold",
+  "1uHzGr": "Copper",
+  "qEuXjx": "Sports",
+  "pCaWrP": "Launch sports markets under your own regulated surface.",
+  "HHqDnP": "Top scorer - Champions League final",
+  "Cnonl3": "Will the Warriors make the playoffs?",
+  "uSbqYE": "Will Daniel Negreanu reach the WSOP final table?",
+  "Aukweq": "Custom Markets",
+  "iGhQNK": "Create exclusive event contracts tailored to your own audience.",
+  "8DfmYV": "Will our private client community hit 50K members this quarter?",
+  "4CrCbD": "Community",
+  "qh5WG0": "Will the flagship local IPO price above its range?",
+  "Sjo1P4": "Custom",
+  "8fDRcr": "Which bespoke macro scenario plays out first?",
+  "5m4j06": "Scenario",
+  "Amhv7h": "Soft landing",
+  "gjNRCE": "Reflation",
+  "yID93P": "Shock",
+  "7CU/Cr": "Define your market scope and fee model",
+  "qXq5W5": "Choose the event categories your clients care about - macroeconomics, interest rates, politics, commodities, crypto, sports. Create proprietary markets exclusive to your platform. Set your fee rate. We configure everything around your brand and regulatory perimeter.",
+  "E9D7ZS": "We deploy the full technical stack - zero engineering required",
+  "08sUiQ": "Smart contracts, CLOB engine, settlement rails, wallet infrastructure, liquidity - all running before your team finishes onboarding. Contracts are derived from Polymarket's architecture, audited by OpenZeppelin. No internal blockchain team needed. No infrastructure sprint.",
+  "NVapmL": "Your platform earns a fee on every trade, automatically",
+  "7nuXum": "Every transaction your clients execute generates a direct fee to your institution - no intermediary, no revenue share, no settlement lag. The same infrastructure model used by platforms that collectively process over $18 billion in monthly volume.",
+  "xbsWeb": "CLOB engine + relayer + matching",
+  "+gsTEY": "Central limit order book, relayer infrastructure, and matching engine — the same architecture powering Polymarket, running on Polygon mainnet.",
+  "ym+AoZ": "OpenZeppelin-audited contracts",
+  "apsIk5": "Smart contracts derived from Polymarket's audited architecture, adapted for shared liquidity across multiple operator frontends. UMA-based resolution for verifiable settlement.",
+  "A4VaIn": "Shared liquidity from day one",
+  "jDzeQm": "Mirror live Polymarket markets with existing order flow. Your platform launches with real depth — no cold start, no market maker recruitment required initially.",
+  "JHPjBF": "Bot SDKs for institutional traders",
+  "5ROrP0": "Python and Rust SDKs compatible with existing Polymarket bot strategies. Market makers already operating on Polymarket can port to your platform without rebuilding.",
+  "ur7vLd": "Full white-label frontend",
+  "Oi1CEw": "Your domain, your brand, your language. Multi-language UI with built-in i18n. Custom event categories. Looks and feels like a native product of your institution — not a Kuest deployment.",
+  "zinr+4": "Fully managed infrastructure",
+  "jnd443": "Gas costs, settlement, scalability, monitoring - all handled on our side. No blockchain team needed internally. No cloud infrastructure to manage. You focus on distribution.",
+  "tgkJm2": "What exactly is a prediction market - and how is it different from a betting platform?",
+  "1RFWTQ": "A prediction market is a live order book where participants buy and sell positions on the outcome of real-world events — using the same binary contract mechanics as financial derivatives. Unlike sports betting, where the house sets odds and takes the other side, a prediction market is peer-to-peer: prices are set by supply and demand in real time. The platform operator earns a fee on each trade, not on who wins. This distinction matters legally, commercially, and reputationally: operators are not the counterparty, and the model is structurally closer to an exchange than a bookmaker.",
+  "tV5BF8": "Who are Kalshi and Polymarket, and why are they relevant here?",
+  "G6buRq": "Kalshi is a US-regulated exchange (CFTC-licensed) focused on event contracts — \"Will the Fed cut rates?\", \"Will there be a recession?\" — valued at over $2 billion and growing 200x in annual trading volume. Polymarket is a decentralized prediction market running on Polygon, drawing over 32 million monthly visits globally, used by traders, journalists, and policymakers as a real-time probability layer. Together they generated $18.3 billion in combined trading volume in a single quarter (Q1 2026). Both are closed platforms: you can trade on them, but you cannot build branded products on top of them or capture their fee revenue. Kuest provides the same infrastructure in an open, white-label model.",
+  "1GU1Fs": "What's happening in the market right now that makes this timely?",
+  "BlvguA": "Several signals are converging: Kalshi and Polymarket are in active fundraising rounds at $20 billion valuations each. B3, Brazil's main stock exchange, launched its first prediction market products in early 2026 under CVM supervision. Kalshi signed its first international institutional deal — with XP International, one of Brazil's largest brokerages with 4.7 million clients and R$1.8 trillion under management — specifically to expand outside the US. CME Group and Bloomberg now publish prediction market data as institutional reference. The regulatory direction in the US, Brazil, and EU is moving toward formal recognition of event contracts. The institutional infrastructure question is being decided right now, and most local markets still have no operator.",
+  "oLhwX4": "What types of institutions are already moving into this space?",
+  "fuEcUl": "Beyond Kalshi and Polymarket themselves: B3 launched binary option contracts on the dollar, Ibovespa, and Bitcoin. Bloomberg integrates Kalshi market data into terminal products. Brokerages in Germany, India, and Israel — Polymarket's top non-US markets — have no local branded platform yet. Financial media companies with large audiences (Reuters, FT, regional equivalents) are evaluating prediction market embeds as interactive revenue products. Sports analytics and media companies are early movers in fan-facing prediction products. The pattern is consistent: the demand exists in every major market, but no local operator has built the infrastructure.",
+  "V4QfrC": "Can we create markets exclusive to our platform and client base?",
+  "8fcPoM": "Yes. You can create proprietary markets on any question — rate decisions, earnings outcomes, macro indicators, political events, or themes exclusive to your institution's positioning. Mirrored markets from Polymarket are available from day one for immediate liquidity depth. Custom markets draw from your client base, with optional cross-market liquidity sharing across the Kuest operator network.",
+  "aI2m/I": "What are the fee economics for the operator?",
+  "PLUmVj": "You set your own trading fee rate — typically 0.5% to 3% per trade. Every transaction on your platform routes that fee directly to your institution. Kuest retains a small protocol fee on top. No revenue share, no minimums, no lock-in period. You control the rate and can configure it by market category or event type. Enterprise agreements with custom SLAs are available.",
+  "qwjsFN": "What does our team actually need to do to deploy?",
+  "JY6ZtB": "Your team provides brand assets (logo, colors, domain), defines the initial event scope, and reviews the fee structure. Kuest handles contract deployment, infrastructure configuration, liquidity bootstrapping, and frontend deployment. No internal blockchain engineers required. No cloud infrastructure to manage. Ongoing operations — gas costs, settlement, scalability, monitoring — are fully managed on our side.",
+  "35Z3xD": "What is the technical and compliance foundation?",
+  "uFWL2p": "Smart contracts are derived from Polymarket's CLOB architecture — the stack that has processed billions in verified volume — audited by OpenZeppelin, the institutional standard for on-chain infrastructure. Settlement uses UMA-based resolution rails for transparent, verifiable outcomes. The codebase is open source under the <license>Kuest MIT+Commons license</license> for full auditability. Custom compliance configurations and enterprise infrastructure agreements are available — <contact>contact us</contact> to discuss your regulatory environment.",
+  "WP1tqU": "Change site language",
+  "32Lig0": "Open site navigation",
+  "gcGXho": "Site navigation",
+  "ejEGdx": "Home",
+  "CDLJ0W": "Enterprise",
+  "63eSsB": "The Protocol",
+  "Y6tZmW": "Switch to dark mode",
+  "8I/DPV": "Switch to light mode",
+  "WnQ/AZ": "Contact us",
+  "ucZP0h": "White-Label Prediction Market Infrastructure",
+  "VVPEYI": "A new financial instrument",
+  "rb4a4G": "is forming",
+  "a7s9x9": "Be the platform",
+  "beziVT": "Prediction markets already process billions in monthly volume — and 66% of that demand comes from outside the US, without a single local operator. Kuest lets financial institutions, brokerages, and media companies launch their own branded prediction market: audited infrastructure, shared liquidity, your fee on every trade.",
+  "iIm1KO": "View demo",
+  "3JP2iy": "$18B combined monthly volume - OpenZeppelin audited - White-label ready",
+  "PnamuS": "Will the Fed cut rates before July?",
+  "VbTSNg": "Will Trump announce a U.S. Bitcoin reserve this year?",
+  "hHjff/": "Will a Russia-Ukraine ceasefire be announced before year-end?",
+  "a5msuh": "Yes",
+  "oUWADl": "No",
+  "LIl367": "The opportunity in prediction markets",
+  "nqBDLl": "Your clients are already trading on Polymarket.",
+  "JYawHv": "Elections. Interest rates. Bitcoin prices. Economic outcomes.",
+  "XBilFi": "They're doing it on a US-based platform. Outside your ecosystem. Paying fees to someone else.",
+  "XhaefJ": "You have no visibility into it. No revenue from it. And it's growing fast.",
+  "cDE7/8": "Polymarket and Kalshi now process over $18 billion in monthly trading volume.",
+  "XrlxrZ": "66% of their users are outside the US - in your markets.",
+  "HuEBsI": "Without a single local institution capturing that demand.",
+  "uhwrqS": "XP International - Brazil's largest brokerage - just partnered with Kalshi to fix exactly this.",
+  "PqRXI6": "They saw the volume flowing out of their ecosystem and decided to own the infrastructure.",
+  "dEEJ59": "You don't need to wait for Kalshi to call you.",
+  "F0WGpM": "THE MARKET TODAY",
+  "IpMeiC": "A NEW FINANCIAL INSTRUMENT - ALREADY LIVE AT SCALE",
+  "lRKcMy": "Prediction Market",
+  "5gBXPN": "Think of it as a binary derivative on future events. People trade positions on outcomes — who wins an election, whether a rate is cut, if a company hits an earnings target — using real money, in a live order book. Because financial stakes force discipline, the prices generated consistently outperform polls, analyst forecasts, and expert panels. The data is used by hedge funds, central banks, and policy teams to anticipate outcomes before they happen. The trading volume it generates goes to whoever owns the platform.",
+  "i6kD3y": "From signed agreement to live platform — in days, not quarters.",
+  "BsQ4qo": "Audited smart contracts, shared liquidity from day one, full white-label — your team signs off on the brand, we handle everything else.",
+  "h/hJkd": "How Kuest works",
+  "ILqI3A": "WHITE-LABEL - AUDITED CONTRACTS - LIQUIDITY INCLUDED",
+  "GbRaXY": "WHAT'S ALREADY OPERATIONAL",
+  "EYnbJo": "The full trading stack. No engineering sprint required.",
+  "e3ak9B": "Everything your institution would need to build from scratch - already live, already audited, ready to deploy under your brand.",
+  "m+308Y": "This is the product your clients will interact with.",
+  "a9Cr1H": "A fully functional demo running live markets mirrored from Polymarket. Your deployment would carry your domain, your brand, your chosen event categories - and your fee on every transaction your clients execute.",
+  "Nmh8WN": "Live Demo",
+  "WlOoAs": "Switch to desktop preview",
+  "LcRyTJ": "Switch to mobile preview",
+  "W8nHSd": "FAQ",
+  "XAeeb3": "Your clients are already trading on Polymarket. The question is whether that happens on your platform.",
+  "0EC+wg": "The infrastructure is ready. First mover advantage in prediction markets closes fast.",
+  "bgrRaS": "View live demo",
+  "SQO2YP": "Built on Polymarket-derived contracts, audited by OpenZeppelin",
+  "/6/sPX": "Docs",
+  "zFegDD": "Contact",
+  "aH4De2": "Source",
+  "wBsRx0": "Source title",
+  "mcBIQs": "Loading source...",
+  "APPbCy": "If this publisher blocks embeds, use the external link below.",
+  "7uSrhx": "Open source in new tab",
+  "LJAV5r": "Back to page",
+  "A6W7tq": "Kuest — Create Your Own White-Label Prediction Market",
+  "TYPG+r": "Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.",
+  "4d3ACW": "Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.",
+  "7PC2tX": "Crypto & Finance",
+  "/xhYL3": "Your own Polymarket for your community.",
+  "MrfaRW": "Will Bitcoin trade above $150K before Q3?",
+  "aiAlJb": "Will Ethereum flip Bitcoin's market cap in 2025?",
+  "p/x8qk": "Next Fed rate move",
+  "Fm3M+y": "Finance",
+  "nBpd9c": "Bet on any game. Keep the fees.",
+  "ZBBXgk": "Top scorer — Champions League final",
+  "8PMGfD": "Will the Warriors make the 2025 playoffs?",
+  "kp19aM": "Will Daniel Negreanu make the final table of the 2026 WSOP Main Event?",
+  "XbyQz2": "Your audience predicts. You get paid.",
+  "0rY0CQ": "Will Elon Musk win the 2028 U.S. election?",
+  "rttfyH": "Will Russia and Ukraine reach a ceasefire by December 31, 2026?",
+  "0VcR2M": "Geopolitics",
+  "rFNCNF": "Who wins the UK general election?",
+  "u/dKXG": "Conservatives",
+  "93dz0a": "Entertainment",
+  "4VqsYK": "If they argue about it, they'll trade it.",
+  "VVxly3": "Will the new Marvel film open above $200M?",
+  "tgatbD": "Film",
+  "6gZx82": "Who wins Big Brother Brasil 2025?",
+  "5eaB1A": "Reality TV",
+  "RVL+fB": "Will Taylor Swift announce a new album in 2025?",
+  "79lLl+": "Music",
+  "7KXsY9": "Communities",
+  "rttcdh": "Turn your Discord into a prediction market.",
+  "jKA+OJ": "Will Uniswap v4 launch on mainnet before Q2?",
+  "GXMV48": "Which chain will host the next governance vote?",
+  "D4kFIt": "Will our Discord hit 50K members this month?",
+  "8ksNrl": "Memes & Others",
+  "57EU2a": "Imagination is your only limit. If the internet argues about it, it's a market.",
+  "UNmNRK": "Will MrBeast surpass T-Series as the #1 YouTube channel by July 2025?",
+  "QKFeMq": "Internet",
+  "UFS2Ay": "Will Elon Musk be worth over $500B before end of 2025?",
+  "IzefVn": "Billionaires",
+  "u/2heB": "Will any U.S. singer with 10M+ followers be arrested by December 2026?",
+  "jYfyyU": "Wildcard",
+  "dsqVtR": "Vol.",
+  "RXIj62": "A billion-dollar market. Concentrated in two companies. Until now.\nPolymarket and Kalshi dominate — but they are closed. You trade on them. Not with them.",
+  "z7q/BG": "Kuest was built to change that.\nIn just a few clicks, you launch your own prediction market site: with your brand, your categories, and your custom markets. We handle the smart contracts, infrastructure, liquidity, and integrations. You focus on your audience — and collect fees from every trade that happens on your site.",
+  "afntHn": "No code. No server. No technical headaches.",
+  "RhMnI3": "markets launched on testnet",
+  "rzIHfe": "fee per trade, direct to your wallet",
+  "c+TiLJ": "average time to go live",
+  "cuWWeF": "to launch, usage-based at scale",
+  "3OlZjI": "Pick your niche and write your questions",
+  "pw+prO": "Sports, crypto, politics, memes — anything your audience already argues about. You set the questions, the fee rate, and your brand.",
+  "dZs0ZT": "Go live — we handle the infrastructure",
+  "2M8Qvt": "Settlement, wallets, liquidity, blockchain — all running before you finish setup. Your market is live in under 15 minutes with no code.",
+  "Yg8iPR": "Every trade pays you directly",
+  "v/knx3": "Your audience bets. The fee goes straight to your wallet. No intermediary, no revenue share, no waiting.",
+  "XeylhZ": "Your domain. Your brand. Any language.",
+  "BlMris": "Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, and Chinese out of the box.",
+  "Aimhsc": "Shared liquidity from day one.",
+  "qPpK38": "Mirror active Polymarket markets with built-in order flow. Your site feels live the moment it launches — no cold start, no empty order books.",
+  "ycKp7R": "Leaderboard + PnL built in.",
+  "q8maJg": "Trader rankings, profit and loss tracking, and activity feeds are live by default. Your community has a reason to keep coming back.",
+  "ebHaXo": "On-chain affiliate system.",
+  "MPOBeh": "Let others promote your market and earn a share of fees — settled trustlessly on-chain. No manual payouts, no spreadsheets.",
+  "hcQStK": "Bot SDKs for automated trading.",
+  "iQD24y": "Python and Rust SDKs let market makers and power users run bots directly on your platform — increasing volume and depth automatically.",
+  "Qd/J5U": "OpenZeppelin-audited contracts.",
+  "D5dgnq": "Smart contracts derived from Polymarket's architecture. UMA-based resolution for transparent, verifiable market settlement. You don't need to know any of this — it just works.",
+  "c85IL9": "How long does it take, and do I need technical skills?",
+  "a/nLti": "Most markets go live in under 15 minutes. You launch from <link>/launch</link> with a guided setup — no code, no contract deployment, no DevOps. If you can set up a Shopify store, you can launch a Kuest market.",
+  "0al3rb": "Can I show Polymarket markets on my site?",
+  "Q87wQp": "Yes. You can mirror active markets from Polymarket — either all categories or only the ones relevant to your niche (crypto, sports, politics, etc.). These mirrored markets come with shared liquidity from day one, so your site feels live from the moment it's published.",
+  "EYr4Uc": "Can I create my own markets? Who provides the liquidity?",
+  "y46QfQ": "Yes. You can create custom markets around any question you choose. Mirrored Polymarket markets have shared liquidity built in. Markets you create yourself depend on your audience trading — so your own content and community drive the volume there. You can also opt into cross-market liquidity sharing for creator markets.",
+  "R1GU/L": "How do I make money, and can I set my own fees?",
+  "UDxavK": "You set a trading fee rate on your market — typically between 0.5% and 3%. Every time someone trades, that fee goes directly to your wallet. No revenue share, no intermediary, no waiting. You control the rate and can change it at any time.",
+  "VIFaMd": "Can I use my own domain and branding?",
+  "VUT7QQ": "Yes. You can launch with your own domain, logo, colors, and category structure so the market feels entirely native to your brand — not a Kuest white-label.",
+  "HEb7Qz": "How are markets resolved?",
+  "3J6QOd": "Kuest uses UMA-based resolution rails for transparent, verifiable settlement. The smart contracts are derived from Polymarket's — audited by OpenZeppelin — and adapted to support shared liquidity across markets. You don't need to understand any of this to use it, but it means the financial infrastructure under your market is the same stack that's processed billions in volume.",
+  "QAO2mS": "Is there a cost to launch?",
+  "azarTV": "The launch flow is free to start. Production infrastructure pricing is usage-based — you pay when you scale, not before.",
+  "21kVMo": "Can I self-host Kuest?",
+  "Sm0k12": "The codebase is open source under the <license>Kuest MIT+Commons license</license>. Forks for branding, frontend changes, and custom UX are welcome. Production deployments, however, must use Kuest infrastructure. Running an independent trading stack requires a separate <contact>commercial agreement</contact>.",
+  "GxSfX/": "Start your prediction market",
+  "/GjKw4": "The Shopify for Prediction Markets",
+  "6rTAPi": "Your own Polymarket",
+  "4M9G7K": "Live in 15 minutes. Free",
+  "E8yhd0": "Your audience already predicts things every day. Launch your own market for any niche — crypto, sports, politics, anything — and earn a fee on every trade.",
+  "O0W+Rn": "Free launch • No code • Live in minutes",
+  "1lcF/G": "Will Ethereum outperform Bitcoin this quarter?",
+  "MWAedt": "Will Elon Musk's net worth exceed $500B this year?",
+  "JtIR4g": "Will the community reach 50K members before Q4?",
+  "dOiofi": "Will Brazil elect a market-friendly president in 2026?",
+  "VDwYlH": "Will Donald Trump win the next U.S. election?",
+  "iJJZkg": "Will Labour win the next UK general election?",
+  "SDjO/I": "Will the next Marvel film open above $200M?",
+  "nVE+Ar": "Attention shifts create windows of opportunity",
+  "DX+HgM": "For years, money followed attention.",
+  "7I9Aje": "Affiliates. Dropshipping. Online courses. Betting.",
+  "meOBrx": "Each wave opened a window — and closed right after.",
+  "cI7N+J": "Did you get in early, or arrive when it was already saturated?",
+  "UY3F4v": "Today, two platforms control a market worth billions.",
+  "CYuTk4": "49% of visits still come from just 5 countries.",
+  "+RjDIA": "The rest of the world has barely discovered this.",
+  "OtJeRc": "You can choose:",
+  "k7/ifQ": "be one more trader trying to call the next prediction —",
+  "L64V8y": "or build the house where everyone else plays.",
+  "YhMVOB": "Joined by 100+ operators in early access",
+  "6EYj7H": "YOUR AUDIENCE ALREADY DOES THIS — FOR FREE",
+  "YJP+OI": "Your followers already predict things every day. Who wins the next election. Whether Bitcoin hits $100k. Who gets eliminated this week. They argue about it in your comments, your DMs, your community — and none of that energy earns you a cent. A prediction market turns that conviction into real trades, with real money. Every trade pays a fee. That fee goes to you.",
+  "YBSi4S": "Start earning from my audience",
+  "pPMDr3": "FREE · NO CODE · LIVE IN 15 MINUTES",
+  "6UWuVC": "Everything already built",
+  "XB6CyQ": "The full stack. Ready to go live.",
+  "5EF4TX": "From the trading engine to your leaderboard, every feature you’d expect from a trading platform is already running. You just add your brand.",
+  "JDczvY": "This is what your site will look like.",
+  "RDnFgG": "This is a functional demo with mirrored Polymarket markets. Explore it, trade on it, and imagine it with your brand, your audience, and your questions.",
+  "eK4U/k": "Ready to turn your audience into a revenue stream?",
+  "M4B6m7": "Launch my market — it's free",
+  "htGae5": "Your market, your audience, your rules.",
+  "YHZxEt": "Start free. No credit card required.",
+  "8tITje": "Create my prediction market",
+  "S4tHED": "Kuest Protocol - Prediction Market Infrastructure",
+  "nID/1N": "Kuest is a white-label prediction market protocol that lets institutions, media companies, and creators launch branded markets with shared liquidity and protocol-level infrastructure.",
+  "gDgBbN": "Kuest protocol overview",
+  "kI9wMe": "On March 9, 2026, Kalshi announced its first-ever strategic partnership with a financial institution outside the United States: XP International, one of Brazil's largest brokerages, with over 4.7 million active clients and R$1.8 trillion under management.",
+  "lKZmM2": "Under the arrangement, XP manages local distribution and client relationships, while Kalshi provides the trading technology and market design - a model for exporting prediction market infrastructure through local financial platforms.",
+  "IfnF7u": "Brazil still lacks specific regulation for prediction markets, but platforms like Kalshi and Polymarket already host contracts related to the country. B3 also plans to enter this market, and the Ministry of Finance is closely monitoring the sector. Kalshi's co-founder called Brazil \"the way the US was years ago with prediction markets.\"",
+  "i+kvE+": "Kalshi needed XP because they are a platform, not infrastructure. They can only expand one country at a time, one institutional deal at a time. Kuest is the layer that makes every XP-equivalent in every market a potential prediction market operator - without waiting for Kalshi's partnership queue.",
+  "r2aT9g": "Kuest's smart contracts are derived from Polymarket's CLOB architecture - the same design that has processed billions in verified trading volume. The core contracts carry OpenZeppelin's audit validation as their foundation. We adapted them to support shared liquidity across multiple operator frontends, which is the architectural primitive that makes the protocol model possible.",
+  "sZLS1j": "The choice of Polygon was equally deliberate. Most existing prediction market liquidity already sits on Polygon. Traders already hold USDC balances there. Market-making bots already operate in this environment. Building on a different chain would mean asking every liquidity provider to start over. We focused our innovation on distribution and infrastructure - not on reinventing a trading engine that already works at scale.",
+  "iKNqzA": "The result is a protocol that is immediately compatible with existing trading strategies, bot infrastructure, and market maker tooling - dramatically lowering the barrier to liquidity bootstrapping for new operator deployments.",
+  "bbEO9p": "Combined monthly trading volume, Kalshi + Polymarket, Feb 2026",
+  "wSNkp5": "Source: The Block",
+  "UJk49y": "Visits to Polymarket in 3 months. The US accounts for only 20% of traffic.",
+  "bmisVV": "Kalshi trading volume growth in the past 12 months",
+  "31LJPe": "Source: PYMNTS / Kalshi press release",
+  "njIzyP": "Target valuation for both Kalshi and Polymarket in current fundraising rounds",
+  "QG0yxg": "Source: CoinDesk via WSJ, Mar 2026",
+  "plIFr9": "Platform vs. Protocol",
+  "PVsHz/": "Polymarket is a single venue. Kalshi is a single venue. Kuest is the layer underneath - any operator can deploy their own frontend, their own brand, their own markets, and share liquidity with every other Kuest-powered site from day one.",
+  "X2PsIL": "Own brand",
+  "XVe6bE": "Shared liquidity",
+  "VkJg0U": "The Shopify Analogy",
+  "X10nMp": "Shopify did not compete with Amazon. They enabled millions of stores that could not exist otherwise. Kuest does not compete with Polymarket. We enable the next 1,000 prediction market operators - media companies, brokerages, community platforms, creators - to exist.",
+  "FZjV1g": "Operators",
+  "Orc8Zk": "Distribution",
+  "CMmwBo": "Network scale",
+  "0OMn/f": "What's Already Built",
+  "b573DP": "CLOB engine, relayer, smart contracts, Polymarket-compatible APIs, Vercel + Supabase deployment stack, shared liquidity layer, SDK, bots infrastructure, market maker integrations, and a multi-language frontend. Live demo at demo.kuest.com.",
+  "4+ppNT": "SDK",
+  "LlNItA": "Bots",
+  "xwEc8K": "API",
+  "NZYRdf": "Mainnet",
+  "+KWmZ5": "Operator Fees",
+  "8ht7FO": "Operators set their own trading fee, typically 0.5%-3%. A small protocol fee is retained by Kuest on each trade across the network. As the number of operators scales, this becomes a volume-aggregated revenue stream independent of any single operator's performance.",
+  "YtSkEh": "0.5%—3% operator fee",
+  "ofV4Sb": "Protocol take rate",
+  "dA+hnZ": "Infrastructure",
+  "Ar2FCa": "Launch is free. Production infrastructure is usage-based - operators pay when they scale. Server costs, gas management, settlement infrastructure, and scalability are handled by Kuest. Operators focus on distribution. We run the stack.",
+  "0AJH+W": "Free launch",
+  "0Y2ESX": "Usage-based",
+  "A7VFC4": "Liquidity Services",
+  "vuWEB0": "Market makers who provide liquidity across the Kuest network earn spreads. Kuest facilitates this matching and captures value at the infrastructure layer. As the operator network grows, liquidity efficiency increases - a compounding network effect.",
+  "iIilaQ": "Spread capture",
+  "UliaFd": "Network effects",
+  "zdIaHp": "Investors",
+  "/2ghUG": "Seed-stage capital to accelerate operator acquisition, market maker incentive programs, and protocol hardening. The prediction market sector is moving from experimental to institutional quickly. We are at the inflection point where infrastructure layer plays are valued, not after the fact.",
+  "X5JgG1": "Market Makers",
+  "/RLjyd": "The cold-start problem for new prediction markets is liquidity. We solve it through shared liquidity across the operator network - but we need initial market maker partnerships to seed depth on new deployments. If you run bots or provide liquidity on Polymarket or Kalshi, you already have what you need to operate on Kuest. Estimated APY is strategy- and volume-dependent, but on cloned Polymarket-style markets the spread-and-turnover profile can exceed passive stablecoin yield for desks that recycle inventory efficiently.",
+  "eroA5t": "Institutional Operators",
+  "DKf/mU": "The XP + Kalshi deal demonstrates the model: a financial institution wants prediction market access but needs a local, branded, controlled environment. Kuest provides that without requiring a bilateral deal with Kalshi. Banks, brokerages, investment platforms, and media groups with financial audiences can use Kuest as their infrastructure layer. Brazil is specifically primed for this: B3 is preparing for the category, XP has the Kalshi partnership, and the Ministry of Finance is watching the sector closely. The window for early operator positioning is open.",
+  "wFn0+c": "Consumer brand",
+  "zXSCJJ": "core asset is the venue itself",
+  "MQCEtF": "Unit economics",
+  "B0UKaq": "tied to their own order flow",
+  "EVWF4d": "Expansion",
+  "a1qjBE": "one partnership at a time",
+  "CDdLkR": "Operator network",
+  "VGQQV+": "every brand becomes a distribution node",
+  "KOuDOE": "Economics",
+  "/7jdO/": "protocol fees across aggregated volume",
+  "qFTxb3": "Scale",
+  "7NyfzS": "many deployments simultaneously",
+  "kZ1GFT": "Smart contracts deployed",
+  "Ts8P/L": "Polygon mainnet, OpenZeppelin-validated architecture",
+  "DbSiJf": "CLOB engine + relayer operational",
+  "zzWggU": "Core trading stack is already running",
+  "+SJ5F1": "Polymarket-compatible API",
+  "oky9BL": "Cross-platform liquidity from day one",
+  "ffjoNl": "White-label frontend",
+  "+XPM9V": "Deploy in under 15 minutes with no code",
+  "4y3Hgp": "SDK + bot infrastructure",
+  "fVyIDm": "Available for operator and market maker integrations",
+  "k6I8wU": "Live demo",
+  "92MheG": "<link>demo.kuest.com</link>",
+  "rCSmI9": "Open source",
+  "WWNjAD": "<link>github.com/kuestcom/prediction-market</link>",
+  "iGlk8r": "Market maker program",
+  "gL8/Fi": "Active recruitment",
+  "vp4QDF": "Seed round",
+  "JfG49w": "Open",
+  "GJHHhS": "White-label prediction market protocol for operators who want branded markets, shared liquidity, and protocol infrastructure.",
+  "0ISd8Y": "KUEST PROTOCOL · SEED ROUND OPEN",
+  "4RXdli": "Polymarket proved the model.",
+  "OzUJqO": "We're turning it into",
+  "ojk2Te": "infrastructure.",
+  "jk01y5": "Kuest is a white-label prediction market protocol — the layer that lets any financial institution, media company, or creator launch their own branded market, share liquidity, and earn trading fees. Built on the same smart contract architecture that processed billions in volume. Ready today.",
+  "CaOX4s": "View pitch deck",
+  "bRIuPj": "MVP OPERATIONAL · SEED ROUND OPEN · OPEN SOURCE",
+  "r3NIzv": "THE OPPORTUNITY",
+  "AATgTA": "A $20 billion industry forming in real time - and 95% of the world hasn't accessed it yet.",
+  "dPQ1/w": "Two platforms currently dominate this sector. Kalshi, the regulated US exchange, recently crossed a $1-1.5B annualized revenue run rate. Polymarket, running on Polygon, draws over 32 million monthly visits globally. Together, they've demonstrated that prediction markets are not a niche - they are a new financial primitive. The problem: both are closed platforms. You trade on them. You do not build with them.",
+  "e96g//": "WHY NOW",
+  "858n82": "The XP + Kalshi deal just confirmed what we already built for.",
+  "lychXS": "It makes sense for us to go through these international partners. They already have the customers and the brand.",
+  "P44lyQ": "Luana Lopes Lara, co-founder & COO, Kalshi",
+  "Qw8qhv": "Source: Finance Magnates, March 2026",
+  "Jzev1e": "That's exactly what Kuest enables - at protocol scale, not deal by deal.",
+  "N5DjPm": "THE PROTOCOL",
+  "/3D/7f": "We are not a prediction market. We are the infrastructure that launches them.",
+  "sd5Ekg": "WHY THIS ARCHITECTURE",
+  "uIQvXZ": "A strategic decision, not a shortcut.",
+  "799dG0": "Polymarket proved the model. We're turning that infrastructure into a protocol so anyone can launch markets that share liquidity.",
+  "wl/NTj": "Kuest protocol thesis",
+  "zBvcJr": "HOW THE PROTOCOL MAKES MONEY",
+  "Mnuh9y": "Three revenue layers. One infrastructure stack.",
+  "6LMh6M": "Currently, infrastructure costs are manageable and predictable. They will scale with volume - but so does protocol revenue, proportionally. The cost structure is not a ceiling; it is a variable that tracks growth.",
+  "1+3tOb": "WHO WE'RE LOOKING FOR",
+  "TZCl6o": "Three types of partners. All necessary. All complementary.",
+  "ncAbx2": "THE STRATEGIC QUESTION ANSWERED",
+  "JGLCPa": "Why won't Polymarket just do this?",
+  "7ZMpCt": "They are focused on being the best prediction market platform in the world. That is a different company from one focused on being the best prediction market infrastructure layer in the world. Polymarket has a $9B branded consumer product to protect. They do not build the SDK that powers their competitors.",
+  "NKK5WE": "Application layer",
+  "e16ptT": "Platform companies optimize for destination traffic.",
+  "54FWPX": "Polymarket and Kalshi win by concentrating users, protecting brand, and deepening liquidity on their own venues.",
+  "+lr/x1": "Protocol layer",
+  "0qFMbc": "Infrastructure companies optimize for operator scale.",
+  "HdsAzY": "Kuest wins by letting thousands of operators launch markets that share liquidity while Kuest runs the underlying stack.",
+  "6C1ocU": "This is not a new dynamic. Uniswap enabled thousands of token markets without competing with every project listed on it. AWS enabled millions of businesses without trying to be all of them. The XP + Kalshi deal validates demand, but it also reveals the bottleneck: Kalshi can do one institutional partnership at a time. Kuest can do thousands simultaneously, because we are the protocol - not the counterparty.",
+  "fJZtI8": "WHERE WE ARE TODAY",
+  "yxsvlY": "MVP live. Protocol operational. Looking for the right partners to scale.",
+  "A5FQh0": "The infrastructure layer for prediction markets is being built right now.",
+  "QANYbD": "We'd rather have the right partners at the right moment than move fast without alignment. If you're an investor, market maker, or institutional operator - let's talk.",
+  "mSzw4X": "Request pitch deck",
+  "zg5lAT": "Contact the team",
+  "nWro61": "Close waiting modal",
+  "sM5VEn": "Waiting for wallet approval...",
+  "13XKf3": "{walletName} wallet icon",
+  "NAkpsP": "Connected wallet icon",
+  "2kRw24": "Change launch app language",
+  "RaCrar": "Validate launch setting",
+  "MfDeYZ": "Prepare or reuse Vercel project",
+  "7Jtqaz": "Attach Supabase database",
+  "FjEvuc": "Trigger deployment",
+  "4vZQNh": "Unable to check OAuth connection status.",
+  "UC/gLn": "Failed to disconnect Vercel OAuth.",
+  "f/uMj5": "Paste your Vercel Access Token first.",
+  "bx5KHy": "Connect Vercel OAuth first.",
+  "oynMeY": "Failed to list Supabase databases.",
+  "s0PxJX": "No existing database found. You can still create a new one.",
+  "w9v7ZD": "Creating your account...",
+  "A9PC2i": "Check your wallet and confirm.",
+  "DWfV34": "Wallet connected. Enter your site name to continue.",
+  "3Ll1Pj": "Failed to generate credentials with browser wallet.",
+  "0hUaQW": "Connect wallet before switching network.",
+  "TXNH2b": "Switch to {network} in your wallet settings.",
+  "VXbkiS": "Unable to switch to {network}.",
+  "Dx0Zqz": "Open your wallet and approve the connection.",
+  "Tx+Kp8": "Switching to {network}...",
+  "DGUtsP": "{network} is active. Click Sign to continue.",
+  "woyk9c": "Wallet connection is not ready.",
+  "niyBLs": "Approve one signature to generate credentials.",
+  "jHeWfn": "Minting Kuest credentials...",
+  "muHAfE": "Unable to sign and generate keys.",
+  "Bd8XSS": "Unable to continue wallet signing flow.",
+  "0A2I8p": "Enter a domain first.",
+  "08UIj9": "Domain action failed.",
+  "PkGA+i": "Launch failed.",
+  "8cTVo0": "Failed to call API.",
+  "MBy3Yi": "Site + Admin wallet",
+  "Zo/YYU": "Host + Database",
+  "556JQK": "Deploy",
+  "C73rHj": "Use browser wallet",
+  "+vVZ/G": "Connect",
+  "rztPaw": "Switch to {network}",
+  "gDXziV": "Sign",
+  "nmao86": "Step 1. Site + Admin wallet",
+  "IMXP52": "Site name",
+  "OZXD4R": "This is your brand name.",
+  "QxT4ZN": "Your Prediction Market Site Name",
+  "vMldOp": "Admin wallet",
+  "xY7X9W": "One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.",
+  "8hYFBP": "For the simplest setup, use",
+  "VC8FDa": "MetaMask browser extension",
+  "KqC9yz": "MetaMask app",
+  "tlW3DB": "No balance required, no funds moved, no gas fees.",
+  "hocCQQ": "We try to switch to Polygon Amoy automatically and add the network when needed.",
+  "qj1uhz": "Disconnect",
+  "H6RqOb": "Working...",
+  "0cEOKu": "Advanced options",
+  "prQUX/": "Email (optional)",
+  "K5fuRA": "you@team.com",
+  "t47277": "Nonce",
+  "acrOoz": "Continue",
+  "D+JEoM": "Step 2. Host + Database",
+  "mVzSRB": "Vercel authentication",
+  "fsOAyk": "Vercel is where your prediction market website is hosted.",
+  "hKIibs": "Access Token",
+  "6b2Rzi": "Connected account",
+  "PuU15u": "Not connected",
+  "1SvspN": "Checking...",
+  "9PVJKb": "Connect Vercel",
+  "mcokwM": "Vercel Access Token",
+  "Z+OezR": "Paste Vercel Access Token",
+  "XM9kIZ": "Create token in Vercel",
+  "6Zx4Oe": "Reown Project ID",
+  "5iXKi9": "Reown Project ID enables wallet login for your end users.",
+  "Seanpx": "Required",
+  "jqQKl+": "Get it at",
+  "J/Nfwe": "→ create/select project → copy Project ID.",
+  "fLjvv3": "Supabase database",
+  "JxfOZc": "Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.",
+  "IQSlJx": "CREATE NEW DATABASE",
+  "5u/VkJ": "SUPABASE DATABASE {index} - {name}",
+  "o9y8/n": "Refreshing...",
+  "rELDbB": "Refresh",
+  "ML2QY8": "Project slug (auto)",
+  "Y7m6lU": "Project slug override",
+  "V4KNjk": "optional",
+  "UxeJFE": "Repository",
+  "8dAyZI": "Branch",
+  "agfbrA": "Vercel Team ID",
+  "hmgIL5": "empty = personal account",
+  "Mk8C5M": "Supabase region",
+  "ybPOMT": "empty = auto generated by API",
+  "Pc+tM3": "Generate",
+  "FHpick": "SITE_URL override",
+  "OAzJmS": "Extra env vars (.env format)",
+  "r277ta": "Step 3. Deploy",
+  "ZpQ6us": "Result",
+  "tzMNF3": "Status",
+  "Uehd61": "success",
+  "7ATNns": "failed",
+  "k36uSw": "Project",
+  "+geK0q": "Vercel dashboard",
+  "rCKbVC": "Supabase dashboard",
+  "IuFETn": "Duration",
+  "7ejcQr": "Custom domain (optional)",
+  "o+c/uY": "Use your own domain after deploy. Add it first, then verify DNS records.",
+  "Z8971h": "Verified",
+  "n6KNWj": "Pending verification",
+  "Nvr5Ce": "Adding...",
+  "EkcNZU": "Add domain",
+  "8nqlNv": "Verifying...",
+  "q5Xl0M": "Verify",
+  "bG/kQ6": "Nameservers to set at your registrar:",
+  "NgBkH4": "check Vercel DNS instructions",
+  "W+ZsR7": "Connecting wallet",
+  "L96RsX": "Open your wallet and approve the connection to continue.",
+  "zmWQIG": "Waiting for signature",
+  "hhet2D": "Approve the signature in your wallet to continue.",
+  "+F4irl": "We couldn't send your request. Please try again.",
+  "epzd31": "Request sent. We'll reach out by email.",
+  "sNwsMv": "Close modal",
+  "TvpSYF": "REQUEST DECK",
+  "5U5kOI": "Request the Kuest Protocol pitch deck",
+  "K7k8pF": "Leave your company name and email and we'll route the request to the team.",
+  "FPGwAt": "Company name",
+  "lvutaP": "Your company",
+  "HHRIuR": "Work email",
+  "VvR2rk": "you@company.com",
+  "47FYwb": "Cancel",
+  "82Y7Sa": "Sending...",
+  "PoX2HN": "Send request",
+  "aBfpIb": "2025 volume",
+  "1+9TxU": "Prediction market volume hit $63.5B in 2025, according to <link>CertiK</link>.",
+  "I++gEQ": "Polymarket talks",
+  "7g7MKo": "Bloomberg put Polymarket talks near $15B, via <link>CoinDesk</link>.",
+  "FSPG53": "Kalshi valuation",
+  "IKYdr/": "Kalshi raised $1B at an $11B valuation, according to <link>TechCrunch</link>.",
+  "m1UlGM": "Weekly volume",
+  "uEzk8y": "Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>."
 }

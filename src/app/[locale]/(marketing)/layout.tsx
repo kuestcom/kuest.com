@@ -1,6 +1,10 @@
-import "@/app/landing-marketing.css";
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
+import '@/app/landing-marketing.css'
 
-export default function LocalizedMarketingLayout({ children }: { children: ReactNode }) {
-  return children;
+interface Props {
+  children: ReactNode
+}
+
+export default function RootLayout({ children }: Props) {
+  return children
 }
