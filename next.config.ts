@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   cacheComponents: false,
   typedRoutes: true,
   reactStrictMode: false,
+  experimental: {
+    inlineCss: true,
+  },
   env: {
     SITE_URL: process.env.production ? 'https://kuest.com' : 'http://localhost:3000',
     CLOB_URL: process.env.CLOB_URL ?? "https://clob.kuest.com",

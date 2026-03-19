@@ -502,7 +502,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section" id="p2">
+          <section className="panel-wrap panel-static protocol-section mt-24!" id="p2">
             <div className="panel-sticky">
               <div className="panel-inner protocol-copy-shell">
                 <div className="r protocol-copy-head">
