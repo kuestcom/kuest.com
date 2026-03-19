@@ -18,6 +18,7 @@ import {getPathname} from "@/i18n/navigation";
 import {SUPPORTED_LOCALES} from "@/i18n/locales";
 import {hasLocale} from "next-intl";
 import {routing} from "@/i18n/routing";
+import Script from "next/script";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/protocol'>): Promise<Metadata> {
   const { locale } = await params;
@@ -304,13 +305,13 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
 
   return (
       <>
-        <script
+        <Script
             id="protocol-theme-bootstrap"
             dangerouslySetInnerHTML={{
               __html: buildThemeBootstrapScript(),
             }}
         />
-        <script
+        <Script
             id="protocol-structured-data"
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -338,7 +339,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             }}
         />
 
-        <TimelineSpine count={8} />
+        <TimelineSpine count={9} />
 
         <nav id="heroNav" className="hero-nav">
           <div className="nav-r">
@@ -365,7 +366,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
                 homeHref="/"
                 enterpriseHref="/enterprise"
                 protocolHref="/protocol"
-                active="home"
+                active="protocol"
                 openLabel={t('Open site navigation')}
                 menuAriaLabel={t('Site navigation')}
                 homeLabel={t('Home')}
@@ -507,7 +508,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p2">
             <div className="panel-sticky">
               <div className="panel-inner protocol-copy-shell">
                 <div className="r protocol-copy-head">
@@ -557,7 +558,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p3">
             <div className="panel-sticky">
               <div className="panel-inner protocol-section-center">
                 <div className="r quote-stage-head protocol-heading-wide">
@@ -586,7 +587,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p4">
             <div className="panel-sticky">
               <div className="panel-inner protocol-copy-shell">
                 <div className="r protocol-copy-head">
@@ -617,7 +618,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p5">
             <div className="panel-sticky">
               <div className="panel-inner protocol-section-center">
                 <div className="r quote-stage-head">
@@ -647,7 +648,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p6">
             <div className="panel-sticky">
               <div className="panel-inner audience-stage protocol-audience-stage">
                 <div className="r audience-stage-head">
@@ -673,7 +674,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p7">
             <div className="panel-sticky">
               <div className="panel-inner protocol-section-center">
                 <div className="r quote-stage-head">
@@ -722,7 +723,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static protocol-section">
+          <section className="panel-wrap panel-static protocol-section" id="p8">
             <div className="panel-sticky">
               <div className="panel-inner protocol-section-center">
                 <div className="r quote-stage-head protocol-heading-wide">

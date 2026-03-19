@@ -28,6 +28,7 @@ import {hasLocale} from "next-intl";
 import {routing} from "@/i18n/routing";
 import {getExtracted} from "next-intl/server";
 import {getPathname, Link} from "@/i18n/navigation";
+import Script from "next/script";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = await params;
@@ -279,7 +280,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
-  const solutionSubtitleLines = t('Kuest was built to change that.\nIn just a few clicks, you launch your own prediction market site: with your brand, your categories, and your custom markets. We handle the smart contracts, infrastructure, liquidity, and integrations. You focus on your audience — and collect fees from every trade that happens on your site.\nNo code. No server. No technical headaches.')
+  const solutionSubtitleLines = t('Kuest was built to change that.\nIn just a few clicks, you launch your own prediction market site: with your brand, your categories, and your custom markets. We handle the smart contracts, infrastructure, liquidity, and integrations. You focus on your audience — and collect fees from every trade that happens on your site.')
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
@@ -414,15 +415,15 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
 
   return (
       <>
-        <script
+        <Script
             id="landing-theme-bootstrap"
             dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
         />
-        <script
+        <Script
             id="landing-embed-preview"
             dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
         />
-        <script
+        <Script
             id="landing-structured-data"
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -543,7 +544,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                     <h1 className="hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
                       <span className="hero-title-line">{t('Your own Polymarket')}</span>
                       <span className="hero-title-line">
-                      {renderLandingHeroLine2(locale, t('Live in 15 minutes. Free.'))}
+                      {renderLandingHeroLine2(locale, t('Live in 15 minutes. Free'))}
                     </span>
                     </h1>
                   </div>

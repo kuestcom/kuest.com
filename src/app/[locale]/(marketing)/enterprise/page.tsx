@@ -28,6 +28,7 @@ import TimelineSpine from "@/components/TimelineSpine";
 import {getPathname} from "@/i18n/navigation";
 import {SUPPORTED_LOCALES} from "@/i18n/locales";
 import {ShowcaseIconName, ShowcaseNiche} from "@/lib/marketing-shared-data";
+import Script from "next/script";
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/enterprise'>): Promise<Metadata> {
   const { locale } = await params
@@ -454,11 +455,11 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
 
   return (
       <>
-        <script
+        <Script
             id="enterprise-theme-bootstrap"
             dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
         />
-        <script
+        <Script
             id="enterprise-embed-preview"
             dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
         />
@@ -490,7 +491,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
                 homeHref="/"
                 enterpriseHref="/enterprise"
                 protocolHref="/protocol"
-                active="home"
+                active="enterprise"
                 openLabel={t('Open site navigation')}
                 menuAriaLabel={t('Site navigation')}
                 homeLabel={t('Home')}
@@ -556,8 +557,8 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
                     <h1 className="hero-title enterprise-hero-title font-sans text-[clamp(46px,6.2vw,88px)] font-bold leading-[0.94] tracking-[-0.05em] text-white">
                       <span className="hero-title-line">{t('A new financial instrument')}</span>
                       <span className="hero-title-line">
-                      {t('is forming')}&nbsp;
-                        <span className="hero-title-accent">{t('Be the platform.')}</span>
+                      {t('is forming')}.&nbsp;
+                        <span className="hero-title-accent">{t('Be the platform')}.</span>
                     </span>
                     </h1>
                   </div>
