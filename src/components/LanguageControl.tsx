@@ -56,7 +56,7 @@ export default function LanguageControl({
           <Link
             key={option.code}
             href={option.code}
-            className={`site-language-option${option.code === locale ? 'is-selected' : ''}`}
+            className={`site-language-option ${option.code === locale ? 'is-selected' : ''}`}
             role="option"
             aria-selected={option.code === locale}
           >

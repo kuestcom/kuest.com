@@ -152,7 +152,7 @@ export default function SourceModal({
         <div className="source-modal-url" id="sourceModalUrl">
           {source?.domain || 'source-url.com'}
         </div>
-        <div className={`source-modal-frame-wrap${isLoading ? 'is-loading' : ''}`} id="sourceModalFrameWrap">
+        <div className={`source-modal-frame-wrap ${isLoading ? 'is-loading' : ''}`} id="sourceModalFrameWrap">
           <div className="source-modal-frame-loading" id="sourceModalLoading">
             {loading}
           </div>

@@ -43,7 +43,7 @@ export default function SitePreview({
 
   return (
     <div
-      className={`site-preview scroll-mt-24${isMobile ? 'is-mobile' : ''}${forcedMobile ? 'is-forced-mobile' : ''}${className
+      className={`site-preview scroll-mt-24 ${isMobile ? 'is-mobile' : ''}${forcedMobile ? 'is-forced-mobile' : ''}${className
         ? `
         ${className}
       `

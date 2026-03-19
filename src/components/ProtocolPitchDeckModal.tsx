@@ -179,7 +179,7 @@ export default function ProtocolPitchDeckModal() {
           </label>
 
           <div
-            className={`protocol-deck-status${status.kind === 'success' ? 'is-success' : ''}${status.kind === 'error'
+            className={`protocol-deck-status ${status.kind === 'success' ? 'is-success' : ''}${status.kind === 'error'
               ? `is-error`
               : ''}`}
             aria-live="polite"

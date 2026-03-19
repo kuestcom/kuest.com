@@ -106,7 +106,7 @@ export default function RotatingProofCards() {
       {cards.map((card, index) => (
         <article
           key={`${card.label}-${card.value}`}
-          className={`solution-proof-card${index === clampedActiveIndex ? 'is-active' : ''}`}
+          className={`solution-proof-card ${index === clampedActiveIndex ? 'is-active' : ''}`}
         >
           <div className="solution-proof-card-label">{card.label}</div>
           <div className="solution-proof-card-value">{card.value}</div>
