@@ -42,14 +42,14 @@ export default async function LaunchPage({ params }: PageProps<'/[locale]/launch
       <main className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-8 sm:py-16">
         <BackgroundParticles />
 
-        <section className="relative z-1 mb-10">
+        <section className="relative z-[1] mb-10">
           <h1 className="launch-hero-title text-center">{t('Launch your Prediction Market')}</h1>
           <p className="launch-hero-subtitle mx-auto mt-4 max-w-3xl text-center">
             {t('From zero to live in under 15 minutes')}
           </p>
         </section>
 
-        <div className="relative z-1 launch-form-intro">
+        <div className="relative z-[1] launch-form-intro">
           <LaunchpadForm locale={locale} />
         </div>
       </main>

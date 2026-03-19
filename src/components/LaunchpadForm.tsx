@@ -530,7 +530,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [domainActionError, setDomainActionError] = useState<string | null>(null);
   const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null);
 
-  const TIMELINE = [
+  const TIMELINE = useMemo(() => [
     {
       id: "validation",
       label: t("Validate launch setting"),
@@ -547,7 +547,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       id: "deploy",
       label: t("Trigger deployment"),
     }
-  ]
+  ], [t])
 
   const [timeline, setTimeline] = useState<TimelineEntry[]>(
       TIMELINE.map((item) => ({

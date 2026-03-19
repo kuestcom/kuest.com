@@ -7,7 +7,6 @@ import { geistMono, openSauceOne } from '@/lib/fonts'
 import Script from 'next/script'
 import {SUPPORTED_LOCALES} from "@/i18n/locales";
 import {ThemeProvider} from "next-themes";
-import "@/app/landing-marketing.css";
 
 export async function generateViewport(): Promise<Viewport> {
   return {
