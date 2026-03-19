@@ -450,7 +450,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
             }}
         />
 
-        <TimelineSpine />
+        <TimelineSpine count={10} />
 
         <nav id="heroNav" className="hero-nav">
           <div className="nav-r">
