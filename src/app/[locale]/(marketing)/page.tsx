@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import {
   buildEmbedPreviewBootstrapScript,
-  buildThemeBootstrapScript,
   getDemoEmbedSrc,
   getDemoHref,
   getDemoLabel,
@@ -415,10 +414,6 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
 
   return (
       <>
-        <Script
-            id="landing-theme-bootstrap"
-            dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
-        />
         <Script
             id="landing-embed-preview"
             dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
@@ -860,10 +855,9 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
             </div>
           </section>
 
-          <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
+          <section className="panel-wrap panel-static panel-compact" id="p9">
             <div className="panel-sticky">
-              <div className="marketing-final-panel justify-center">
-                <div className="cta-content r py-36!">
+              <div className="cta-content r py-12 v">
                   <h2 className="cta-h">{t('Your market, your audience, your rules.')}</h2>
                   <p className="cta-sub">{t('Start free. No credit card required.')}</p>
                   <div className="cta-btns">
@@ -873,19 +867,17 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                     </a>
                   </div>
                 </div>
-                <div className="marketing-footer-wrap">
-                  <SiteFooter
-                      note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
-                      docsLabel={t('Docs')}
-                      contactLabel={t('Contact')}
-                      xLabel="X"
-                      discordLabel="Discord"
-                  />
-                </div>
-              </div>
             </div>
           </section>
         </main>
+
+        <SiteFooter
+            note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
+            docsLabel={t('Docs')}
+            contactLabel={t('Contact')}
+            xLabel="X"
+            discordLabel="Discord"
+        />
 
         <SourceModal
             outlet={t('Source')}

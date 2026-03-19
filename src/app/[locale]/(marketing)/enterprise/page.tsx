@@ -5,7 +5,6 @@ import {routing} from "@/i18n/routing";
 import {getExtracted, setRequestLocale} from "next-intl/server";
 import {
   buildEmbedPreviewBootstrapScript,
-  buildThemeBootstrapScript,
   getDemoEmbedSrc,
   getDemoHref,
   getDemoLabel,
@@ -456,10 +455,6 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
   return (
       <>
         <Script
-            id="enterprise-theme-bootstrap"
-            dangerouslySetInnerHTML={{ __html: buildThemeBootstrapScript() }}
-        />
-        <Script
             id="enterprise-embed-preview"
             dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
         />
@@ -797,10 +792,10 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
           <section className="panel-wrap panel-static" id="p3-demo">
             <div className="panel-sticky">
               <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10">
-                <div className="site-demo-copy enterprise-site-demo-copy">
-                  <div className="site-demo-copy-inner enterprise-site-demo-copy-inner">
-                    <h2 className="sh enterprise-site-demo-title">{t('This is the product your clients will interact with.')}</h2>
-                    <p className="bt enterprise-site-demo-sub">{t('A fully functional demo running live markets mirrored from Polymarket. Your deployment would carry your domain, your brand, your chosen event categories - and your fee on every transaction your clients execute.')}</p>
+                <div className="site-demo-copy">
+                  <div className="site-demo-copy-inner">
+                    <h2 className="sh text-balance!">{t('This is the product your clients will interact with.')}</h2>
+                    <p className="bt">{t('A fully functional demo running live markets mirrored from Polymarket. Your deployment would carry your domain, your brand, your chosen event categories - and your fee on every transaction your clients execute.')}</p>
                   </div>
                 </div>
                 <div className="r rd hero-preview-wide hero-preview-break">
@@ -842,41 +837,38 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
             </div>
           </section>
 
-          <section className="panel-wrap panel-static panel-compact marketing-final-section enterprise-final-section" id="p9">
+          <section className="panel-wrap panel-static panel-compact" id="p9">
             <div className="panel-sticky">
-              <div className="marketing-final-panel enterprise-final-panel justify-center">
-                <div className="cta-content enterprise-cta-content r py-36!">
-                  <h2 className="cta-h">{t('Your clients are already trading on Polymarket. The question is whether that happens on your platform.')}</h2>
-                  <p className="cta-sub">{t('The infrastructure is ready. First mover advantage in prediction markets closes fast.')}</p>
-                  <div className="cta-btns">
-                    <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
-                      <span className="cta-label">{t('Contact us')}</span>
-                      <ChevronRightIcon />
-                    </a>
-                    <a
-                        href={getDemoHref(locale)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-cta btn-cta-secondary"
-                    >
-                      <span className="cta-label">{t('View live demo')}</span>
-                      <ChevronRightIcon />
-                    </a>
-                  </div>
-                </div>
-                <div className="marketing-footer-wrap enterprise-footer-wrap">
-                  <SiteFooter
-                      note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
-                      docsLabel={t('Docs')}
-                      contactLabel={t('Contact')}
-                      xLabel="X"
-                      discordLabel="Discord"
-                  />
+              <div className="cta-content r py-12 v">
+                <h2 className="cta-h">{t('Your clients are already trading on Polymarket. The question is whether that happens on your platform.')}</h2>
+                <p className="cta-sub">{t('The infrastructure is ready. First mover advantage in prediction markets closes fast.')}</p>
+                <div className="cta-btns">
+                  <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">
+                    <span className="cta-label">{t('Contact us')}</span>
+                    <ChevronRightIcon />
+                  </a>
+                  <a
+                      href={getDemoHref(locale)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-cta btn-cta-secondary"
+                  >
+                    <span className="cta-label">{t('View live demo')}</span>
+                    <ChevronRightIcon />
+                  </a>
                 </div>
               </div>
             </div>
           </section>
         </main>
+
+        <SiteFooter
+            note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
+            docsLabel={t('Docs')}
+            contactLabel={t('Contact')}
+            xLabel="X"
+            discordLabel="Discord"
+        />
 
         <SourceModal
             outlet={t('Source')}

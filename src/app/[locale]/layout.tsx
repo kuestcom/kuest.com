@@ -6,13 +6,12 @@ import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
 import Script from 'next/script'
 import {SUPPORTED_LOCALES} from "@/i18n/locales";
+import {ThemeProvider} from "next-themes";
+import "@/app/landing-marketing.css";
 
 export async function generateViewport(): Promise<Viewport> {
   return {
-    themeColor: [
-      { media: '(prefers-color-scheme: light)', color: '#CDFF00' },
-      { media: '(prefers-color-scheme: dark)', color: '#CDFF00' },
-    ],
+    themeColor: "#CDFF00",
   }
 }
 
@@ -52,9 +51,17 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
           suppressHydrationWarning
       >
         <body className="flex min-h-screen flex-col font-sans">
-          <NextIntlClientProvider locale={locale}>
-            {children}
-          </NextIntlClientProvider>
+          <ThemeProvider
+              attribute="data-theme-mode"
+              storageKey="kuest-theme-mode"
+              enableSystem={false}
+              defaultTheme="light"
+              disableTransitionOnChange
+          >
+            <NextIntlClientProvider locale={locale}>
+                {children}
+              </NextIntlClientProvider>
+          </ThemeProvider>
         </body>
         <Script
             id="timeline"

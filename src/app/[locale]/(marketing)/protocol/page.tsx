@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import {buildThemeBootstrapScript, getDemoHref, serializeJsonForHtmlScript} from "@/lib/marketing-content";
+import {getDemoHref, serializeJsonForHtmlScript} from "@/lib/marketing-content";
 import {Banknote, Bot, Building2, Check, ChevronRightIcon, Clock3, Globe2, Newspaper} from "lucide-react";
 import LanguageControl from "@/components/LanguageControl";
 import KuestMark from "@/components/KuestMark";
@@ -305,12 +305,6 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
 
   return (
       <>
-        <Script
-            id="protocol-theme-bootstrap"
-            dangerouslySetInnerHTML={{
-              __html: buildThemeBootstrapScript(),
-            }}
-        />
         <Script
             id="protocol-structured-data"
             type="application/ld+json"
@@ -750,10 +744,9 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             </div>
           </section>
 
-          <section className="panel-wrap panel-static panel-compact marketing-final-section" id="p9">
+          <section className="panel-wrap panel-static panel-compact" id="p9">
             <div className="panel-sticky">
-              <div className="marketing-final-panel justify-center">
-                <div className="cta-content r py-24! protocol-final-cta">
+              <div className="cta-content r py-12 v">
                   <h2 className="cta-h">{t('The infrastructure layer for prediction markets is being built right now.')}</h2>
                   <p className="cta-sub">{t('We\'d rather have the right partners at the right moment than move fast without alignment. If you\'re an investor, market maker, or institutional operator - let\'s talk.')}</p>
                   <div className="protocol-final-primary">
@@ -778,19 +771,17 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
                     </a>
                   </div>
                 </div>
-                <div className="marketing-footer-wrap">
-                  <SiteFooter
-                      note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
-                      docsLabel={t('Docs')}
-                      contactLabel={t('Contact')}
-                      xLabel="X"
-                      discordLabel="Discord"
-                  />
-                </div>
-              </div>
             </div>
           </section>
         </main>
+
+        <SiteFooter
+            note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')}
+            docsLabel={t('Docs')}
+            contactLabel={t('Contact')}
+            xLabel="X"
+            discordLabel="Discord"
+        />
 
         <ProtocolPitchDeckModal />
 
