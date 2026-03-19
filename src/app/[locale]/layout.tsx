@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
+import { ThemeProvider } from 'next-themes'
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
+import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
-import Script from 'next/script'
-import {SUPPORTED_LOCALES} from "@/i18n/locales";
-import {ThemeProvider} from "next-themes";
 
 export async function generateViewport(): Promise<Viewport> {
   return {
-    themeColor: "#CDFF00",
+    themeColor: '#CDFF00',
   }
 }
 
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  return SUPPORTED_LOCALES.map((locale) => ({ locale }))
+  return SUPPORTED_LOCALES.map(locale => ({ locale }))
 }
 
 export default async function LocaleLayout({ params, children }: LayoutProps<'/[locale]'>) {
@@ -43,29 +43,29 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
   setRequestLocale(locale)
 
   return (
-      <html
-          lang={locale}
-          className={`${openSauceOne.variable} ${geistMono.variable}`}
-          data-theme-mode="light"
-          suppressHydrationWarning
-      >
-        <body className="flex min-h-screen flex-col font-sans">
-          <ThemeProvider
-              attribute="data-theme-mode"
-              storageKey="kuest-theme-mode"
-              enableSystem={false}
-              defaultTheme="light"
-              disableTransitionOnChange
-          >
-            <NextIntlClientProvider locale={locale}>
-                {children}
-              </NextIntlClientProvider>
-          </ThemeProvider>
-        </body>
-        <Script
-            id="timeline"
-            dangerouslySetInnerHTML={{
-              __html: `const panels=[...document.querySelectorAll('.panel-wrap')].map(el=>el.id).filter(Boolean);
+    <html
+      lang={locale}
+      className={`${openSauceOne.variable} ${geistMono.variable}`}
+      data-theme-mode="light"
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-screen flex-col font-sans">
+        <ThemeProvider
+          attribute="data-theme-mode"
+          storageKey="kuest-theme-mode"
+          enableSystem={false}
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider locale={locale}>
+            {children}
+          </NextIntlClientProvider>
+        </ThemeProvider>
+      </body>
+      <Script
+        id="timeline"
+        dangerouslySetInnerHTML={{
+          __html: `const panels=[...document.querySelectorAll('.panel-wrap')].map(el=>el.id).filter(Boolean);
                         const dots=document.querySelectorAll('.tl-dot');
                         function updateSpine(){
                           const mid=window.innerHeight/2+scrollY;
@@ -84,8 +84,8 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
                           const el=id?document.getElementById(id):null;
                           if(el)el.scrollIntoView({behavior:'smooth'});
                         }));`,
-            }}
-        />
-      </html>
+        }}
+      />
+    </html>
   )
 }

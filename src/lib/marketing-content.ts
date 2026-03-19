@@ -1,180 +1,47 @@
-import { parseHTML } from "linkedom/worker";
-import {DEFAULT_LOCALE, SupportedLocale} from "@/i18n/locales";
+import type { SupportedLocale } from '@/i18n/locales'
+import { DEFAULT_LOCALE } from '@/i18n/locales'
 
-export const DEMO_ORIGIN = "https://demo.kuest.com";
+export const DEMO_ORIGIN = 'https://demo.kuest.com'
 
 const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SupportedLocale, string> = {
-  en: "Free",
-  de: "Kostenlos",
-  es: "Gratis",
-  pt: "Grátis",
-  fr: "Gratuit",
-  zh: "免费开始",
-};
+  en: 'Free',
+  de: 'Kostenlos',
+  es: 'Gratis',
+  pt: 'Grátis',
+  fr: 'Gratuit',
+  zh: '免费开始',
+}
 
 export function buildEmbedPreviewBootstrapScript() {
-  return "if(new URLSearchParams(window.location.search).has('embed-preview')){document.documentElement.classList.add('embed-preview');}";
+  return 'if(new URLSearchParams(window.location.search).has(\'embed-preview\')){document.documentElement.classList.add(\'embed-preview\');}'
 }
 
 export function serializeJsonForHtmlScript(value: unknown) {
   return JSON.stringify(value)
-    .replaceAll("<", "\\u003C")
-    .replaceAll(">", "\\u003E")
-    .replaceAll("&", "\\u0026")
-    .replaceAll("\u2028", "\\u2028")
-    .replaceAll("\u2029", "\\u2029");
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function sanitizeTranslatedHref(href: string) {
-  const trimmedHref = href.trim();
-  const localizedHref = trimmedHref === "/launch" ? '/launch' : trimmedHref;
-
-  if (!localizedHref) {
-    return null;
-  }
-
-  if (localizedHref.startsWith("#")) {
-    return localizedHref;
-  }
-
-  if (localizedHref.startsWith("/") && !localizedHref.startsWith("//")) {
-    return localizedHref;
-  }
-
-  if (localizedHref.startsWith("mailto:")) {
-    return localizedHref;
-  }
-
-  try {
-    const url = new URL(localizedHref);
-    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : null;
-  } catch {
-    return null;
-  }
-}
-
-function sanitizeTranslatedClassName(className: string | null) {
-  return (className ?? "")
-    .split(/\s+/)
-    .filter((token) => token === "source-link")
-    .join(" ");
-}
-
-function sanitizeTranslatedTarget(target: string | null) {
-  return target === "_blank" ? "_blank" : null;
-}
-
-function sanitizeTranslatedRel(rel: string | null, target: string | null) {
-  const allowedTokens = new Set(["noopener", "noreferrer"]);
-  const relTokens = new Set(
-    (rel ?? "")
-      .split(/\s+/)
-      .map((token) => token.trim().toLowerCase())
-      .filter((token) => allowedTokens.has(token)),
-  );
-
-  if (target === "_blank") {
-    relTokens.add("noopener");
-    relTokens.add("noreferrer");
-  }
-
-  return relTokens.size > 0 ? Array.from(relTokens).join(" ") : null;
-}
-
-function sanitizeTranslatedNode(node: ChildNode, locale: SupportedLocale): string {
-  if (node.nodeType === 3) {
-    return escapeHtml(node.textContent ?? "");
-  }
-
-  if (node.nodeType !== 1) {
-    return "";
-  }
-
-  const element = node as Element;
-  const tagName = element.tagName.toLowerCase();
-  const childMarkup = Array.from(element.childNodes)
-    .map((childNode) => sanitizeTranslatedNode(childNode, locale))
-    .join("");
-
-  if (tagName === "br") {
-    return "<br>";
-  }
-
-  if (tagName === "em" || tagName === "strong") {
-    return `<${tagName}>${childMarkup}</${tagName}>`;
-  }
-
-  if (tagName === "a") {
-    const href = sanitizeTranslatedHref(element.getAttribute("href") ?? "");
-
-    if (!href) {
-      return childMarkup;
-    }
-
-    const attrs = [`href="${escapeHtml(href)}"`];
-    const className = sanitizeTranslatedClassName(element.getAttribute("class"));
-    const target = sanitizeTranslatedTarget(element.getAttribute("target"));
-    const rel = sanitizeTranslatedRel(element.getAttribute("rel"), target);
-
-    if (className) {
-      attrs.push(`class="${escapeHtml(className)}"`);
-    }
-
-    if (target) {
-      attrs.push(`target="${target}"`);
-    }
-
-    if (rel) {
-      attrs.push(`rel="${escapeHtml(rel)}"`);
-    }
-
-    ["data-source-outlet", "data-source-title", "data-source-summary"].forEach((attr) => {
-      const value = element.getAttribute(attr);
-      if (value) {
-        attrs.push(`${attr}="${escapeHtml(value)}"`);
-      }
-    });
-
-    return `<a ${attrs.join(" ")}>${childMarkup}</a>`;
-  }
-
-  return childMarkup;
-}
-
-export function sanitizeTranslatedHtml(html: string, locale: SupportedLocale) {
-  const { document } = parseHTML(`<!doctype html><html><body>${html}</body></html>`);
-
-  return Array.from(document.body.childNodes)
-    .map((node) => sanitizeTranslatedNode(node, locale))
-    .join("");
+    .replaceAll('<', '\\u003C')
+    .replaceAll('>', '\\u003E')
+    .replaceAll('&', '\\u0026')
+    .replaceAll('\u2028', '\\u2028')
+    .replaceAll('\u2029', '\\u2029')
 }
 
 export function getDemoLocalePath(locale: SupportedLocale) {
-  return locale === DEFAULT_LOCALE ? "" : `/${locale}`;
+  return locale === DEFAULT_LOCALE ? '' : `/${locale}`
 }
 
 export function getDemoHref(locale: SupportedLocale) {
-  return `${DEMO_ORIGIN}${getDemoLocalePath(locale)}`;
+  return `${DEMO_ORIGIN}${getDemoLocalePath(locale)}`
 }
 
 export function getDemoEmbedSrc(locale: SupportedLocale) {
-  const path = getDemoLocalePath(locale);
-  return `${DEMO_ORIGIN}${path ? `${path}/` : "/"}?embed-preview=1`;
+  const path = getDemoLocalePath(locale)
+  return `${DEMO_ORIGIN}${path ? `${path}/` : '/'}?embed-preview=1`
 }
 
 export function getDemoLabel(locale: SupportedLocale) {
-  return `demo.kuest.com${getDemoLocalePath(locale)}`;
+  return `demo.kuest.com${getDemoLocalePath(locale)}`
 }
 
 export function getLandingHeroAccent(locale: SupportedLocale) {
-  return LANDING_HERO_TITLE_ACCENT_BY_LOCALE[locale];
+  return LANDING_HERO_TITLE_ACCENT_BY_LOCALE[locale]
 }

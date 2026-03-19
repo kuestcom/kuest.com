@@ -13,8 +13,8 @@ let hasInitializedAppKit = false
 let appKitInstance: AppKit | null = null
 
 function initializeAppKitSingleton(
-    themeMode: 'light' | 'dark',
-    site: { name: string, description: string },
+  themeMode: 'light' | 'dark',
+  site: { name: string, description: string },
 ) {
   if (hasInitializedAppKit || !IS_BROWSER) {
     return appKitInstance
@@ -90,18 +90,18 @@ export default function AppKitProvider({ children }: { children: ReactNode }) {
             await instance.close()
           },
           isReady: true,
-          error: null
+          error: null,
         })
       })
     }
   }, [])
 
   return (
-      <WagmiProvider config={wagmiConfig}>
-        <AppKitContext value={AppKitValue}>
-          {children}
-          {canSyncTheme && <AppKitThemeSynchronizer themeMode={appKitThemeMode} />}
-        </AppKitContext>
-      </WagmiProvider>
+    <WagmiProvider config={wagmiConfig}>
+      <AppKitContext value={AppKitValue}>
+        {children}
+        {canSyncTheme && <AppKitThemeSynchronizer themeMode={appKitThemeMode} />}
+      </AppKitContext>
+    </WagmiProvider>
   )
 }

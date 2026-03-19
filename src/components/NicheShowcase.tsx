@@ -1,42 +1,42 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
-import type { ShowcaseNiche } from "@/lib/marketing-shared-data";
-import ShowcaseIcon from "@/components/ShowcaseIcon";
+import type { CSSProperties } from 'react'
+import type { ShowcaseNiche } from '@/lib/marketing-shared-data'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import ShowcaseIcon from '@/components/ShowcaseIcon'
 
 export default function NicheShowcase({
   niches,
   yesLabel,
   noLabel,
 }: {
-  niches: ReadonlyArray<ShowcaseNiche>;
-  yesLabel: string;
-  noLabel: string;
+  niches: ReadonlyArray<ShowcaseNiche>
+  yesLabel: string
+  noLabel: string
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     if (isPaused || niches.length < 2) {
-      return;
+      return
     }
 
     const intervalId = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % niches.length);
-    }, 7000);
+      setActiveIndex(current => (current + 1) % niches.length)
+    }, 7000)
 
     return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [isPaused, niches.length]);
+      window.clearInterval(intervalId)
+    }
+  }, [isPaused, niches.length])
 
-  const safeActiveIndex = niches.length ? Math.min(activeIndex, niches.length - 1) : 0;
-  const activeNiche = niches[safeActiveIndex] ?? niches[0];
+  const safeActiveIndex = niches.length ? Math.min(activeIndex, niches.length - 1) : 0
+  const activeNiche = niches[safeActiveIndex] ?? niches[0]
 
   if (!activeNiche) {
-    return null;
+    return null
   }
 
   return (
@@ -51,7 +51,7 @@ export default function NicheShowcase({
           <button
             key={niche.tag}
             type="button"
-            className={`niche-tab${index === safeActiveIndex ? " is-active" : ""}`}
+            className={`niche-tab${index === safeActiveIndex ? 'is-active' : ''}`}
             data-prediction-niche={index}
             onClick={() => setActiveIndex(index)}
             style={
@@ -61,26 +61,28 @@ export default function NicheShowcase({
                     background: `rgba(${niche.accentRgb},0.12)`,
                     color: niche.accent,
                     boxShadow:
-                      "0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)",
+                      '0 10px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.03)',
                   }
                 : undefined
             }
           >
-            <ShowcaseIcon name={niche.icon} /> {niche.tag}
+            <ShowcaseIcon name={niche.icon} />
+            {' '}
+            {niche.tag}
           </button>
         ))}
       </div>
       <div className="prediction-showcase-grid" id="predictionNicheCardsGrid">
         {activeNiche.cards.map((card) => {
-          const rows =
-            card.type === "single"
+          const rows
+            = card.type === 'single'
               ? [
                   { label: yesLabel, pct: card.pct },
                   { label: noLabel, pct: Math.max(0, 100 - card.pct) },
                 ]
-              : card.rows;
-          const titleLength = card.title.length;
-          const titleClassName = `prediction-showcase-title${titleLength > 78 ? " is-xlong" : titleLength > 58 ? " is-long" : ""}`;
+              : card.rows
+          const titleLength = card.title.length
+          const titleClassName = `prediction-showcase-title${titleLength > 78 ? ' is-xlong' : titleLength > 58 ? ' is-long' : ''}`
 
           return (
             <article
@@ -88,8 +90,8 @@ export default function NicheShowcase({
               className="prediction-showcase-card"
               style={
                 {
-                  ["--prediction-accent" as string]: activeNiche.accent,
-                  ["--prediction-accent-rgb" as string]: activeNiche.accentRgb,
+                  ['--prediction-accent' as string]: activeNiche.accent,
+                  ['--prediction-accent-rgb' as string]: activeNiche.accentRgb,
                 } as CSSProperties
               }
             >
@@ -102,20 +104,23 @@ export default function NicheShowcase({
               />
               <h3 className={titleClassName}>{card.title}</h3>
               <div className="prediction-showcase-list">
-                {rows.map((row) => (
+                {rows.map(row => (
                   <div key={`${card.title}-${row.label}`} className="prediction-showcase-row">
                     <span className="prediction-showcase-row-label">{row.label}</span>
                     <span className="prediction-showcase-row-track">
                       <span className="prediction-showcase-row-fill" style={{ width: `${row.pct}%` }} />
                     </span>
-                    <span className="prediction-showcase-row-pct">{row.pct}%</span>
+                    <span className="prediction-showcase-row-pct">
+                      {row.pct}
+                      %
+                    </span>
                   </div>
                 ))}
               </div>
             </article>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }

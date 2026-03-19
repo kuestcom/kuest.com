@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { MonitorSmartphone } from "lucide-react";
-import { useEffect, useState } from "react";
+import { MonitorSmartphone } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export default function SitePreview({
   href,
@@ -12,35 +12,42 @@ export default function SitePreview({
   liveLabel,
   className,
 }: {
-  href: string;
-  label: string;
-  iframeSrc: string;
-  switchToDesktopLabel: string;
-  switchToMobileLabel: string;
-  liveLabel: string;
-  className?: string;
+  href: string
+  label: string
+  iframeSrc: string
+  switchToDesktopLabel: string
+  switchToMobileLabel: string
+  liveLabel: string
+  className?: string
 }) {
-  const [forcedMobile, setForcedMobile] = useState(false);
-  const [manualMobile, setManualMobile] = useState(false);
+  const [forcedMobile, setForcedMobile] = useState(false)
+  const [manualMobile, setManualMobile] = useState(false)
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    const sync = () => setForcedMobile(mediaQuery.matches);
+    const mediaQuery = window.matchMedia('(max-width: 768px)')
 
-    sync();
-    mediaQuery.addEventListener("change", sync);
+    function sync() {
+      return setForcedMobile(mediaQuery.matches)
+    }
+
+    sync()
+    mediaQuery.addEventListener('change', sync)
 
     return () => {
-      mediaQuery.removeEventListener("change", sync);
-    };
-  }, []);
+      mediaQuery.removeEventListener('change', sync)
+    }
+  }, [])
 
-  const isMobile = forcedMobile || manualMobile;
-  const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel;
+  const isMobile = forcedMobile || manualMobile
+  const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel
 
   return (
     <div
-      className={`site-preview scroll-mt-24${isMobile ? " is-mobile" : ""}${forcedMobile ? " is-forced-mobile" : ""}${className ? ` ${className}` : ""}`}
+      className={`site-preview scroll-mt-24${isMobile ? 'is-mobile' : ''}${forcedMobile ? 'is-forced-mobile' : ''}${className
+        ? `
+        ${className}
+      `
+        : ''}`}
       id="sitePreview"
     >
       <div className="site-preview-head">
@@ -67,7 +74,7 @@ export default function SitePreview({
           aria-hidden={forcedMobile}
           onClick={() => {
             if (!forcedMobile) {
-              setManualMobile((current) => !current);
+              setManualMobile(current => !current)
             }
           }}
         >
@@ -86,5 +93,5 @@ export default function SitePreview({
         />
       </div>
     </div>
-  );
+  )
 }
