@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
 import Script from 'next/script'
+import {SUPPORTED_LOCALES} from "@/i18n/locales";
 
 export async function generateViewport(): Promise<Viewport> {
   return {
@@ -31,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  return [{ locale: 'en' }]
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }))
 }
 
 export default async function LocaleLayout({ params, children }: LayoutProps<'/[locale]'>) {
