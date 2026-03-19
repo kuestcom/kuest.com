@@ -795,7 +795,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
 
           <section className="panel-wrap panel-static" id="p3-demo">
             <div className="panel-sticky">
-              <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10">
+              <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10 max-w-[95vw]!">
                 <div className="site-demo-copy">
                   <div className="site-demo-copy-inner">
                     <h2 className="sh">{t('This is what your site will look like.')}</h2>
@@ -804,6 +804,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                 </div>
                 <div className="r rd hero-preview-wide hero-preview-break">
                   <SitePreview
+                      className="max-w-[95vw]! w-full! mx-auto!"
                       href={previewHref}
                       label={previewLabel}
                       iframeSrc={previewSrc}

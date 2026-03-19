@@ -10,6 +10,7 @@ export default function SitePreview({
   switchToDesktopLabel,
   switchToMobileLabel,
   liveLabel,
+  className,
 }: {
   href: string;
   label: string;
@@ -17,6 +18,7 @@ export default function SitePreview({
   switchToDesktopLabel: string;
   switchToMobileLabel: string;
   liveLabel: string;
+  className?: string;
 }) {
   const [forcedMobile, setForcedMobile] = useState(false);
   const [manualMobile, setManualMobile] = useState(false);
@@ -38,7 +40,7 @@ export default function SitePreview({
 
   return (
     <div
-      className={`site-preview scroll-mt-24${isMobile ? " is-mobile" : ""}${forcedMobile ? " is-forced-mobile" : ""}`}
+      className={`site-preview scroll-mt-24${isMobile ? " is-mobile" : ""}${forcedMobile ? " is-forced-mobile" : ""}${className ? ` ${className}` : ""}`}
       id="sitePreview"
     >
       <div className="site-preview-head">

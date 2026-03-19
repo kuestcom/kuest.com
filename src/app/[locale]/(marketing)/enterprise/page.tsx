@@ -788,7 +788,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
 
           <section className="panel-wrap panel-static" id="p3-demo">
             <div className="panel-sticky">
-              <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10">
+              <div className="panel-inner preview-section site-demo-section grid-cols-1 gap-10 max-w-[95vw]!">
                 <div className="site-demo-copy">
                   <div className="site-demo-copy-inner">
                     <h2 className="sh text-balance!">{t('This is the product your clients will interact with.')}</h2>
@@ -797,6 +797,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
                 </div>
                 <div className="r rd hero-preview-wide hero-preview-break">
                   <SitePreview
+                      className="max-w-[95vw]! w-full! mx-auto!"
                       href={getDemoHref(locale)}
                       label={getDemoLabel(locale)}
                       iframeSrc={getDemoEmbedSrc(locale)}
