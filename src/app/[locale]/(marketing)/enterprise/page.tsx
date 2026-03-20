@@ -491,6 +491,8 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
             homeHref="/"
             enterpriseHref="/enterprise"
             protocolHref="/protocol"
+            demoHref="#p3-demo"
+            demoLabel="Demo"
             active="enterprise"
             openLabel={t('Open site navigation')}
             menuAriaLabel={t('Site navigation')}

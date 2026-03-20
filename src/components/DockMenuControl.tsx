@@ -4,6 +4,8 @@ export default function DockMenuControl({
   homeHref,
   enterpriseHref,
   protocolHref,
+  demoHref,
+  demoLabel,
   active,
   openLabel,
   menuAriaLabel,
@@ -14,6 +16,8 @@ export default function DockMenuControl({
   homeHref: string
   enterpriseHref: string
   protocolHref: string
+  demoHref?: string
+  demoLabel?: string
   active: 'home' | 'enterprise' | 'protocol'
   openLabel: string
   menuAriaLabel: string
@@ -58,6 +62,13 @@ export default function DockMenuControl({
                 {homeLabel}
               </Link>
             )}
+        {active === 'home' && demoHref && demoLabel
+          ? (
+              <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+                {demoLabel}
+              </a>
+            )
+          : null}
         {active === 'enterprise'
           ? (
               <span
@@ -73,6 +84,13 @@ export default function DockMenuControl({
                 {enterpriseLabel}
               </Link>
             )}
+        {active === 'enterprise' && demoHref && demoLabel
+          ? (
+              <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+                {demoLabel}
+              </a>
+            )
+          : null}
         {active === 'protocol'
           ? (
               <span

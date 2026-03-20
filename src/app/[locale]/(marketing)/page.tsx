@@ -558,6 +558,8 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
             homeHref="/"
             enterpriseHref="/enterprise"
             protocolHref="/protocol"
+            demoHref="#p3-demo"
+            demoLabel="Demo"
             active="home"
             openLabel={t('Open site navigation')}
             menuAriaLabel={t('Site navigation')}
