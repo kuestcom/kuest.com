@@ -125,8 +125,10 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
   const canonical = new URL(getPathname({ href: '/', locale }), siteOrigin)
   const ogImage = new URL('/assets/images/your-predictoin-market-500mi-vol.png', siteOrigin)
 
+  const title = 'Kuest — Create Your Own Prediction Market'
+
   return {
-    title: t('Kuest — Create Your Own White-Label Prediction Market'),
+    title,
     description: t('Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.'),
     keywords: [
       'create your prediction market',
@@ -145,14 +147,14 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
     openGraph: {
       type: 'website',
       siteName: 'Kuest',
-      title: t('Kuest — Create Your Own White-Label Prediction Market'),
+      title,
       description: t('Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.'),
       url: canonical,
       images: [{ url: ogImage, alt: 'Kuest prediction market preview' }],
     },
     twitter: {
       card: 'summary',
-      title: t('Kuest — Create Your Own White-Label Prediction Market'),
+      title,
       description: t('Create your own prediction market in 15 minutes with shared liquidity, custom branding, and your own trading fees.'),
       images: [ogImage],
     },

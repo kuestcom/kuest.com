@@ -333,6 +333,27 @@ function isMissingRepoIdError(error: LaunchError) {
   return message.includes('gitsource') && message.includes('repoid')
 }
 
+function isSupabaseIntegrationLookupError(error: LaunchError) {
+  const message = error.message.toLowerCase()
+  return message.includes('/v1/integrations/configurations')
+}
+
+function withSupabaseIntegrationHint(error: unknown, teamId?: string) {
+  if (!(error instanceof LaunchError) || !isSupabaseIntegrationLookupError(error)) {
+    throw error
+  }
+
+  const hint = teamId
+    ? 'Confirm your Vercel Access Token and Team ID are correct. If you are using a personal Vercel account, clear Team ID and try again.'
+    : 'Confirm your Vercel Access Token is correct and that Supabase is installed in this Vercel account.'
+
+  throw new LaunchError(
+    `Unable to load Supabase from Vercel. ${hint}`,
+    error.step,
+    error.details,
+  )
+}
+
 async function fetchProjectRepoId(params: {
   token: string
   teamId?: string
@@ -456,44 +477,49 @@ export async function listSupabaseIntegrationResources(params: {
         void message
       })
 
-  const match = await resolveSupabaseScope({
-    token: params.token,
-    requestedTeamId: params.teamId,
-    log,
-  })
-
-  const products = await listIntegrationProducts({
-    token: params.token,
-    integrationConfigurationId: match.configuration.id,
-    teamId: match.teamId,
-  })
-
-  const selectedProduct = pickSupabaseProduct(products)
-  const integrationProductIdOrSlug = selectedProduct?.id || selectedProduct?.slug
-  const resources = await listIntegrationResources({
-    token: params.token,
-    teamId: match.teamId,
-    integrationConfigurationId: match.configuration.id,
-    integrationProductIdOrSlug,
-  })
-
-  const seen = new Set<string>()
-  const options: SupabaseResourceOption[] = []
-  for (const resource of resources) {
-    const id = resolveIntegrationResourceId(resource)
-    if (!id || seen.has(id)) {
-      continue
-    }
-    seen.add(id)
-    options.push({
-      id,
-      name: resource.name?.trim() || id,
+  try {
+    const match = await resolveSupabaseScope({
+      token: params.token,
+      requestedTeamId: params.teamId,
+      log,
     })
-  }
 
-  return {
-    resolvedTeamId: match.teamId,
-    resources: options,
+    const products = await listIntegrationProducts({
+      token: params.token,
+      integrationConfigurationId: match.configuration.id,
+      teamId: match.teamId,
+    })
+
+    const selectedProduct = pickSupabaseProduct(products)
+    const integrationProductIdOrSlug = selectedProduct?.id || selectedProduct?.slug
+    const resources = await listIntegrationResources({
+      token: params.token,
+      teamId: match.teamId,
+      integrationConfigurationId: match.configuration.id,
+      integrationProductIdOrSlug,
+    })
+
+    const seen = new Set<string>()
+    const options: SupabaseResourceOption[] = []
+    for (const resource of resources) {
+      const id = resolveIntegrationResourceId(resource)
+      if (!id || seen.has(id)) {
+        continue
+      }
+      seen.add(id)
+      options.push({
+        id,
+        name: resource.name?.trim() || id,
+      })
+    }
+
+    return {
+      resolvedTeamId: match.teamId,
+      resources: options,
+    }
+  }
+  catch (error) {
+    withSupabaseIntegrationHint(error, params.teamId)
   }
 }
 

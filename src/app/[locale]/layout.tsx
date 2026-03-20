@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       template: `%s`,
-      default: `Kuest | Create Your Own White-Label Prediction Market`,
+      default: `Kuest | Create Your Own Prediction Market`,
     },
     description: 'Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.',
     icons: {

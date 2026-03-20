@@ -28,7 +28,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
 import { useAppKit } from '@/hooks/useAppKit'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
-import { usePathname, useRouter } from '@/i18n/navigation'
+import { getPathname } from '@/i18n/navigation'
 import {
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
@@ -108,8 +108,7 @@ type VercelAuthMethod = 'oauth' | 'token'
 const SUPABASE_CREATE_NEW_OPTION = '__create_new__'
 const FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v4'
 const LEGACY_FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v3'
-const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod
-  = process.env.NEXT_PUBLIC_VERCEL_AUTH_MODE?.trim().toLowerCase() === 'token' ? 'token' : 'oauth'
+const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = 'token'
 const ALLOW_VERCEL_TOKEN_FALLBACK
   = process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== 'false'
 const FOOTER_BRAND_NAME = 'Kuest'
@@ -235,16 +234,16 @@ function mapTimeline(status: TimelineStatus, index: number, runningIndex: number
 
 function LogList({ locale, logs }: { locale: SupportedLocale, logs: LaunchLogEntry[] }) {
   return (
-    <ul className="space-y-2">
+    <ul className="launch-log-list">
       {logs.map((entry, index) => (
         <li
           key={`${entry.at}-${entry.step}-${index}`}
-          className="rounded-lg border border-border/70 p-3"
+          className="launch-log-item rounded-lg border border-border/70 p-3"
         >
-          <div className="text-xs text-muted-foreground">
+          <div className="launch-log-time text-xs text-muted-foreground">
             {new Date(entry.at).toLocaleString(locale)}
           </div>
-          <div className="text-sm font-semibold text-foreground">
+          <div className="launch-log-head text-sm font-semibold text-foreground">
             [
             {entry.step}
             ]
@@ -262,7 +261,7 @@ function LogList({ locale, logs }: { locale: SupportedLocale, logs: LaunchLogEnt
               {entry.level.toUpperCase()}
             </span>
           </div>
-          <div className="text-sm text-muted-foreground">{entry.message}</div>
+          <div className="launch-log-message text-sm text-muted-foreground">{entry.message}</div>
         </li>
       ))}
     </ul>
@@ -299,9 +298,14 @@ function ActionPrompt({
   }
 
   return (
-    <div className="fixed inset-0 z-80 flex items-center justify-center bg-background/85 px-4 py-6 backdrop-blur-md">
+    <div className="
+      launch-action-modal fixed inset-0 z-80 flex items-center justify-center bg-background/85 px-4 py-6
+      backdrop-blur-md
+    "
+    >
       <div className="
-        relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6 text-center shadow-2xl
+        launch-action-modal-card relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6
+        text-center shadow-2xl
       "
       >
         {allowClose && onClose && (
@@ -318,10 +322,12 @@ function ActionPrompt({
           </button>
         )}
 
-        <h3 className="text-xl font-semibold text-foreground">{title}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+        <div className="launch-action-modal-copy">
+          <h3 className="text-xl font-semibold text-foreground">{title}</h3>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
 
-        <div className="mt-5 flex justify-center">
+        <div className="launch-action-modal-visual mt-5 flex justify-center">
           <div className="relative size-36 overflow-hidden rounded-[30px] bg-background text-primary">
             <div className="
               pointer-events-none absolute inset-0 animate-[spin_1500ms_linear_infinite]
@@ -343,7 +349,10 @@ function ActionPrompt({
           </div>
         </div>
 
-        <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
+        <div className="
+          launch-action-modal-status mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground
+        "
+        >
           <Loader2Icon className="size-4 animate-spin text-primary" />
           <span>{t('Waiting for wallet approval...')}</span>
         </div>
@@ -399,7 +408,6 @@ function StepFooterBrand() {
 function StepFooterLanguageControl() {
   const t = useExtracted()
   const locale = useLocale()
-  const router = useRouter()
   const [open, setOpen] = useState(false)
   const controlRef = useRef<HTMLDivElement | null>(null)
   const currentLocaleOption = LANGUAGE_OPTIONS.find(option => option.code === locale) ?? LANGUAGE_OPTIONS[0]
@@ -467,16 +475,13 @@ function StepFooterLanguageControl() {
             const isSelected = option.code === locale
 
             return (
-              <button
+              <a
                 key={option.code}
-                type="button"
                 role="option"
                 aria-selected={isSelected}
-                className={`launch-language-option${isSelected ? 'is-selected' : ''}`}
-                onClick={() => {
-                  setOpen(false)
-                  router.push('/launch')
-                }}
+                className={`launch-language-option ${isSelected ? 'is-selected' : ''}`}
+                href={getPathname({ href: '/launch', locale: option.code })}
+                onClick={() => setOpen(false)}
               >
                 <span className="launch-language-option-row">
                   <Image
@@ -489,7 +494,7 @@ function StepFooterLanguageControl() {
                   />
                   <span>{option.label}</span>
                 </span>
-              </button>
+              </a>
             )
           })}
         </div>
@@ -505,7 +510,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const { switchChain } = useSwitchChain()
   const { signTypedDataAsync } = useSignTypedData()
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit()
-  const pathname = usePathname()
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM)
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1)
@@ -728,9 +732,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     }
 
     if (oauthResult === 'vercel_connected') {
-      setVercelAuthMethod('oauth')
-      setOauthStatusError(null)
-      void refreshOAuthStatus()
+      setVercelAuthMethod('token')
+      setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
     }
 
     if (oauthError) {
@@ -740,7 +743,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     url.searchParams.delete('oauth')
     url.searchParams.delete('oauth_error')
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
-  }, [refreshOAuthStatus])
+  }, [refreshOAuthStatus, t])
 
   const disconnectVercelOAuth = useCallback(async () => {
     setOauthStatusError(null)
@@ -763,16 +766,19 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   }, [t, refreshOAuthStatus])
 
   function startVercelOAuth() {
-    setOauthStatusError(null)
-    if (typeof window === 'undefined') {
-      return
-    }
-    const returnTo = encodeURIComponent(pathname || '/launch')
-    window.location.assign(`/api/oauth/vercel/start?return_to=${returnTo}`)
+    setVercelAuthMethod('token')
+    setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
   }
 
   function switchVercelAuthMethod(nextMethod: VercelAuthMethod) {
+    if (nextMethod === 'oauth') {
+      setVercelAuthMethod('token')
+      setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
+      return
+    }
+
     setVercelAuthMethod(nextMethod)
+    setOauthStatusError(null)
     setIsVercelTokenInputFocused(false)
     setSupabaseResources([])
     setForm(previous => ({
@@ -1497,14 +1503,14 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
           </div>
 
           <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 p-5">
-            <div className="mb-2 flex items-center gap-2">
+            <div className="launch-step1-wallet-header mb-2 flex items-center gap-2">
               <h3 className="text-sm font-semibold text-foreground">
                 {t('Admin wallet')}
               </h3>
               <InfoTip text={t('One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.')} />
             </div>
             {!isConnected && (
-              <>
+              <div className="launch-step1-wallet-copy">
                 <p className="text-xs text-muted-foreground">
                   {t('For the simplest setup, use')}
                   {' '}
@@ -1524,13 +1530,16 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <p className="mt-1 text-xs text-muted-foreground">
                   {t('We try to switch to Polygon Amoy automatically and add the network when needed.')}
                 </p>
-              </>
+              </div>
             )}
 
             {showSignedWalletState
               ? (
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5">
+                  <div className="launch-step1-wallet-actions mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <div className="
+                      launch-step1-wallet-badge flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5
+                    "
+                    >
                       <ActionPromptWalletIcon className="size-8" rounded={false} fit="contain" />
                       <p className="text-sm font-semibold text-foreground">{step1WalletLabel}</p>
                     </div>
@@ -1548,7 +1557,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   </div>
                 )
               : (
-                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <div className="launch-step1-wallet-actions mt-4 flex flex-wrap items-center gap-3">
                     <button
                       type="button"
                       className="launch-cta launch-cta-compact"
@@ -1586,14 +1595,17 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 )}
 
             {appKitError && !isAppKitReady && (
-              <p className="mt-3 text-sm text-primary/90">{appKitError}</p>
+              <p className="launch-status-note text-sm text-destructive">{appKitError}</p>
             )}
-            {walletInfo && <p className="mt-3 text-sm text-primary">{walletInfo}</p>}
-            {walletError && <p className="mt-3 text-sm text-destructive">{walletError}</p>}
-            <div className="mt-4 border-t border-border/60 pt-4">
+            {walletInfo && <p className="launch-status-note text-sm text-primary">{walletInfo}</p>}
+            {walletError && <p className="launch-status-note text-sm text-destructive">{walletError}</p>}
+            <div className="launch-step1-advanced mt-4 border-t border-border/60 pt-4">
               <button
                 type="button"
-                className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
+                className="
+                  launch-step1-advanced-toggle flex w-full items-center justify-between text-left text-sm font-medium
+                  text-foreground
+                "
                 onClick={() => setStep1AdvancedOpen(previous => !previous)}
               >
                 <span>{t('Advanced options')}</span>
@@ -1603,7 +1615,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               </button>
 
               {step1AdvancedOpen && (
-                <div className="launch-grid mt-4">
+                <div className="launch-grid launch-step1-advanced-grid mt-4">
                   <label className="launch-field">
                     <span>{t('Email (optional)')}</span>
                     <input
@@ -1662,9 +1674,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         <section className="launch-island launch-step2-island">
           <h2 className="sr-only">{t('Step 2. Host + Database')}</h2>
 
-          <div className="launch-stack mt-5 space-y-3">
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="launch-stack launch-step2-stack mt-5 space-y-3">
+            <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
+              <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">
                     {t('Vercel authentication')}
@@ -1680,7 +1692,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     )}
               </div>
               {ALLOW_VERCEL_TOKEN_FALLBACK && !step2VercelReady && (
-                <div className="mb-3 flex flex-wrap gap-2">
+                <div className="launch-auth-switch mb-3 flex flex-wrap gap-2">
                   <button
                     type="button"
                     className="launch-mini-button"
@@ -1703,7 +1715,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               {vercelAuthMethod === 'oauth'
                 ? (
                     <>
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="launch-auth-state flex flex-wrap items-center gap-2">
                         <span className="
                           inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
                         "
@@ -1755,16 +1767,13 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                             )}
                       </div>
 
-                      {oauthStatusError && (
-                        <p className="mt-2 text-xs font-medium text-primary/90">{oauthStatusError}</p>
-                      )}
                     </>
                   )
                 : (
                     <>
                       {step2TokenReady
                         ? (
-                            <div className="flex flex-wrap items-center gap-2">
+                            <div className="launch-auth-state flex flex-wrap items-center gap-2">
                               <span className="
                                 inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
                               "
@@ -1795,7 +1804,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                             </div>
                           )
                         : (
-                            <>
+                            <div className="launch-token-entry">
                               <label className="launch-field">
                                 <span className="sr-only">{t('Vercel Access Token')}</span>
                                 <input
@@ -1814,7 +1823,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                                   required
                                 />
                               </label>
-                              <p className="mt-2 text-xs text-muted-foreground">
+                              <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
                                 <a
                                   className="launch-link"
                                   href="https://vercel.com/account/tokens"
@@ -1824,15 +1833,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                                   {t('Create token in Vercel')}
                                 </a>
                               </p>
-                            </>
+                            </div>
                           )}
 
                     </>
                   )}
+              {oauthStatusError && (
+                <p className="launch-helper-text text-xs font-medium text-destructive">{oauthStatusError}</p>
+              )}
             </div>
 
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
+              <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">
                     {t('Reown Project ID')}
@@ -1863,7 +1875,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   required
                 />
               </label>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
                 {t('Get it at')}
                 {' '}
                 <a
@@ -1879,8 +1891,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               </p>
             </div>
 
-            <div className="launch-panel-card rounded-2xl border border-border/70 px-5 py-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
+              <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">
                     {t('Supabase database')}
@@ -1929,15 +1941,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 </button>
               </div>
               {supabaseResourcesError && (
-                <p className="mt-2 text-xs font-medium text-primary/90">{supabaseResourcesError}</p>
+                <p className="launch-helper-text text-xs font-medium text-primary/90">{supabaseResourcesError}</p>
               )}
             </div>
           </div>
 
-          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 px-5 py-4">
+          <div className="launch-panel-card launch-step2-advanced mt-5 rounded-2xl border border-border/70 px-5 py-4">
             <button
               type="button"
-              className="flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
+              className="
+                launch-step2-advanced-toggle flex w-full items-center justify-between text-left text-sm font-medium
+                text-foreground
+              "
               onClick={() => setStep2AdvancedOpen(previous => !previous)}
             >
               <span>{t('Advanced options')}</span>
@@ -1947,7 +1962,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             </button>
 
             {step2AdvancedOpen && (
-              <div className="mt-4 border-t border-border/60 pt-4">
+              <div className="launch-step2-advanced-body mt-4 border-t border-border/60 pt-4">
                 <div className="launch-grid">
                   <label className="launch-field">
                     <span>{t('Project slug (auto)')}</span>
@@ -2138,10 +2153,10 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         <section className="launch-island launch-step3-island">
           <h2 className="sr-only">{t('Step 3. Deploy')}</h2>
 
-          <div className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
-            <div className="space-y-3">
+          <div className="launch-panel-card launch-step3-card mt-5 rounded-2xl border border-border/70 p-5">
+            <div className="launch-timeline-list space-y-3">
               {timeline.map(entry => (
-                <div key={entry.id} className="flex items-center gap-3 text-sm">
+                <div key={entry.id} className="launch-timeline-entry flex items-center gap-3 text-sm">
                   <span
                     className={`launch-timeline-dot ${
                       entry.status === 'done'
@@ -2211,15 +2226,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
           </div>
 
           {requestError && (
-            <div className="mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive">
+            <div className="
+              launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive
+            "
+            >
               {requestError}
             </div>
           )}
 
           {result && (
-            <section className="launch-panel-card mt-5 rounded-2xl border border-border/70 p-5">
+            <section className="launch-panel-card launch-step3-result mt-5 rounded-2xl border border-border/70 p-5">
               <h3 className="text-base font-semibold text-foreground">{t('Result')}</h3>
-              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <div className="launch-result-grid mt-3 space-y-2 text-sm text-muted-foreground">
                 <div>
                   {t('Status')}
                   :
@@ -2385,7 +2403,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 </div>
               )}
 
-              <div className="mt-5">
+              <div className="launch-logs-section mt-5">
                 <h4 className="mb-2 text-sm font-bold tracking-wide text-muted-foreground uppercase">
                   Logs
                 </h4>
