@@ -338,7 +338,7 @@ function isSupabaseIntegrationLookupError(error: LaunchError) {
   return message.includes('/v1/integrations/configurations')
 }
 
-function withSupabaseIntegrationHint(error: unknown, teamId?: string) {
+function withSupabaseIntegrationHint(error: unknown, teamId?: string): never {
   if (!(error instanceof LaunchError) || !isSupabaseIntegrationLookupError(error)) {
     throw error
   }
@@ -519,7 +519,7 @@ export async function listSupabaseIntegrationResources(params: {
     }
   }
   catch (error) {
-    withSupabaseIntegrationHint(error, params.teamId)
+    return withSupabaseIntegrationHint(error, params.teamId)
   }
 }
 
