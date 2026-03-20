@@ -28,7 +28,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
 import { useAppKit } from '@/hooks/useAppKit'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
-import { usePathname, useRouter } from '@/i18n/navigation'
+import { getPathname, usePathname } from '@/i18n/navigation'
 import {
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
@@ -399,7 +399,6 @@ function StepFooterBrand() {
 function StepFooterLanguageControl() {
   const t = useExtracted()
   const locale = useLocale()
-  const router = useRouter()
   const [open, setOpen] = useState(false)
   const controlRef = useRef<HTMLDivElement | null>(null)
   const currentLocaleOption = LANGUAGE_OPTIONS.find(option => option.code === locale) ?? LANGUAGE_OPTIONS[0]
@@ -472,10 +471,10 @@ function StepFooterLanguageControl() {
                 type="button"
                 role="option"
                 aria-selected={isSelected}
-                className={`launch-language-option${isSelected ? 'is-selected' : ''}`}
+                className={`launch-language-option ${isSelected ? 'is-selected' : ''}`}
                 onClick={() => {
                   setOpen(false)
-                  router.push('/launch')
+                  window.location.href = getPathname({ href: '/launch', locale: option.code })
                 }}
               >
                 <span className="launch-language-option-row">
