@@ -895,7 +895,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               </div>
               <div className="r rd hero-preview-wide hero-preview-break">
                 <SitePreview
-                  className="mx-auto! w-full! max-w-[95vw]!"
+                  className="mx-auto!"
                   href={previewHref}
                   label={previewLabel}
                   iframeSrc={previewSrc}

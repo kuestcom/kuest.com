@@ -2985,6 +2985,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
 }
 .site-preview.is-mobile {
     width: min(405px,calc(100vw - 24px));
+    max-width: min(405px,calc(100vw - 24px));
     padding: 6px;
     border-radius: 44px;
     border-color: var(--preview-mobile-shell-border);
@@ -6215,7 +6216,7 @@ footer {
     .hero-title {
         font-size: clamp(30px,8.4vw,42px);
     }
-    .hero-preview-wide .site-preview {
+    .hero-preview-wide .site-preview:not(.is-mobile) {
         width: 100%;
         border-radius: 22px;
     }
@@ -6652,7 +6653,7 @@ footer {
     .hero-title-line {
         white-space: normal;
     }
-    .hero-preview-wide .site-preview {
+    .hero-preview-wide .site-preview:not(.is-mobile) {
         width: 100%;
     }
     .hero-preview-wide .site-preview-body {
