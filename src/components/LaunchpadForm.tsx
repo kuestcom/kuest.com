@@ -37,6 +37,7 @@ import {
   REQUIRED_CHAIN_ID,
   REQUIRED_CHAIN_LABEL,
 } from '@/lib/kuest-keygen'
+import { normalizeSiteUrl } from '@/lib/site-url'
 import { createSupabaseClient } from '@/lib/supabase'
 
 interface FormState {
@@ -606,10 +607,11 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   }, [form.projectSlugOverride, form.brandName])
 
   const computedSiteUrl = useMemo(() => {
-    if (form.env.SITE_URL.trim()) {
-      return form.env.SITE_URL.trim()
+    const siteUrlOverride = normalizeSiteUrl(form.env.SITE_URL)
+    if (siteUrlOverride) {
+      return siteUrlOverride
     }
-    return `https://${resolvedProjectSlug}.vercel.app`
+    return normalizeSiteUrl(`https://${resolvedProjectSlug}.vercel.app`)
   }, [resolvedProjectSlug, form.env.SITE_URL])
 
   useEffect(() => {
@@ -666,7 +668,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               parsed.env
               && typeof parsed.env === 'object'
               && typeof parsed.env.SITE_URL === 'string'
-                ? parsed.env.SITE_URL
+                ? normalizeSiteUrl(parsed.env.SITE_URL)
                 : previous.env.SITE_URL,
         },
       }))
@@ -1347,6 +1349,11 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     try {
       const resolvedVercelToken
         = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : undefined
+      const env = {
+        ...form.env,
+        ...parseExtraEnv(form.extraEnvText),
+      }
+      env.SITE_URL = normalizeSiteUrl(env.SITE_URL)
       const payload = {
         brandName: form.brandName,
         projectName: resolvedProjectSlug,
@@ -1364,11 +1371,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         tokens: {
           vercel: resolvedVercelToken,
         },
-        env: {
-          ...form.env,
-          SITE_URL: form.env.SITE_URL || computedSiteUrl,
-          ...parseExtraEnv(form.extraEnvText),
-        },
+        env,
       }
 
       const response = await fetch('/api/launch', {

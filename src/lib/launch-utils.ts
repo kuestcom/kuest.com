@@ -4,6 +4,7 @@ import type {
   LaunchRequestBody,
 } from '@/lib/launch-types'
 import { randomBytes } from 'node:crypto'
+import { normalizeSiteUrl } from '@/lib/site-url'
 
 export class LaunchError extends Error {
   constructor(
@@ -92,6 +93,10 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
   const envObject = Object.fromEntries(
     Object.entries(raw.env).map(([key, value]) => [key, String(value ?? '').trim()]),
   )
+
+  if (envObject.SITE_URL) {
+    envObject.SITE_URL = normalizeSiteUrl(envObject.SITE_URL)
+  }
 
   const requiredEnvKeys = [
     'KUEST_ADDRESS',

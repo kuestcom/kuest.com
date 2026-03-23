@@ -1168,14 +1168,15 @@ export async function connectSupabaseViaVercelIntegration(params: {
   }
 }
 
-async function createProjectEnvVar(params: {
+export async function createProjectEnvVar(params: {
   token: string
   teamId?: string
   projectIdOrName: string
   envVar: VercelEnvVar
+  upsert?: boolean
 }) {
   const path = withTeamId(
-    `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/env`,
+    `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/env${params.upsert ? '?upsert=true' : ''}`,
     params.teamId,
   )
   await vercelRequest(params.token, path, {
