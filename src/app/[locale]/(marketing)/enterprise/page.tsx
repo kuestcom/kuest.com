@@ -28,6 +28,7 @@ import {
   getDemoHref,
   getDemoLabel,
 } from '@/lib/marketing-content'
+import { resolveSiteUrl } from '@/lib/site-url'
 
 const THE_BLOCK_HREF = 'https://www.theblock.co/post/392755'
 const PYMNTS_HREF = 'https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/'
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/enterpri
   setRequestLocale(locale)
 
   const t = await getExtracted()
-  const siteOrigin = process.env.SITE_URL!
+  const siteOrigin = resolveSiteUrl(process.env)
   const canonical = new URL(getPathname({ href: '/', locale }), siteOrigin)
   const ogImage = new URL('/assets/images/your-predictoin-market-500mi-vol.png', siteOrigin)
 

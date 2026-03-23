@@ -29,6 +29,7 @@ import {
   getLandingHeroAccent,
   serializeJsonForHtmlScript,
 } from '@/lib/marketing-content'
+import { resolveSiteUrl } from '@/lib/site-url'
 
 const LANDING_NICHE_STATIC = [
   {
@@ -121,7 +122,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
   }
 
   const t = await getExtracted()
-  const siteOrigin = process.env.SITE_URL!
+  const siteOrigin = resolveSiteUrl(process.env)
   const canonical = new URL(getPathname({ href: '/', locale }), siteOrigin)
   const ogImage = new URL('/assets/images/your-predictoin-market-500mi-vol.png', siteOrigin)
 
@@ -496,6 +497,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
       ),
     },
   ]
+  const siteOrigin = resolveSiteUrl(process.env)
 
   return (
     <>
@@ -513,7 +515,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
             'name': 'Kuest',
             'applicationCategory': 'BusinessApplication',
             'operatingSystem': 'Web',
-            'url': new URL(process.env.SITE_URL!).toString(),
+            'url': siteOrigin,
             'description': t('Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.'),
             'offers': {
               '@type': 'Offer',

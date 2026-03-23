@@ -19,6 +19,7 @@ import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { CONTACT_HREF } from '@/lib/constants'
 import { getDemoHref, serializeJsonForHtmlScript } from '@/lib/marketing-content'
+import { resolveSiteUrl } from '@/lib/site-url'
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/protocol'>): Promise<Metadata> {
   const { locale } = await params
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/protocol
   }
 
   const t = await getExtracted()
-  const siteOrigin = process.env.SITE_URL!
+  const siteOrigin = resolveSiteUrl(process.env)
   const canonical = new URL(getPathname({ href: '/', locale }), siteOrigin)
   const ogImage = new URL('/assets/images/your-predictoin-market-500mi-vol.png', siteOrigin)
   const title = t('Kuest Protocol - Prediction Market Infrastructure')
@@ -303,6 +304,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
       complete: false,
     },
   ]
+  const siteOrigin = resolveSiteUrl(process.env)
 
   return (
     <>
@@ -316,7 +318,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
             'name': 'Kuest Protocol',
             'applicationCategory': 'BusinessApplication',
             'operatingSystem': 'Web',
-            'url': new URL(getPathname({ href: '/', locale }), process.env.SITE_URL!),
+            'url': new URL(getPathname({ href: '/', locale }), siteOrigin),
             'description': t('White-label prediction market protocol for operators who want branded markets, shared liquidity, and protocol infrastructure.'),
             'offers': {
               '@type': 'Offer',

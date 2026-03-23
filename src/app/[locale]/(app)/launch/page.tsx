@@ -6,6 +6,7 @@ import KuestMark from '@/components/KuestMark'
 import LaunchpadForm from '@/components/LaunchpadForm'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+import { resolveSiteUrl } from '@/lib/site-url'
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/launch'>): Promise<Metadata> {
   const { locale } = await params
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/launch'>
   const t = await getExtracted()
 
   return {
-    metadataBase: new URL(process.env.SITE_URL!),
+    metadataBase: new URL(resolveSiteUrl(process.env)),
     title: t(`Kuest Create Prediction Market`),
     description: t('Guided Kuest launch flow with wallet, Vercel, and Supabase integration.'),
   }
