@@ -7,5 +7,13 @@ interface AppRouteLayoutProps {
 }
 
 export default function AppRouteLayout({ children }: AppRouteLayoutProps) {
-  return <AppProviders>{children}</AppProviders>
+  return (
+    <div
+      data-theme-mode="dark"
+      className="min-h-screen bg-background text-foreground"
+      style={{ colorScheme: 'dark' }}
+    >
+      <AppProviders>{children}</AppProviders>
+    </div>
+  )
 }
