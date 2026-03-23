@@ -40,16 +40,18 @@ export default function SitePreview({
 
   const isMobile = forcedMobile || manualMobile
   const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel
+  const previewClassName = [
+    'site-preview',
+    'scroll-mt-24',
+    isMobile ? 'is-mobile' : '',
+    forcedMobile ? 'is-forced-mobile' : '',
+    className ?? '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
-    <div
-      className={`site-preview scroll-mt-24 ${isMobile ? 'is-mobile' : ''}${forcedMobile ? 'is-forced-mobile' : ''}${className
-        ? `
-        ${className}
-      `
-        : ''}`}
-      id="sitePreview"
-    >
+    <div className={previewClassName} id="sitePreview">
       <div className="site-preview-head">
         <div className="site-preview-dots" aria-hidden="true">
           <span />

@@ -1403,6 +1403,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const step2VercelReady = vercelAuthMethod === 'oauth' ? vercelOauthConnected : step2TokenReady
   const step2ReownReady = Boolean(form.env.REOWN_APPKIT_PROJECT_ID.trim())
   const step2DatabaseReady = step2VercelReady && Boolean(form.supabaseResourceId.trim())
+  const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
     {
@@ -2193,6 +2194,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <button
                   type="button"
                   className="launch-choice-button launch-choice-no"
+                  disabled={hasSuccessfulDeployment}
                   onClick={() => setActiveStep(2)}
                 >
                   <ArrowLeftIcon className="size-3.5" />
@@ -2202,7 +2204,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   type="submit"
                   className="launch-choice-button launch-choice-yes"
                   disabled={
-                    isLaunching
+                    hasSuccessfulDeployment
+                    || isLaunching
                     || !canContinueStep3
                     || !form.env.REOWN_APPKIT_PROJECT_ID.trim()
                   }
@@ -2303,6 +2306,17 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   s
                 </div>
               </div>
+
+              {result.ok && (
+                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
+                  <div className="flex items-start gap-3">
+                    <CircleCheckIcon className="mt-0.5 size-4 text-primary" />
+                    <p className="text-sm text-muted-foreground">
+                      {t('Deployment completed successfully. Market events typically begin appearing on your site within 5 to 15 minutes.')}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {result.ok && result.projectName && (
                 <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
