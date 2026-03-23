@@ -14,9 +14,11 @@ import {
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
+import { normalizeSiteUrl } from '@/lib/site-url'
 import {
   connectSupabaseViaVercelIntegration,
   createProjectDeployment,
+  createProjectEnvVar,
   preflightVercelSupabaseLaunch,
   provisionVercelProject,
 } from '@/lib/vercel-api'
@@ -51,8 +53,58 @@ function withExpectedSiteUrl(env: Record<string, string>, projectName: string): 
   const expectedProjectUrl = `https://${projectName}.vercel.app`
   return {
     ...env,
-    SITE_URL: env.SITE_URL || expectedProjectUrl,
+    SITE_URL: normalizeSiteUrl(env.SITE_URL || expectedProjectUrl),
   }
+}
+
+async function reconcileSiteUrl(params: {
+  token: string
+  teamId?: string
+  projectId: string
+  projectName: string
+  gitRepo: string
+  gitBranch: string
+  currentSiteUrl: string
+  resolvedProjectUrl?: string
+  log: ReturnType<typeof createLogger>
+}) {
+  const resolvedSiteUrl = normalizeSiteUrl(params.resolvedProjectUrl ?? '')
+  if (!resolvedSiteUrl || resolvedSiteUrl === params.currentSiteUrl) {
+    return resolvedSiteUrl || params.currentSiteUrl
+  }
+
+  params.log(
+    'vercel',
+    `Resolved production URL ${resolvedSiteUrl} differs from initial SITE_URL ${params.currentSiteUrl}. Updating env and redeploying.`,
+  )
+
+  await createProjectEnvVar({
+    token: params.token,
+    teamId: params.teamId,
+    projectIdOrName: params.projectId,
+    upsert: true,
+    envVar: {
+      key: 'SITE_URL',
+      value: resolvedSiteUrl,
+      target: ['production', 'preview', 'development'] as const,
+    },
+  })
+
+  const redeployment = await createProjectDeployment({
+    token: params.token,
+    teamId: params.teamId,
+    projectId: params.projectId,
+    projectName: params.projectName,
+    gitRepo: params.gitRepo,
+    gitBranch: params.gitBranch,
+  })
+
+  params.log(
+    'vercel',
+    `SITE_URL updated to ${resolvedSiteUrl}. Follow-up deployment triggered.`,
+  )
+
+  return normalizeSiteUrl(redeployment.url ?? resolvedSiteUrl)
 }
 
 export async function POST(request: Request) {
@@ -93,6 +145,7 @@ export async function POST(request: Request) {
   try {
     const rawBody = (await request.json()) as unknown
     const payload = parseLaunchRequest(rawBody)
+    const hasExplicitSiteUrl = Boolean(payload.env.SITE_URL)
 
     const projectName = sanitizeProjectName(payload.projectName || payload.brandName)
     const gitRepo = ensureValidRepo(payload.gitRepo)
@@ -179,6 +232,32 @@ export async function POST(request: Request) {
       })
       log('vercel', 'Deployment triggered after Supabase integration connection.')
 
+      let projectUrl = normalizeSiteUrl(deployment.url ?? vercel.projectUrl ?? env.SITE_URL)
+
+      if (!hasExplicitSiteUrl) {
+        try {
+          projectUrl = await reconcileSiteUrl({
+            token: vercelToken,
+            teamId: launchTeamId,
+            projectId: vercel.projectId,
+            projectName: vercel.projectName,
+            gitRepo,
+            gitBranch,
+            currentSiteUrl: env.SITE_URL,
+            resolvedProjectUrl: projectUrl,
+            log,
+          })
+        }
+        catch (error) {
+          const message = error instanceof Error ? error.message : 'Unknown error'
+          log(
+            'vercel',
+            `Failed to reconcile SITE_URL with the resolved Vercel URL. ${message}`,
+            'warning',
+          )
+        }
+      }
+
       const durationMs = Date.now() - startedAt
       return NextResponse.json<LaunchResponseBody>({
         ok: true,
@@ -186,7 +265,7 @@ export async function POST(request: Request) {
         projectId: vercel.projectId,
         projectName: vercel.projectName,
         resolvedTeamId: launchTeamId,
-        projectUrl: deployment.url ?? vercel.projectUrl,
+        projectUrl,
         vercelDashboardUrl:
           vercel.dashboardUrl || buildDashboardUrl(projectName, launchTeamId),
         supabaseDashboardUrl,
