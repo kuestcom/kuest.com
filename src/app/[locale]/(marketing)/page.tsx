@@ -750,7 +750,11 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                   </article>
                 ))}
               </div>
-              <div className="r mt-6! flex items-center justify-center gap-3 border-t border-white/6 pt-5!">
+              <div className="
+                r mt-6! flex flex-col items-center justify-center gap-3 border-t border-white/6 pt-5!
+                lg:flex-row
+              "
+              >
                 <div className="flex">
                   {EARLY_ACCESS_AVATAR_SRCS.map((src, index) => (
                     <Image

@@ -704,7 +704,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
           </div>
         </section>
 
-        <section className="panel-wrap panel-static" id="p2">
+        <section className="panel-wrap panel-static mt-24!" id="p2">
           <div className="panel-sticky">
             <div className="panel-inner prediction-explainer">
               <div className="prediction-explainer-copy r">

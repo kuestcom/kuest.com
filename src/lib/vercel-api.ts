@@ -98,6 +98,12 @@ interface VercelTeam {
   name?: string
 }
 
+interface VercelAuthUserResponse {
+  user?: {
+    username?: string
+  }
+}
+
 export interface SupabaseResourceOption {
   id: string
   name: string
@@ -611,8 +617,14 @@ export async function preflightVercelSupabaseLaunch(params: {
     params.log('preflight', 'Project slug is available.')
   }
 
+  const scopeSlug = await resolveScopeSlug({
+    token: params.token,
+    teamId: match.teamId,
+  })
+
   return {
     resolvedTeamId: match.teamId,
+    resolvedScopeSlug: scopeSlug,
   }
 }
 
@@ -1709,6 +1721,24 @@ async function listIntegrationProducts(params: {
 async function listAccessibleTeams(token: string) {
   const response = await vercelRequest<{ teams?: VercelTeam[] }>(token, '/v2/teams')
   return response.teams ?? []
+}
+
+async function getAuthenticatedUser(token: string) {
+  const response = await vercelRequest<VercelAuthUserResponse>(token, '/v2/user')
+  return response.user
+}
+
+async function resolveScopeSlug(params: {
+  token: string
+  teamId?: string
+}) {
+  if (params.teamId) {
+    const teams = await listAccessibleTeams(params.token)
+    return teams.find(team => team.id === params.teamId)?.slug?.trim() || undefined
+  }
+
+  const user = await getAuthenticatedUser(params.token)
+  return user?.username?.trim() || undefined
 }
 
 function formatTeamLabel(team: VercelTeam) {

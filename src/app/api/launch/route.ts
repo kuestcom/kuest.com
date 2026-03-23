@@ -49,8 +49,15 @@ function buildDashboardUrl(projectName: string, vercelTeamId?: string) {
   return 'https://vercel.com/dashboard'
 }
 
-function withExpectedSiteUrl(env: Record<string, string>, projectName: string): Record<string, string> {
-  const expectedProjectUrl = `https://${projectName}.vercel.app`
+function withExpectedSiteUrl(
+  env: Record<string, string>,
+  projectName: string,
+  scopeSlug?: string,
+): Record<string, string> {
+  const expectedProjectUrl
+    = scopeSlug
+      ? `https://${projectName}-${scopeSlug}.vercel.app`
+      : `https://${projectName}.vercel.app`
   return {
     ...env,
     SITE_URL: normalizeSiteUrl(env.SITE_URL || expectedProjectUrl),
@@ -180,15 +187,6 @@ export async function POST(request: Request) {
     }
 
     let supabaseDashboardUrl: string | undefined
-    const env = withExpectedSiteUrl({ ...payload.env }, projectName)
-
-    const vercelEnvironmentVariables = Object.entries(env)
-      .filter(([, value]) => value !== '')
-      .map(([key, value]) => ({
-        key,
-        value,
-        target: ['production', 'preview', 'development'] as const,
-      }))
 
     const preflight = await preflightVercelSupabaseLaunch({
       token: vercelToken,
@@ -197,6 +195,19 @@ export async function POST(request: Request) {
       log,
     })
     const launchTeamId = preflight.resolvedTeamId ?? vercelTeamId
+    const env = withExpectedSiteUrl(
+      { ...payload.env },
+      projectName,
+      preflight.resolvedScopeSlug,
+    )
+
+    const vercelEnvironmentVariables = Object.entries(env)
+      .filter(([, value]) => value !== '')
+      .map(([key, value]) => ({
+        key,
+        value,
+        target: ['production', 'preview', 'development'] as const,
+      }))
 
     const shouldAutoDeploy = payload.databaseMode !== 'vercel_supabase_integration'
     const vercel = await provisionVercelProject({

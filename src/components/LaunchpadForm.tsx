@@ -2255,6 +2255,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <div>
                   {t('Project')}
                   :
+                  {' '}
                   <strong>{result.projectName ?? '-'}</strong>
                 </div>
                 <div>
@@ -2305,13 +2306,14 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <div>
                   {t('Duration')}
                   :
+                  {' '}
                   {Math.round(result.durationMs / 100) / 10}
                   s
                 </div>
               </div>
 
               {result.ok && (
-                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
+                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4!">
                   <div className="flex items-start gap-3">
                     <CircleCheckIcon className="mt-0.5 size-4 text-primary" />
                     <p className="text-sm text-muted-foreground">
@@ -2322,7 +2324,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               )}
 
               {result.ok && result.projectName && (
-                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4">
+                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4!">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-semibold text-foreground">
