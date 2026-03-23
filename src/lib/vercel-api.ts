@@ -13,6 +13,16 @@ interface VercelProject {
 interface VercelDeployment {
   id: string
   url?: string
+  readyState?: string
+  aliasAssigned?: boolean
+  alias?: string[]
+  aliasFinal?: string | null
+}
+
+interface VercelDeploymentAliasesResponse {
+  aliases?: Array<{
+    alias?: string
+  }>
 }
 
 interface VercelDomainVerification {
@@ -111,6 +121,147 @@ function normalizeDeploymentUrl(url?: string) {
     return value
   }
   return `https://${value}`
+}
+
+function collectNormalizedUrls(...values: Array<string | undefined>) {
+  const urls = new Set<string>()
+
+  for (const value of values) {
+    const normalized = normalizeDeploymentUrl(value)
+    if (normalized) {
+      urls.add(normalized)
+    }
+  }
+
+  return Array.from(urls)
+}
+
+function isCustomDomainUrl(url: string) {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase()
+    return !hostname.endsWith('.vercel.app') && !hostname.endsWith('.now.sh')
+  }
+  catch {
+    return false
+  }
+}
+
+function compareResolvedPublicUrls(left: string, right: string) {
+  const leftIsCustom = isCustomDomainUrl(left)
+  const rightIsCustom = isCustomDomainUrl(right)
+
+  if (leftIsCustom !== rightIsCustom) {
+    return leftIsCustom ? -1 : 1
+  }
+
+  if (left.length !== right.length) {
+    return left.length - right.length
+  }
+
+  return left.localeCompare(right)
+}
+
+function pickPreferredPublicUrl(urls: string[]) {
+  return [...urls].sort(compareResolvedPublicUrls)[0]
+}
+
+function isDeploymentReadyStateTerminal(readyState?: string) {
+  return readyState === 'READY' || readyState === 'ERROR' || readyState === 'CANCELED'
+}
+
+async function getDeploymentById(params: {
+  token: string
+  teamId?: string
+  deploymentId: string
+}) {
+  const path = withTeamId(
+    `/v13/deployments/${encodeURIComponent(params.deploymentId)}`,
+    params.teamId,
+  )
+  return await vercelRequest<VercelDeployment>(params.token, path)
+}
+
+async function listDeploymentAliases(params: {
+  token: string
+  teamId?: string
+  deploymentId: string
+}) {
+  const path = withTeamId(
+    `/v2/deployments/${encodeURIComponent(params.deploymentId)}/aliases`,
+    params.teamId,
+  )
+  const response = await vercelRequest<VercelDeploymentAliasesResponse>(params.token, path)
+  if (!Array.isArray(response.aliases)) {
+    return [] as string[]
+  }
+
+  return response.aliases
+    .map(alias => alias.alias)
+    .filter((alias): alias is string => typeof alias === 'string' && alias.trim().length > 0)
+}
+
+async function resolveDeploymentPublicUrl(params: {
+  token: string
+  teamId?: string
+  deploymentId: string
+  fallbackUrl?: string
+}) {
+  let deployment: VercelDeployment = {
+    id: params.deploymentId,
+    url: params.fallbackUrl,
+  }
+  let aliases: string[] = []
+
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    try {
+      deployment = await getDeploymentById({
+        token: params.token,
+        teamId: params.teamId,
+        deploymentId: params.deploymentId,
+      })
+    }
+    catch {
+      if (attempt < 5) {
+        await new Promise(resolve => setTimeout(resolve, 1500))
+      }
+      continue
+    }
+
+    try {
+      aliases = await listDeploymentAliases({
+        token: params.token,
+        teamId: params.teamId,
+        deploymentId: params.deploymentId,
+      })
+    }
+    catch {
+      aliases = []
+    }
+
+    const publicUrl
+      = normalizeDeploymentUrl(deployment.aliasFinal ?? undefined)
+        ?? pickPreferredPublicUrl(collectNormalizedUrls(...aliases, ...(deployment.alias ?? [])))
+
+    if (publicUrl) {
+      return {
+        publicUrl,
+      }
+    }
+
+    if (deployment.aliasAssigned || isDeploymentReadyStateTerminal(deployment.readyState)) {
+      break
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1500))
+  }
+
+  const publicUrl
+    = normalizeDeploymentUrl(deployment.aliasFinal ?? undefined)
+      ?? pickPreferredPublicUrl(collectNormalizedUrls(...aliases, ...(deployment.alias ?? [])))
+
+  return {
+    publicUrl: publicUrl ?? normalizeDeploymentUrl(deployment.url) ?? normalizeDeploymentUrl(params.fallbackUrl),
+  }
 }
 
 function normalizeProjectDomainResponse(input: unknown, fallbackDomain: string): VercelDomainResponse {
@@ -1058,9 +1209,15 @@ export async function createProjectDeployment(params: {
         project: projectReference,
       }),
     })
+    const resolved = await resolveDeploymentPublicUrl({
+      token: params.token,
+      teamId: params.teamId,
+      deploymentId: deployment.id,
+      fallbackUrl: deployment.url,
+    })
     return {
       ...deployment,
-      url: normalizeDeploymentUrl(deployment.url),
+      url: resolved.publicUrl,
     }
   }
   catch (error) {
@@ -1083,9 +1240,15 @@ export async function createProjectDeployment(params: {
           },
         }),
       })
+      const resolved = await resolveDeploymentPublicUrl({
+        token: params.token,
+        teamId: params.teamId,
+        deploymentId: deployment.id,
+        fallbackUrl: deployment.url,
+      })
       return {
         ...deployment,
-        url: normalizeDeploymentUrl(deployment.url),
+        url: resolved.publicUrl,
       }
     }
     catch (legacyError) {
@@ -1119,9 +1282,15 @@ export async function createProjectDeployment(params: {
           },
         }),
       })
+      const resolved = await resolveDeploymentPublicUrl({
+        token: params.token,
+        teamId: params.teamId,
+        deploymentId: deployment.id,
+        fallbackUrl: deployment.url,
+      })
       return {
         ...deployment,
-        url: normalizeDeploymentUrl(deployment.url),
+        url: resolved.publicUrl,
       }
     }
   }
