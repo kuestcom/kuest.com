@@ -36,6 +36,7 @@ interface VercelProjectDomainRecord {
   name?: string
   verified?: boolean
   verification?: VercelDomainVerification[]
+  redirect?: string | null
   configuredBy?: string
   nameservers?: string[]
   intendedNameservers?: string[]
@@ -47,6 +48,10 @@ interface VercelDomainConfigRecord {
   nameservers?: string[]
   intendedNameservers?: string[]
   recommendedNameservers?: string[]
+}
+
+interface VercelProjectDomainsResponse {
+  domains?: VercelProjectDomainRecord[]
 }
 
 interface VercelEnvVar {
@@ -262,6 +267,74 @@ async function resolveDeploymentPublicUrl(params: {
   return {
     publicUrl: publicUrl ?? normalizeDeploymentUrl(deployment.url) ?? normalizeDeploymentUrl(params.fallbackUrl),
   }
+}
+
+async function listProjectDomains(params: {
+  token: string
+  teamId?: string
+  projectIdOrName: string
+  production?: boolean
+  verified?: boolean
+  redirects?: boolean
+}) {
+  const query = new URLSearchParams()
+  if (params.production) {
+    query.set('production', 'true')
+  }
+  if (params.verified) {
+    query.set('verified', 'true')
+  }
+  if (params.redirects === false) {
+    query.set('redirects', 'false')
+  }
+
+  const path = withTeamId(
+    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains${query.size ? `?${query.toString()}` : ''}`,
+    params.teamId,
+  )
+
+  const response = await vercelRequest<VercelProjectDomainsResponse>(params.token, path)
+  return response.domains ?? []
+}
+
+export async function resolveProjectProductionUrl(params: {
+  token: string
+  teamId?: string
+  projectIdOrName: string
+}) {
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    try {
+      const domains = await listProjectDomains({
+        token: params.token,
+        teamId: params.teamId,
+        projectIdOrName: params.projectIdOrName,
+        production: true,
+        verified: true,
+        redirects: false,
+      })
+
+      const publicUrl = pickPreferredPublicUrl(
+        collectNormalizedUrls(
+          ...domains
+            .filter(domain => !domain.redirect)
+            .map(domain => normalizeDeploymentUrl(domain.name)),
+        ),
+      )
+
+      if (publicUrl) {
+        return publicUrl
+      }
+    }
+    catch {
+      // Best-effort only.
+    }
+
+    if (attempt < 5) {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+    }
+  }
+
+  return undefined
 }
 
 function normalizeProjectDomainResponse(input: unknown, fallbackDomain: string): VercelDomainResponse {

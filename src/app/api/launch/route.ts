@@ -20,6 +20,7 @@ import {
   createProjectDeployment,
   preflightVercelSupabaseLaunch,
   provisionVercelProject,
+  resolveProjectProductionUrl,
 } from '@/lib/vercel-api'
 
 export const runtime = 'nodejs'
@@ -183,7 +184,17 @@ export async function POST(request: Request) {
       })
       log('vercel', 'Deployment triggered after Supabase integration connection.')
 
-      const projectUrl = normalizeSiteUrl(deployment.url ?? vercel.projectUrl ?? '')
+      const projectUrl
+        = normalizeSiteUrl(
+          (await resolveProjectProductionUrl({
+            token: vercelToken,
+            teamId: launchTeamId,
+            projectIdOrName: vercel.projectId,
+          }))
+          || deployment.url
+          || vercel.projectUrl
+          || '',
+        )
 
       const durationMs = Date.now() - startedAt
       return NextResponse.json<LaunchResponseBody>({
