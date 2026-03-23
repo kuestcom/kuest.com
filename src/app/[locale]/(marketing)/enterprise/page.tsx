@@ -810,7 +810,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
               </div>
               <div className="r rd hero-preview-wide hero-preview-break">
                 <SitePreview
-                  className="mx-auto! w-full! max-w-[95vw]!"
+                  className="mx-auto!"
                   href={getDemoHref(locale)}
                   label={getDemoLabel(locale)}
                   iframeSrc={getDemoEmbedSrc(locale)}
