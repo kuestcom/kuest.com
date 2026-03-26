@@ -1524,7 +1524,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="hidden sm:inline">{t('MetaMask browser extension')}</span>
+                    <span className="hidden sm:inline!">{t('MetaMask browser extension')}</span>
                     <span className="sm:hidden">{t('MetaMask app')}</span>
                   </a>
                   .
