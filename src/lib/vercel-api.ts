@@ -559,6 +559,12 @@ function extractErrorAction(details: unknown) {
   return typeof value === 'string' ? value : ''
 }
 
+function isUnauthorizedResponse(error: LaunchError) {
+  const code = extractErrorCode(error.details).toLowerCase()
+  const message = extractErrorMessage(error.details).toLowerCase()
+  return code === 'unauthorized' || message.includes('unauthorized') || error.message.includes('(401)')
+}
+
 function isValidationError(error: LaunchError) {
   const code = extractErrorCode(error.details).toLowerCase()
   return code === 'validation_error'
@@ -790,11 +796,24 @@ export async function inspectVercelConnection(params: {
       || user?.name?.trim()
       || undefined
 
-  const namespacesPath = withQuery('/v1/integrations/git-namespaces', new URLSearchParams({
-    provider: 'github',
-  }))
-  const namespaces = await vercelRequest<VercelGitNamespace[]>(params.token, namespacesPath)
-  const githubNamespaces = namespaces.filter(namespace => namespace.provider === 'github')
+  let githubNamespaces: VercelGitNamespace[] = []
+  try {
+    const namespacesPath = withQuery('/v1/integrations/git-namespaces', new URLSearchParams({
+      provider: 'github',
+    }))
+    const namespaces = await vercelRequest<VercelGitNamespace[]>(params.token, namespacesPath)
+    githubNamespaces = namespaces.filter(namespace => namespace.provider === 'github')
+  }
+  catch (error) {
+    if (error instanceof LaunchError && isUnauthorizedResponse(error)) {
+      return {
+        identity,
+        githubImportReady: false,
+      }
+    }
+    throw error
+  }
+
   const repoParts = parseRepoParts(params.gitRepo)
 
   if (!repoParts) {
@@ -825,10 +844,23 @@ export async function inspectVercelConnection(params: {
   if (params.teamId?.trim()) {
     repoQuery.set('teamId', params.teamId.trim())
   }
-  const searchResult = await vercelRequest<VercelGitRepoSearchResponse>(
-    params.token,
-    withQuery('/v1/integrations/search-repo', repoQuery),
-  )
+  let searchResult: VercelGitRepoSearchResponse
+  try {
+    searchResult = await vercelRequest<VercelGitRepoSearchResponse>(
+      params.token,
+      withQuery('/v1/integrations/search-repo', repoQuery),
+    )
+  }
+  catch (error) {
+    if (error instanceof LaunchError && isUnauthorizedResponse(error)) {
+      return {
+        identity,
+        githubImportReady: false,
+        githubNamespace: matchingNamespace.slug,
+      }
+    }
+    throw error
+  }
   const matchingRepo = (searchResult.repos ?? []).find(repo =>
     repo.namespace.trim().toLowerCase() === repoParts.owner.toLowerCase()
     && (repo.slug.trim().toLowerCase() === repoParts.name.toLowerCase()

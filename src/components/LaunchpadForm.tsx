@@ -132,8 +132,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: string
     redirecting: string
     connectGitHub: string
-    githubCreated: string
-    githubConnected: string
     oauthSoon: string
   }
 > = {
@@ -144,8 +142,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Authorize Kuest on GitHub so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.',
     redirecting: 'Redirecting...',
     connectGitHub: 'Connect GitHub',
-    githubCreated: 'created',
-    githubConnected: 'connected',
     oauthSoon: '(soon) OAuth',
   },
   de: {
@@ -155,8 +151,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorisiere Kuest auf GitHub, damit wir in deinem GitHub-Konto ein Repository mit einem geklonten Kuest Prediction Market erstellen können. Wenn du bereits ein eigenes Repository hast, kannst du es in den erweiterten Optionen manuell eintragen.',
     redirecting: 'Weiterleitung...',
     connectGitHub: 'GitHub verbinden',
-    githubCreated: 'erstellt',
-    githubConnected: 'verbunden',
     oauthSoon: '(bald) OAuth',
   },
   es: {
@@ -166,8 +160,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autoriza a Kuest en GitHub para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.',
     redirecting: 'Redirigiendo...',
     connectGitHub: 'Conectar GitHub',
-    githubCreated: 'creado',
-    githubConnected: 'conectado',
     oauthSoon: '(soon) OAuth',
   },
   pt: {
@@ -177,8 +169,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorize a Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.',
     redirecting: 'Redirecionando...',
     connectGitHub: 'Conectar GitHub',
-    githubCreated: 'criado',
-    githubConnected: 'conectado',
     oauthSoon: '(soon) OAuth',
   },
   fr: {
@@ -188,8 +178,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorisez Kuest sur GitHub afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.',
     redirecting: 'Redirection...',
     connectGitHub: 'Connecter GitHub',
-    githubCreated: 'créé',
-    githubConnected: 'connecté',
     oauthSoon: '(soon) OAuth',
   },
   zh: {
@@ -199,8 +187,6 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: '请在 GitHub 上授权 Kuest，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。',
     redirecting: '正在跳转...',
     connectGitHub: '连接 GitHub',
-    githubCreated: '已创建',
-    githubConnected: '已连接',
     oauthSoon: '(soon) OAuth',
   },
 }
@@ -1770,7 +1756,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     : ''
   const showVercelGitHubButton
     = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
-  const showVercelGitHubStep = step2GitHubReady || showVercelGitHubButton || step3VercelReady
+  const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -2231,45 +2217,32 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                       <>
                         {step3TokenReady
                           ? (
-                              <div className="launch-stack space-y-3">
-                                <div className="launch-status-field">
-                                  <div className="launch-field">
-                                    <input
-                                      value={vercelStatusText}
-                                      readOnly
-                                      disabled
-                                      className="launch-github-status-input launch-status-input-with-action"
-                                    />
-                                  </div>
-                                  <button
-                                    type="button"
-                                    className="launch-status-action"
-                                    onClick={() => {
-                                      setVercelConnection(null)
-                                      setVercelConnectionError(null)
-                                      setForm(previous => ({
-                                        ...previous,
-                                        vercelAccessToken: '',
-                                        supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                                      }))
-                                    }}
-                                    aria-label={t('Disconnect')}
-                                    title={t('Disconnect')}
-                                  >
-                                    <XIcon className="size-4" />
-                                  </button>
+                              <div className="launch-status-field">
+                                <div className="launch-field">
+                                  <input
+                                    value={vercelStatusText}
+                                    readOnly
+                                    disabled
+                                    className="launch-github-status-input launch-status-input-with-action"
+                                  />
                                 </div>
-                                <div className="launch-auth-actions flex flex-wrap gap-2">
-                                  {showVercelGitHubButton && (
-                                    <button
-                                      type="button"
-                                      className="launch-cta launch-cta-compact"
-                                      onClick={startVercelGitHubConnect}
-                                    >
-                                      {t('Connect Vercel to GitHub')}
-                                    </button>
-                                  )}
-                                </div>
+                                <button
+                                  type="button"
+                                  className="launch-status-action"
+                                  onClick={() => {
+                                    setVercelConnection(null)
+                                    setVercelConnectionError(null)
+                                    setForm(previous => ({
+                                      ...previous,
+                                      vercelAccessToken: '',
+                                      supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                    }))
+                                  }}
+                                  aria-label={t('Disconnect')}
+                                  title={t('Disconnect')}
+                                >
+                                  <XIcon className="size-4" />
+                                </button>
                               </div>
                             )
                           : (
@@ -2319,13 +2292,20 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     {step3VercelReady && <CircleCheckIcon className="size-4 text-primary" />}
                   </div>
                   {showVercelGitHubButton && (
-                    <button
-                      type="button"
-                      className="launch-cta launch-cta-compact"
-                      onClick={startVercelGitHubConnect}
-                    >
-                      {t('Connect Vercel to GitHub')}
-                    </button>
+                    <div className="launch-stack space-y-2">
+                      <button
+                        type="button"
+                        className="launch-mini-button"
+                        onClick={startVercelGitHubConnect}
+                      >
+                        {t('Connect Vercel to GitHub')}
+                      </button>
+                      <p className="launch-helper-text text-xs text-muted-foreground">
+                        {t('Allow the Vercel app to access {repo} on GitHub.', {
+                          repo: form.gitRepo.trim(),
+                        })}
+                      </p>
+                    </div>
                   )}
                 </div>
               )}
