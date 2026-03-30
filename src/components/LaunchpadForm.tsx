@@ -6,6 +6,7 @@ import type {
   LaunchLogEntry,
   LaunchResponseBody,
   OAuthStatusResponse,
+  ReownConnectionStatusResponse,
   VercelConnectionStatusResponse,
   VercelDomainResponse,
 } from '@/lib/launch-types'
@@ -644,6 +645,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
   const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
   const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
+  const [reownConnection, setReownConnection] = useState<ReownConnectionStatusResponse | null>(null)
+  const [reownConnectionError, setReownConnectionError] = useState<string | null>(null)
+  const [reownConnectionLoading, setReownConnectionLoading] = useState(false)
 
   const [walletActionLoading, setWalletActionLoading] = useState(false)
   const [walletInfo, setWalletInfo] = useState<string | null>(null)
@@ -693,6 +697,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   const timelineIntervalRef = useRef<number | null>(null)
   const timelineIndexRef = useRef(0)
+  const latestReownProjectIdRef = useRef('')
   const handleConnectOrSignRef = useRef<
       ((_options?: { autoProgress?: boolean }) => Promise<void>) | null
   >(null)
@@ -722,6 +727,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const vercelConnectionReady = Boolean(vercelConnection?.connected)
   const vercelConnectionIdentity = vercelConnection?.identity?.trim() || ''
   const vercelGitImportReady = Boolean(vercelConnection?.githubImportReady)
+  const reownConnectionReady = Boolean(reownConnection?.valid)
 
   const resolvedProjectSlug = useMemo(() => {
     if (form.projectSlugOverride.trim()) {
@@ -945,6 +951,68 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ],
   )
 
+  const refreshReownConnection = useCallback(
+    async (projectId: string) => {
+      const normalizedProjectId = projectId.trim()
+      latestReownProjectIdRef.current = normalizedProjectId
+
+      if (!normalizedProjectId) {
+        setReownConnection(null)
+        setReownConnectionError(null)
+        setReownConnectionLoading(false)
+        return
+      }
+
+      setReownConnectionLoading(true)
+
+      try {
+        const response = await fetch('/api/reown/connection', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            projectId: normalizedProjectId,
+          }),
+        })
+
+        const json = (await response.json()) as ReownConnectionStatusResponse
+        if (latestReownProjectIdRef.current !== normalizedProjectId) {
+          return
+        }
+
+        if (!response.ok || !json.valid) {
+          setReownConnection(null)
+          setReownConnectionError(
+            json.error ?? 'We could not verify this Reown Project ID. Check it and try again.',
+          )
+          return
+        }
+
+        setReownConnection(json)
+        setReownConnectionError(null)
+      }
+      catch (error) {
+        if (latestReownProjectIdRef.current !== normalizedProjectId) {
+          return
+        }
+
+        setReownConnection(null)
+        setReownConnectionError(
+          error instanceof Error
+            ? error.message
+            : 'We could not verify this Reown Project ID. Check it and try again.',
+        )
+      }
+      finally {
+        if (latestReownProjectIdRef.current === normalizedProjectId) {
+          setReownConnectionLoading(false)
+        }
+      }
+    },
+    [],
+  )
+
   useEffect(() => {
     void refreshOAuthStatus()
   }, [refreshOAuthStatus])
@@ -997,6 +1065,26 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       document.removeEventListener('visibilitychange', handleReconnectCheck)
     }
   }, [awaitingVercelGitHubConnection, refreshVercelConnection])
+
+  useEffect(() => {
+    const projectId = form.env.REOWN_APPKIT_PROJECT_ID.trim()
+    latestReownProjectIdRef.current = projectId
+
+    if (!projectId) {
+      setReownConnection(null)
+      setReownConnectionError(null)
+      setReownConnectionLoading(false)
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      void refreshReownConnection(projectId)
+    }, 450)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [form.env.REOWN_APPKIT_PROJECT_ID, refreshReownConnection])
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -1743,7 +1831,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       ? vercelOauthConnected && vercelConnectionReady
       : vercelConnectionReady
   const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
-  const step3ReownReady = Boolean(form.env.REOWN_APPKIT_PROJECT_ID.trim())
+  const step3ReownReady = reownConnectionReady
   const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady
     = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
@@ -2337,18 +2425,28 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <span className="sr-only">{t('Reown Project ID')}</span>
                 <input
                   value={form.env.REOWN_APPKIT_PROJECT_ID}
-                  onChange={event =>
+                  onChange={(event) => {
+                    setReownConnection(null)
+                    setReownConnectionError(null)
+                    setReownConnectionLoading(Boolean(event.target.value.trim()))
                     setForm(previous => ({
                       ...previous,
                       env: {
                         ...previous.env,
                         REOWN_APPKIT_PROJECT_ID: event.target.value,
                       },
-                    }))}
+                    }))
+                  }}
                   placeholder={t('Required')}
                   required
                 />
               </label>
+              {reownConnectionLoading && form.env.REOWN_APPKIT_PROJECT_ID.trim() && (
+                <p className="launch-helper-text mt-2 text-xs text-muted-foreground">{t('Checking...')}</p>
+              )}
+              {reownConnectionError && (
+                <p className="launch-helper-text mt-2 text-xs font-medium text-destructive">{reownConnectionError}</p>
+              )}
               <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
                 {t('Get it at')}
                 {' '}

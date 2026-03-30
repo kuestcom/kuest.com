@@ -104,3 +104,8 @@ export interface VercelConnectionStatusResponse {
   githubNamespace?: string
   error?: string
 }
+
+export interface ReownConnectionStatusResponse {
+  valid: boolean
+  error?: string
+}
