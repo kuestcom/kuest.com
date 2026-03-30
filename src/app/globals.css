@@ -1722,6 +1722,13 @@
   box-shadow: 0 0 0 1px var(--accent-interaction-ring);
 }
 
+.launch-github-status-input:disabled {
+  opacity: 1;
+  cursor: default;
+  color: var(--color-text);
+  -webkit-text-fill-color: var(--color-text);
+}
+
 .launch-mini-button,
 .launch-plain-button,
 .launch-language-trigger,

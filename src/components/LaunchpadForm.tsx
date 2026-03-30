@@ -130,9 +130,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: string
     redirecting: string
     connectGitHub: string
-    openRepository: string
-    githubSyncEnabled: string
-    repositorySelected: string
+    githubCreated: string
+    githubConnected: string
     oauthSoon: string
   }
 > = {
@@ -143,9 +142,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Authorize Kuest on GitHub so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.',
     redirecting: 'Redirecting...',
     connectGitHub: 'Connect GitHub',
-    openRepository: 'Open repository',
-    githubSyncEnabled: 'Fork sync workflow enabled.',
-    repositorySelected: 'Repository selected. You can still change it in Advanced options.',
+    githubCreated: 'created',
+    githubConnected: 'connected',
     oauthSoon: '(soon) OAuth',
   },
   de: {
@@ -155,9 +153,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorisiere Kuest auf GitHub, damit wir in deinem GitHub-Konto ein Repository mit einem geklonten Kuest Prediction Market erstellen können. Wenn du bereits ein eigenes Repository hast, kannst du es in den erweiterten Optionen manuell eintragen.',
     redirecting: 'Weiterleitung...',
     connectGitHub: 'GitHub verbinden',
-    openRepository: 'Repository öffnen',
-    githubSyncEnabled: 'Fork-Sync-Workflow aktiviert.',
-    repositorySelected: 'Repository ausgewählt. Du kannst es in den erweiterten Optionen noch ändern.',
+    githubCreated: 'erstellt',
+    githubConnected: 'verbunden',
     oauthSoon: '(bald) OAuth',
   },
   es: {
@@ -167,9 +164,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autoriza a Kuest en GitHub para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.',
     redirecting: 'Redirigiendo...',
     connectGitHub: 'Conectar GitHub',
-    openRepository: 'Abrir repositorio',
-    githubSyncEnabled: 'Flujo de sincronización del fork activado.',
-    repositorySelected: 'Repositorio seleccionado. Aún puedes cambiarlo en las opciones avanzadas.',
+    githubCreated: 'creado',
+    githubConnected: 'conectado',
     oauthSoon: '(soon) OAuth',
   },
   pt: {
@@ -179,9 +175,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorize a Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.',
     redirecting: 'Redirecionando...',
     connectGitHub: 'Conectar GitHub',
-    openRepository: 'Abrir repositório',
-    githubSyncEnabled: 'Sincronização do fork ativada.',
-    repositorySelected: 'Repositório selecionado. Você ainda pode alterá-lo em Opções avançadas.',
+    githubCreated: 'criado',
+    githubConnected: 'conectado',
     oauthSoon: '(soon) OAuth',
   },
   fr: {
@@ -191,9 +186,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorisez Kuest sur GitHub afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.',
     redirecting: 'Redirection...',
     connectGitHub: 'Connecter GitHub',
-    openRepository: 'Ouvrir le dépôt',
-    githubSyncEnabled: 'Workflow de synchronisation du fork activé.',
-    repositorySelected: 'Dépôt sélectionné. Vous pouvez encore le modifier dans les options avancées.',
+    githubCreated: 'créé',
+    githubConnected: 'connecté',
     oauthSoon: '(soon) OAuth',
   },
   zh: {
@@ -203,9 +197,8 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: '请在 GitHub 上授权 Kuest，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。',
     redirecting: '正在跳转...',
     connectGitHub: '连接 GitHub',
-    openRepository: '打开仓库',
-    githubSyncEnabled: '已启用 fork 同步工作流。',
-    repositorySelected: '已选择仓库。你仍然可以在高级选项中修改它。',
+    githubCreated: '已创建',
+    githubConnected: '已连接',
     oauthSoon: '(soon) OAuth',
   },
 }
@@ -1652,6 +1645,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const step3DatabaseReady = step3VercelReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady
     = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
+  const githubStatusText = form.gitRepo.trim()
+    ? `${form.gitRepo} ${githubRepoUrl ? copy.githubCreated : copy.githubConnected}`
+    : ''
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -1946,45 +1942,36 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     )}
               </div>
 
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  className="launch-cta launch-cta-compact"
-                  onClick={startGitHubProvisioning}
-                  disabled={isRedirectingToGitHub}
-                >
-                  {isRedirectingToGitHub
-                    ? (
-                        <span className="inline-flex items-center gap-2">
-                          <Loader2Icon className="size-4 animate-spin" />
-                          {copy.redirecting}
-                        </span>
-                      )
-                    : copy.connectGitHub}
-                </button>
-
-                {githubRepoUrl && (
-                  <a
-                    href={githubRepoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="launch-link text-sm"
-                  >
-                    {copy.openRepository}
-                  </a>
-                )}
+              <div className="mt-4">
+                {step2GitHubReady
+                  ? (
+                      <div className="launch-field">
+                        <input
+                          value={githubStatusText}
+                          readOnly
+                          disabled
+                          className="launch-github-status-input"
+                        />
+                      </div>
+                    )
+                  : (
+                      <button
+                        type="button"
+                        className="launch-cta launch-cta-compact"
+                        onClick={startGitHubProvisioning}
+                        disabled={isRedirectingToGitHub}
+                      >
+                        {isRedirectingToGitHub
+                          ? (
+                              <span className="inline-flex items-center gap-2">
+                                <Loader2Icon className="size-4 animate-spin" />
+                                {copy.redirecting}
+                              </span>
+                            )
+                          : copy.connectGitHub}
+                      </button>
+                    )}
               </div>
-
-              {form.gitRepo.trim() && (
-                <div className="mt-4 rounded-xl border border-border/70 p-3">
-                  <p className="text-sm font-semibold text-foreground">{form.gitRepo}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {githubSyncEnabled
-                      ? copy.githubSyncEnabled
-                      : copy.repositorySelected}
-                  </p>
-                </div>
-              )}
 
               {githubError && (
                 <p className="launch-helper-text mt-3 text-xs font-medium text-destructive">{githubError}</p>
