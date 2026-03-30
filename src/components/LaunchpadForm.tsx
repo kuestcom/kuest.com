@@ -105,20 +105,116 @@ interface ActionPromptWalletIconProps {
 }
 
 type VercelAuthMethod = 'oauth' | 'token'
+type LaunchStep = 1 | 2 | 3
+
+interface GitHubConnectState {
+  repoUrl: string
+  syncEnabled: boolean
+}
 
 const SUPABASE_CREATE_NEW_OPTION = '__create_new__'
-const FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v4'
-const LEGACY_FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v3'
+const FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v6'
+const LEGACY_FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v4'
 const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = 'token'
 const ALLOW_VERCEL_TOKEN_FALLBACK
   = process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== 'false'
 const FOOTER_BRAND_NAME = 'Kuest'
+const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
+
+const LAUNCHPAD_COPY: Record<
+  SupportedLocale,
+  {
+    connectionsStep: string
+    step2Connections: string
+    step3Deploy: string
+    githubInfo: string
+    redirecting: string
+    connectGitHub: string
+    openRepository: string
+    githubSyncEnabled: string
+    repositorySelected: string
+    oauthSoon: string
+  }
+> = {
+  en: {
+    connectionsStep: 'Connections',
+    step2Connections: 'Step 2. Connections',
+    step3Deploy: 'Step 3. Deploy',
+    githubInfo: 'Authorize the Kuest GitHub app so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.',
+    redirecting: 'Redirecting...',
+    connectGitHub: 'Connect GitHub',
+    openRepository: 'Open repository',
+    githubSyncEnabled: 'Fork sync workflow enabled.',
+    repositorySelected: 'Repository selected. You can still change it in Advanced options.',
+    oauthSoon: '(soon) OAuth',
+  },
+  de: {
+    connectionsStep: 'Verbindungen',
+    step2Connections: 'Schritt 2. Verbindungen',
+    step3Deploy: 'Schritt 3. Bereitstellen',
+    githubInfo: 'Autorisiere die Kuest GitHub App, damit wir in deinem GitHub-Konto ein Repository mit einem geklonten Kuest Prediction Market erstellen können. Wenn du bereits ein eigenes Repository hast, kannst du es in den erweiterten Optionen manuell eintragen.',
+    redirecting: 'Weiterleitung...',
+    connectGitHub: 'GitHub verbinden',
+    openRepository: 'Repository öffnen',
+    githubSyncEnabled: 'Fork-Sync-Workflow aktiviert.',
+    repositorySelected: 'Repository ausgewählt. Du kannst es in den erweiterten Optionen noch ändern.',
+    oauthSoon: '(bald) OAuth',
+  },
+  es: {
+    connectionsStep: 'Conexiones',
+    step2Connections: 'Paso 2. Conexiones',
+    step3Deploy: 'Paso 3. Implementar',
+    githubInfo: 'Autoriza la app de GitHub de Kuest para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.',
+    redirecting: 'Redirigiendo...',
+    connectGitHub: 'Conectar GitHub',
+    openRepository: 'Abrir repositorio',
+    githubSyncEnabled: 'Flujo de sincronización del fork activado.',
+    repositorySelected: 'Repositorio seleccionado. Aún puedes cambiarlo en las opciones avanzadas.',
+    oauthSoon: '(soon) OAuth',
+  },
+  pt: {
+    connectionsStep: 'Conexões',
+    step2Connections: 'Etapa 2. Conexões',
+    step3Deploy: 'Etapa 3. Implantar',
+    githubInfo: 'Autorize o app da Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.',
+    redirecting: 'Redirecionando...',
+    connectGitHub: 'Conectar GitHub',
+    openRepository: 'Abrir repositório',
+    githubSyncEnabled: 'Sincronização do fork ativada.',
+    repositorySelected: 'Repositório selecionado. Você ainda pode alterá-lo em Opções avançadas.',
+    oauthSoon: '(soon) OAuth',
+  },
+  fr: {
+    connectionsStep: 'Connexions',
+    step2Connections: 'Étape 2. Connexions',
+    step3Deploy: 'Étape 3. Déployer',
+    githubInfo: 'Autorisez l’application GitHub de Kuest afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.',
+    redirecting: 'Redirection...',
+    connectGitHub: 'Connecter GitHub',
+    openRepository: 'Ouvrir le dépôt',
+    githubSyncEnabled: 'Workflow de synchronisation du fork activé.',
+    repositorySelected: 'Dépôt sélectionné. Vous pouvez encore le modifier dans les options avancées.',
+    oauthSoon: '(soon) OAuth',
+  },
+  zh: {
+    connectionsStep: '连接',
+    step2Connections: '第 2 步：连接',
+    step3Deploy: '第 3 步：部署',
+    githubInfo: '请授权 Kuest GitHub 应用，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。',
+    redirecting: '正在跳转...',
+    connectGitHub: '连接 GitHub',
+    openRepository: '打开仓库',
+    githubSyncEnabled: '已启用 fork 同步工作流。',
+    repositorySelected: '已选择仓库。你仍然可以在高级选项中修改它。',
+    oauthSoon: '(soon) OAuth',
+  },
+}
 
 const DEFAULT_FORM: FormState = {
   vercelAccessToken: '',
   brandName: '',
   projectSlugOverride: '',
-  gitRepo: process.env.NEXT_PUBLIC_DEFAULT_GIT_REPO ?? 'kuestcom/prediction-market',
+  gitRepo: '',
   gitBranch: 'main',
   vercelTeamId: process.env.NEXT_PUBLIC_DEFAULT_VERCEL_TEAM_ID ?? '',
   supabaseRegion: process.env.NEXT_PUBLIC_DEFAULT_SUPABASE_REGION ?? 'us-east-1',
@@ -179,7 +275,7 @@ function parseExtraEnv(extraEnvText: string) {
   return env
 }
 
-function toPersistableFormState(form: FormState) {
+function toPersistableFormState(form: FormState, githubState: GitHubConnectState) {
   return {
     brandName: form.brandName,
     projectSlugOverride: form.projectSlugOverride,
@@ -189,10 +285,18 @@ function toPersistableFormState(form: FormState) {
     supabaseRegion: form.supabaseRegion,
     supabaseResourceId: form.supabaseResourceId,
     keyNonce: form.keyNonce,
+    contactEmail: form.contactEmail,
     env: {
+      KUEST_ADDRESS: form.env.KUEST_ADDRESS,
+      KUEST_API_KEY: form.env.KUEST_API_KEY,
+      KUEST_API_SECRET: form.env.KUEST_API_SECRET,
+      KUEST_PASSPHRASE: form.env.KUEST_PASSPHRASE,
+      ADMIN_WALLETS: form.env.ADMIN_WALLETS,
       REOWN_APPKIT_PROJECT_ID: form.env.REOWN_APPKIT_PROJECT_ID,
       SITE_URL: form.env.SITE_URL,
     },
+    githubRepoUrl: githubState.repoUrl,
+    githubSyncEnabled: githubState.syncEnabled,
   }
 }
 
@@ -281,6 +385,34 @@ function InfoTip({ text }: { text: string }) {
       </button>
       <span className="launch-info-tip-bubble">{text}</span>
     </span>
+  )
+}
+
+function ConnectionCardTitle({
+  iconSrc,
+  iconAlt,
+  title,
+  infoText,
+}: {
+  iconSrc: string
+  iconAlt: string
+  title: string
+  infoText: string
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="launch-service-badge" aria-hidden="true">
+        <Image
+          src={iconSrc}
+          alt={iconAlt}
+          width={16}
+          height={16}
+          className="launch-service-mark"
+        />
+      </span>
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      <InfoTip text={infoText} />
+    </div>
   )
 }
 
@@ -506,6 +638,7 @@ function StepFooterLanguageControl() {
 
 export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const t = useExtracted()
+  const copy = LAUNCHPAD_COPY[locale]
   const account = useAccount()
   const { disconnect, status: disconnectStatus } = useDisconnect()
   const { switchChain } = useSwitchChain()
@@ -513,13 +646,17 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit()
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM)
-  const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1)
+  const [activeStep, setActiveStep] = useState<LaunchStep>(1)
   const [step1AdvancedOpen, setStep1AdvancedOpen] = useState(false)
   const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false)
   const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false)
   const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(
     DEFAULT_VERCEL_AUTH_METHOD,
   )
+  const [githubRepoUrl, setGithubRepoUrl] = useState('')
+  const [githubSyncEnabled, setGithubSyncEnabled] = useState(false)
+  const [githubError, setGithubError] = useState<string | null>(null)
+  const [isRedirectingToGitHub, setIsRedirectingToGitHub] = useState(false)
   const [oauthStatus, setOauthStatus] = useState<OAuthStatusResponse | null>(null)
   const [oauthStatusLoading, setOauthStatusLoading] = useState(false)
   const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
@@ -631,7 +768,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       if (!raw) {
         return
       }
-      const parsed = JSON.parse(raw) as Partial<FormState>
+      const parsed = JSON.parse(raw) as Partial<
+        ReturnType<typeof toPersistableFormState>
+      >
       if (!parsed || typeof parsed !== 'object') {
         return
       }
@@ -656,8 +795,40 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               ? parsed.supabaseResourceId
               : previous.supabaseResourceId,
         keyNonce: typeof parsed.keyNonce === 'string' ? parsed.keyNonce : previous.keyNonce,
+        contactEmail:
+            typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
         env: {
           ...previous.env,
+          KUEST_ADDRESS:
+              parsed.env
+              && typeof parsed.env === 'object'
+              && typeof parsed.env.KUEST_ADDRESS === 'string'
+                ? parsed.env.KUEST_ADDRESS
+                : previous.env.KUEST_ADDRESS,
+          KUEST_API_KEY:
+              parsed.env
+              && typeof parsed.env === 'object'
+              && typeof parsed.env.KUEST_API_KEY === 'string'
+                ? parsed.env.KUEST_API_KEY
+                : previous.env.KUEST_API_KEY,
+          KUEST_API_SECRET:
+              parsed.env
+              && typeof parsed.env === 'object'
+              && typeof parsed.env.KUEST_API_SECRET === 'string'
+                ? parsed.env.KUEST_API_SECRET
+                : previous.env.KUEST_API_SECRET,
+          KUEST_PASSPHRASE:
+              parsed.env
+              && typeof parsed.env === 'object'
+              && typeof parsed.env.KUEST_PASSPHRASE === 'string'
+                ? parsed.env.KUEST_PASSPHRASE
+                : previous.env.KUEST_PASSPHRASE,
+          ADMIN_WALLETS:
+              parsed.env
+              && typeof parsed.env === 'object'
+              && typeof parsed.env.ADMIN_WALLETS === 'string'
+                ? parsed.env.ADMIN_WALLETS
+                : previous.env.ADMIN_WALLETS,
           REOWN_APPKIT_PROJECT_ID:
               parsed.env
               && typeof parsed.env === 'object'
@@ -672,6 +843,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 : previous.env.SITE_URL,
         },
       }))
+      setGithubRepoUrl(typeof parsed.githubRepoUrl === 'string' ? parsed.githubRepoUrl : '')
+      setGithubSyncEnabled(parsed.githubSyncEnabled === true)
     }
     catch {
       // keep defaults
@@ -680,13 +853,16 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   useEffect(() => {
     try {
-      const persistable = toPersistableFormState(form)
+      const persistable = toPersistableFormState(form, {
+        repoUrl: githubRepoUrl,
+        syncEnabled: githubSyncEnabled,
+      })
       window.sessionStorage.setItem(FORM_SESSION_STORAGE_KEY, JSON.stringify(persistable))
     }
     catch {
       // ignore storage errors
     }
-  }, [form])
+  }, [form, githubRepoUrl, githubSyncEnabled])
 
   useEffect(() => {
     if (isConnected) {
@@ -746,6 +922,73 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     url.searchParams.delete('oauth_error')
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }, [refreshOAuthStatus, t])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const url = new URL(window.location.href)
+    const githubRepo = url.searchParams.get('github_repo')
+    const nextGithubRepoUrl = url.searchParams.get('github_repo_url')
+    const nextGithubSync = url.searchParams.get('github_sync')
+    const nextGithubError = url.searchParams.get('github_error')
+
+    if (!githubRepo && !nextGithubError) {
+      return
+    }
+
+    if (githubRepo) {
+      setForm(previous => ({
+        ...previous,
+        gitRepo: githubRepo,
+      }))
+      setGithubRepoUrl(nextGithubRepoUrl || '')
+      setGithubSyncEnabled(nextGithubSync === 'enabled')
+      setGithubError(null)
+      setIsRedirectingToGitHub(false)
+      setActiveStep(2)
+    }
+
+    if (nextGithubError) {
+      setGithubError(nextGithubError)
+      setIsRedirectingToGitHub(false)
+      setActiveStep(2)
+    }
+
+    url.searchParams.delete('github_repo')
+    url.searchParams.delete('github_repo_url')
+    url.searchParams.delete('github_sync')
+    url.searchParams.delete('github_source')
+    url.searchParams.delete('github_error')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }, [])
+
+  function startGitHubProvisioning() {
+    if (!GITHUB_APP_URL) {
+      setGithubError('Missing NEXT_PUBLIC_GITHUB_APP_URL.')
+      return
+    }
+
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    setGithubError(null)
+    setIsRedirectingToGitHub(true)
+
+    const returnTo = new URL(window.location.href)
+    returnTo.searchParams.delete('github_repo')
+    returnTo.searchParams.delete('github_repo_url')
+    returnTo.searchParams.delete('github_sync')
+    returnTo.searchParams.delete('github_source')
+    returnTo.searchParams.delete('github_error')
+
+    const connectUrl = new URL('/connect', GITHUB_APP_URL)
+    connectUrl.searchParams.set('return_to', returnTo.toString())
+
+    window.location.assign(connectUrl.toString())
+  }
 
   const disconnectVercelOAuth = useCallback(async () => {
     setOauthStatusError(null)
@@ -1402,10 +1645,13 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     }
   }
 
-  const step2TokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused
-  const step2VercelReady = vercelAuthMethod === 'oauth' ? vercelOauthConnected : step2TokenReady
-  const step2ReownReady = Boolean(form.env.REOWN_APPKIT_PROJECT_ID.trim())
-  const step2DatabaseReady = step2VercelReady && Boolean(form.supabaseResourceId.trim())
+  const step2GitHubReady = Boolean(form.gitRepo.trim())
+  const step3TokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused
+  const step3VercelReady = vercelAuthMethod === 'oauth' ? vercelOauthConnected : step3TokenReady
+  const step3ReownReady = Boolean(form.env.REOWN_APPKIT_PROJECT_ID.trim())
+  const step3DatabaseReady = step3VercelReady && Boolean(form.supabaseResourceId.trim())
+  const step2ConnectionsReady
+    = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -1417,8 +1663,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     },
     {
       number: 2,
-      title: t('Host + Database'),
-      done: step2VercelReady && step2ReownReady,
+      title: copy.connectionsStep,
+      done: step2ConnectionsReady,
       active: activeStep === 2,
     },
     {
@@ -1450,7 +1696,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ? `${shortAddress(storedStep1Address)} · ${account.chain?.name ?? REQUIRED_CHAIN_LABEL}`
     : ''
   const canContinueStep2 = showSignedWalletState && brandNameReady
-  const canContinueStep3 = canContinueStep2 && step2VercelReady && step2ReownReady
+  const canContinueStep3 = canContinueStep2 && step2ConnectionsReady
 
   return (
     <form onSubmit={onSubmit} className="launch-shell">
@@ -1474,7 +1720,11 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               }
             }}
             disabled={
-              step.number === 2 ? !canContinueStep2 : step.number === 3 ? !canContinueStep3 : false
+              step.number === 2
+                ? !canContinueStep2
+                : step.number === 3
+                  ? !canContinueStep3
+                  : false
             }
           >
             <span className="launch-step-index">{step.number}</span>
@@ -1676,18 +1926,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
       {activeStep === 2 && (
         <section className="launch-island launch-step2-island">
-          <h2 className="sr-only">{t('Step 2. Host + Database')}</h2>
+          <h2 className="sr-only">{copy.step2Connections}</h2>
 
           <div className="launch-stack launch-step2-stack mt-5 space-y-3">
             <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {t('Vercel authentication')}
-                  </h3>
-                  <InfoTip text={t('Vercel is where your prediction market website is hosted.')} />
-                </div>
-                {step2VercelReady
+                <ConnectionCardTitle
+                  iconSrc="/assets/images/github.svg"
+                  iconAlt="GitHub"
+                  title="GitHub"
+                  infoText={copy.githubInfo}
+                />
+                {step2GitHubReady
                   ? (
                       <CircleCheckIcon className="size-5 text-primary" />
                     )
@@ -1695,16 +1945,69 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                       <CircleIcon className="size-5 text-muted-foreground" />
                     )}
               </div>
-              {ALLOW_VERCEL_TOKEN_FALLBACK && !step2VercelReady && (
-                <div className="launch-auth-switch mb-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    className="launch-mini-button"
-                    onClick={() => switchVercelAuthMethod('oauth')}
-                    disabled={vercelAuthMethod === 'oauth'}
+
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  className="launch-cta launch-cta-compact"
+                  onClick={startGitHubProvisioning}
+                  disabled={isRedirectingToGitHub}
+                >
+                  {isRedirectingToGitHub
+                    ? (
+                        <span className="inline-flex items-center gap-2">
+                          <Loader2Icon className="size-4 animate-spin" />
+                          {copy.redirecting}
+                        </span>
+                      )
+                    : copy.connectGitHub}
+                </button>
+
+                {githubRepoUrl && (
+                  <a
+                    href={githubRepoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="launch-link text-sm"
                   >
-                    OAuth
-                  </button>
+                    {copy.openRepository}
+                  </a>
+                )}
+              </div>
+
+              {form.gitRepo.trim() && (
+                <div className="mt-4 rounded-xl border border-border/70 p-3">
+                  <p className="text-sm font-semibold text-foreground">{form.gitRepo}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {githubSyncEnabled
+                      ? copy.githubSyncEnabled
+                      : copy.repositorySelected}
+                  </p>
+                </div>
+              )}
+
+              {githubError && (
+                <p className="launch-helper-text mt-3 text-xs font-medium text-destructive">{githubError}</p>
+              )}
+            </div>
+            <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
+              <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
+                <ConnectionCardTitle
+                  iconSrc="/assets/images/vercel.svg"
+                  iconAlt="Vercel"
+                  title={t('Vercel authentication')}
+                  infoText={t('Vercel is where your prediction market website is hosted.')}
+                />
+                {step3VercelReady
+                  ? (
+                      <CircleCheckIcon className="size-5 text-primary" />
+                    )
+                  : (
+                      <CircleIcon className="size-5 text-muted-foreground" />
+                    )}
+              </div>
+              {ALLOW_VERCEL_TOKEN_FALLBACK && !step3VercelReady && (
+                <div className="launch-auth-switch mb-3 flex flex-wrap gap-2">
                   <button
                     type="button"
                     className="launch-mini-button"
@@ -1712,6 +2015,14 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     disabled={vercelAuthMethod === 'token'}
                   >
                     {t('Access Token')}
+                  </button>
+                  <button
+                    type="button"
+                    className="launch-mini-button"
+                    onClick={() => switchVercelAuthMethod('oauth')}
+                    disabled={vercelAuthMethod === 'oauth'}
+                  >
+                    {copy.oauthSoon}
                   </button>
                 </div>
               )}
@@ -1775,7 +2086,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   )
                 : (
                     <>
-                      {step2TokenReady
+                      {step3TokenReady
                         ? (
                             <div className="launch-auth-state flex flex-wrap items-center gap-2">
                               <span className="
@@ -1849,13 +2160,13 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
             <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {t('Reown Project ID')}
-                  </h3>
-                  <InfoTip text={t('Reown Project ID enables wallet login for your end users.')} />
-                </div>
-                {step2ReownReady
+                <ConnectionCardTitle
+                  iconSrc="/assets/images/reown.svg"
+                  iconAlt="Reown"
+                  title={t('Reown Project ID')}
+                  infoText={t('Reown Project ID enables wallet login for your end users.')}
+                />
+                {step3ReownReady
                   ? (
                       <CircleCheckIcon className="size-5 text-primary" />
                     )
@@ -1897,13 +2208,13 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
             <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
               <div className="launch-card-header mb-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {t('Supabase database')}
-                  </h3>
-                  <InfoTip text={t('Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.')} />
-                </div>
-                {step2DatabaseReady
+                <ConnectionCardTitle
+                  iconSrc="/assets/images/supabase.svg"
+                  iconAlt="Supabase"
+                  title={t('Supabase database')}
+                  infoText={t('Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.')}
+                />
+                {step3DatabaseReady
                   ? (
                       <CircleCheckIcon className="size-5 text-primary" />
                     )
@@ -1937,7 +2248,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   onClick={() => {
                     void loadSupabaseResources()
                   }}
-                  disabled={!step2VercelReady || isLoadingSupabaseResources}
+                  disabled={!step3VercelReady || isLoadingSupabaseResources}
                 >
                   {isLoadingSupabaseResources
                     ? t('Refreshing...')
@@ -1988,11 +2299,15 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     <span>{t('Repository')}</span>
                     <input
                       value={form.gitRepo}
-                      onChange={event =>
+                      onChange={(event) => {
+                        setGithubError(null)
+                        setGithubRepoUrl('')
+                        setGithubSyncEnabled(false)
                         setForm(previous => ({
                           ...previous,
                           gitRepo: event.target.value,
-                        }))}
+                        }))
+                      }}
                     />
                   </label>
                   <label className="launch-field">
@@ -2142,7 +2457,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               <button
                 type="button"
                 className="launch-choice-button launch-choice-yes"
-                disabled={!canContinueStep3 || !form.env.REOWN_APPKIT_PROJECT_ID.trim()}
+                disabled={!canContinueStep3}
                 onClick={() => setActiveStep(3)}
               >
                 {t('Yes')}
@@ -2155,7 +2470,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
       {activeStep === 3 && (
         <section className="launch-island launch-step3-island">
-          <h2 className="sr-only">{t('Step 3. Deploy')}</h2>
+          <h2 className="sr-only">{copy.step3Deploy}</h2>
 
           <div className="launch-panel-card launch-step3-card mt-5 rounded-2xl border border-border/70 p-5">
             <div className="launch-timeline-list space-y-3">
@@ -2210,7 +2525,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                     hasSuccessfulDeployment
                     || isLaunching
                     || !canContinueStep3
-                    || !form.env.REOWN_APPKIT_PROJECT_ID.trim()
                   }
                 >
                   {isLaunching

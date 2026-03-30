@@ -15,7 +15,7 @@ Main goal of this repo:
 ## User flow
 
 1. Set market site name and connect wallet
-2. Connect Vercel + set Reown project id + choose/create Supabase database
+2. Connect GitHub, Vercel, Reown, and Supabase
 3. Deploy and track timeline logs
 
 ## Vercel auth modes
@@ -38,7 +38,8 @@ If OAuth is enabled, set:
 1. Copy `.env.example` to `.env.local`
 2. Fill `NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID`
 3. If using OAuth mode, fill Vercel OAuth client id/secret
-4. Run:
+4. Set `NEXT_PUBLIC_GITHUB_APP_URL` to the companion GitHub app origin
+5. Run:
 
 ```bash
 npm install
