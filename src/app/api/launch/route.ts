@@ -18,6 +18,7 @@ import { normalizeSiteUrl } from '@/lib/site-url'
 import {
   connectSupabaseViaVercelIntegration,
   createProjectDeployment,
+  isMissingVercelGitImportError,
   preflightVercelSupabaseLaunch,
   provisionVercelProject,
   resolveProjectProductionUrl,
@@ -234,7 +235,22 @@ export async function POST(request: Request) {
       if (error.details) {
         log(error.step, JSON.stringify(error.details), 'warning')
       }
-      return buildErrorResponse(error, 400, { logs, durationMs })
+      const requiresVercelGitImport = isMissingVercelGitImportError(error)
+      const responseError = requiresVercelGitImport
+        ? 'Finish connecting Vercel to GitHub, then try again.'
+        : error.message
+      return NextResponse.json<LaunchResponseBody>(
+        {
+          ok: false,
+          logs,
+          durationMs,
+          error: responseError,
+          hints: {
+            vercelGitImportRequired: requiresVercelGitImport,
+          },
+        },
+        { status: 400 },
+      )
     }
 
     log('unknown', 'Unexpected internal error.', 'error')

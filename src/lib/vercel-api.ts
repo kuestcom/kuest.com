@@ -103,9 +103,26 @@ interface VercelTeam {
   name?: string
 }
 
+interface VercelAuthenticatedUserResponse {
+  user?: {
+    email?: string
+    username?: string
+    name?: string
+    importFlowGitNamespace?: string
+    importFlowGitProvider?: string
+  }
+}
+
 export interface SupabaseResourceOption {
   id: string
   name: string
+}
+
+export interface VercelConnectionInspection {
+  identity?: string
+  githubImportReady: boolean
+  githubImportNamespace?: string
+  githubImportProvider?: string
 }
 
 interface VercelStorageStore {
@@ -482,6 +499,14 @@ function extractErrorMessage(details: unknown) {
   return typeof value === 'string' ? value : ''
 }
 
+function extractErrorAction(details: unknown) {
+  if (!details || typeof details !== 'object') {
+    return ''
+  }
+  const value = (details as { error?: { action?: string } }).error?.action
+  return typeof value === 'string' ? value : ''
+}
+
 function isValidationError(error: LaunchError) {
   const code = extractErrorCode(error.details).toLowerCase()
   return code === 'validation_error'
@@ -550,6 +575,17 @@ function isForbiddenError(error: LaunchError) {
 function isStoreInsertFailure(error: LaunchError) {
   const message = extractErrorMessage(error.details).toLowerCase()
   return message.includes('failed to insert project')
+}
+
+export function isMissingVercelGitImportError(error: LaunchError) {
+  const code = extractErrorCode(error.details).toLowerCase()
+  const message = extractErrorMessage(error.details).toLowerCase()
+  const action = extractErrorAction(error.details).toLowerCase()
+  return (
+    code === 'bad_request'
+    && message.includes('install the github integration first')
+    && action.includes('install github app')
+  )
 }
 
 function isMissingRepoIdError(error: LaunchError) {
@@ -686,6 +722,27 @@ export async function preflightVercelSupabaseLaunch(params: {
 
   return {
     resolvedTeamId: match.teamId,
+  }
+}
+
+export async function inspectVercelConnection(params: {
+  token: string
+}): Promise<VercelConnectionInspection> {
+  const data = await vercelRequest<VercelAuthenticatedUserResponse>(params.token, '/v2/user')
+  const user = data.user
+  const identity
+    = user?.email?.trim()
+      || user?.username?.trim()
+      || user?.name?.trim()
+      || undefined
+  const githubImportNamespace = user?.importFlowGitNamespace?.trim() || undefined
+  const githubImportProvider = user?.importFlowGitProvider?.trim() || undefined
+
+  return {
+    identity,
+    githubImportReady: githubImportProvider === 'github' && Boolean(githubImportNamespace),
+    githubImportNamespace,
+    githubImportProvider,
   }
 }
 

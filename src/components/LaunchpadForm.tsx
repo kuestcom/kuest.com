@@ -6,6 +6,7 @@ import type {
   LaunchLogEntry,
   LaunchResponseBody,
   OAuthStatusResponse,
+  VercelConnectionStatusResponse,
   VercelDomainResponse,
 } from '@/lib/launch-types'
 import { useWalletInfo } from '@reown/appkit/react'
@@ -120,6 +121,7 @@ const ALLOW_VERCEL_TOKEN_FALLBACK
   = process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== 'false'
 const FOOTER_BRAND_NAME = 'Kuest'
 const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
+const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -653,6 +655,10 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [oauthStatus, setOauthStatus] = useState<OAuthStatusResponse | null>(null)
   const [oauthStatusLoading, setOauthStatusLoading] = useState(false)
   const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
+  const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
+  const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
+  const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
+  const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
 
   const [walletActionLoading, setWalletActionLoading] = useState(false)
   const [walletInfo, setWalletInfo] = useState<string | null>(null)
@@ -728,6 +734,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected)
   const vercelOauthIdentity
     = oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
+  const vercelConnectionReady = Boolean(vercelConnection?.connected)
+  const vercelConnectionIdentity = vercelConnection?.identity?.trim() || ''
+  const vercelGitImportReady = Boolean(vercelConnection?.githubImportReady)
 
   const resolvedProjectSlug = useMemo(() => {
     if (form.projectSlugOverride.trim()) {
@@ -885,6 +894,72 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     }
   }, [t])
 
+  const refreshVercelConnection = useCallback(
+    async (options?: { silent?: boolean }) => {
+      const token = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : ''
+      const requiresToken = vercelAuthMethod === 'token'
+      const requiresOAuth = vercelAuthMethod === 'oauth'
+
+      if (requiresToken && !token) {
+        setVercelConnection(null)
+        setVercelConnectionError(options?.silent ? null : t('Paste your Vercel Access Token first.'))
+        return
+      }
+
+      if (requiresOAuth && !vercelOauthConnected) {
+        setVercelConnection(null)
+        setVercelConnectionError(options?.silent ? null : t('Connect Vercel first.'))
+        return
+      }
+
+      setVercelConnectionLoading(true)
+      if (!options?.silent) {
+        setVercelConnectionError(null)
+      }
+
+      try {
+        const response = await fetch('/api/vercel/connection', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token: token || undefined,
+          }),
+        })
+
+        const json = (await response.json()) as VercelConnectionStatusResponse
+        if (!response.ok || !json.connected) {
+          setVercelConnection(null)
+          setVercelConnectionError(
+            json.error ?? t('We could not verify this Vercel connection. Check it and try again.'),
+          )
+          return
+        }
+
+        setVercelConnection(json)
+        setVercelConnectionError(null)
+      }
+      catch (error) {
+        setVercelConnection(null)
+        setVercelConnectionError(
+          error instanceof Error
+            ? error.message
+            : t('We could not verify this Vercel connection. Check it and try again.'),
+        )
+      }
+      finally {
+        setVercelConnectionLoading(false)
+      }
+    },
+    [
+      t,
+      form.vercelAccessToken,
+      vercelAuthMethod,
+      vercelOauthConnected,
+    ],
+  )
+
   useEffect(() => {
     void refreshOAuthStatus()
   }, [refreshOAuthStatus])
@@ -915,6 +990,28 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     url.searchParams.delete('oauth_error')
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }, [refreshOAuthStatus, t])
+
+  useEffect(() => {
+    if (!awaitingVercelGitHubConnection) {
+      return
+    }
+
+    function handleReconnectCheck() {
+      if (document.visibilityState === 'hidden') {
+        return
+      }
+      setAwaitingVercelGitHubConnection(false)
+      void refreshVercelConnection({ silent: true })
+    }
+
+    window.addEventListener('focus', handleReconnectCheck)
+    document.addEventListener('visibilitychange', handleReconnectCheck)
+
+    return () => {
+      window.removeEventListener('focus', handleReconnectCheck)
+      document.removeEventListener('visibilitychange', handleReconnectCheck)
+    }
+  }, [awaitingVercelGitHubConnection, refreshVercelConnection])
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -985,6 +1082,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   const disconnectVercelOAuth = useCallback(async () => {
     setOauthStatusError(null)
+    setVercelConnection(null)
+    setVercelConnectionError(null)
     try {
       await fetch('/api/oauth/vercel/disconnect', {
         method: 'POST',
@@ -1008,6 +1107,11 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
   }
 
+  function startVercelGitHubConnect() {
+    setAwaitingVercelGitHubConnection(true)
+    window.open(VERCEL_GITHUB_APP_URL, '_blank', 'noopener,noreferrer')
+  }
+
   function switchVercelAuthMethod(nextMethod: VercelAuthMethod) {
     if (nextMethod === 'oauth') {
       setVercelAuthMethod('token')
@@ -1017,6 +1121,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
     setVercelAuthMethod(nextMethod)
     setOauthStatusError(null)
+    setVercelConnection(null)
+    setVercelConnectionError(null)
     setIsVercelTokenInputFocused(false)
     setSupabaseResources([])
     setForm(previous => ({
@@ -1122,13 +1228,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       = vercelAuthMethod === 'oauth' ? vercelOauthConnected : tokenReady
 
     if (!hasAuth) {
+      setVercelConnection(null)
+      setVercelConnectionError(null)
       setSupabaseResources([])
       setSupabaseResourcesError(null)
       return
     }
 
     const timeout = window.setTimeout(() => {
-      void loadSupabaseResources({ silentIfNoToken: true })
+      void refreshVercelConnection({ silent: true })
+      if (vercelConnectionReady) {
+        void loadSupabaseResources({ silentIfNoToken: true })
+      }
     }, 650)
 
     return () => {
@@ -1139,6 +1250,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     isVercelTokenInputFocused,
     vercelAuthMethod,
     vercelOauthConnected,
+    vercelConnectionReady,
+    refreshVercelConnection,
     loadSupabaseResources,
   ])
 
@@ -1639,15 +1752,34 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   }
 
   const step2GitHubReady = Boolean(form.gitRepo.trim())
-  const step3TokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused
-  const step3VercelReady = vercelAuthMethod === 'oauth' ? vercelOauthConnected : step3TokenReady
+  const step3TokenReady = vercelAuthMethod === 'token' && vercelConnectionReady
+  const step3VercelAuthReady
+    = vercelAuthMethod === 'oauth'
+      ? vercelOauthConnected && vercelConnectionReady
+      : vercelConnectionReady
+  const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
   const step3ReownReady = Boolean(form.env.REOWN_APPKIT_PROJECT_ID.trim())
-  const step3DatabaseReady = step3VercelReady && Boolean(form.supabaseResourceId.trim())
+  const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady
     = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
   const githubStatusText = form.gitRepo.trim()
     ? `${form.gitRepo} ${githubRepoUrl ? copy.githubCreated : copy.githubConnected}`
     : ''
+  const vercelGitImportRequiredHint = result?.ok === false && result.hints?.vercelGitImportRequired === true
+  const vercelStatusText = step3VercelAuthReady
+    ? `${vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)} connected`
+    : ''
+  const showVercelGitHubButton
+    = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
+  const vercelCardMessage = vercelConnectionLoading
+    ? t('Checking Vercel...')
+    : showVercelGitHubButton
+      ? t('Connect Vercel to GitHub to continue.')
+      : step3VercelReady
+        ? t('Vercel is ready for deploys.')
+        : step3VercelAuthReady
+          ? t('Vercel connected.')
+          : null
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -1983,7 +2115,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   iconSrc="/assets/images/vercel.svg"
                   iconAlt="Vercel"
                   title={t('Vercel authentication')}
-                  infoText={t('Vercel is where your prediction market website is hosted.')}
+                  infoText={t('Allow Vercel to import your GitHub repository for deploys.')}
                 />
                 {step3VercelReady
                   ? (
@@ -1993,7 +2125,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                       <CircleIcon className="size-5 text-muted-foreground" />
                     )}
               </div>
-              {ALLOW_VERCEL_TOKEN_FALLBACK && !step3VercelReady && (
+              {ALLOW_VERCEL_TOKEN_FALLBACK && !step3VercelAuthReady && (
                 <div className="launch-auth-switch mb-3 flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -2017,64 +2149,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               {vercelAuthMethod === 'oauth'
                 ? (
                     <>
-                      <div className="launch-auth-state flex flex-wrap items-center gap-2">
-                        <span className="
-                          inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
-                        "
-                        >
-                          <Image
-                            src="/images/vercel.svg"
-                            alt="Vercel"
-                            width={14}
-                            height={14}
-                            className="size-3.5"
-                          />
-                        </span>
-                        {vercelOauthConnected
-                          ? (
-                              <span className="text-xs font-medium text-foreground">
-                                {vercelOauthIdentity || t('Connected account')}
-                              </span>
-                            )
-                          : (
-                              <span className="text-xs text-muted-foreground">
-                                {t('Not connected')}
-                              </span>
-                            )}
-
-                        {vercelOauthConnected
-                          ? (
-                              <button
-                                type="button"
-                                className="launch-mini-button"
-                                onClick={() => {
-                                  void disconnectVercelOAuth()
-                                }}
-                                disabled={oauthStatusLoading}
-                              >
-                                {t('Disconnect')}
-                              </button>
-                            )
-                          : (
-                              <button
-                                type="button"
-                                className="launch-mini-button"
-                                onClick={startVercelOAuth}
-                                disabled={oauthStatusLoading}
-                              >
-                                {oauthStatusLoading
-                                  ? t('Checking...')
-                                  : t('Connect Vercel')}
-                              </button>
-                            )}
-                      </div>
-
-                    </>
-                  )
-                : (
-                    <>
-                      {step3TokenReady
+                      {step3VercelAuthReady
                         ? (
+                            <div className="launch-field">
+                              <input
+                                value={vercelStatusText}
+                                readOnly
+                                disabled
+                                className="launch-github-status-input"
+                              />
+                            </div>
+                          )
+                        : (
                             <div className="launch-auth-state flex flex-wrap items-center gap-2">
                               <span className="
                                 inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
@@ -2088,21 +2174,86 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                                   className="size-3.5"
                                 />
                               </span>
-                              <span className="text-xs font-medium text-foreground">
-                                {maskToken(form.vercelAccessToken)}
-                              </span>
-                              <button
-                                type="button"
-                                className="launch-mini-button"
-                                onClick={() =>
-                                  setForm(previous => ({
-                                    ...previous,
-                                    vercelAccessToken: '',
-                                    supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                                  }))}
-                              >
-                                {t('Disconnect')}
-                              </button>
+                              {vercelOauthConnected
+                                ? (
+                                    <span className="text-xs font-medium text-foreground">
+                                      {vercelOauthIdentity || t('Connected account')}
+                                    </span>
+                                  )
+                                : (
+                                    <span className="text-xs text-muted-foreground">
+                                      {t('Not connected')}
+                                    </span>
+                                  )}
+
+                              {vercelOauthConnected
+                                ? (
+                                    <button
+                                      type="button"
+                                      className="launch-mini-button"
+                                      onClick={() => {
+                                        void disconnectVercelOAuth()
+                                      }}
+                                      disabled={oauthStatusLoading}
+                                    >
+                                      {t('Disconnect')}
+                                    </button>
+                                  )
+                                : (
+                                    <button
+                                      type="button"
+                                      className="launch-mini-button"
+                                      onClick={startVercelOAuth}
+                                      disabled={oauthStatusLoading}
+                                    >
+                                      {oauthStatusLoading
+                                        ? t('Checking...')
+                                        : t('Connect Vercel')}
+                                    </button>
+                                  )}
+                            </div>
+                          )}
+                    </>
+                  )
+                : (
+                    <>
+                      {step3TokenReady
+                        ? (
+                            <div className="launch-stack space-y-3">
+                              <div className="launch-field">
+                                <input
+                                  value={vercelStatusText}
+                                  readOnly
+                                  disabled
+                                  className="launch-github-status-input"
+                                />
+                              </div>
+                              <div className="launch-auth-actions flex flex-wrap gap-2">
+                                {showVercelGitHubButton && (
+                                  <button
+                                    type="button"
+                                    className="launch-mini-button"
+                                    onClick={startVercelGitHubConnect}
+                                  >
+                                    {t('Connect Vercel to GitHub')}
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  className="launch-mini-button"
+                                  onClick={() => {
+                                    setVercelConnection(null)
+                                    setVercelConnectionError(null)
+                                    setForm(previous => ({
+                                      ...previous,
+                                      vercelAccessToken: '',
+                                      supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                    }))
+                                  }}
+                                >
+                                  {t('Disconnect')}
+                                </button>
+                              </div>
                             </div>
                           )
                         : (
@@ -2113,6 +2264,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                                   type="password"
                                   value={form.vercelAccessToken}
                                   onChange={(event) => {
+                                    setVercelConnection(null)
+                                    setVercelConnectionError(null)
                                     setForm(previous => ({
                                       ...previous,
                                       vercelAccessToken: event.target.value,
@@ -2140,6 +2293,35 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
                     </>
                   )}
+              {vercelAuthMethod === 'oauth' && step3VercelAuthReady && (
+                <div className="launch-auth-actions flex flex-wrap gap-2">
+                  {showVercelGitHubButton && (
+                    <button
+                      type="button"
+                      className="launch-mini-button"
+                      onClick={startVercelGitHubConnect}
+                    >
+                      {t('Connect Vercel to GitHub')}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="launch-mini-button"
+                    onClick={() => {
+                      void disconnectVercelOAuth()
+                    }}
+                    disabled={oauthStatusLoading}
+                  >
+                    {t('Disconnect')}
+                  </button>
+                </div>
+              )}
+              {vercelCardMessage && !vercelConnectionError && !oauthStatusError && (
+                <p className="launch-helper-text text-xs font-medium text-primary/90">{vercelCardMessage}</p>
+              )}
+              {vercelConnectionError && (
+                <p className="launch-helper-text text-xs font-medium text-destructive">{vercelConnectionError}</p>
+              )}
               {oauthStatusError && (
                 <p className="launch-helper-text text-xs font-medium text-destructive">{oauthStatusError}</p>
               )}
@@ -2235,7 +2417,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   onClick={() => {
                     void loadSupabaseResources()
                   }}
-                  disabled={!step3VercelReady || isLoadingSupabaseResources}
+                  disabled={!step3VercelAuthReady || isLoadingSupabaseResources}
                 >
                   {isLoadingSupabaseResources
                     ? t('Refreshing...')

@@ -65,6 +65,9 @@ export interface LaunchResponseBody {
   supabaseDashboardUrl?: string
   durationMs: number
   error?: string
+  hints?: {
+    vercelGitImportRequired?: boolean
+  }
 }
 
 export interface VercelDomainVerificationRecord {
@@ -92,4 +95,13 @@ export interface OAuthProviderState {
 export interface OAuthStatusResponse {
   vercel: OAuthProviderState
   supabase: OAuthProviderState
+}
+
+export interface VercelConnectionStatusResponse {
+  connected: boolean
+  identity?: string
+  githubImportReady?: boolean
+  githubImportNamespace?: string
+  githubImportProvider?: string
+  error?: string
 }
