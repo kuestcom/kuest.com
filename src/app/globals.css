@@ -1619,6 +1619,39 @@
   gap: 0.75rem;
 }
 
+.launch-connection-step {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.launch-connection-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.launch-connection-step-index {
+  width: 1.4rem;
+  height: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-medium);
+  border-radius: 999px;
+  background: var(--surface-overlay-muted);
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex: none;
+}
+
+.launch-connection-step-label {
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 0;
+}
+
 .launch-token-entry {
   display: grid;
   gap: 0.75rem;
@@ -1727,6 +1760,46 @@
   cursor: default;
   color: var(--color-text);
   -webkit-text-fill-color: var(--color-text);
+}
+
+.launch-status-field {
+  position: relative;
+}
+
+.launch-status-input-with-action {
+  padding-right: 3rem;
+}
+
+.launch-status-action {
+  position: absolute;
+  top: 50%;
+  right: 0.85rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-muted);
+  opacity: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity 0.18s ease,
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.launch-status-field:hover .launch-status-action,
+.launch-status-field:focus-within .launch-status-action {
+  opacity: 1;
+}
+
+.launch-status-action:hover,
+.launch-status-action:focus-visible {
+  background: var(--accent-interaction-bg);
+  color: var(--color-text);
 }
 
 .launch-mini-button,

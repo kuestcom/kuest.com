@@ -101,7 +101,6 @@ export interface VercelConnectionStatusResponse {
   connected: boolean
   identity?: string
   githubImportReady?: boolean
-  githubImportNamespace?: string
-  githubImportProvider?: string
+  githubNamespace?: string
   error?: string
 }

@@ -656,7 +656,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [oauthStatusLoading, setOauthStatusLoading] = useState(false)
   const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
   const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
-  const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
   const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
   const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
 
@@ -912,7 +911,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         return
       }
 
-      setVercelConnectionLoading(true)
       if (!options?.silent) {
         setVercelConnectionError(null)
       }
@@ -925,6 +923,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
           },
           body: JSON.stringify({
             token: token || undefined,
+            gitRepo: form.gitRepo.trim() || undefined,
+            teamId: form.vercelTeamId.trim() || undefined,
           }),
         })
 
@@ -948,13 +948,12 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             : t('We could not verify this Vercel connection. Check it and try again.'),
         )
       }
-      finally {
-        setVercelConnectionLoading(false)
-      }
     },
     [
       t,
       form.vercelAccessToken,
+      form.gitRepo,
+      form.vercelTeamId,
       vercelAuthMethod,
       vercelOauthConnected,
     ],
@@ -1763,23 +1762,15 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const step2ConnectionsReady
     = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
   const githubStatusText = form.gitRepo.trim()
-    ? `${form.gitRepo} ${githubRepoUrl ? copy.githubCreated : copy.githubConnected}`
+    ? form.gitRepo
     : ''
   const vercelGitImportRequiredHint = result?.ok === false && result.hints?.vercelGitImportRequired === true
   const vercelStatusText = step3VercelAuthReady
-    ? `${vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)} connected`
+    ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
     : ''
   const showVercelGitHubButton
     = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
-  const vercelCardMessage = vercelConnectionLoading
-    ? t('Checking Vercel...')
-    : showVercelGitHubButton
-      ? t('Connect Vercel to GitHub to continue.')
-      : step3VercelReady
-        ? t('Vercel is ready for deploys.')
-        : step3VercelAuthReady
-          ? t('Vercel connected.')
-          : null
+  const showVercelGitHubStep = step2GitHubReady || showVercelGitHubButton || step3VercelReady
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -2146,178 +2137,197 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 </div>
               )}
 
-              {vercelAuthMethod === 'oauth'
-                ? (
-                    <>
-                      {step3VercelAuthReady
-                        ? (
-                            <div className="launch-field">
-                              <input
-                                value={vercelStatusText}
-                                readOnly
-                                disabled
-                                className="launch-github-status-input"
-                              />
-                            </div>
-                          )
-                        : (
-                            <div className="launch-auth-state flex flex-wrap items-center gap-2">
-                              <span className="
-                                inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
-                              "
-                              >
-                                <Image
-                                  src="/images/vercel.svg"
-                                  alt="Vercel"
-                                  width={14}
-                                  height={14}
-                                  className="size-3.5"
-                                />
-                              </span>
-                              {vercelOauthConnected
-                                ? (
-                                    <span className="text-xs font-medium text-foreground">
-                                      {vercelOauthIdentity || t('Connected account')}
-                                    </span>
-                                  )
-                                : (
-                                    <span className="text-xs text-muted-foreground">
-                                      {t('Not connected')}
-                                    </span>
-                                  )}
+              <div className="launch-connection-step">
+                <div className="launch-connection-step-header">
+                  <span className="launch-connection-step-index">1</span>
+                  <span className="launch-connection-step-label">{t('Connect Vercel')}</span>
+                  {step3VercelAuthReady && <CircleCheckIcon className="size-4 text-primary" />}
+                </div>
 
-                              {vercelOauthConnected
-                                ? (
-                                    <button
-                                      type="button"
-                                      className="launch-mini-button"
-                                      onClick={() => {
-                                        void disconnectVercelOAuth()
-                                      }}
-                                      disabled={oauthStatusLoading}
-                                    >
-                                      {t('Disconnect')}
-                                    </button>
-                                  )
-                                : (
-                                    <button
-                                      type="button"
-                                      className="launch-mini-button"
-                                      onClick={startVercelOAuth}
-                                      disabled={oauthStatusLoading}
-                                    >
-                                      {oauthStatusLoading
-                                        ? t('Checking...')
-                                        : t('Connect Vercel')}
-                                    </button>
-                                  )}
-                            </div>
-                          )}
-                    </>
-                  )
-                : (
-                    <>
-                      {step3TokenReady
-                        ? (
-                            <div className="launch-stack space-y-3">
-                              <div className="launch-field">
-                                <input
-                                  value={vercelStatusText}
-                                  readOnly
-                                  disabled
-                                  className="launch-github-status-input"
-                                />
-                              </div>
-                              <div className="launch-auth-actions flex flex-wrap gap-2">
-                                {showVercelGitHubButton && (
-                                  <button
-                                    type="button"
-                                    className="launch-mini-button"
-                                    onClick={startVercelGitHubConnect}
-                                  >
-                                    {t('Connect Vercel to GitHub')}
-                                  </button>
-                                )}
+                {vercelAuthMethod === 'oauth'
+                  ? (
+                      <>
+                        {step3VercelAuthReady
+                          ? (
+                              <div className="launch-status-field">
+                                <div className="launch-field">
+                                  <input
+                                    value={vercelStatusText}
+                                    readOnly
+                                    disabled
+                                    className="launch-github-status-input launch-status-input-with-action"
+                                  />
+                                </div>
                                 <button
                                   type="button"
-                                  className="launch-mini-button"
+                                  className="launch-status-action"
                                   onClick={() => {
-                                    setVercelConnection(null)
-                                    setVercelConnectionError(null)
-                                    setForm(previous => ({
-                                      ...previous,
-                                      vercelAccessToken: '',
-                                      supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                                    }))
+                                    void disconnectVercelOAuth()
                                   }}
+                                  disabled={oauthStatusLoading}
+                                  aria-label={t('Disconnect')}
+                                  title={t('Disconnect')}
                                 >
-                                  {t('Disconnect')}
+                                  <XIcon className="size-4" />
                                 </button>
                               </div>
-                            </div>
-                          )
-                        : (
-                            <div className="launch-token-entry">
-                              <label className="launch-field">
-                                <span className="sr-only">{t('Vercel Access Token')}</span>
-                                <input
-                                  type="password"
-                                  value={form.vercelAccessToken}
-                                  onChange={(event) => {
-                                    setVercelConnection(null)
-                                    setVercelConnectionError(null)
-                                    setForm(previous => ({
-                                      ...previous,
-                                      vercelAccessToken: event.target.value,
-                                      supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                                    }))
-                                  }}
-                                  onFocus={() => setIsVercelTokenInputFocused(true)}
-                                  onBlur={() => setIsVercelTokenInputFocused(false)}
-                                  placeholder={t('Paste Vercel Access Token')}
-                                  required
-                                />
-                              </label>
-                              <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
-                                <a
-                                  className="launch-link"
-                                  href="https://vercel.com/account/tokens"
-                                  target="_blank"
-                                  rel="noreferrer"
+                            )
+                          : (
+                              <div className="launch-auth-state flex flex-wrap items-center gap-2">
+                                <span className="
+                                  inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
+                                "
                                 >
-                                  {t('Create token in Vercel')}
-                                </a>
-                              </p>
-                            </div>
-                          )}
+                                  <Image
+                                    src="/images/vercel.svg"
+                                    alt="Vercel"
+                                    width={14}
+                                    height={14}
+                                    className="size-3.5"
+                                  />
+                                </span>
+                                {vercelOauthConnected
+                                  ? (
+                                      <span className="text-xs font-medium text-foreground">
+                                        {vercelOauthIdentity || t('Connected account')}
+                                      </span>
+                                    )
+                                  : (
+                                      <span className="text-xs text-muted-foreground">
+                                        {t('Not connected')}
+                                      </span>
+                                    )}
 
-                    </>
-                  )}
-              {vercelAuthMethod === 'oauth' && step3VercelAuthReady && (
-                <div className="launch-auth-actions flex flex-wrap gap-2">
+                                {vercelOauthConnected
+                                  ? (
+                                      <button
+                                        type="button"
+                                        className="launch-mini-button"
+                                        onClick={() => {
+                                          void disconnectVercelOAuth()
+                                        }}
+                                        disabled={oauthStatusLoading}
+                                      >
+                                        {t('Disconnect')}
+                                      </button>
+                                    )
+                                  : (
+                                      <button
+                                        type="button"
+                                        className="launch-mini-button"
+                                        onClick={startVercelOAuth}
+                                        disabled={oauthStatusLoading}
+                                      >
+                                        {oauthStatusLoading
+                                          ? t('Checking...')
+                                          : t('Connect Vercel')}
+                                      </button>
+                                    )}
+                              </div>
+                            )}
+                      </>
+                    )
+                  : (
+                      <>
+                        {step3TokenReady
+                          ? (
+                              <div className="launch-stack space-y-3">
+                                <div className="launch-status-field">
+                                  <div className="launch-field">
+                                    <input
+                                      value={vercelStatusText}
+                                      readOnly
+                                      disabled
+                                      className="launch-github-status-input launch-status-input-with-action"
+                                    />
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="launch-status-action"
+                                    onClick={() => {
+                                      setVercelConnection(null)
+                                      setVercelConnectionError(null)
+                                      setForm(previous => ({
+                                        ...previous,
+                                        vercelAccessToken: '',
+                                        supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                      }))
+                                    }}
+                                    aria-label={t('Disconnect')}
+                                    title={t('Disconnect')}
+                                  >
+                                    <XIcon className="size-4" />
+                                  </button>
+                                </div>
+                                <div className="launch-auth-actions flex flex-wrap gap-2">
+                                  {showVercelGitHubButton && (
+                                    <button
+                                      type="button"
+                                      className="launch-cta launch-cta-compact"
+                                      onClick={startVercelGitHubConnect}
+                                    >
+                                      {t('Connect Vercel to GitHub')}
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          : (
+                              <div className="launch-token-entry">
+                                <label className="launch-field">
+                                  <span className="sr-only">{t('Vercel Access Token')}</span>
+                                  <input
+                                    type="password"
+                                    value={form.vercelAccessToken}
+                                    onChange={(event) => {
+                                      setVercelConnection(null)
+                                      setVercelConnectionError(null)
+                                      setForm(previous => ({
+                                        ...previous,
+                                        vercelAccessToken: event.target.value,
+                                        supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+                                      }))
+                                    }}
+                                    onFocus={() => setIsVercelTokenInputFocused(true)}
+                                    onBlur={() => setIsVercelTokenInputFocused(false)}
+                                    placeholder={t('Paste Vercel Access Token')}
+                                    required
+                                  />
+                                </label>
+                                <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
+                                  <a
+                                    className="launch-link"
+                                    href="https://vercel.com/account/tokens"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {t('Create token in Vercel')}
+                                  </a>
+                                </p>
+                              </div>
+                            )}
+
+                      </>
+                    )}
+              </div>
+
+              {showVercelGitHubStep && (
+                <div className="launch-connection-step">
+                  <div className="launch-connection-step-header">
+                    <span className="launch-connection-step-index">2</span>
+                    <span className="launch-connection-step-label">{t('Connect Vercel to GitHub')}</span>
+                    {step3VercelReady && <CircleCheckIcon className="size-4 text-primary" />}
+                  </div>
                   {showVercelGitHubButton && (
                     <button
                       type="button"
-                      className="launch-mini-button"
+                      className="launch-cta launch-cta-compact"
                       onClick={startVercelGitHubConnect}
                     >
                       {t('Connect Vercel to GitHub')}
                     </button>
                   )}
-                  <button
-                    type="button"
-                    className="launch-mini-button"
-                    onClick={() => {
-                      void disconnectVercelOAuth()
-                    }}
-                    disabled={oauthStatusLoading}
-                  >
-                    {t('Disconnect')}
-                  </button>
                 </div>
-              )}
-              {vercelCardMessage && !vercelConnectionError && !oauthStatusError && (
-                <p className="launch-helper-text text-xs font-medium text-primary/90">{vercelCardMessage}</p>
               )}
               {vercelConnectionError && (
                 <p className="launch-helper-text text-xs font-medium text-destructive">{vercelConnectionError}</p>

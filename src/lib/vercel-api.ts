@@ -108,9 +108,41 @@ interface VercelAuthenticatedUserResponse {
     email?: string
     username?: string
     name?: string
-    importFlowGitNamespace?: string
-    importFlowGitProvider?: string
   }
+}
+
+interface VercelGitNamespace {
+  provider: string
+  slug: string
+  id: string | number
+  ownerType: string
+  name?: string
+  isAccessRestricted?: boolean
+  installationId?: number
+  requireReauth?: boolean
+}
+
+interface VercelGitRepoSearchResponse {
+  gitAccount?: {
+    provider: string
+    namespaceId: string | number | null
+  }
+  repos?: Array<{
+    id: string | number
+    provider: string
+    url: string
+    name: string
+    slug: string
+    namespace: string
+    owner: {
+      id: string | number
+      name: string
+    }
+    ownerType: string
+    private: boolean
+    defaultBranch: string
+    updatedAt: number
+  }>
 }
 
 export interface SupabaseResourceOption {
@@ -121,8 +153,7 @@ export interface SupabaseResourceOption {
 export interface VercelConnectionInspection {
   identity?: string
   githubImportReady: boolean
-  githubImportNamespace?: string
-  githubImportProvider?: string
+  githubNamespace?: string
 }
 
 interface VercelStorageStore {
@@ -483,6 +514,27 @@ function withTeamId(path: string, teamId?: string) {
   return `${path}${separator}teamId=${encodeURIComponent(teamId)}`
 }
 
+function withQuery(path: string, query: URLSearchParams) {
+  if (!query.size) {
+    return path
+  }
+  const separator = path.includes('?') ? '&' : '?'
+  return `${path}${separator}${query.toString()}`
+}
+
+function parseRepoParts(value?: string) {
+  const repo = value?.trim() || ''
+  const separatorIndex = repo.indexOf('/')
+  if (separatorIndex <= 0 || separatorIndex === repo.length - 1) {
+    return null
+  }
+
+  return {
+    owner: repo.slice(0, separatorIndex).trim(),
+    name: repo.slice(separatorIndex + 1).trim(),
+  }
+}
+
 function extractErrorCode(details: unknown) {
   if (!details || typeof details !== 'object') {
     return ''
@@ -727,6 +779,8 @@ export async function preflightVercelSupabaseLaunch(params: {
 
 export async function inspectVercelConnection(params: {
   token: string
+  gitRepo?: string
+  teamId?: string
 }): Promise<VercelConnectionInspection> {
   const data = await vercelRequest<VercelAuthenticatedUserResponse>(params.token, '/v2/user')
   const user = data.user
@@ -735,14 +789,56 @@ export async function inspectVercelConnection(params: {
       || user?.username?.trim()
       || user?.name?.trim()
       || undefined
-  const githubImportNamespace = user?.importFlowGitNamespace?.trim() || undefined
-  const githubImportProvider = user?.importFlowGitProvider?.trim() || undefined
+
+  const namespacesPath = withQuery('/v1/integrations/git-namespaces', new URLSearchParams({
+    provider: 'github',
+  }))
+  const namespaces = await vercelRequest<VercelGitNamespace[]>(params.token, namespacesPath)
+  const githubNamespaces = namespaces.filter(namespace => namespace.provider === 'github')
+  const repoParts = parseRepoParts(params.gitRepo)
+
+  if (!repoParts) {
+    return {
+      identity,
+      githubImportReady: githubNamespaces.some(namespace => !namespace.requireReauth),
+      githubNamespace: githubNamespaces.find(namespace => !namespace.requireReauth)?.slug,
+    }
+  }
+
+  const matchingNamespace = githubNamespaces.find(namespace =>
+    namespace.slug.trim().toLowerCase() === repoParts.owner.toLowerCase(),
+  )
+
+  if (!matchingNamespace || matchingNamespace.requireReauth) {
+    return {
+      identity,
+      githubImportReady: false,
+      githubNamespace: matchingNamespace?.slug,
+    }
+  }
+
+  const repoQuery = new URLSearchParams({
+    provider: 'github',
+    namespaceId: String(matchingNamespace.id),
+    query: repoParts.name,
+  })
+  if (params.teamId?.trim()) {
+    repoQuery.set('teamId', params.teamId.trim())
+  }
+  const searchResult = await vercelRequest<VercelGitRepoSearchResponse>(
+    params.token,
+    withQuery('/v1/integrations/search-repo', repoQuery),
+  )
+  const matchingRepo = (searchResult.repos ?? []).find(repo =>
+    repo.namespace.trim().toLowerCase() === repoParts.owner.toLowerCase()
+    && (repo.slug.trim().toLowerCase() === repoParts.name.toLowerCase()
+      || repo.name.trim().toLowerCase() === repoParts.name.toLowerCase()),
+  )
 
   return {
     identity,
-    githubImportReady: githubImportProvider === 'github' && Boolean(githubImportNamespace),
-    githubImportNamespace,
-    githubImportProvider,
+    githubImportReady: Boolean(matchingRepo),
+    githubNamespace: matchingNamespace.slug,
   }
 }
 

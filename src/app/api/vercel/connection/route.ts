@@ -14,6 +14,8 @@ export const dynamic = 'force-dynamic'
 
 interface RequestBody {
   token?: string
+  gitRepo?: string
+  teamId?: string
 }
 
 export async function POST(request: Request) {
@@ -42,6 +44,8 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as RequestBody
     const rawToken = typeof body.token === 'string' ? body.token.trim() : ''
+    const gitRepo = typeof body.gitRepo === 'string' ? body.gitRepo.trim() : ''
+    const teamId = typeof body.teamId === 'string' ? body.teamId.trim() : ''
     const session = rawToken ? null : await getValidVercelSession()
     const token = rawToken || session?.accessToken || ''
 
@@ -55,14 +59,17 @@ export async function POST(request: Request) {
       )
     }
 
-    const connection = await inspectVercelConnection({ token })
+    const connection = await inspectVercelConnection({
+      token,
+      gitRepo: gitRepo || undefined,
+      teamId: teamId || undefined,
+    })
 
     return NextResponse.json<VercelConnectionStatusResponse>({
       connected: true,
       identity: connection.identity,
       githubImportReady: connection.githubImportReady,
-      githubImportNamespace: connection.githubImportNamespace,
-      githubImportProvider: connection.githubImportProvider,
+      githubNamespace: connection.githubNamespace,
     })
   }
   catch (error) {
