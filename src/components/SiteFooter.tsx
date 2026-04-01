@@ -27,7 +27,7 @@ export default function SiteFooter({
         <a
           id="footerDocsLink"
           className="foot-link-icon"
-          href="https://kuest.com/docs/owners"
+          href="https://docs.kuest.com"
           target="_blank"
           rel="noopener noreferrer"
           aria-label={docsLabel}

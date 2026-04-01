@@ -143,7 +143,7 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Authorize Kuest on GitHub so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.',
     redirecting: 'Redirecting...',
     connectGitHub: 'Connect GitHub',
-    oauthSoon: '(soon) OAuth',
+    oauthSoon: 'OAuth (soon)',
   },
   de: {
     connectionsStep: 'Verbindungen',
@@ -161,7 +161,7 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autoriza a Kuest en GitHub para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.',
     redirecting: 'Redirigiendo...',
     connectGitHub: 'Conectar GitHub',
-    oauthSoon: '(soon) OAuth',
+    oauthSoon: 'OAuth (soon)',
   },
   pt: {
     connectionsStep: 'Conexões',
@@ -170,7 +170,7 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorize a Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.',
     redirecting: 'Redirecionando...',
     connectGitHub: 'Conectar GitHub',
-    oauthSoon: '(soon) OAuth',
+    oauthSoon: 'OAuth (soon)',
   },
   fr: {
     connectionsStep: 'Connexions',
@@ -179,7 +179,7 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: 'Autorisez Kuest sur GitHub afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.',
     redirecting: 'Redirection...',
     connectGitHub: 'Connecter GitHub',
-    oauthSoon: '(soon) OAuth',
+    oauthSoon: 'OAuth (soon)',
   },
   zh: {
     connectionsStep: '连接',
@@ -188,7 +188,7 @@ const LAUNCHPAD_COPY: Record<
     githubInfo: '请在 GitHub 上授权 Kuest，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。',
     redirecting: '正在跳转...',
     connectGitHub: '连接 GitHub',
-    oauthSoon: '(soon) OAuth',
+    oauthSoon: 'OAuth (soon)',
   },
 }
 
