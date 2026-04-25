@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import BlogPostFooter from '@/components/blog/BlogPostFooter'
 import BlogPostHero from '@/components/blog/BlogPostHero'
+import LocalizedMdxContent from '@/components/blog/LocalizedMdxContent'
 import MarketingDockNav from '@/components/MarketingDockNav'
 import MarketingPageRuntime from '@/components/MarketingPageRuntime'
 import SiteFooter from '@/components/SiteFooter'
@@ -14,6 +15,7 @@ import { getPost, listPosts, listPostStaticParams } from '@/lib/blog/content'
 import { getPostCoverSrc } from '@/lib/blog/cover'
 import { CONTACT_HREF } from '@/lib/constants'
 import { resolveSiteUrl } from '@/lib/site-url'
+import { createLocalizedMdxComponents } from '@/mdx-components'
 
 export const dynamicParams = false
 
@@ -93,6 +95,7 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
   const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
 
   const { default: PostContent } = await import(`@content/blog/${locale}/${slug}.mdx`)
+  const mdxComponents = createLocalizedMdxComponents(locale)
 
   const related = listPosts(locale).filter(p => p.slug !== post.slug).slice(0, 2)
   const relatedDateLabels = Object.fromEntries(
@@ -156,7 +159,11 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
         />
 
         <article className="blog-prose blog-post-article">
-          <PostContent />
+          <LocalizedMdxContent
+            Content={PostContent}
+            components={mdxComponents}
+            locale={locale}
+          />
         </article>
 
         <BlogPostFooter

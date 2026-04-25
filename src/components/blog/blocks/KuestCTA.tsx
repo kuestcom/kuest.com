@@ -1,3 +1,4 @@
+import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronRightIcon } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 
@@ -20,9 +21,11 @@ function isExternalHref(href: string): boolean {
 function CtaButton({
   cta,
   className,
+  locale,
 }: {
   cta: CtaLink
   className: string
+  locale?: SupportedLocale
 }) {
   const content = (
     <>
@@ -33,7 +36,7 @@ function CtaButton({
 
   if (isInternalPageHref(cta.href)) {
     return (
-      <Link href={cta.href as never} className={className}>
+      <Link href={cta.href as never} locale={locale} className={className}>
         {content}
       </Link>
     )
@@ -59,21 +62,23 @@ export default function KuestCTA({
   body,
   primary,
   secondary,
+  locale,
 }: {
   headline: string
   body?: string
   primary: CtaLink
   secondary?: CtaLink
+  locale?: SupportedLocale
 }) {
   return (
     <aside className="blog-cta">
       <h3 className="blog-cta-headline">{headline}</h3>
       {body ? <p className="blog-cta-body">{body}</p> : null}
       <div className="cta-btns">
-        <CtaButton cta={primary} className="btn-cta btn-cta-primary" />
+        <CtaButton cta={primary} locale={locale} className="btn-cta btn-cta-primary" />
         {secondary
           ? (
-              <CtaButton cta={secondary} className="btn-cta btn-cta-secondary" />
+              <CtaButton cta={secondary} locale={locale} className="btn-cta btn-cta-secondary" />
             )
           : null}
       </div>
