@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import matter from 'gray-matter'
-import { SUPPORTED_LOCALES } from '@/i18n/locales'
+import { isSupportedLocale } from '@/i18n/locales'
 import { parseFrontmatter } from './frontmatter'
 import { computeReadingTime } from './reading-time'
 
@@ -29,10 +29,6 @@ interface PostFileEntry {
   slug: string
   locale: SupportedLocale
   filePath: string
-}
-
-function isSupportedLocale(value: string): value is SupportedLocale {
-  return (SUPPORTED_LOCALES as readonly string[]).includes(value)
 }
 
 function listPostFiles(): PostFileEntry[] {
