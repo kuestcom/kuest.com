@@ -1,0 +1,285 @@
+---
+title: "$18B in Volume, 32M Visits, and a 2-Year Window: The Prediction-Market Land Grab"
+description: "Prediction-market volume is doubling every six months and most institutions still don't have a position. A breakdown of the data, the regulatory shift, and the operators already moving."
+publishedAt: 2026-03-21
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["market-analysis", "growth", "research"]
+---
+
+The prediction-market category went from a curiosity to a serious
+asset class in about twenty-four months. The numbers driving that
+shift are now public and unambiguous, and yet most institutional
+allocation committees still don't have a position, most major
+brokerages don't have a launch plan, and most media operators don't
+have a strategy. That gap closes inside the next two years. This is
+what the data says, who's already moving, and what the operators we
+work with are using to build their thesis.
+
+<Stat
+  value="≈ 6×"
+  label="Year-over-year growth in combined Kalshi + Polymarket monthly volume, 2024 to Q1 2026"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+A 6× annual growth rate is the kind of number that warrants attention
+on its own. The reason it warrants strategic attention specifically —
+not just curiosity — is that this growth is happening on
+infrastructure that visibly cannot meet the demand. The platforms
+clearing the volume today were not built to be the global venues of an
+asset class. They were built as single jurisdiction venues that got
+overwhelmed. That mismatch creates the window.
+
+## Where the volume actually came from
+
+The clean way to understand the last 24 months is to break down what
+drove each leg of the curve.
+
+The first leg, late 2023 through early 2024, was driven almost entirely
+by political-event volume on Polymarket — election markets, congressional
+markets, Supreme Court markets. This was retail flow, primarily US-based
+despite the geo-block, finding its way to the venue through VPNs and
+crypto-native onboarding.
+
+The second leg, mid-2024 through mid-2025, was the Kalshi institutional
+ramp. Once the CFTC's no-action posture stabilized, professional desks
+started quoting on Kalshi at meaningful size. Macro funds in particular
+discovered that Fed-decision contracts and CPI contracts were liquid
+enough to use as hedges for short-duration rate exposures.
+
+The third leg, late 2025 to today, is what changed the framing. Volume
+diversified beyond political and macro. Sports outcomes, commodity
+prints, geopolitical events, and crypto milestones all started clearing
+nine-figure weekly volume. This is the moment a category stops being a
+"political-betting site" and starts being a multi-vertical contract
+exchange.
+
+<Comparison
+  columns={["Vertical", "Q4 2024 share", "Q1 2026 share", "Growth multiple"]}
+  rows={[
+    ["Political / electoral", "62%", "21%", "≈ 2.0×"],
+    ["Macro / rates / CPI", "11%", "26%", "≈ 14.1×"],
+    ["Sports / culture", "7%", "22%", "≈ 18.7×"],
+    ["Crypto / asset milestones", "9%", "16%", "≈ 10.6×"],
+    ["Geopolitical / climate", "11%", "15%", "≈ 8.1×"],
+  ]}
+/>
+
+The multiplier on the right is the part to dwell on. Political volume
+roughly doubled. Every other vertical grew between 8× and 19× in the
+same window. That's not a category that needs another political event
+to keep growing — that's a category whose growth is being held back
+mostly by available product surface and available regulated
+distribution.
+
+## Why brokerages are next, not later
+
+The XP × Kalshi distribution agreement, signed in March 2026, is the
+single most useful data point we have for what comes next. The
+agreement isn't novel as commerce; it's novel as a signal. Kalshi
+explicitly chose distribution-by-partnership over expansion-by-licence,
+which means they expect to compete more for institutional flow than
+for retail.
+
+That is good news for any brokerage that's been wondering whether it
+should compete with Kalshi. It almost certainly shouldn't.
+
+What it should do — what XP is doing — is host the product on
+infrastructure that someone else operates. The brokerage owns the
+client relationship, the local language, the local regulatory standing,
+and the trust. The infrastructure operator owns settlement, custody,
+liquidity, and contract design. The economics split predictably:
+
+- The brokerage takes the operator fee on every trade — typically
+  0.5% to 2.0% of notional, depending on jurisdiction and risk
+  appetite.
+- The infrastructure layer takes a smaller, capped fee for hosting,
+  matching, and settlement.
+- The trader gets a venue with the local language, local regulatory
+  comfort, and the same liquidity they'd find on a global venue.
+
+This is exactly the same shape as the merchant-payments stack. Stripe
+hosts payment infrastructure; the merchant takes the customer
+relationship and the margin. Nobody asks a coffee shop to write its
+own card-processing code. The same will be true of prediction markets
+for the same reasons: the infrastructure problem is hard, the
+distribution problem is local, and they shouldn't be solved by the
+same team.
+
+<Callout type="info" title="The maths on a regional brokerage">
+  A retail brokerage with 1M active clients and 12% monthly engagement
+  on a prediction-market product, at $400 average notional per active
+  trader and a 1.0% operator fee, generates ≈ $5.7M/month in net
+  revenue. That's net of liquidity provision, custody, and matching —
+  all of which a protocol layer absorbs.
+</Callout>
+
+## The regulatory shift you can already see
+
+The narrative in 2022 was that regulators were hostile to prediction
+markets. That is no longer accurate. In Q1 2026, three significant
+shifts are visible:
+
+- **United States.** Kalshi's no-action position is now extended
+  through several rule-making cycles. The CFTC has effectively signaled
+  that event contracts on a CFTC-registered exchange are inside the
+  perimeter, which removes the existential overhang that killed
+  InTrade.
+- **European Union.** ESMA's discussion paper on event-based
+  derivatives, published December 2025, treats binary outcome contracts
+  as a recognised category for the first time. The path to a regulated
+  EU venue is no longer theoretical; it's a multi-year procedural
+  question.
+- **Brazil.** The CVM and the Ministry of Finance are jointly
+  consulting on a domestic framework, with B3 publicly committing to
+  exploring the asset class. The XP × Kalshi deal pressures this
+  consultation forward.
+
+What you don't have yet is universal clarity. What you do have is the
+removal of the worst-case scenarios. That is the regulatory environment
+in which institutions start writing checks.
+
+<MarketEmbed
+  title="Will the EU finalise an event-contract regulatory framework before Q4 2026?"
+  cat="Regulatory"
+  cover="/assets/images/fed-rate-move.png"
+  pct={38}
+/>
+
+## Who is already positioning
+
+A handful of operator categories have moved already. Watching them is
+the cheapest way to understand who'll move next.
+
+**Crypto-native exchanges.** Kraken and Bitget both signaled work on
+prediction-market integrations in late 2025. The thesis is obvious:
+their existing user base trades volatility instruments, and a binary
+contract is the simplest possible volatility product. The execution
+challenge is regulatory — most crypto exchanges aren't licensed to
+host outcome contracts in their primary jurisdictions.
+
+**Local brokerages outside the US.** XP is the named example, but
+we're aware of at least four other Latin American brokerages running
+internal feasibility on the same model. The economics are clearer
+for them than for any US comparable, because the local-distribution
+moat is harder to dislodge.
+
+**Sports books and consumer-fintech apps.** A binary contract on a
+sports outcome is functionally identical to a parlay leg, but with
+better unit economics for the operator and lower vig for the trader.
+We expect at least one major sports book to ship a prediction-market
+SKU before the end of 2026.
+
+**Media operators with engaged audiences.** This is the category most
+underestimated by traditional finance. A newsletter with 50k engaged
+subscribers, a Twitch streamer with a community of 200k, or a
+specialist publication with a vertical audience can host markets
+specific to their niche. Conversion is much higher than against a
+general retail audience because the audience already has views, and
+the customer-acquisition cost is effectively zero — the audience is
+already aggregated. We've seen creator-led venues hit five-figure
+weekly volume within their first ten days live, on audiences a
+fraction of the size that a traditional retail brokerage would
+consider worth targeting.
+
+## What it costs to wait
+
+The instinct, when a category is moving fast, is to wait until the
+"winners" emerge. With prediction markets, that instinct is
+miscalibrated. The protocol thesis says there is no single winner at
+the venue layer — there will be hundreds of operator brands, each
+serving a specific audience, all running on shared infrastructure.
+
+Waiting until 2027 to start thinking about a launch means missing the
+formative period in which the operator standards are set, the
+distribution patterns are codified, and the early operator brands lock
+in audience attribution. Waiting also assumes that the cost of
+launching stays where it is. We don't expect it to.
+
+<Callout type="warning" title="What the cost curve looks like">
+  Today: a white-label deploy on shared liquidity is launchable in
+  under 15 minutes from a wizard. By the end of 2026, we expect
+  regulated-jurisdiction overlays (KYC pipelines, regional fee
+  templates, local-language UX) to add 4–6 weeks of compliance work
+  per jurisdiction. The cheapest time to launch is now, not later.
+</Callout>
+
+## What we expect to break before it scales further
+
+A category growing 6× a year doesn't grow that way smoothly. Three
+known stress points are visible from where we sit, and operators
+planning to enter should be aware of them because each is also an
+opening.
+
+**Stress point one: settlement bandwidth.** The optimistic-oracle
+model that resolves most on-chain markets today was sized for a
+fraction of the contract count we now expect. UMA's voter base, the
+challenge windows, and the dispute-bond capital are all going to be
+load-tested by a category clearing 50,000+ markets per week. Expect
+either a hardening of the existing rails or a fragmentation into
+multiple resolution networks specialised by vertical. Operators that
+inherit a managed settlement layer rather than running their own
+will navigate this transition without engineering work.
+
+**Stress point two: fragmented liquidity across operator brands.**
+The protocol thesis says hundreds of operator brands will host the
+same underlying markets. Without shared liquidity, that fragmentation
+makes every individual book thinner than the legacy single-venue
+books. With shared liquidity (the model we operate), order flow on
+any operator brand contributes to and draws from a unified book.
+Operators that don't integrate into a shared-liquidity arrangement
+are going to feel a structural disadvantage in spreads inside 18
+months.
+
+**Stress point three: regulatory whiplash in 2027.** The current
+trajectory in the EU and Brazil is constructive, but it's not linear.
+The most likely path includes at least one regulatory pull-back —
+probably driven by a high-profile resolution dispute or a leveraged
+loss on a retail account — that triggers a tightening cycle.
+Operators with clean compliance posture survive and grow during
+those cycles; operators leaning on grey-area frameworks lose
+distribution overnight. Build assuming a tightening event will
+happen.
+
+None of these are fatal. They're the kind of stress points every
+asset class encounters in its formative years. The operators that
+do well are the ones that read them as inevitable and design their
+posture accordingly.
+
+## What the operators we work with are doing right now
+
+The operator playbook that's emerging across the brokerages, media
+companies, and institutional desks we work with has four moves:
+
+1. **Define the audience and the markets.** Not "we want to host
+   prediction markets" — "we want to host political and macro markets
+   for our 80k retail clients in São Paulo." The narrower the
+   audience definition, the faster everything else gets.
+2. **Pick the regulatory posture.** The choice is between launching
+   under an existing offshore framework (faster, fewer constraints)
+   versus working toward a domestic regulated venue (slower, much
+   larger TAM). Most operators we speak with are doing both — soft
+   launch under an offshore framework while the domestic license
+   matures.
+3. **Decide on the infrastructure layer early.** This is where the
+   <a href="/blog/2026-04-build-vs-license-prediction-market">build vs license analysis</a> matters. The deltas between
+   six months and six weeks to launch are entirely in this decision.
+4. **Treat liquidity as a Day-One feature, not a Month-Six problem.**
+   We've written separately on <a href="/blog/2026-04-shared-liquidity-day-one">why shared liquidity decides who wins
+   the next wave</a>. The short version: operators who try to bootstrap
+   liquidity from cold lose 60–80% of their launch audience inside
+   30 days.
+
+The category will look very different in 18 months. The operators
+positioning now will be the ones whose names are on the leaderboard
+when it does.
+
+<KuestCTA
+  headline="Mapping out a venue for your audience? Let's run the numbers."
+  body="We'll walk through audience sizing, fee economics, regulatory posture, and a launch timeline that gets you live in days, not quarters."
+  primary={{ href: "/launch", label: "Run the launch wizard" }}
+  secondary={{ href: "/enterprise", label: "Book a strategy call" }}
+/>

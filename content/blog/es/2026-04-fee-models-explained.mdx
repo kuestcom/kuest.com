@@ -1,0 +1,248 @@
+---
+title: "Comisiones de Trading, Explicadas: Cómo Fijar las Tuyas Sin Espantar a los Operadores"
+description: "Una guía práctica 2026 para elegir la tarifa de tu mercado de predicción — qué vemos funcionar, qué mata el volumen, y cómo evolucionarla mientras creces."
+publishedAt: 2026-04-08
+updatedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
+---
+
+La comisión sobre cada operación es el número más importante de
+tu venue de mercados de predicción. Si la pones demasiado alta,
+tus operadores migran silenciosamente a un venue con ejecución
+más ajustada; si la pones demasiado baja, dejas ingresos
+recurrentes materiales sobre la mesa sin ningún beneficio real.
+Este artículo es el desglose desde el lado del operador de lo
+que vemos funcionar realmente en 2026, basado en los venues
+activos sobre el stack de Kuest y en lo que el panorama
+competitivo (Kalshi, Polymarket, la nueva ola de white-labels
+regionales) está haciendo.
+
+Si estás más temprano en tu evaluación, comienza con el
+<a href="/blog/2026-03-prediction-market-land-grab">post de oportunidad de mercado</a>
+o el <a href="/blog/2026-04-build-vs-license-prediction-market">análisis construir-vs-licenciar</a>.
+Este post asume que ya pasaste esas preguntas y que necesitas
+decidir dónde fijar la comisión de operador en el día uno.
+
+<Stat
+  value="≈ 0,9 %"
+  label="Comisión mediana de operador en venues white-label de mercados de predicción lanzados en el Q1 2026, ponderada por volumen a 30 días"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Encuesta de operadores Kuest, Q1 2026"
+/>
+
+## Qué es realmente una comisión de mercado de predicción
+
+Antes de discutir tarifas, vale la pena ser explícito sobre qué
+es la comisión y qué no, porque los operadores que vienen del
+mundo de las correduría a veces asumen el default equivocado.
+
+Una comisión de trading en mercados de predicción es un
+porcentaje del valor **nocional** de una operación — es decir,
+tamaño del contrato por precio ejecutado — cobrado en cada
+fill. No es un porcentaje del beneficio, no es un spread, y no
+es una comisión de retiro. Un trader que compra 100 contratos
+SÍ a 0,42 USD tiene un nocional de 42 USD y paga una comisión
+de 42 USD × tu tarifa. La comisión la cobra el matching engine
+en la ejecución y se enruta a la dirección de liquidación del
+operador.
+
+Tres notas estructurales que importan:
+
+- **Las comisiones se cobran en ambos lados de cada
+  operación.** Comprador y vendedor pagan ambos la comisión de
+  operador. Tu ingreso efectivo por operación es 2 × tarifa ×
+  nocional. Los operadores que modelan solo un lado subestiman
+  los ingresos a la mitad.
+- **Las comisiones se aplican a fills, no a órdenes.** Publicar
+  una orden que nunca se llena no le cuesta nada al trader.
+  Solo el nocional ejecutado genera ingresos.
+- **La comisión se superpone al costo implícito del spread.**
+  Un trader que toma una oferta a 0,43 USD en lugar de 0,42 ya
+  está pagando 1 centavo de costo de ejecución. Tu comisión va
+  encima de eso.
+
+La estructura es la misma que la comisión taker de un exchange
+centralizado, con dos simplificaciones: no hay rebate de maker
+(porque el protocolo provee liquidez desde un libro
+compartido), y la tarifa es simétrica en ambos lados.
+
+## Cómo se ven las tarifas competitivas en 2026
+
+Una instantánea de dónde está la industria al Q1 2026, sacada
+de datos de ejecución públicamente observables más la encuesta
+trimestral a operadores que corremos:
+
+<Comparison
+  columns={["Tipo de venue", "Comisión típica de operador", "Spread en mercados líquidos", "Costo total ida y vuelta"]}
+  rows={[
+    ["Kalshi (regulado EE. UU.)", "0,0 % (ninguna)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1,0 % (compartida con protocolo)", "20–60 bps", "≈ 1,4–1,6 %"],
+    ["White-labels de brokers retail regionales", "0,8–1,5 %", "20–80 bps", "≈ 1,2–2,3 %"],
+    ["Overlays de exchanges cripto-nativos", "0,3–0,7 %", "20–60 bps", "≈ 0,7–1,4 %"],
+    ["Venues de creator / comunidad", "1,5–2,5 %", "30–100 bps", "≈ 2,0–3,5 %"],
+  ]}
+/>
+
+Dos cosas para leer de esa tabla.
+
+Primero, la tarifa headline de 0 % de Kalshi es engañosa porque
+están operando un modelo de negocio totalmente diferente — son
+una bolsa regulada de EE. UU. recuperando costos a través del
+spread, ventas de datos de mercado y niveles de acceso
+institucional, no a través de una comisión por trade. No
+deberías intentar igualar su headline. Deberías apuntar al
+rango en que se sitúa tu categoría peer.
+
+Segundo, el spread entre el venue de menor comisión (overlays
+cripto-nativos a ~0,5 %) y el más alto (venues de creator a
+~2 %) es aproximadamente 4×. Ese spread refleja diferencias de
+audiencia, no un error de pricing.
+
+## Qué impulsa realmente la tolerancia de la audiencia
+
+Tres fuerzas determinan cuánta comisión puede cobrar un venue
+antes de que el volumen por trader empiece a declinar.
+
+**El costo alternativo de ejecución.** Un trader en un venue
+liderado por creador compara tu 2 % con el costo de abrir una
+cuenta en Polymarket, aprender otra UX y autocustodiar fondos.
+Para ese trader, la comparación no es 2 % vs 1 % — es 2 % vs
+fricción de cambiar de venue. La fricción gana al diferencial
+de comisión cada vez, hasta una brecha significativa.
+
+**La distribución de tamaño de operación.** Un trader retail
+poniendo posiciones de 50 USD apenas nota una comisión del
+1 % — son 0,50 USD. Un desk profesional moviendo posiciones de
+100k USD nota una comisión del 1 % muy directamente — son
+1.000 USD por operación.
+
+**El edge implícito en la operación.** Un trader que cree que
+el contrato SÍ está mal valorado por 8 % está feliz de pagar
+1 % para tomar esa visión. Un trader "explorando" un mercado
+con convicción débil (1–2 % de edge implícito) rebota ante
+cualquier comisión por encima de ~0,5 %.
+
+<Callout type="info" title="El filtro de convicción es una característica">
+  Comisiones más altas entregan mayor rentabilidad por trader y
+  menor velocidad de operaciones. Comisiones más bajas entregan
+  mayor velocidad y menor rentabilidad por trader. No hay
+  respuesta universalmente correcta — solo una respuesta
+  correcta para la audiencia y estructura de costos que tienes.
+</Callout>
+
+## Recomendación concreta de tarifa por tipo de operador
+
+Basado en lo que vemos en lanzamientos:
+
+**Broker retail (1k–100k clientes).** Empieza en 0,85 % y
+mantén 90 días antes de ajustar. Está en el medio de tu banda
+competitiva y bien por debajo de donde se rompe la tolerancia.
+
+**Overlay cripto-nativo o add-on de exchange.** Empieza en
+0,5 %. Tu audiencia te compara con comisiones taker de
+exchanges centralizados en el rango 0,10–0,30 %.
+
+**Venue liderado por creador.** Empieza en 1,50 %. Tu audiencia
+tolera comisiones más altas porque confía en ti.
+
+**Venue orientado a institucional.** Empieza en 0,10–0,20 %
+con estructura por niveles que premie tamaño mayor.
+
+**Sportsbook u overlay de fintech consumer.** Empieza en 1,0 %.
+Tu audiencia está anclada al vig tradicional de sportsbook
+(típicamente 4,5–10 %), así que 1,0 % se sentirá barato.
+
+## Cómo evolucionar la tarifa después del lanzamiento
+
+Fijar la comisión el día uno es la mitad del trabajo. La otra
+mitad es saber cómo ajustarla a medida que el venue madura, y
+no hacerlo prematuramente.
+
+La regla más limpia que vemos usar a operadores es la **prueba
+de cohorte de 90 días**: elige una tarifa inicial, mantenla 90
+días intacta, mira la curva de velocidad y la curva de retención
+en la semana 12, luego haz un único ajuste.
+
+Tres señales que ameritan un cambio de comisión:
+
+1. **Retención semana 12 por debajo del 35 %.** La comisión
+   está dañando el volumen más de lo que está ganando ingresos.
+   Baja la tarifa 20–25 bps y vuelve a probar otros 90 días.
+2. **Tamaño mediano de operación bajando con el tiempo.** Los
+   traders se vuelven más sensibles al costo. Una baja modesta
+   (10–15 bps) usualmente lo detiene.
+3. **Volumen creciendo rápido y conteo de traders creciendo
+   más rápido.** Tienes poder de pricing. Puedes subir la
+   comisión 10–15 bps sin perder volumen.
+
+Lo que no debes hacer es bajar la comisión en respuesta a un
+competidor que lanza con tarifa más baja.
+
+## Cómo interactúan las comisiones con la liquidez compartida
+
+Si tu venue corre sobre liquidez compartida (lo cual
+<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fuertemente</a>),
+las matemáticas tienen un giro que vale la pena entender. El
+libro de órdenes compartido provee profundidad a spreads de
+nivel-protocolo, lo que significa que el costo total de
+ejecución de tus traders es tu comisión más un spread ajustado
+(~30 bps) a nivel-protocolo. Ese total es competitivo incluso
+con comisiones de operador de 1,0–1,5 %.
+
+<Callout type="tip" title="Tarifa efectiva, no tarifa headline">
+  Cuando compares tu venue con un competidor, compara el costo
+  total de ida y vuelta del trader (comisión × 2 + spread × 2),
+  no la comisión headline. Una comisión de 1,0 % sobre liquidez
+  compartida suele ser más barata para el trader que una
+  comisión de 0,5 % sobre un libro propietario delgado.
+</Callout>
+
+## Errores comunes en el día uno
+
+Tres patrones que vemos repetidamente:
+
+**Anclarse a comisiones spot de exchange cripto.** Operadores
+con background de exchange a veces ponen contratos de
+predicción a 0,10 % taker, igual que un trade BTC-USDT. Eso
+subvalora la complejidad operativa.
+
+**Tiering muy agresivo, muy pronto.** Un nuevo venue con
+30k USD de volumen semanal no necesita una estructura VIP de
+cinco niveles.
+
+**Descuento por promoción.** "Cero comisiones por los primeros
+30 días" funciona en pagos y consumer-fintech porque el costo
+de adquisición excede los ingresos perdidos. En un mercado de
+predicción, los traders que llegan durante una ventana de
+cero-comisión tienen tasas de churn mucho más altas cuando la
+tarifa se normaliza.
+
+## Un cronograma de comisiones de referencia que funciona consistentemente
+
+<Comparison
+  columns={["Etapa", "Comisión de operador", "Tiering", "Por qué"]}
+  rows={[
+    ["Pre-lanzamiento / beta privada", "0,85 %", "Plana", "Establecer baseline; recoger datos de cohorte"],
+    ["Lanzamiento público → mes 6", "0,85 %", "Plana", "Sostener para reunir señal"],
+    ["Mes 6 → mes 12", "0,95 %", "Plana", "Subida modesta tras retención probada"],
+    ["Mes 12+", "0,95 % / 0,80 % / 0,65 %", "Tres niveles por volumen 30 días", "Retener ballenas sin perder retail"],
+    ["Año 2+", "Negociado para desks institucionales", "Custom", "Flujo prop real entrando"],
+  ]}
+/>
+
+El patrón que importa: mantén tu tarifa el tiempo suficiente
+para aprender de datos reales, sube modestamente cuando la
+retención se demuestre, introduce tiering solo después de
+tener volumen significativo para estratificar, y negocia
+explícitamente con flujo institucional cuando llegue.
+
+<KuestCTA
+  headline="¿Quieres un modelo de comisiones afinado a tu audiencia específica?"
+  body="Recorremos tu perfil de audiencia, jurisdicción objetivo y los venues con los que tus traders más probablemente te comparen — y te damos una tarifa inicial defendible en una hora."
+  primary={{ href: "/launch", label: "Abrir el wizard de lanzamiento" }}
+  secondary={{ href: "/enterprise", label: "Reservar llamada de estrategia" }}
+/>

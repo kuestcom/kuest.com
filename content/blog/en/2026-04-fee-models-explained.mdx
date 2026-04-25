@@ -1,59 +1,294 @@
 ---
-title: "Trading fees, explained: how to set yours without scaring traders away"
-description: "A practical guide to choosing a fee rate for your prediction market — what we see working, what kills volume, and how to evolve it as you grow."
+title: "Trading Fees, Explained: How to Set Yours Without Scaring Traders Away"
+description: "A practical 2026 guide to choosing a fee rate for your prediction market — what we see working, what kills volume, and how to evolve it as you grow."
 publishedAt: 2026-04-08
+updatedAt: 2026-04-22
 author:
   name: "Kuest"
   url: "https://kuest.com"
-tags: ["operators", "playbook"]
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
 ---
 
-A trading fee is the most direct revenue lever you have as a market
-operator. It's also the easiest one to misprice. Set it too high and you
-choke volume; set it too low and you leave real money on the table — money
-your audience would have happily paid.
+The fee on every trade is the single most important number in your
+prediction-market venue. Set it too high and your traders quietly
+migrate to a venue with tighter execution; set it too low and you've
+left material recurring revenue on the table for no real benefit. This
+post is the operator-side breakdown of what we actually see working
+in 2026, drawn from the venues live on the Kuest stack and what the
+competitive landscape (Kalshi, Polymarket, the new wave of regional
+white-labels) is doing.
 
-This is a practical guide to picking the right number.
+If you're earlier in your evaluation, start with the
+<a href="/blog/2026-03-prediction-market-land-grab">market opportunity post</a>
+or the <a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>.
+This one assumes you're past those questions and need to decide where
+to set the operator fee on day one.
 
-## What range actually works
+<Stat
+  value="≈ 0.9%"
+  label="Median operator fee on white-label prediction-market venues launched in Q1 2026, weighted by 30-day volume"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Kuest operator survey, Q1 2026"
+/>
 
-<Callout type="tip" title="Rule of thumb">
-  Most successful Kuest operators sit between **0.8% and 2.5%** in their
-  first 6 months. Below 0.8% you're competing with Polymarket on price you
-  can't sustain; above 2.5% you start losing the bottom of the order book.
+## What a prediction-market fee actually is
+
+Before discussing rates, it's worth being explicit about what the fee
+is and isn't, because operators who come from a brokerage background
+sometimes assume the wrong default.
+
+A prediction-market trading fee is a percentage of the **notional**
+value of a trade — i.e., the contract size times the executed price —
+charged on each fill. It is not a percentage of profit, it is not a
+spread, and it is not a withdrawal fee. A trader who buys 100 YES
+contracts at $0.42 has a notional of $42 and pays a fee of $42 ×
+your-rate. The fee is collected at execution by the matching engine
+and routed to the operator's settlement address.
+
+Three structural notes that matter:
+
+- **Fees are charged on both sides of every trade.** Buyer and seller
+  both pay the operator fee. Your effective per-trade revenue is
+  2× the rate × the notional. Operators who model only one side
+  understate revenue by half.
+- **Fees apply to fills, not to orders.** Posting an order that never
+  fills costs the trader nothing. Only executed notional generates
+  fee revenue.
+- **The fee is layered on top of the implicit spread cost.** A trader
+  who lifts an offer at $0.43 instead of $0.42 is already paying 1
+  cent of execution cost. Your operator fee is on top of that.
+
+The structure is the same as a centralised exchange's taker fee, with
+two simplifications: there's no maker rebate (because the protocol
+provides liquidity from a shared book), and the rate is symmetric
+across both sides.
+
+## What competitive rates look like in 2026
+
+A snapshot of where the industry sits as of Q1 2026, pulled from
+publicly observable execution data plus the operator survey we run
+each quarter:
+
+<Comparison
+  columns={["Venue type", "Typical operator fee", "Spread on liquid markets", "Total round-trip cost"]}
+  rows={[
+    ["Kalshi (regulated US)", "0.0% (none)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1.0% (split protocol)", "20–60 bps", "≈ 1.4–1.6%"],
+    ["Regional retail brokerage white-labels", "0.8–1.5%", "20–80 bps", "≈ 1.2–2.3%"],
+    ["Crypto-native exchange overlays", "0.3–0.7%", "20–60 bps", "≈ 0.7–1.4%"],
+    ["Creator / community venues", "1.5–2.5%", "30–100 bps", "≈ 2.0–3.5%"],
+  ]}
+/>
+
+Two things to read from that table.
+
+First, Kalshi's 0% headline rate is misleading because they're
+operating an entirely different business model — they're a regulated
+US exchange recovering cost through the spread, market-data sales,
+and institutional access tiers, not through a per-trade operator fee.
+You shouldn't try to match their headline. You should target the
+range your peer category sits in.
+
+Second, the spread between the lowest-fee venue (crypto-native
+overlays at ~0.5%) and the highest (creator venues at ~2%) is
+roughly 4×. That spread reflects audience differences, not a
+mispricing. Different audiences tolerate different fees, and the
+right rate is the one your specific audience tolerates without
+migrating.
+
+## What actually drives audience tolerance
+
+Three forces determine how much fee a venue can charge before
+volume-per-trader starts to decline. Knowing which forces apply to
+your audience is most of the answer.
+
+**The alternative cost of execution.** A trader on a creator-led
+venue is comparing your 2% fee to the cost of opening a Polymarket
+account, learning a different UX, and self-custodying funds. For
+that trader, the fee comparison is not 2% vs 1% — it's 2% vs the
+friction of switching venues. Friction beats fee differential every
+time, up to a meaningful gap.
+
+**The trade size distribution.** A retail trader placing $50
+positions barely notices a 1% fee — it's $0.50. A professional desk
+running $100k positions notices a 1% fee very directly — it's
+$1,000 per trade. Operators with heavy professional flow have to
+price more carefully than operators serving retail tickets.
+
+**The implied edge in the trade.** A trader who believes the YES
+contract is mispriced by 8% is happy to pay 1% to take that view.
+A trader who's "exploring" a market with weak conviction (1–2% of
+implied edge) bounces off any fee above ~0.5%. Your fee implicitly
+filters for traders with stronger conviction, which is sometimes
+desirable and sometimes not.
+
+<Callout type="info" title="The conviction filter is a feature">
+  Higher fees deliver higher per-trader profitability and lower trade
+  velocity. Lower fees deliver higher trade velocity and lower
+  per-trader profitability. There's no universally right answer —
+  there's only a right answer for the audience and the cost structure
+  you have. Operators who don't think about this end up oscillating
+  between fee changes and never settling.
 </Callout>
 
-The sweet spot depends on your audience type:
+## A concrete rate recommendation, by operator type
 
-- **Crypto-native communities** — comfortable with 1.5–2.5% fees because
-  they expect on-chain costs. Bots will avoid you above 2%.
-- **Mainstream sports / pop culture** — 1–1.8% is the cap before retention
-  collapses. Casual traders compare fees to free sportsbook bets, not other
-  on-chain venues.
-- **Institutional / professional** — 0.5–1% fees, but with much larger
-  ticket sizes. The volume math beats the per-trade margin.
+Based on what we see across launches, the following starting points
+are defensible and rarely require correction in the first six months.
+Treat them as a starting position you can refine, not as a final
+answer.
 
-## The three fee mistakes we see most often
+**Retail brokerage (1k–100k clients).** Start at 0.85% and hold for
+90 days before adjusting. This sits in the middle of your competitive
+band and is well below where audience tolerance breaks. Your churn
+risk at this rate is essentially zero; the question is whether you
+can move higher (0.95–1.10%) without losing volume, which you'll
+answer through the post-launch data.
 
-1. **Pricing for revenue, not for volume.** A 3% fee on $10k weekly volume
-   yields $300. A 1% fee on $200k weekly volume yields $2,000. The lower
-   fee is almost always the right call early.
-2. **Changing fees too often.** Traders price your fee into their behavior.
-   Two changes in a month destroys trust. Pick a rate and hold it for at
-   least 90 days.
-3. **Forgetting maker/taker dynamics.** When you can, give makers a 0.2–0.4%
-   discount. Their resting orders are what makes your book look alive.
+**Crypto-native overlay or exchange add-on.** Start at 0.5%. Your
+audience is comparing you to centralised exchange taker fees in the
+0.10–0.30% range, so anything above 1% creates immediate friction.
+The sweet spot most peers settle at is 0.50–0.65%.
 
-## How to evolve the fee as you grow
+**Creator-led venue (newsletter, community, niche audience).** Start
+at 1.50%. Your audience tolerates higher fees because they trust
+you, the venue is novel, and they're not actively comparing your
+execution against Kalshi. Don't go above 2.0% in the first 90 days
+even if the audience tolerates it — you're optimizing for retention,
+not first-quarter revenue.
 
-As your venue scales past $1M monthly volume, you have room to introduce
-tiers — institutional accounts at lower fees, retail at standard, bots
-metered separately. But that complexity is overhead. Don't add it until
-you're past the cold-start phase and the simpler model is leaving real
-money on the table.
+**Institutional-facing venue (desks, prop, market-makers).** Start
+at 0.10–0.20% with a tiered structure that rewards higher size.
+Your audience is fee-sensitive in basis points, not percentage
+points. The economics work because notional sizes are 100–1,000×
+larger than retail.
+
+**Sports book or consumer fintech overlay.** Start at 1.0%. Your
+audience is anchored to traditional sports-book vig (typically
+4.5–10% expressed as juice on a parlay leg), so 1.0% on prediction
+contracts will feel cheap by comparison.
+
+## How to evolve the rate after launch
+
+Setting the fee on day one is half the work. The other half is
+knowing how to adjust it as the venue matures, and not doing so
+prematurely.
+
+The cleanest decision rule we've seen operators use is the
+**90-day cohort test**: pick a starting rate, hold it untouched for
+90 days, look at the trade-velocity curve and the trader-retention
+curve at week 12, then make a single adjustment. Don't adjust
+weekly, don't adjust monthly, don't adjust based on individual
+trader complaints. The signal in fee-rate data takes about 8 weeks
+to stabilise, and operators who adjust faster than that just inject
+noise.
+
+Three signals that actually warrant a fee change:
+
+1. **Week-12 retention is below 35%.** This is the single strongest
+   signal that your fee is hurting volume more than it's earning
+   revenue. Drop the rate by 20–25 bps and re-test for another 90
+   days.
+2. **Median trade size is dropping over time.** Traders are getting
+   more cost-sensitive; they're trimming positions to stay under
+   their internal fee budgets. This is an early warning. A modest
+   drop (10–15 bps) usually arrests it.
+3. **Volume is growing fast and trader count is growing faster.**
+   You have pricing power. You can raise the fee 10–15 bps without
+   losing volume; the new traders coming in haven't anchored to the
+   lower rate.
+
+What you should not do is reduce the fee in response to a competitor
+launching at a lower rate. The competitor is buying audience attention
+through pricing, which is fine for them but bad for you to match. If
+their value proposition genuinely undercuts yours on fees, the durable
+answer is differentiation on something other than price (depth,
+exclusive markets, distribution), not a fee race.
+
+## How fees interact with shared liquidity
+
+If your venue runs on shared liquidity (which we
+<a href="/blog/2026-04-shared-liquidity-day-one">recommend strongly</a>),
+the fee math has a wrinkle worth understanding. The shared
+order book provides depth at protocol-level spreads, which means
+your traders' all-in execution cost is your fee plus a tight (~30
+bps) protocol-level spread. That total is competitive even at
+1.0–1.5% operator fees, because the spread component is much tighter
+than a venue running its own cold-start book.
+
+Operators who try to bootstrap their own liquidity end up either
+paying market-makers contractually (which hits the same trader
+through wider spreads) or running a thin book (which hits the trader
+through worse fills). In both cases, the trader's all-in cost is
+higher than your headline fee suggests. The advantage of a shared
+book is that your headline fee is closer to your effective fee —
+which lets you run a higher operator rate without the trader feeling
+it.
+
+<Callout type="tip" title="Effective rate, not headline rate">
+  When you compare your venue to a competitor, compare the
+  trader's total round-trip cost (operator fee × 2 + spread × 2),
+  not the headline operator fee. A 1.0% operator fee on shared
+  liquidity is often cheaper for the trader than a 0.5% operator
+  fee on a thin proprietary book.
+</Callout>
+
+## Common mistakes operators make on day one
+
+Three patterns we see repeatedly that almost always require a
+correction inside the first six months.
+
+**Anchoring to crypto-exchange spot fees.** Operators who come from
+a crypto-exchange background sometimes price prediction contracts
+at 0.10% taker, the way they would price a BTC-USDT trade. This
+under-prices the operational complexity of running a prediction
+venue (resolution, dispute handling, market creation) and leaves
+the operator structurally unprofitable. Prediction markets are not
+spot crypto; the fee structure should not pretend they are.
+
+**Tiering too aggressively, too early.** A new venue with $30k of
+weekly volume does not need a five-tier VIP structure. Tiering at
+launch dilutes the signal in the early data and confuses traders.
+Start flat, get to $1M+ weekly volume, then introduce a single tier
+boundary based on the data you've actually collected.
+
+**Discounting through promotion.** "Zero fees for the first 30
+days" works as a launch promotion in payments and consumer fintech
+because the cost of acquisition exceeds the lost fee revenue.
+In a prediction market, the traders who arrive during a zero-fee
+window churn at much higher rates when the rate normalizes —
+they came for the promotion, not the venue. We don't recommend
+this pattern.
+
+## A reference fee schedule that consistently works
+
+For an operator running a retail-facing prediction-market venue who
+hasn't launched yet, the fee schedule below has worked reliably
+across the cohort of operators we've onboarded.
+
+<Comparison
+  columns={["Stage", "Operator fee", "Tiering", "Why"]}
+  rows={[
+    ["Pre-launch / private beta", "0.85%", "Flat", "Establish baseline; collect cohort data"],
+    ["Public launch → Month 6", "0.85%", "Flat", "Hold to gather signal; resist early adjustments"],
+    ["Month 6 → Month 12", "0.95%", "Flat", "Modest raise after retention is proven"],
+    ["Month 12+", "0.95% / 0.80% / 0.65%", "Three-tier by 30-day volume", "Retain whales without losing retail"],
+    ["Year 2+", "Negotiated for institutional desks", "Custom", "Real prop flow joining; needs basis-point pricing"],
+  ]}
+/>
+
+There's nothing magic about these specific numbers. The pattern
+that matters is: hold your rate for long enough to learn from real
+data, raise modestly when retention proves itself, introduce
+tiering only after you have meaningful volume to tier against, and
+negotiate explicitly with institutional flow when it arrives. Each
+step is justified by an actual signal in your own data, not a
+guess about what the market should support.
 
 <KuestCTA
-  headline="Configure your fee in the launch wizard"
-  body="The default starts at 1.2%. You can change it in one click and it goes live on the next trade."
-  primary={{ href: "/launch", label: "Open the wizard" }}
+  headline="Want a fee model tuned to your specific audience?"
+  body="We'll walk through your audience profile, target jurisdiction, and the venues your traders most likely compare you to — and give you a defensible starting rate inside an hour."
+  primary={{ href: "/launch", label: "Run the launch wizard" }}
+  secondary={{ href: "/enterprise", label: "Book a fee-strategy call" }}
 />

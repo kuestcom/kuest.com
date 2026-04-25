@@ -1,0 +1,326 @@
+---
+title: "Vorhersagemarkt selbst bauen oder lizenzieren: Eine Kosten- und Zeitanalyse für 2026"
+description: "Was es tatsächlich kostet, einen Vorhersagemarkt von Grund auf zu bauen — Engineering, Audits, Oracles, Compliance, Liquidität — im Vergleich zur Lizenzierung der Infrastruktur. Echte Zahlen, echte Zeitpläne."
+publishedAt: 2026-04-02
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "infrastructure"]
+---
+
+Wenn Sie eine Brokerage, ein Medienbetreiber oder ein Fintech sind und
+sich entschieden haben, eine Vorhersagemarkt-Venue zu launchen, ist die
+nächste Entscheidung, ob Sie die Infrastruktur selbst bauen oder
+lizenzieren. Die meisten Teams gehen diese Frage mit groben Schätzungen
+an und sind dann von den tatsächlichen Zahlen überrascht. Dies ist die
+Aufschlüsselung, die wir uns selbst gewünscht hätten.
+
+Dieser Beitrag richtet sich an Betreiber, die die Chance bereits
+verstehen (falls nicht, beginnen Sie mit <a href="/blog/2026-03-prediction-market-land-grab">unserer Marktanalyse</a>). Die
+Frage hier ist rein die Umsetzung: Was kostet es in Dollar und in
+Monaten, eine glaubwürdige Venue zu launchen, die echtes Volumen tragen
+kann?
+
+<Stat
+  value="$3.8M – $7.2M"
+  label="Realistische Bandbreite der Baukosten für eine produktionsreife Vorhersagemarkt-Plattform mit auditierten Smart Contracts, hauseigener Matching Engine und grundlegenden Resolution-Schienen"
+  sourceHref="https://kuest.com/research/build-vs-license"
+  sourceLabel="Kuest-Betreiberumfrage, Q1 2026"
+/>
+
+## Was „selbst bauen" tatsächlich bedeutet
+
+Bevor wir über die Kosten sprechen, hilft es, konkret zu sein, was eine
+vollständige Vorhersagemarkt-Plattform erfordert. Betreiber unterschätzen
+diese Liste konsequent, weil Teile davon unsichtbar bleiben, bis man
+tief in der Implementierung steckt.
+
+Eine produktionsreife Venue benötigt mindestens:
+
+- **Outcome-Verträge.** Smart Contracts (oder ihr Off-Chain-Äquivalent),
+  die das bedingte Payoff definieren, Sicherheiten akzeptieren und
+  bei der Auflösung auszahlen. Diese müssen YES/NO-Verträge,
+  Multi-Outcome-Märkte und bedingte Abhängigkeiten unterstützen. Sie
+  müssen geprüft werden.
+- **Eine Matching Engine.** Ein zentrales Limit-Orderbuch, das oft
+  auf einer Relayer-Architektur läuft, damit Nutzer nicht für jede
+  Order Gas bezahlen. Das ist nicht-triviale Software —
+  Sub-Millisekunden-Ordering, Fairness-Garantien,
+  Partial-Fill-Mechanik, Cancel-Replace-Semantik.
+- **Settlement-Infrastruktur.** Ein Verfahren, um Ergebnisse zu
+  bestimmen und Märkte abzurechnen. Entweder ein zentralisiertes
+  Marktintegritätsteam, eine optimistische Oracle-Integration (UMA)
+  oder ein eigenes Oracle-Netzwerk. Jeder Weg hat seine eigene
+  laufende operative Last.
+- **Wallet und Verwahrung.** Wenn Sie Crypto-Native sind, bedeutet
+  das Wallet-Integration plus On-Chain-Verwahrung. Wenn Sie
+  reguliert sind, bedeutet das Fiat-On/Off-Ramps plus segregierte
+  Kundengelder plus den Audit-Trail, um diese Segregation zu
+  verteidigen.
+- **KYC-, AML- und Compliance-Pipelines.** Pro Jurisdiktion. Jede
+  Jurisdiktion hat ihren eigenen Provider-Stack,
+  Identitätsdokumenten-Anforderungen und Reporting-Pflichten.
+- **Frontend und mobile Apps.** Die Trading-UX,
+  Ein-/Auszahlungsabläufe, Marktentdeckung, Charts,
+  Positionsverwaltung, Benachrichtigungen. Der Großteil der User
+  Experience.
+- **Liquiditätsbereitstellung.** Entweder Market-Making-Bots,
+  vertragliche Market-Maker-Beziehungen oder eine Vereinbarung über
+  geteilte Liquidität mit einer anderen Venue. Ohne dies haben Sie
+  keine Venue.
+- **Operations.** 24/7-Monitoring, Incident Response,
+  Kundensupport, Streitbeilegung,
+  Marktentstehungs-Pipelines, manuelle Override-Fähigkeiten für
+  Edge Cases.
+
+Acht Säulen. Jede ist für sich genommen ein ernsthaftes
+Engineering-Projekt.
+
+## Die realistischen Kosten eines Builds von Grund auf
+
+Hier ist die Kostenstruktur, die in den von uns geprüften
+Betreiber-Build-Plänen konsequent auftaucht. Es sind 2026er-Zahlen,
+zugeschnitten auf ein Team, das weiß, was es tut — nicht der
+billigstmögliche Build.
+
+<Comparison
+  columns={["Komponente", "Anfangskosten", "Zeit", "Laufend"]}
+  rows={[
+    ["Smart Contracts + Audit (OpenZeppelin oder Trail of Bits)", "$280k – $520k", "4–6 Monate", "$30k / Jahr"],
+    ["Matching Engine + Relayer-Architektur", "$520k – $980k", "5–8 Monate", "$140k / Jahr"],
+    ["Settlement / Oracle-Integration", "$180k – $360k", "3–5 Monate", "$60k / Jahr"],
+    ["Wallet + Verwahrung (regulierte Jurisdiktion)", "$420k – $800k", "5–9 Monate", "$220k / Jahr"],
+    ["KYC- / AML-Pipeline (1 Jurisdiktion)", "$140k – $260k", "2–4 Monate", "$80k / Jahr"],
+    ["Frontend + Mobile + Designsystem", "$580k – $1.1M", "5–7 Monate", "$280k / Jahr"],
+    ["Liquidität (initiales Market Making)", "$1.0M – $2.5M", "laufend", "stark variabel"],
+    ["Ops / Support / Monitoring-Infrastruktur", "$320k – $640k", "2–3 Monate", "$340k / Jahr"],
+  ]}
+/>
+
+Das sind 3,4 Mio. bis 7,2 Mio. USD an Vorabkosten, mehr als 1,15 Mio.
+USD pro Jahr an laufender Opex und ein Critical-Path-Zeitplan von
+ungefähr 8 bis 14 Monaten — der längste einzelne Workstream ist die
+Matching Engine, aber die bindende Restriktion ist in der Praxis das
+Audit, weil die Matching Engine von stabilen Vertrags-Schnittstellen
+abhängt, und diese werden erst ausgeliefert, wenn das Audit seine
+zweite Runde abschließt.
+
+Die obigen Zahlen gehen von einer Jurisdiktion, einer Sprache und
+einer einzelnen Anlageklasse aus. Jede zusätzliche Jurisdiktion fügt
+ungefähr $200k vorab und 6–10 Wochen hinzu. Multi-Asset-Unterstützung
+(zum Beispiel Sport + Makro + Crypto) fügt eine weitere
+Komplexitätsebene bei der Marktentstehung und Settlement-Automatisierung
+hinzu.
+
+## Die versteckten Kosten, die niemand einplant
+
+Die obigen Posten sind die offensichtlichen. Es gibt sechs weitere, die
+Betreiber konsequent unterschätzen.
+
+**Audit-Zyklen im Plural, nicht im Singular.** Ein erstes Audit liefert
+Befunde. Sie beheben sie, refaktorisieren und auditieren erneut. Dann
+ein dritter Durchgang. Jeder Zyklus dauert 6–10 Wochen und kostet
+$90k–$160k. Die meisten Teams budgetieren für ein Audit und entdecken,
+dass sie drei brauchen.
+
+**Liquidität ist keine einmalige Kostenposition.** Eine
+Market-Maker-Vereinbarung ist entweder eine vertragliche Gebühr für
+die Bereitstellung des Spreads oder ein internes Buch, das
+kapitalisiert werden muss. So oder so laufen die Kosten unbegrenzt
+weiter und skalieren mit dem Volumen, statt mit der Zeit zu sinken.
+
+**Regulatorisches Engagement ist bilateral.** Sie bekommen keine
+Lizenz; Sie bauen über Monate oder Jahre eine Beziehung zu einer
+Aufsichtsbehörde auf. Diese Beziehung hat weiche Kosten
+(Führungszeit, Rechtsberatung, regelmäßige schriftliche Eingaben,
+persönliche Treffen), die in keiner Kostenaufstellung stehen.
+
+**Resolution-Operations.** Eine Plattform mit 9.800 aktiven Märkten
+pro Woche, wie der aktuelle Stand von Polymarket, hat Dutzende von
+Edge-Case-Auflösungen pro Tag — Märkte, in denen die zugrunde liegenden
+Daten mehrdeutig sind, in denen die Quelle sich verschiebt, in denen
+ein bedeutendes Ereignis die Outcome-Frage neu rahmt. Jede einzelne
+erfordert menschliches Urteilsvermögen, dokumentierte Argumentation
+und öffentliche Verteidigbarkeit. Betreiber budgetieren konsequent
+nicht für die Resolution-Ops-Personalstärke, die das impliziert.
+
+**Angriffsfläche der Infrastruktur.** Jede Komponente, die Sie bauen,
+ist eine Komponente, die Sie verteidigen müssen. Front-Running,
+Oracle-Manipulation, MEV-Extraktion, Frontend-Phishing,
+Schlüsselverwaltungsfehler — das Bedrohungsmodell ist breit und die
+Konsequenzen sind öffentlich. Betreiber im Produktivbetrieb verwenden
+nach dem Launch 20–30 % ihrer Engineering-Kapazität auf Härtung.
+
+**Die Opportunitätskosten eines späten Launches.** Die
+Betreibermarken, die 2026 die Erwartungen des Publikums setzen,
+werden sich verstärken. Eine 12-monatige Verzögerung beim Launch
+sind nicht nur 12 Monate entgangener Umsatz — es ist ein 12-monatiger
+Vorsprung, der demjenigen geschenkt wird, der zuerst in Ihrer
+Zielgruppe gelauncht hat.
+
+<Callout type="warning" title="Ein reales Beispiel, das wir wiederholt hören">
+  Eine regionale Brokerage mit starker Distribution beginnt im Q2
+  einen Build, erwartet einen Launch zum Jahresende, liefert im Q2
+  des Folgejahres aus. Bis sie live sind, hat ein Wettbewerber mit
+  derselben Zielgruppe 18 Monate Verhaltensdaten, eine ins CRM
+  integrierte Attribution und deutlich niedrigere
+  Kundenakquisitionskosten. Aufzuholen kostet mehr als der
+  ursprüngliche Build.
+</Callout>
+
+## Was Lizenzierung tatsächlich freischaltet
+
+Die Lizenzierung von Infrastruktur ist keine Teilantwort. Die
+Betreiber, die sauber lizenzieren, laufen mit derselben
+Produktoberfläche wie die Betreiber, die selbst gebaut haben — gleiche
+Verträge, gleiche Tiefe, gleiche UX-Raffinesse — bei einer anderen
+Kostenstruktur.
+
+<Comparison
+  columns={["Dimension", "Bauen", "Lizenzieren (Kuest)"]}
+  rows={[
+    ["Zeit bis zum ersten Live-Trade", "8–14 Monate", "Tage"],
+    ["Vorabkapital", "$3.4M – $7.2M", "≈ $0"],
+    ["Liquidität beim Launch", "Kaltstart", "Geteilt aus bestehenden Venues"],
+    ["Audit-Eigentum", "Betreiber", "Geerbt (OpenZeppelin)"],
+    ["Resolution-Schienen", "Bauen / Integrieren", "Managed"],
+    ["Pro-Jurisdiktion-Overlay", "+$200k pro Stück", "Konfiguration"],
+    ["Größe des Engineering-Teams", "5–8 FTE", "0"],
+    ["Betreibergebühr auf jeden Trade", "Ja", "Ja"],
+  ]}
+/>
+
+Die Betreibergebühr ist der entscheidende ökonomische Punkt. Das
+Lizenzieren verwässert Ihren Umsatz pro Trade in keiner sinnvollen
+Weise — die meisten Infrastrukturverträge bepreisen die
+Plattformgebühr als Bruchteil der Betreibergebühr und nicht als
+Umsatzbeteiligung. Sie behalten die Brokerage-Marge; Sie lagern den
+Engineering-Build aus.
+
+Für die meisten Betreiber lautet die relevante Frage nicht „Wie viel
+spare ich durch Lizenzierung?" — sondern „Wie viel früher sichere ich
+mir die Zielgruppen-Attribution?". Die Einsparungen beim Build sind
+real, aber sie sind nur ein Bruchteil des Wertes, 9–12 Monate früher
+live zu sein.
+
+## Wann Bauen wirklich Sinn ergibt
+
+Es gibt drei Szenarien, in denen das Bauen wirklich Sinn ergibt, und
+es lohnt sich, ehrlich darüber zu sein.
+
+**Sie sind die Venue, nicht der Betreiber.** Wenn Ihre strategische
+Position darin besteht, die globale Venue zu sein (wie Polymarket
+oder Kalshi), müssen Sie die Infrastruktur besitzen, denn das ist
+der Burggraben. Sie werden nicht lizenzieren. Sie bauen, beschaffen
+institutionelles Kapital zur Finanzierung des Builds und akzeptieren
+den Zwei-Jahres-Zeitplan.
+
+**Sie haben ein einzigartiges Vertragsdesign, das das Protokoll
+nicht unterstützt.** Wenn Ihr Wertversprechen etwas Exotisches ist —
+ein neuartiger Multi-Collateral-Vertrag, ein perpetuelles
+Predictions-Produkt, ein Contract-as-Derivative-Wrapper — passen die
+Protokoll-Abstraktionen möglicherweise nicht. Die meisten Betreiber
+fallen nicht hierunter, einige aber doch.
+
+**Sie sind ein souveräner oder quasi-souveräner Akteur.** Manche
+Institutionen müssen Infrastruktur aus nichtkommerziellen Gründen
+besitzen — Staatsfonds, zentralbanknahe Venues, große staatseigene
+Börsen. Sie bauen, weil Lizenzieren eine nicht-ökonomische
+Abhängigkeit schafft, die sie nicht akzeptieren können.
+
+Für alle anderen — jede Retail-Brokerage, jedes
+Consumer-Fintech, jeden Medienbetreiber mit einer Zielgruppe — ist
+der Build-Pfad eine Ablenkung.
+
+## Was auf dem Build-Pfad schiefgeht und niemand vorhersieht
+
+Selbst Teams, die mit offenen Augen hinsichtlich Kosten und Zeitplan
+hineingehen, werden von einer bestimmten Klasse von Problemen
+überrascht, die in keiner Roadmap auftauchen. Drei Muster wiederholen
+sich bei den Build-from-Scratch-Versuchen, die wir beobachtet haben
+(und in einigen Fällen in der Recovery-Phase übernommen haben).
+
+**Engineering-Abgänge mitten im Build.** Ein Senior
+Smart-Contract-Engineer geht im siebten Monat. Sein Nachfolger
+beginnt im neunten Monat. Der Wissenstransfer frisst zwei weitere
+Monate obendrauf. Das Audit verzögert sich um ein Quartal, weil sich
+die Vertragsoberfläche während der Übergabe ständig verschoben hat.
+Das ist keine Hypothese — es ist der modale Fehlermodus für
+hauseigene Builds, weil die Personen, die qualifiziert sind, diese
+Verträge zu schreiben, knapp sind und Optionen haben.
+
+**Ökonomie der Liquiditätsanbieter verschiebt sich mitten im
+Launch.** Der Betreiber unterzeichnet im vierten Monat eine
+Market-Maker-Vereinbarung mit Konditionen, die in Ordnung wirken.
+Die konkurrierenden Buchgelegenheiten des Market Makers verbessern
+sich bis zum zehnten Monat. Eine Neuverhandlung stellt den Betreiber
+auf schlechtere Konditionen oder erzwingt einen Wechsel zu internem
+Market Making, was eine Kapitallinie von $1M+ hinzufügt, die nicht
+im ursprünglichen Budget war.
+
+**Regulatorischer Drift während des Builds.** Der Rahmen, auf den Sie
+in Monat eins hinbauen, ist nicht der Rahmen, der in Monat vierzehn
+existiert, wenn Sie bereit sind, ein No-Action-Letter zu beantragen.
+Betreiber unterschätzen konsequent, wie viel Nacharbeit durch
+regulatorischen Drift über einen Build von einem Jahr und mehr
+entsteht. Wir haben Builds gesehen, die ausgeliefert wurden und
+technisch betriebsbereit waren, aber die Lizenz, für die sie
+entworfen waren, nicht beantragen konnten, weil sich die Regeln
+geändert hatten.
+
+Die gemeinsame strukturelle Eigenschaft aller drei ist
+Dauerrisiko. Jeden Monat, den Sie in der Build-Phase sind, müssen die
+Annahmen, die Ihrem Plan zugrunde liegen, halten. Das tun sie
+zuverlässig nicht. Das Lizenzieren kollabiert die Build-Phase auf
+Tage, was das Dauerrisiko auf ungefähr null kollabieren lässt — Sie
+operieren gegen aktuelle Bedingungen, nicht gegen Bedingungen, von
+denen Sie wetten, dass sie ein Jahr später existieren werden.
+
+## Ein schnelles Entscheidungsframework
+
+Drei Fragen, in dieser Reihenfolge, die Sie zur richtigen Antwort
+führen:
+
+1. **Ist Ihr Wettbewerbsgraben die Venue oder die Zielgruppe?** Wenn es
+   die Zielgruppe ist, lizenzieren Sie die Venue. Wenn es die Venue
+   selbst ist, bauen Sie.
+2. **Können Sie ein nutzbares Produkt in unter 12 Monaten ausliefern?**
+   Wenn ja, ist Bauen eine Option. Wenn nein, übergeben Sie Ihre
+   Zielgruppe an denjenigen, der es kann.
+3. **Erfordert Ihr Produkt Vertragsdesigns, die in keinem Protokoll
+   existieren?** Wenn ja, bauen. Wenn Ihre Anforderungen im
+   Standardraum aus Binär- / Multi-Outcome- / skalaren Verträgen
+   liegen, lizenzieren.
+
+Die meisten Betreiber, die das ehrlich durchdenken, antworten
+„Zielgruppe, unter 12 Monate sind unwahrscheinlich,
+Vertragsanforderungen sind Standard." Das ist eine
+Lizenzierungsentscheidung.
+
+## Wie Lizenzierung in der Praxis aussieht
+
+Ein sauberer Lizenz-Rollout mit Kuest sieht zeitlich und in der
+Reihenfolge so aus:
+
+- **Tag 0.** Markenassets, Gebührenmodell, Zielgruppendefinition,
+  Zieljurisdiktionen über den Launch-Wizard übermittelt.
+- **Tag 0 – 1.** Smart Contracts unter Ihrer Betreiberidentität
+  deployt. Benutzerdefinierte Markttypen konfiguriert.
+  Resolution-Quellen ausgewählt.
+- **Tag 1 – 3.** Frontend in Ihrem Branding. Compliance-Flows pro
+  Jurisdiktion konfiguriert. KYC-Provider integriert.
+- **Tag 3 – 5.** Soft-Launch für ein geschlossenes Publikum zur
+  Verhaltensvalidierung. Liquidität bereits aus geteiltem
+  Order-Flow vorhanden.
+- **Tag 5 – 14.** Public Launch. Betreibergebühr wird auf jedem
+  Trade erhoben. Engineering-Team auf null.
+
+Der gleiche Umfang, von Grund auf gebaut, dauert anderthalb Jahre.
+
+<KuestCTA
+  headline="Möchten Sie sehen, wie Ihr Build-vs-Lizenz-Breakeven aussieht?"
+  body="Wir können Ihren spezifischen Umfang, Ihre Zielgruppe und Ihre Zieljurisdiktionen durchgehen und Ihnen innerhalb einer Stunde eine konkrete Build-vs-Lizenz-Berechnung geben."
+  primary={{ href: "/launch", label: "Launch-Wizard starten" }}
+  secondary={{ href: "/enterprise", label: "Mit dem Vertrieb sprechen" }}
+/>

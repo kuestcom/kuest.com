@@ -1,0 +1,217 @@
+---
+title: "Como Lançar Seu Próprio Mercado de Previsão em 2026 (Guia de 15 Minutos)"
+description: "Um passo a passo de ponta a ponta pelo stack da Kuest — contratos inteligentes auditados, liquidez compartilhada, resolução gerenciada e sua taxa de operador em cada trade. Do cadastro ao primeiro trade ao vivo em quinze minutos."
+publishedAt: 2026-04-25
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "launch", "operators", "infrastructure"]
+---
+
+Mercados de previsão não são mais uma classe de ativos
+periférica. Kalshi e Polymarket juntos liquidaram mais de US$ 18
+bilhões em volume mensal no 1T 2026 — e cerca de dois terços
+dessa demanda está fora dos EUA, em plataformas que os usuários
+desses países não controlam. A questão da infraestrutura está
+sendo decidida agora: quem vai operar as plataformas locais em
+que os usuários no Brasil, Alemanha, Reino Unido e Singapura
+realmente vão negociar?
+
+Este post percorre o stack da Kuest — o que está rodando por
+baixo, por que isso importa para instituições e operadores, e
+como um deploy funciona exatamente de ponta a ponta. Ao final,
+você terá uma imagem concreta de como levar uma venue do
+cadastro ao primeiro trade ao vivo em quinze minutos.
+
+Se você está mais cedo na sua avaliação, a
+<a href="/blog/2026-03-what-are-prediction-markets">introdução a mercados de previsão</a>
+cobre o básico, e a
+<a href="/blog/2026-04-build-vs-license-prediction-market">análise construir-vs-licenciar</a>
+explica por que a maioria dos operadores não deveria construir
+o stack por conta própria.
+
+<Stat
+  value="US$ 18,3 bi"
+  label="Volume mensal combinado em Kalshi e Polymarket no 1T 2026, com dois terços da demanda localizados fora dos EUA"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, 1T 2026"
+/>
+
+## Por que "15 minutos" é um número significativo
+
+A maioria dos operadores que avalia infraestrutura de mercados
+de previsão mede o tempo até o lançamento em meses. Uma venue
+rodando sobre contratos feitos à mão, um matching engine
+custom, uma integração própria com oráculos e um pipeline de
+compliance sob medida costuma levar 8–14 meses para entrar no
+ar — e essa é a estimativa otimista, antes de ciclos de
+auditoria atrasarem e de negociações com provedores de
+liquidez emperrarem.
+
+O tempo de deploy da Kuest é de quinze minutos porque o
+trabalho pesado já foi feito. Os contratos estão auditados. O
+matching engine está em produção. A liquidez compartilhada já
+existe. Os trilhos de resolução já estão conectados. O que você
+configura no momento do deploy não é infraestrutura — são os
+parâmetros que tornam a venue *sua*: marca, taxas, escopo de
+mercado, jurisdições-alvo, audiência.
+
+O salto de "quinze meses" para "quinze minutos" não é uma
+afirmação de marketing. É a diferença entre licenciar uma
+infraestrutura que já existe e reconstruí-la.
+
+## O que de fato roda por baixo
+
+O stack sob cada deploy da Kuest tem quatro camadas, todas
+herdadas pelo operador sem responsabilidade operacional sobre
+elas.
+
+**Contratos inteligentes derivados da arquitetura CLOB da
+Polymarket.** O design central do contrato é o mesmo que
+suportou bilhões de dólares de volume na venue on-chain mais
+observada da categoria. Os contratos foram auditados pela
+OpenZeppelin e adaptados para liquidez compartilhada entre
+múltiplos frontends de operador.
+
+**Um matching engine em produção.** A camada de matching é uma
+arquitetura relayer: traders submetem ordens off-chain, o
+relayer impõe ordem e justiça, e apenas execuções chegam à
+chain. Isso dá ordenação sub-milissegundo, sem custos de gas
+por ordem para os traders, e liquidação determinística no
+Polygon mainnet.
+
+**Trilhos de resolução que não dependem do operador.** Mercados
+resolvem via Optimistic Oracle da UMA, com escopos de
+resolução isolados por operador, de modo que uma resolução
+defeituosa nos mercados de um operador não pode afetar outro.
+Cobrimos a mecânica completa no
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre a camada de resolução e liquidação</a>.
+
+**Liquidez compartilhada na escala do protocolo.** O fluxo de
+ordens em qualquer marca de operador contribui para e bebe de
+um livro unificado que espelha as venues externas mais
+profundas. Operadores novos veem spreads ao vivo e profundidade
+realista a partir do momento em que lançam. Veja
+<a href="/blog/2026-04-shared-liquidity-day-one">por que liquidez compartilhada decide quem vence a próxima onda</a>.
+
+<Callout type="info" title="Não é necessário time interno de blockchain">
+  Contratos inteligentes, motor CLOB, relayer, liquidação, gas e
+  provisão de liquidez são totalmente gerenciados pelo lado da
+  Kuest. Sua equipe fornece os ativos de marca e o escopo dos
+  eventos. Cuidamos do resto.
+</Callout>
+
+## Como funciona um deploy institucional típico
+
+O processo de deploy comprime o que costumava ser uma
+construção de um ano em três passos explícitos de configuração.
+
+### 1. Defina o escopo do mercado e o modelo de taxas
+
+Escolha as categorias de eventos que importam para sua audiência
+— macro, juros, política, cripto, esporte, geopolítica. Defina
+sua taxa de trading (o
+<a href="/blog/2026-04-fee-models-explained">post de modelos de taxa</a>
+detalha a seleção do percentual). Configure a superfície de
+marca: logo, cor de destaque, copy.
+
+### 2. Implantamos o stack técnico completo
+
+Contratos inteligentes, CLOB, trilhos de liquidação,
+infraestrutura de wallet, liquidez — tudo rodando antes de sua
+equipe terminar o onboarding. O deploy é parametrizado: sua
+identidade de operador é codificada nas instâncias do contrato,
+sua taxa acumula no seu endereço, seus escopos de resolução são
+isolados.
+
+### 3. Sua plataforma ganha uma taxa em cada trade
+
+Sem repartição de receita, sem intermediário, sem atraso na
+liquidação. A taxa de operador acumula no seu endereço de
+liquidação à medida que as execuções acontecem.
+
+<MarketEmbed
+  title="O Fed cortará juros antes de julho?"
+  cat="Macro"
+  cover="/assets/images/fed-rate-move.png"
+  pct={42}
+/>
+
+## Como Kuest se compara a construir do zero
+
+<Comparison
+  columns={["Capacidade", "Kuest", "Construir internamente"]}
+  rows={[
+    ["Contratos inteligentes auditados", "Dia um (OpenZeppelin)", "6–12 meses"],
+    ["CLOB + relayer + matching engine", "Incluído", "US$ 520k–US$ 980k de build"],
+    ["Liquidez compartilhada no lançamento", "Sim, profundidade real Dia-1", "Início frio"],
+    ["Integração liquidação / oráculo", "Gerenciada (baseada em UMA)", "US$ 180k–US$ 360k de integração"],
+    ["Overlay por jurisdição", "Configuração", "+US$ 200k cada"],
+    ["Equipe de engenharia necessária", "0", "5–8 FTEs"],
+    ["Tempo até o primeiro trade ao vivo", "≈ 15 minutos", "8–14 meses"],
+    ["Capital inicial", "≈ US$ 0", "US$ 3,4M–US$ 7,2M"],
+  ]}
+/>
+
+O caminho de construir não é errado para todos. Se você é a
+venue em si — isto é, sua posição estratégica exige possuir
+cada camada — construir é a escolha certa. Para qualquer outro
+perfil de operador (corretora regional, overlay cripto-nativo,
+venue liderada por criador, sportsbook, operador de mídia,
+desk institucional), o caminho do protocolo é a rota mais
+rápida, mais barata e estruturalmente menos arriscada.
+
+O verdadeiro lock-in para mercados de previsão não é a
+tecnologia — é a liquidez. Espelhar mercados externos ao vivo
+significa que sua plataforma lança com profundidade real e
+fluxo de ordens real desde o primeiro dia.
+
+## O deploy em 15 minutos, em ordem
+
+1. **Cadastrar e verificar a identidade de operador.** ≈ 2
+   minutos.
+2. **Escolher mercados e escopo de audiência.** ≈ 4 minutos.
+3. **Definir taxas e parâmetros de marca.** ≈ 3 minutos.
+4. **Configurar overlay jurisdicional (se multi-jurisdição).**
+   ≈ 4 minutos.
+5. **Revisar e implantar.** ≈ 2 minutos.
+
+São quinze minutos de "não comecei" a "tenho uma venue de
+mercado de previsão ao vivo com minha marca, minha taxa
+acumulando, e liquidez compartilhada já presente no livro".
+
+Os primeiros trades costumam chegar na primeira hora, porque o
+livro compartilhado garante que há spreads reais para tomar. O
+canal de distribuição para o qual você empurra sua venue
+(newsletter, base de clientes, X, comunidade) determina a
+velocidade de volume a partir daí.
+
+## O que vem a seguir no roadmap do protocolo
+
+Um snapshot do que estamos enviando no resto de 2026: um pitch
+deck do protocolo para parceiros institucionais, um SDK para
+formadores de mercado institucionais, um caminho de deploy
+gerenciado para corretoras reguladas, e bundles de idiomas
+adicionais.
+
+Se sua equipe está avaliando infraestrutura de mercados de
+previsão, o deploy demo e o wizard de lançamento são as duas
+formas mais rápidas de entender se isso encaixa. A demo é
+parametrizada contra seu perfil de audiência e roda durante a
+duração da sua avaliação; o wizard te leva a uma venue ao vivo.
+
+A forma mais rápida de saber se uma venue de mercado de
+previsão é o produto certo para sua audiência não é ler mais
+uma análise — é fazer o deploy de uma demo contra uma amostra
+da sua audiência real e observar os dados de ativação por uma
+semana. Vimos operadores irem de "avaliando a categoria" para
+"entregue, ao vivo, monetizando" em menos de cinco dias úteis
+usando exatamente esse loop.
+
+<KuestCTA
+  headline="Pronto para lançar seu próprio mercado de previsão?"
+  body="Contratos auditados pela OpenZeppelin, liquidez compartilhada desde o dia um, sua taxa em cada trade. Quinze minutos do cadastro ao primeiro trade ao vivo."
+  primary={{ href: "/launch", label: "Lançar agora" }}
+  secondary={{ href: "/enterprise", label: "Falar com vendas" }}
+/>

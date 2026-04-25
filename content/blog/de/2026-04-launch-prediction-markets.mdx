@@ -1,0 +1,341 @@
+---
+title: "Wie Sie 2026 Ihren eigenen Vorhersagemarkt in 15 Minuten starten"
+description: "Eine End-to-End-Anleitung durch den Kuest-Stack – geprüfte Smart Contracts, geteilte Liquidität, Managed Resolution und Ihre Betreibergebühr bei jedem Trade. Von der Anmeldung bis zum ersten Live-Trade in einer Viertelstunde."
+publishedAt: 2026-04-25
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "launch", "operators", "infrastructure"]
+---
+
+Vorhersagemärkte sind keine Nischen-Anlageklasse mehr. Kalshi und
+Polymarket haben im Q1 2026 zusammen mehr als 18 Mrd. $
+monatliches Handelsvolumen abgewickelt – und etwa zwei Drittel
+dieser Nachfrage liegen außerhalb der USA, auf Plattformen, die
+die Nutzer in diesen Ländern nicht selbst kontrollieren. Die
+Infrastrukturfrage wird gerade jetzt entschieden: Wer betreibt
+die lokalen Plattformen, auf denen Nutzer in Brasilien,
+Deutschland, Großbritannien und Singapur tatsächlich handeln
+werden?
+
+Dieser Beitrag führt durch den Kuest-Stack – was unter der
+Haube läuft, warum es für Institutionen und Betreiber wichtig
+ist, und wie ein Deployment exakt von Anfang bis Ende abläuft.
+Bis Sie das Ende dieser Seite erreicht haben, haben Sie ein
+konkretes Bild davon, wie eine Venue von der Anmeldung bis zum
+ersten Live-Trade in fünfzehn Minuten gebracht wird.
+
+Wenn Sie früher in Ihrer Reise stehen, behandelt das
+<a href="/blog/2026-03-what-are-prediction-markets">Vorhersagemarkt-Grundlagen-Tutorial</a>
+die Basics, und die
+<a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs-License-Analyse</a>
+behandelt, warum die meisten Betreiber den Stack nicht selbst
+bauen sollten.
+
+<Stat
+  value="$18,3 Mrd."
+  label="Kombiniertes monatliches Volumen auf Kalshi und Polymarket im Q1 2026, mit zwei Dritteln der Nachfrage außerhalb der USA"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+## Warum „15 Minuten" eine bedeutsame Zahl ist
+
+Die meisten Betreiber, die Vorhersagemarkt-Infrastruktur
+evaluieren, messen die Zeit bis zum Launch in Monaten. Eine
+Venue auf selbst gebauten Verträgen, einer eigenen
+Matching-Engine, einer eigenen Oracle-Integration und einer
+maßgeschneiderten Compliance-Pipeline benötigt routinemäßig 8–14
+Monate – und das ist die optimistische Schätzung, bevor
+Audit-Zyklen rutschen und Liquiditätsprovider-Verhandlungen ins
+Stocken geraten.
+
+Die Kuest-Deploy-Zeit beträgt fünfzehn Minuten, weil die
+schwere Arbeit bereits erledigt ist. Die Verträge sind geprüft.
+Die Matching-Engine ist in Produktion. Die geteilte Liquidität
+ist bereits da. Die Resolution-Rails sind bereits verdrahtet.
+Was Sie zur Deploy-Zeit konfigurieren, ist keine
+Infrastruktur – es sind die Parameter, die die Venue zu *Ihrer*
+machen: Marke, Gebühren, Marktumfang, Zieljurisdiktionen,
+Publikum.
+
+Der Sprung von „fünfzehn Monaten" zu „fünfzehn Minuten" ist
+keine Marketing-Behauptung. Es ist der Unterschied zwischen
+der Lizenzierung bestehender Infrastruktur und ihrem Neuaufbau.
+
+## Was tatsächlich unter der Haube läuft
+
+Der Stack unter jedem Kuest-Deploy hat vier Schichten, die der
+Betreiber alle erbt, ohne operative Verantwortung dafür zu
+tragen.
+
+**Smart Contracts, abgeleitet von Polymarkets CLOB-Architektur.**
+Das Kerndesign der Verträge ist dasselbe, das auf der
+meistbeachteten On-Chain-Venue der Kategorie Milliarden Dollar
+Volumen bewegt hat. Die Verträge wurden von OpenZeppelin geprüft
+und für geteilte Liquidität über mehrere Betreiber-Frontends
+hinweg angepasst. Dieses letzte Stück – einen
+Vertrags-Instance dazu zu bringen, viele Betreibermarken zu
+bedienen, ohne dass diese sich gegenseitig stören – ist der
+Teil, der spezifisch für eine Protokoll-Schicht ist und sich
+intern nicht leicht replizieren lässt.
+
+**Eine produktive Matching-Engine.** Die Matching-Schicht ist
+eine Relayer-Architektur: Trader reichen Orders off-chain ein,
+der Relayer setzt Fairness und Reihenfolge durch, und nur Fills
+treffen die Chain. Das gibt Ihnen Sub-Millisekunden-Reihenfolge,
+keine Per-Order-Gas-Kosten für Trader und deterministisches
+Settlement auf Polygon Mainnet. Die Engine läuft seit Längerem
+in Produktion für die Venues, die bereits auf dem Kuest-Stack
+sind.
+
+**Resolution-Rails, die nicht vom Betreiber abhängen.** Märkte
+werden durch UMAs Optimistic Oracle aufgelöst, mit
+betreiber-isolierten Resolution-Scopes, sodass eine fehlerhafte
+Auflösung in den Märkten eines Betreibers die eines anderen
+nicht beeinträchtigen kann. Die volle Mechanik haben wir im
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">Beitrag zur Resolution- und Settlement-Schicht</a>
+behandelt.
+
+**Geteilte Liquidität auf Protokoll-Ebene.** Order-Flow auf jeder
+Betreibermarke trägt zu einem einheitlichen Buch bei und schöpft
+aus einem einheitlichen Buch, das die tiefsten externen Venues
+spiegelt. Neue Betreiber sehen ab dem Moment des Starts echte
+Spreads und realistische Tiefe. Wir haben separat darüber
+geschrieben, <a href="/blog/2026-04-shared-liquidity-day-one">warum geteilte Liquidität entscheidet, wer die nächste Vorhersagemarkt-Welle gewinnt</a>.
+
+<Callout type="info" title="Kein internes Blockchain-Team nötig">
+  Smart Contracts, CLOB-Engine, Relayer, Settlement, Gas und
+  Liquiditätsbereitstellung werden vollständig auf Kuest-Seite
+  gemanagt. Ihr Team liefert Markenassets und den Event-Umfang.
+  Den Rest übernehmen wir. Wenn Ihre Engineering-Organisation
+  mit Ihrem Kernprodukt beschäftigt ist, ist das in Ordnung –
+  Sie müssen kein Blockchain-Infrastrukturteam aufbauen, um eine
+  Vorhersagemarkt-Venue auszuliefern.
+</Callout>
+
+## Wie ein typischer institutioneller Deploy abläuft
+
+Der Deploy-Prozess komprimiert das, was früher ein einjähriger
+Build war, in drei explizite Konfigurationsschritte. Wir haben
+das mit Krypto-nativen Betreibern (ohne Compliance-Overlay) und
+regulierten Retail-Brokern (volles KYC + jurisdiktionale Regeln)
+durchgeführt. Der Ablauf ist derselbe; nur die
+Konfigurations-Dichte unterscheidet sich.
+
+### 1. Marktumfang und Gebührenmodell definieren
+
+Wählen Sie die Event-Kategorien, die für Ihr Publikum relevant
+sind – Makro, Zinsen, Politik, Krypto, Sport, geopolitische
+Events. Setzen Sie Ihre Trading-Gebühr (der
+<a href="/blog/2026-04-fee-models-explained">Beitrag zu Gebührenmodellen</a>
+geht ausführlich auf die Tarifwahl ein). Konfigurieren Sie die
+Markenfläche: Logo, Akzentfarbe, Texte.
+
+Hier passiert der Großteil Ihres strategischen Denkens. Die
+spezifischen Märkte, die Sie zu hosten wählen, prägen jedes
+nachgelagerte Element – Publikumszusammensetzung, Auflösungs-
+Komplexität, Gebührensensitivität, Marketing-Texte. Betreiber,
+die versucht sind, früh „alles zu hosten", sollten dem Impuls
+widerstehen. Eine Venue mit acht hochwertigen Märkten in einer
+Vertikalen schlägt eine Venue mit achtzig mittelmäßigen Märkten
+in fünf Vertikalen, sowohl für Liquidität als auch für
+Trader-Retention.
+
+### 2. Wir deployen den vollständigen technischen Stack
+
+Smart Contracts, CLOB, Settlement-Rails, Wallet-Infrastruktur,
+Liquidität – alles läuft, bevor Ihr Team das Onboarding
+abschließt. Der Deploy ist parametrisiert: Ihre
+Betreiber-Identität ist in die Vertrags-Instanzen kodiert, Ihre
+Betreibergebühr läuft auf Ihre Betreiberadresse auf, Ihre
+Resolution-Scopes sind isoliert. Hinter den Kulissen teilen Sie
+tiefere Infrastruktur mit jedem anderen Betreiber im Protokoll;
+aus Sicht Ihrer Trader ist es Ihre Venue.
+
+Einige Spezifika zu diesem Schritt:
+
+- **Vertragsdeploy auf Polygon Mainnet.** Ihre Trader
+  interagieren mit derselben Chain, die Milliarden Dollar
+  verifiziertes Vorhersagemarkt-Volumen verarbeitet hat. Gas
+  wird vom Protokoll bezahlt; Trader sehen niemals eine
+  Netzwerkgebühr.
+- **Custody ist konfigurierbar.** Krypto-native Betreiber können
+  mit Self-Custody-Wallets laufen. Regulierte Betreiber können
+  über segregierte Kundengelder-Konten der Banking-Partner des
+  Protokolls routen.
+- **Der Resolution-Scope ist betreiber-isoliert.** Jeder Markt,
+  der unter Ihrer Betreiberidentität erstellt wird, löst über
+  Ihren Scope auf. Geht ein Markt im Scope eines anderen
+  Betreibers in Dispute, ist Ihre Venue nicht betroffen.
+
+### 3. Ihre Plattform verdient eine Gebühr bei jedem Trade
+
+Keine Umsatzbeteiligung, kein Vermittler, keine Settlement-
+Verzögerung. Die Betreibergebühr läuft bei der Ausführung von
+Fills auf Ihre Settlement-Adresse auf. Sie ziehen ab in dem
+Rhythmus, der für Ihr Accounting Sinn ergibt.
+
+Die Gebührenökonomie ist sauber, und der Protokoll-Overhead ist
+klein genug, dass Betreiber aggressive wettbewerbsfähige Tarife
+fahren können, ohne Marge zu opfern. Der
+<a href="/blog/2026-04-fee-models-explained">Gebühren-Beitrag</a>
+behandelt die Tarifwahl deutlich tiefer.
+
+<MarketEmbed
+  title="Wird die Fed vor Juli die Zinsen senken?"
+  cat="Makro"
+  cover="/assets/images/fed-rate-move.png"
+  pct={42}
+/>
+
+## Was pro Jurisdiktion konfiguriert wird
+
+Wenn Sie eine Venue für eine einzelne Jurisdiktion deployen
+(z.B. eine US-only-Venue oder eine Brazil-only-Venue unter dem
+lokalen Rahmenwerk), ist die obige Konfiguration im Wesentlichen
+abgeschlossen.
+
+Multi-Jurisdiktions-Betreiber haben einen dünnen Overlay
+zusätzlicher Konfiguration:
+
+- **KYC- und Identitätsanbieter pro Jurisdiktion.** Jede Region
+  hat ihren eigenen bevorzugten Identity-Stack. Das Protokoll
+  integriert mit den großen Anbietern; Sie wählen pro Markt
+  oder Publikumsegment.
+- **Gebührenvorlagen pro Jurisdiktion.** Manche Jurisdiktionen
+  begrenzen Retail-Trading-Gebühren regulatorisch, andere nicht.
+  Sie können einen anderen Betreiber-Tarif pro Jurisdiktion
+  konfigurieren, ohne mehrere Deploys zu fahren.
+- **Reporting-Hooks für Regulator-Audit-Trails.** Für
+  regulierte Betreiber emittiert jeder Trade ein strukturiertes
+  Event, das in Ihre Compliance-Tools fließt. Das ist intern
+  nicht trivial zu bauen und einer der am wenigsten budgetierten
+  Teile eines Build-Pfads.
+- **Sprachspezifische Frontend-Bundles.** Lokalisierte Texte und
+  sprachspezifische Marktmetadaten. Die Plattform liefert mit
+  den sechs Sprachen aus, die zur bestehenden Distribution
+  passen; weitere Lokalisierungen werden hinzugefügt, sobald
+  Betreiber sie anfragen.
+
+Für die meisten Betreiber fügt dieser Overlay etwa eine Stunde
+zum ersten Deploy hinzu. Danach sind zusätzliche
+Jurisdiktionen Konfigurationsänderungen, keine neuen Deploys.
+
+## Wie Kuest mit dem Selbstbau abschneidet
+
+Wir haben die Build-vs-License-Mathematik im Detail in einem
+<a href="/blog/2026-04-build-vs-license-prediction-market">separaten Beitrag</a>
+behandelt, aber die Headline-Zahlen sind hier eine Wiederholung
+wert.
+
+<Comparison
+  columns={["Fähigkeit", "Kuest", "Inhouse-Build"]}
+  rows={[
+    ["Geprüfte Smart Contracts", "Tag eins (OpenZeppelin)", "6–12 Monate"],
+    ["CLOB + Relayer + Matching-Engine", "Inklusive", "$520k–$980k Custom-Build"],
+    ["Geteilte Liquidität bei Launch", "Ja, echte Tag-1-Tiefe", "Kaltstart"],
+    ["Settlement / Oracle-Integration", "Managed (UMA-basiert)", "$180k–$360k Integration"],
+    ["Pro-Jurisdiktions-Overlay", "Konfiguration", "+$200k jeweils"],
+    ["Engineering-Team erforderlich", "0", "5–8 FTE"],
+    ["Zeit bis zum ersten Live-Trade", "≈ 15 Minuten", "8–14 Monate"],
+    ["Vorab-Kapital", "≈ $0", "$3,4 Mio.–$7,2 Mio."],
+  ]}
+/>
+
+Der Build-Pfad ist nicht für alle falsch. Wenn Sie die Venue
+selbst sind – d.h. Ihre strategische Position erfordert das
+Eigentum an jeder Stack-Schicht – ist Bauen die richtige
+Entscheidung, und Zeitplan und Kapital spiegeln das wider. Für
+jedes andere Betreiberprofil (regionaler Broker, Krypto-natives
+Overlay, Creator-Venue, Sportwetten, Medienbetreiber,
+institutioneller Desk) ist der Protokoll-Pfad der schnellere,
+günstigere und strukturell weniger riskante Weg.
+
+Das eigentliche Lock-in für Vorhersagemärkte ist nicht die
+Technologie – es ist die Liquidität. Live-externe Märkte zu
+spiegeln bedeutet, dass Ihre Plattform mit echter Tiefe und
+echtem Order-Flow ab Tag eins startet. Betreiber, die versuchen,
+ihre eigenen Bücher aus dem Kalten zu bootstrappen, verlieren
+konsistent 60–80 % ihres Launch-Publikums innerhalb von 30
+Tagen.
+
+## Der 15-Minuten-Deploy in Reihenfolge
+
+Hier ist die tatsächliche Sequenz, von der Anmeldung bis zum
+ersten Live-Trade. Jeder Schritt ist Konfiguration, kein
+Engineering.
+
+1. **Anmelden und Betreiber-Identität verifizieren.** ≈ 2
+   Minuten. Wir verifizieren die Entität hinter der
+   Betreiberadresse und stellen Ihren Betreiber-Scope bereit.
+2. **Märkte und Publikum-Scope wählen.** ≈ 4 Minuten. Wählen
+   Sie Vertikalen aus einer Liste, fügen Sie optional Custom-
+   Märkte hinzu, definieren Sie Publikumssegmente.
+3. **Gebühren und Marken-Parameter setzen.** ≈ 3 Minuten.
+   Betreiber-Tarif, Markenfarbe, Logo-Upload, Textfelder.
+4. **Jurisdiktions-Overlay konfigurieren (bei Multi-
+   Jurisdiktion).** ≈ 4 Minuten. KYC-Anbieter,
+   Gebührenvorlagen, Sprach-Bundles.
+5. **Prüfen und deployen.** ≈ 2 Minuten. Der Wizard validiert
+   die Konfiguration, deployed Vertrags-Instanzen, verdrahtet
+   den Resolution-Scope und stellt die Plattform hinter Ihrer
+   Domain oder einer Kuest-gehosteten Subdomain bereit.
+
+Das sind fünfzehn Minuten von „Ich habe nicht angefangen" bis
+„Ich habe eine Live-Vorhersagemarkt-Venue mit meiner Marke
+darauf, meiner Gebühr, die aufläuft, und geteilter Liquidität,
+die bereits im Buch vorhanden ist".
+
+Die ersten Trades kommen typischerweise in der ersten Stunde,
+weil das geteilte Buch sicherstellt, dass es echte Spreads zum
+Abnehmen gibt. Der Distributionskanal, an den Sie Ihre Venue
+pushen (Newsletter, Broker-Kundenstamm, X, Community),
+bestimmt von dort an die Volumengeschwindigkeit.
+
+## Was als Nächstes auf der Protokoll-Roadmap kommt
+
+Ein Schnappschuss dessen, was wir den Rest 2026 ausliefern, für
+Betreiber, die gegen die Trajektorie des Protokolls planen
+wollen:
+
+- **Ein Protocol Pitch Deck für institutionelle Partner.**
+  Bereits an einige initiale Seed-Stage-Partner ausgeliefert.
+  Betreiber können eine Kopie über den Enterprise-Channel
+  anfragen.
+- **Ein SDK für institutionelle Market-Maker.** Damit wird
+  Profi-Desk-Teilnahme an Betreiber-Orderbüchern erschlossen –
+  was Spreads weiter zusammenzieht und größere Größen auf
+  jeder Venue absorbiert.
+- **Ein Managed-Deploy-Pfad für regulierte Broker.** White-
+  Glove-Onboarding für Betreiber, die eine direkte Compliance-
+  Schnittstelle mit den Banking- und KYC-Partnern des
+  Protokolls benötigen. Der 15-Minuten-Self-Service-Deploy
+  läuft für alle anderen weiter.
+- **Zusätzliche Sprach-Bundles.** Wir priorisieren Sprachpakete
+  basierend auf Betreiber-Anfragen; falls Ihr Zielmarkt nicht
+  unterstützt wird, ist der Support-Channel der richtige Ort,
+  um es zu melden.
+
+Wenn Ihr Team Vorhersagemarkt-Infrastruktur evaluiert, sind das
+Demo-Deploy und der Launch-Wizard die zwei schnellsten Wege,
+zu verstehen, ob das passt. Die Demo ist gegen Ihr Publikum-
+Profil parametrisiert und läuft für die Dauer Ihrer
+Evaluation; der Wizard bringt Sie zu einer Live-Venue.
+
+Der schnellste Weg zu wissen, ob eine Vorhersagemarkt-Venue
+das richtige Produkt für Ihr Publikum ist, ist nicht, eine
+weitere Analyse zu lesen – es ist, eine Demo gegen ein Sample
+Ihres echten Publikums zu deployen und die Aktivierungsdaten
+eine Woche lang zu beobachten. Wir haben Betreiber von „Wir
+evaluieren die Kategorie" zu „ausgeliefert, live, monetarisiert"
+in unter fünf Geschäftstagen mit genau diesem Loop bewegen
+sehen.
+
+<KuestCTA
+  headline="Bereit, Ihren eigenen Vorhersagemarkt zu starten?"
+  body="OpenZeppelin-geprüfte Verträge, geteilte Liquidität ab Tag eins, Ihre Gebühr bei jedem Trade. Fünfzehn Minuten von der Anmeldung bis zum ersten Live-Trade."
+  primary={{ href: "/launch", label: "Jetzt starten" }}
+  secondary={{ href: "/enterprise", label: "Vertrieb kontaktieren" }}
+/>

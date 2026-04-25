@@ -1,0 +1,363 @@
+---
+title: "Marchés de Prédiction en 2026 : Comment Ils Fonctionnent et Pourquoi Ils Comptent"
+description: "Une introduction complète aux marchés de prédiction — la mécanique, les plateformes, la régulation, et pourquoi une classe d'actifs de 20 milliards de dollars se forme plus vite que la plupart des institutions ne le perçoivent."
+publishedAt: 2026-03-04
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "fundamentals"]
+---
+
+Un marché de prédiction est un lieu où le prix d'un contrat est
+la probabilité d'un événement. Si un contrat qui paie 1 $ au cas
+où la Réserve fédérale baisserait ses taux en juillet se négocie
+à 0,42 $, le marché dit qu'il y a 42 % de chances d'une baisse.
+C'est toute l'idée. Tout le reste — les carnets d'ordres, les
+contrats de règlement, les cadres réglementaires, les centaines
+de millions de dollars qui transitent désormais par ces lieux
+chaque semaine — n'est que de l'infrastructure autour d'une
+idée très ancienne : les foules qui mettent de l'argent sur une
+question tendent à être plus honnêtes que les foules qui
+émettent des opinions.
+
+<Stat
+  value="18,3 Md$"
+  label="Volume mensuel combiné sur Kalshi et Polymarket au T1 2026, contre moins de 400 M$ deux ans plus tôt"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, T1 2026"
+/>
+
+La plupart des gens qui suivent la finance ne savent toujours
+pas définir un marché de prédiction en une phrase. Cet écart
+est l'opportunité. La classe d'actifs a doublé à nouveau au
+cours des douze derniers mois, les régulateurs de trois
+juridictions sont passés de l'hostilité à la construction
+active de cadres, et deux plateformes ont franchi des
+valorisations qu'une décennie d'intérêt académique n'avait
+jamais produites. Voici l'article que nous aurions aimé avoir
+quand nous avons commencé à construire la couche
+d'infrastructure en dessous.
+
+## Ce qu'est réellement un marché de prédiction
+
+Un marché de prédiction est un marché de contrats sur l'issue
+d'un événement réel. La forme la plus simple est binaire : un
+contrat paie 1 $ si un événement se produit, 0 $ sinon. Les
+traders achètent et vendent ces contrats pendant la durée du
+marché, et le prix à tout moment est la probabilité implicite
+de l'événement.
+
+Trois primitives composent chaque marché de prédiction :
+
+1. **Le contrat.** Un événement clairement spécifié avec une
+   date de résolution clairement spécifiée. « L'inflation
+   américaine en glissement annuel sera-t-elle supérieure à
+   3,0 % lors de la publication de septembre 2026 ? » est un
+   contrat. « L'inflation restera-t-elle élevée ? » non — trop
+   vague pour être réglée.
+2. **Le carnet d'ordres.** Un marché bilatéral en direct où les
+   traders publient des offres (« Je paie 0,42 $ pour OUI ») et
+   des demandes (« Je vends OUI à 0,45 $ »). Le point médian
+   est la probabilité implicite. L'écart est le coût de
+   l'exécution immédiate.
+3. **La règle de résolution.** Un mécanisme convenu à l'avance
+   qui détermine, à la date de résolution, ce qui s'est
+   réellement passé — et paie 1 $ d'un côté et 0 $ de l'autre.
+
+Le modèle mental le plus propre est qu'un marché de prédiction
+est une petite pièce d'infrastructure de type dérivé avec un
+payoff clairement borné. Vous ne « pariez » pas au sens du
+casino, où la maison a un avantage. Vous achetez un contrat dont
+la valeur terminale est déterminée par un fait externe, à un
+autre trader qui n'est pas d'accord avec vous sur la
+probabilité.
+
+## Comment fonctionnent le carnet d'ordres et la formation de prix
+
+Presque tous les marchés de prédiction modernes utilisent un
+Central Limit Order Book (CLOB). Cela fonctionne comme le
+carnet d'une bourse d'actions, avec quelques contraintes
+spécifiques aux contrats de prédiction.
+
+Supposons qu'un contrat sur « La Fed baisse ses taux en
+juillet » soit négocié. Quelques ordres au repos dans le
+carnet :
+
+- BID : 0,41 $ pour 200 contrats
+- BID : 0,40 $ pour 1 000 contrats
+- ASK : 0,43 $ pour 500 contrats
+- ASK : 0,45 $ pour 2 000 contrats
+
+Si une nouvelle trader pense que la baisse est quasi certaine,
+elle pourrait lever l'ask à 0,43 $, payant 200 × 0,43 $ = 86 $
+pour recevoir 200 contrats OUI. Si elle a raison, elle reçoit
+200 × 1 $ = 200 $ au règlement, un rendement de 132 % sur le
+capital investi. Si elle a tort, ces contrats se règlent à 0 $
+et elle perd les 86 $.
+
+L'autre côté, le vendeur de ces contrats OUI, est short sur
+l'événement. Sa vue : la baisse est moins probable que 43 %.
+Il encaisse 86 $ d'avance et est engagé pour 200 $ si la baisse
+se produit. Soit il garde jusqu'au règlement, soit il rachète
+plus tard à un autre prix.
+
+Deux détails importants distinguent les marchés de prédiction
+d'un carnet de dérivés traditionnel :
+
+- **Collatéral plafonné.** Comme les contrats OUI + NON
+  totalisent toujours 1 $ par construction, la perte maximale
+  pour chaque côté est bornée. Cela permet au système de
+  fonctionner sans appels de marge — le pire cas est entièrement
+  collatéralisé à l'entrée de l'ordre.
+- **Pas de taux de financement, pas de roulement perpétuel.**
+  Chaque marché a une date de résolution dure. La probabilité
+  implicite n'est pas une supposition continue sur l'avenir ;
+  elle converge vers 0 ou 1 à un moment connu.
+
+C'est pourquoi la liquidité des marchés de prédiction se sent
+différente de la liquidité crypto-spot. Le carnet est plus
+dense près de la probabilité implicite, les écarts se
+resserrent à mesure que la résolution approche, et toute la
+structure se comporte plus comme une option à court terme que
+comme un swap perpétuel.
+
+## Comment les résultats sont résolus
+
+La partie la plus importante de tout marché de prédiction est
+la partie qui n'arrive qu'une seule fois : la détermination de
+ce qui s'est réellement passé. Si la résolution est opaque ou
+politique, le marché entier perd en crédibilité. Si la
+résolution est robuste, la plateforme peut héberger des milliers
+de marchés sans que l'opérateur ne devienne un point unique de
+confiance.
+
+Trois modèles de résolution sont en production aujourd'hui :
+
+- **Centralisé (bourse régulée).** Kalshi, le venue américain
+  réglementé par la CFTC, résout les contrats via son équipe
+  interne d'intégrité du marché en utilisant des sources de
+  données pré-publiées.
+- **Oracle Optimiste (UMA).** Polymarket et la plupart des
+  marchés on-chain utilisent l'Optimistic Oracle d'UMA. Un
+  proposeur soumet le résultat avec une caution. Si personne ne
+  conteste dans la fenêtre, ce résultat est définitif. Si
+  quelqu'un conteste (également cautionné), les détenteurs du
+  jeton UMA votent sur la vérité.
+- **Flux de données agrégés (Chainlink, custom).** Pour les
+  marchés réglés sur des données numériques — scores sportifs,
+  prix d'actifs, météo — beaucoup de venues utilisent un flux
+  déterministe plus une fenêtre de contestation.
+
+Chaque modèle arbitre vitesse, coût et décentralisation
+différemment. Nous avons écrit une analyse approfondie — voir
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">comment la résolution fonctionne réellement</a>
+pour la mécanique complète.
+
+<Callout type="info" title="La couche de règlement est ce qui passe à l'échelle">
+  Les opérateurs ont tendance à surestimer le frontend et à
+  sous-estimer le règlement. Mais le règlement est la partie qui
+  doit fonctionner pour des milliers de marchés sur des années
+  d'opération. La réputation d'une plateforme se compose — ou
+  s'effondre — selon la propreté avec laquelle la résolution
+  fonctionne.
+</Callout>
+
+## Une brève histoire : d'Iowa à Polymarket
+
+Les marchés de prédiction ne sont pas nouveaux. C'est une
+vieille idée qui a enfin trouvé le bon substrat.
+
+- **1988 — Iowa Electronic Markets.** Un projet de recherche de
+  l'Université d'Iowa où des universitaires et quelques
+  centaines de traders pariaient de petites sommes sur les
+  élections américaines. L'IEM a constamment surperformé les
+  sondages pendant deux décennies.
+- **2003–2013 — InTrade.** Le premier marché de prédiction
+  grand public populaire, basé en Irlande. Il a atteint des
+  centaines de millions en volume annuel avant que la CFTC ne
+  s'en prenne à lui. InTrade a fermé en 2013, officiellement
+  pour une question comptable interne mais réellement parce
+  que l'environnement réglementaire américain ne tolérait pas
+  les venues offshore.
+- **2016 — Augur.** Le premier marché de prédiction on-chain,
+  construit sur Ethereum. Augur a démontré que le problème de
+  résolution pouvait être résolu de façon décentralisée. Il a
+  aussi montré que l'UX n'était pas prête : les marchés se
+  réglaient avec des semaines de retard, le gas mangeait
+  l'edge, et la plupart des utilisateurs avaient du mal avec
+  les wallets on-chain.
+- **2020 — Polymarket.** Le premier venue on-chain grand
+  public. Polymarket a adopté le règlement USDC sur Polygon et
+  adapté l'oracle optimiste d'UMA pour la résolution. Le cycle
+  électoral américain de 2024 l'a poussé au-delà de 9 Md$ de
+  volume cumulé.
+- **2021 — Kalshi.** La première bourse de contrats
+  d'événements régulée par la CFTC aux États-Unis. Le statut
+  réglementé de Kalshi est ce qui a déverrouillé le flux
+  institutionnel — ce qui a poussé la catégorie au-delà de
+  18 Md$/mois combinés.
+
+Le motif est constant à chaque vague précédente : la technologie
+est viable, la demande des utilisateurs est réelle, et le goulot
+d'étranglement est toujours l'infrastructure plus la régulation.
+Les deux sont maintenant résolus.
+
+## L'état actuel du marché
+
+Ce qui a changé au cours des vingt-quatre derniers mois n'est
+pas l'idée. C'est que deux venues stables existent maintenant
+(une réglementée, une décentralisée), elles ont prouvé qu'elles
+pouvaient porter des milliards de dollars de volume mensuel sans
+casser, et une génération de traders venue des perpétuels crypto
+trouve la mécanique des marchés de prédiction intuitive.
+
+<Comparison
+  columns={["Métrique", "Fin 2023", "Fin 2024", "T1 2026"]}
+  rows={[
+    ["Volume mensuel combiné", "340 M$", "3,1 Md$", "18,3 Md$"],
+    ["Visites mensuelles Polymarket", "1,8 M", "12 M", "32 M"],
+    ["Run-rate annualisé Kalshi", "—", "420 M$", "1,4 Md$"],
+    ["Marchés actifs / semaine", "≈ 600", "≈ 2 400", "≈ 9 800"],
+    ["Part du volume institutionnel", "<3 %", "≈ 14 %", "≈ 31 %"],
+  ]}
+/>
+
+La part institutionnelle est la ligne la plus importante de ce
+tableau. La forme entière d'une classe d'actifs change quand des
+desks professionnels commencent à coter. Les écarts se
+compriment, les tailles de position passent à l'échelle, et le
+coût d'exécution d'une vue à 5 M$ passe d'« impossible » à
+« routine ».
+
+La catégorie a franchi le seuil où elle ne peut plus être
+écartée comme une niche. Trois des plus grands courtiers-
+négociants avec qui nous parlons ont une initiative marchés de
+prédiction sur leur feuille de route 2026.
+
+## Pourquoi 95 % du monde n'y a pas encore accès
+
+Malgré cette croissance, les marchés de prédiction restent
+fonctionnellement inaccessibles à la plupart des personnes qui
+les négocieraient. L'écart est une combinaison de géographie et
+de marque.
+
+**Géographie.** Polymarket est géo-bloqué aux États-Unis
+(réglementaire). Kalshi n'est pas disponible hors États-Unis
+(également réglementaire, en miroir). Ensemble, cela signifie
+qu'un trader à São Paulo, Londres ou Singapour qui veut prendre
+une vue sur la politique monétaire américaine doit soit router
+via une interface crypto-native qui n'a pas été conçue pour
+lui, soit abandonner le trade. Environ deux tiers du trafic
+Polymarket vient déjà de l'extérieur des États-Unis, sur une
+plateforme qui ne s'y commercialise pas.
+
+**Marque.** Un trader retail au Brésil fait déjà confiance à un
+courtier local avec ses économies. Il ne fait pas confiance à
+un site web en langue étrangère sans contrepartie réglementée
+dans sa juridiction. Le courtier local a la relation ; il n'a
+juste pas l'infrastructure pour héberger le produit.
+
+C'est l'écart que Kuest existe pour combler. La thèse du
+protocole est simple : le courtier local ne devrait pas avoir à
+construire l'infrastructure de marché de prédiction pour
+proposer des marchés de prédiction. Il devrait pouvoir la
+licencier, la marquer en blanc, et gagner une commission sur
+chaque trade — comme les marchands tournent sur Shopify sans
+écrire de code de traitement des paiements.
+
+<Callout type="tip" title="Le précédent XP × Kalshi">
+  En mars 2026, Kalshi a annoncé un partenariat de distribution
+  stratégique avec XP Investimentos, l'un des plus grands
+  courtiers du Brésil. XP gère la distribution locale ; Kalshi
+  fournit la technologie de trading. C'est le modèle opérateur-
+  plus-infrastructure — sauf que Kalshi peut exécuter cette
+  pièce un pays et un partenaire institutionnel à la fois. Une
+  couche de protocole peut l'exécuter à grande échelle,
+  simultanément, dans n'importe quelle juridiction.
+</Callout>
+
+## Comment les traders utilisent réellement les marchés de prédiction
+
+La réponse de manuel est que les traders expriment des vues sur
+les probabilités d'événements. La réponse réelle est plus
+intéressante et donne un meilleur sens de la croissance.
+
+Trois profils de trader dominent les carnets aujourd'hui.
+
+**Le hedger macro.** C'est le desk professionnel mentionné plus
+tôt. Un fonds avec une vue de duration garde un contrat CPI non
+pas comme une vue sur l'inflation en soi mais comme une
+couverture contre un scénario spécifique dans son livre
+principal. Un contrat à 0,30 sur « CPI imprime au-dessus de
+3,2 % » devient une couverture notionnelle de 300 k$ contre une
+position Treasury de 20 M$. L'asymétrie est ce qui la rend
+utile — le pire cas est que la couverture expire sans valeur,
+et non que le desk subisse un dommage de marge.
+
+**Le trader narratif.** C'est le volume retail qui vivait dans
+les perpétuels crypto et qui migre vers les marchés de
+prédiction parce que les unit economics sont meilleures. Une
+vue sur « la Fed baisse en juillet » est exprimable dans un
+perp via des approximations de courbe SOFR, mais on porte du
+funding, des roulements de nuit, et un risque d'exécution. Un
+contrat binaire élimine tout ça. On paie 0,42 $, on garde
+jusqu'au règlement, on reçoit 1 $ ou 0 $.
+
+**L'arbitrageur.** C'est le profil sous-discuté. Il y a un flux
+constant d'arbitrage entre Polymarket, Kalshi et les
+probabilités implicites embarquées dans les dérivés
+traditionnels. Quand la probabilité de baisse de la Fed
+implicite par options SOFR est 47 % et Kalshi cote à 41 %,
+quelqu'un les met en ligne. À mesure que la catégorie mûrit,
+les corridors d'arbitrage se rétrécissent et la corrélation
+entre venues se resserre. C'est ce qui fait que la classe
+d'actifs se comporte de plus en plus comme un dérivé
+mainstream.
+
+Ce que l'on ne voit pas encore en taille significative, c'est
+l'allocateur institutionnel utilisant les marchés de prédiction
+pour exprimer du risque au niveau du portefeuille. C'est la
+prochaine étape de la courbe.
+
+## Ce qui vient ensuite
+
+Trois forces convergent jusqu'en 2026 et 2027 que nous nous
+attendons à voir pousser la catégorie au-delà de 50 Md$ de
+volume mensuel :
+
+1. **Clarté réglementaire dans l'UE et au Brésil.** La posture
+   no-action de la CFTC envers Kalshi est reflétée par les
+   brouillons de discussion de l'ESMA et par les consultations
+   du ministère brésilien des Finances. Une fois que les
+   bourses de contrats d'événements réglementées domestiques
+   deviennent possibles dans ces juridictions, le plafond
+   géographique se lève.
+2. **Le flux institutionnel devient majoritaire.** Une fois
+   que les desks professionnels représentent plus de 50 % du
+   volume sur Kalshi et Polymarket, une pile de cotations se
+   forme qui absorbe des ordres beaucoup plus grands. La
+   catégorie commence à se comporter comme une vraie classe
+   d'actifs.
+3. **La couche d'infrastructure mûrit.** Les déploiements en
+   marque blanche, la liquidité partagée et les rails de
+   résolution gérés compriment le temps entre « l'opérateur
+   décide de lancer » et « plateforme en direct avec du volume
+   réel » de trimestres à des jours. Cela change qui peut être
+   opérateur. Aujourd'hui c'est un constructeur de venue.
+   Bientôt c'est n'importe quel courtier, entreprise de médias
+   ou créateur ayant une audience.
+
+Si vous étudiez cette catégorie comme opérateur potentiel,
+distributeur ou allocateur institutionnel, les 18 prochains
+mois sont la fenêtre dans laquelle l'architecture sera
+définie. Les plateformes qui ont gagné la vague des perpétuels
+ont été celles qui se sont engagées tôt ; il en sera de même
+ici.
+
+<KuestCTA
+  headline="Vous esquissez déjà un venue ? Parlez-nous tôt."
+  body="Nous travaillons avec courtiers, opérateurs de médias et desks institutionnels sur des déploiements de marchés de prédiction en marque blanche. Contrats audités, liquidité partagée, votre commission sur chaque trade."
+  primary={{ href: "/launch", label: "Lancer un marché" }}
+  secondary={{ href: "/enterprise", label: "Parler aux ventes" }}
+/>

@@ -1,65 +1,174 @@
 ---
-title: "Launch your own prediction market in 15 minutes"
-description: "A walkthrough of the Kuest stack — audited contracts, shared liquidity from day one, and your fee on every trade."
+title: "How to Launch Your Own Prediction Market in 15 Minutes (2026 Guide)"
+description: "An end-to-end walkthrough of the Kuest stack — audited smart contracts, shared liquidity, managed resolution, and your operator fee on every trade. From sign-up to live trades in a quarter of an hour."
 publishedAt: 2026-04-25
 author:
   name: "Kuest"
   url: "https://kuest.com"
-tags: ["protocol", "launch"]
+cover: cover.jpg
+tags: ["protocol", "launch", "operators", "infrastructure"]
 ---
 
-export const comparisonColumns = ["Capability", "Kuest", "Build in-house"]
-export const comparisonRows = [
-  ["Audited smart contracts", "Day one", "6–12 months"],
-  ["CLOB + relayer + matching engine", "Included", "Custom build"],
-  ["Shared liquidity at launch", "Yes", "Cold start"],
-  ["Engineering team required", "0", "5–8 engineers"],
-  ["Time to live platform", "Days", "Multiple quarters"],
-]
+Prediction markets are no longer a fringe asset class. Kalshi and
+Polymarket together cleared more than $18B in monthly trading volume
+in Q1 2026 — and roughly two-thirds of that demand sits outside the
+US, on platforms users in those countries don't actually control.
+The infrastructure question is being decided right now: who operates
+the local platforms users in Brazil, Germany, the UK, and Singapore
+will trade on?
 
-Prediction markets are no longer fringe. Kalshi and Polymarket together
-clear over $18B in monthly trading volume — and roughly two-thirds of that
-demand sits outside the US, on platforms users don't control.
+This post walks through the Kuest stack — what's running under the
+hood, why it matters for institutions and operators, and exactly how
+a deploy works end-to-end. By the time you reach the bottom of this
+page, you'll have a concrete picture of how to take a venue from
+sign-up to its first live trade in fifteen minutes.
+
+If you're earlier in your journey, the
+<a href="/blog/2026-03-what-are-prediction-markets">prediction-market primer</a>
+covers the basics, and the
+<a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>
+covers why most operators shouldn't build the stack themselves.
 
 <Stat
   value="$18.3B"
-  label="Combined monthly volume, Kalshi + Polymarket"
+  label="Combined monthly volume on Kalshi and Polymarket as of Q1 2026, with two-thirds of demand located outside the US"
   sourceHref="https://www.theblock.co/post/392755"
   sourceLabel="The Block, Q1 2026"
 />
 
-The infrastructure question is being decided right now: who operates the
-local platforms users in Brazil, Germany, the UK, and Singapore actually
-trade on? This post walks through the Kuest stack — what's running under
-the hood, why it matters for institutions, and how a deploy works end to
-end.
+## Why "15 minutes" is a meaningful number
+
+Most operators evaluating prediction-market infrastructure measure
+time-to-launch in months. A venue running on hand-rolled contracts,
+a custom matching engine, an in-house oracle integration, and a
+bespoke compliance pipeline routinely takes 8–14 months to ship —
+and that's the optimistic estimate, before audit cycles slip and
+liquidity-provider negotiations stall.
+
+The Kuest deploy time is fifteen minutes because the heavy lifting
+has already been done. The contracts are audited. The matching
+engine is in production. The shared liquidity is already there. The
+resolution rails are already wired. What you're configuring at
+deploy time is not infrastructure — it's the parameters that make
+the venue *yours*: brand, fees, market scope, target jurisdictions,
+audience.
+
+The jump from "fifteen months" to "fifteen minutes" is not a
+marketing claim. It's the difference between licensing infrastructure
+that already exists and rebuilding it.
 
 ## What's actually under the hood
 
-The contracts are derived from Polymarket's CLOB architecture, audited by
-OpenZeppelin, and adapted for shared liquidity across multiple operator
-frontends. Settlement uses UMA-based resolution rails. The matching engine
-runs on Polygon mainnet — the same stack that's processed billions in
-verified volume.
+The stack underneath every Kuest deploy has four layers, each of
+which the operator inherits without operational responsibility for it.
+
+**Smart contracts derived from Polymarket's CLOB architecture.** The
+core contract design is the same one that has carried billions of
+dollars of volume on the most-watched on-chain venue in the
+category. The contracts have been audited by OpenZeppelin and
+adapted for shared liquidity across multiple operator frontends.
+That last piece — making one contract instance serve many operator
+brands without those operators stepping on each other — is the part
+that's specific to a protocol layer and that you would not easily
+replicate in-house.
+
+**A production matching engine.** The matching layer is a relayer
+architecture: traders submit orders off-chain, the relayer enforces
+fairness and ordering, and only fills hit the chain. That gives you
+sub-millisecond ordering, no per-order gas costs for traders, and
+deterministic settlement on Polygon mainnet. The engine has been
+running in production for the venues already on the Kuest stack and
+absorbs the operational load of every market created across all
+operators.
+
+**Resolution rails that don't depend on the operator.** Markets
+resolve through UMA's optimistic oracle, with operator-isolated
+resolution scopes so a faulty resolution on one operator's markets
+cannot affect another's. We covered the full mechanics in
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">the post on resolution and the settlement layer</a> —
+the short version is that operators inherit a battle-tested
+settlement model rather than building one.
+
+**Shared liquidity at protocol scale.** Order flow on any operator
+brand contributes to and draws from a unified book that mirrors the
+deepest external venues. New operators see live spreads and
+realistic depth from the moment they launch. We've written
+separately on
+<a href="/blog/2026-04-shared-liquidity-day-one">why shared liquidity decides who wins the next prediction-market wave</a>
+— for now, the relevant fact is that a Day-1 launch on Kuest does
+not begin from a cold book.
 
 <Callout type="info" title="No internal blockchain team needed">
-  Smart contracts, CLOB engine, relayer, settlement, and gas are fully
-  managed on the Kuest side. Your team provides brand assets and the event
-  scope; we handle the rest.
+  Smart contracts, CLOB engine, relayer, settlement, gas, and
+  liquidity provision are fully managed on the Kuest side. Your
+  team provides brand assets and the event scope. We handle the
+  rest. If your engineering org is busy on its core product, that
+  is fine — you do not need to staff blockchain infrastructure to
+  ship a prediction-market venue.
 </Callout>
 
 ## How a typical institutional deploy works
 
-Three steps. Days, not quarters.
+The deploy process compresses what used to be a year-long build into
+three explicit configuration steps. We've run this with both
+crypto-native operators (no compliance overlay) and regulated retail
+brokerages (full KYC + jurisdictional rules). The flow is the same;
+only the configuration densities differ.
 
-1. **Define your market scope and fee model.** Pick the event categories
-   that matter to your audience — macro, rates, politics, crypto, sports.
-   Set your trading fee. Configure the brand surface.
-2. **We deploy the full technical stack.** Smart contracts, CLOB, settlement
-   rails, wallet infrastructure, liquidity — all running before your team
-   finishes onboarding.
-3. **Your platform earns a fee on every trade.** No revenue share, no
-   intermediary, no settlement lag.
+### 1. Define your market scope and fee model
+
+Pick the event categories that matter to your audience — macro,
+rates, politics, crypto, sports, geopolitical events. Set your
+trading fee (the
+<a href="/blog/2026-04-fee-models-explained">fee-models post</a>
+walks through the rate selection in detail). Configure the brand
+surface: logo, accent colour, copy.
+
+This is the step where most of your strategic thinking happens. The
+specific markets you choose to host shape every downstream piece —
+audience composition, resolution complexity, operator fee
+sensitivity, marketing copy. Operators who are tempted to "host
+everything" early should resist the impulse. A venue with eight
+high-quality markets in one vertical out-performs a venue with
+eighty mediocre markets in five verticals, both for liquidity and
+for trader retention.
+
+### 2. We deploy the full technical stack
+
+Smart contracts, CLOB, settlement rails, wallet infrastructure,
+liquidity — all running before your team finishes onboarding. The
+deploy is parameterised: your operator identity is encoded into the
+contract instances, your fee accrues to your operator address, your
+resolution scopes are isolated. Behind the scenes you're sharing
+deeper infrastructure with every other operator on the protocol;
+from your traders' perspective, it's your venue.
+
+A few specifics worth knowing about this step:
+
+- **Contract deploy is on Polygon mainnet.** Your traders will
+  interact with the same chain that's processed billions of
+  dollars in verified prediction-market volume. Gas is paid by the
+  protocol; traders never see a network fee.
+- **Custody is configurable.** Crypto-native operators can run with
+  self-custodial wallets. Regulated operators can route through
+  segregated client-fund accounts via the protocol's banking
+  partners.
+- **The resolution scope is operator-isolated.** Any market created
+  under your operator identity resolves through your scope. If a
+  market in another operator's scope goes to dispute, your venue
+  is not affected.
+
+### 3. Your platform earns a fee on every trade
+
+No revenue share, no intermediary, no settlement lag. The operator
+fee accrues to your settlement address as fills execute. You
+withdraw on whatever cadence makes sense for your accounting.
+
+The fee economics are clean and the protocol's overhead is small
+enough that operators can run aggressively competitive headline
+rates without sacrificing margin. The
+<a href="/blog/2026-04-fee-models-explained">fee post</a>
+covers the rate-selection question in much more depth.
 
 <MarketEmbed
   title="Will the Fed cut rates before July?"
@@ -68,24 +177,134 @@ Three steps. Days, not quarters.
   pct={42}
 />
 
+## What gets configured per jurisdiction
+
+If you're deploying a venue intended for a single jurisdiction
+(e.g., a US-only venue, or a Brazil-only venue under the local
+framework), the configuration above is essentially complete.
+
+Multi-jurisdiction operators have a thin overlay of additional
+configuration:
+
+- **KYC and identity providers per jurisdiction.** Each region has
+  its own preferred identity-verification stack. The protocol
+  integrates with the major providers; you select per market or
+  per audience segment.
+- **Fee templates per jurisdiction.** Some jurisdictions cap retail
+  trading fees by regulation, some don't. You can configure a
+  different operator rate per jurisdiction without running multiple
+  deploys.
+- **Reporting hooks for regulator-facing audit trails.** For
+  regulated operators, every trade emits a structured event that
+  feeds into your compliance tooling. This is non-trivial to build
+  in-house and one of the most under-scoped pieces of a build path.
+- **Language-specific frontend bundles.** Localised copy and
+  language-specific market metadata. The platform ships with the
+  six languages that match the existing distribution; additional
+  localisations are added as operators request them.
+
+For most operators, this overlay adds about an hour to the first
+deploy. After that, additional jurisdictions are configuration
+changes, not new deploys.
+
 ## How Kuest compares to building from scratch
 
-<Comparison columns={comparisonColumns} rows={comparisonRows} />
+We covered the build-vs-license maths in detail in
+<a href="/blog/2026-04-build-vs-license-prediction-market">a separate post</a>,
+but the headline numbers are worth restating here.
 
-The real lock-in isn't the tech — it's the liquidity. Mirroring live
-Polymarket markets means your platform launches with real depth and real
-order flow on day one.
+<Comparison
+  columns={["Capability", "Kuest", "Build in-house"]}
+  rows={[
+    ["Audited smart contracts", "Day one (OpenZeppelin)", "6–12 months"],
+    ["CLOB + relayer + matching engine", "Included", "$520k–$980k custom build"],
+    ["Shared liquidity at launch", "Yes, real Day-1 depth", "Cold start"],
+    ["Settlement / oracle integration", "Managed (UMA-based)", "$180k–$360k integration"],
+    ["Per-jurisdiction overlay", "Configuration", "+$200k each"],
+    ["Engineering team required", "0", "5–8 FTE"],
+    ["Time to first live trade", "≈ 15 minutes", "8–14 months"],
+    ["Upfront capital", "≈ $0", "$3.4M–$7.2M"],
+  ]}
+/>
 
-## What ships next
+The build-it path is not wrong for everyone. If you are the venue
+itself — i.e., your strategic position requires owning every layer
+of the stack — building is the right call, and the timeline and
+capital reflect that. For every other operator profile (regional
+brokerage, crypto-native overlay, creator-led venue, sports book,
+media operator, institutional desk), the protocol path is the
+faster, cheaper, and structurally less risky route.
 
-We're rolling out the protocol pitch deck, an SDK for institutional market
-makers, and a managed-deploy path for regulated brokerages. If your team is
-evaluating prediction-market infrastructure, the demo and the launch wizard
-are the two fastest ways to understand whether this fits.
+The real lock-in for prediction markets isn't the technology — it's
+the liquidity. Mirroring live external markets means your platform
+launches with real depth and real order flow on day one. Operators
+who attempt to bootstrap their own books from cold consistently
+lose 60–80% of their launch audience inside thirty days.
+
+## The 15-minute deploy, in order
+
+Here's the actual sequence, from sign-up to first live trade. Each
+step is configuration, not engineering.
+
+1. **Sign up and verify operator identity.** ≈ 2 minutes. We
+   verify the entity behind the operator address and provision your
+   operator scope.
+2. **Pick markets and audience scope.** ≈ 4 minutes. Select
+   verticals from a list, optionally add custom markets, define
+   audience segments.
+3. **Set fees and brand parameters.** ≈ 3 minutes. Operator fee
+   rate, brand colour, logo upload, copy fields.
+4. **Configure jurisdictional overlay (if multi-jurisdiction).**
+   ≈ 4 minutes. KYC providers, fee templates, language bundles.
+5. **Review and deploy.** ≈ 2 minutes. The wizard validates the
+   configuration, deploys contract instances, wires the
+   resolution scope, and fronts the platform behind your domain
+   or a Kuest-hosted subdomain.
+
+That's fifteen minutes from "I haven't started" to "I have a live
+prediction-market venue with my brand on it, my fee accruing, and
+shared liquidity already present in the book."
+
+The first trades typically come in the first hour, because the
+shared book ensures there are real spreads to lift. The
+distribution channel you push your venue to (newsletter, broker
+client base, X, community) determines volume velocity from there.
+
+## What's coming next on the protocol roadmap
+
+A snapshot of what we're shipping through the rest of 2026, for
+operators who want to plan against the protocol's trajectory:
+
+- **A protocol pitch deck for institutional partners.** Already
+  shipped to several initial seed-stage partners. Operators can
+  request a copy through the enterprise channel.
+- **An SDK for institutional market makers.** This unlocks
+  professional-desk participation in operator order books — which
+  tightens spreads further and accepts larger size on every venue.
+- **A managed-deploy path for regulated brokerages.** White-glove
+  onboarding for operators that need a direct compliance interface
+  with the protocol's banking and KYC partners. The 15-minute
+  self-serve deploy continues to work for everyone else.
+- **Additional language bundles.** We're prioritising language
+  packs based on operator requests; if your target market is
+  unsupported, the support channel is the right place to flag it.
+
+If your team is evaluating prediction-market infrastructure, the
+demo deploy and the launch wizard are the two fastest ways to
+understand whether this fits. The demo is parameterised against
+your audience profile and runs for the duration of your
+evaluation; the wizard takes you to a live venue.
+
+The fastest way to know whether a prediction-market venue is the
+right product for your audience is not to read another analysis —
+it's to deploy a demo against a sample of your real audience and
+watch the activation data for a week. We've seen operators move
+from "evaluating the category" to "shipped, live, monetising" in
+under five business days using exactly this loop.
 
 <KuestCTA
-  headline="Ready to launch your own market?"
-  body="OpenZeppelin-audited contracts, shared liquidity from day one, your fee on every trade."
+  headline="Ready to launch your own prediction market?"
+  body="OpenZeppelin-audited contracts, shared liquidity from day one, your fee on every trade. Fifteen minutes from sign-up to first live trade."
   primary={{ href: "/launch", label: "Launch now" }}
   secondary={{ href: "/enterprise", label: "Talk to sales" }}
 />

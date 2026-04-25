@@ -1,0 +1,312 @@
+---
+title: "Prediction Markets in 2026: How They Work and Why They Matter"
+description: "A complete primer on prediction markets — the mechanics, the platforms, the regulation, and why a $20B asset class is forming faster than most institutions realize."
+publishedAt: 2026-03-04
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "fundamentals"]
+---
+
+A prediction market is a venue where the price of a contract is the
+probability of an event. If a contract that pays $1 if the Federal
+Reserve cuts rates in July is trading at $0.42, the market is saying
+there is a 42% chance of a cut. That is the entire idea. Everything
+else — the order books, the settlement contracts, the regulatory
+overlays, the hundreds of millions of dollars now flowing through these
+venues each week — is just plumbing around that single, very old idea
+that crowds aggregating money on a question tend to be more honest than
+crowds aggregating opinions.
+
+<Stat
+  value="$18.3B"
+  label="Combined monthly volume on Kalshi and Polymarket as of Q1 2026, up from under $400M two years earlier"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+Most people who follow finance still cannot define a prediction market
+in one sentence. That gap is the opportunity. The asset class doubled
+again in the last twelve months, regulators in three jurisdictions
+moved from hostility to active framework-building, and two platforms
+crossed valuations that a decade of academic interest never produced.
+This is the post we wished existed when we started building the
+infrastructure layer underneath it.
+
+## What a prediction market actually is
+
+A prediction market is a contract market for the outcome of a real-world
+event. The simplest form is binary: a contract pays $1 if an event
+happens, $0 if it doesn't. Traders buy and sell those contracts during
+the life of the market, and the price at any moment is the market's
+implied probability of the event.
+
+Three primitives make up every prediction market:
+
+1. **The contract.** A clearly specified event with a clearly specified
+   resolution date. "Will the U.S. CPI year-over-year reading be above
+   3.0% on the September 2026 release?" is a contract. "Will inflation
+   stay high?" is not — too vague to settle.
+2. **The order book.** A live two-sided market where traders post bids
+   ("I'll pay $0.42 for YES") and offers ("I'll sell YES at $0.45").
+   The midpoint is the implied probability. The spread is the cost of
+   immediate execution.
+3. **The settlement rule.** A pre-agreed mechanism that determines, on
+   the resolution date, what actually happened — and pays out $1 to
+   one side and $0 to the other.
+
+The cleanest mental model is that a prediction market is a tiny piece
+of derivative-style infrastructure with a clearly bounded payoff. You
+are not "betting" in the casino sense, where the house has an edge.
+You are buying a contract whose terminal value is determined by an
+external fact, from another trader who disagrees with you about the
+probability.
+
+## How the order book and pricing work
+
+Almost every modern prediction market uses a Central Limit Order Book
+(CLOB). It works the same way as a stock exchange's order book, with a
+few constraints specific to prediction contracts.
+
+Suppose a contract on "Fed cuts rates in July" is trading. A few resting
+orders sit in the book:
+
+- BID: $0.41 for 200 contracts
+- BID: $0.40 for 1,000 contracts
+- ASK: $0.43 for 500 contracts
+- ASK: $0.45 for 2,000 contracts
+
+If a new trader believes the cut is a near-certainty, she might lift
+the $0.43 ask, paying 200 × $0.43 = $86 to receive 200 YES contracts.
+If she's right, she gets 200 × $1 = $200 at settlement, a 132% return
+on the cash she put up. If she's wrong, those contracts settle at $0
+and she loses the $86.
+
+The other side, the seller of those YES contracts, is short the event.
+Her view is that the cut is less likely than 43%. She collects $86
+upfront and is on the hook for $200 if the cut happens. Either she
+holds to settlement, or she buys back the position later at a different
+price.
+
+There are two important details that make prediction markets different
+from a traditional derivative book:
+
+- **Capped collateral.** Because YES + NO contracts always sum to $1
+  by construction, the maximum loss for either side is bounded. That
+  lets the system run without margin calls — the worst case is fully
+  collateralised at order entry.
+- **No funding rate, no perpetual rollover.** Each market has a hard
+  resolution date. The implied probability isn't a rolling guess about
+  the future; it converges to 0 or 1 at a known time.
+
+This is why prediction-market liquidity feels different from
+spot-crypto liquidity. The book is denser near the implied probability,
+spreads tighten as resolution approaches, and the entire structure
+behaves more like a short-dated option than a perpetual swap.
+
+## How outcomes get resolved
+
+The most important part of any prediction market is the part that
+happens once: how it determines what actually occurred. If resolution
+is opaque or political, the entire market loses credibility. If
+resolution is robust, the platform can host thousands of markets
+without the operator becoming a single point of trust.
+
+There are three resolution models in production today:
+
+- **Centralised (regulated exchange).** Kalshi, the CFTC-regulated US
+  venue, resolves contracts through its internal market integrity team
+  using pre-published data sources. This is how most traditional
+  derivatives markets resolve.
+- **Optimistic oracle (UMA).** Polymarket and most on-chain markets
+  use UMA's Optimistic Oracle. A proposer submits the outcome with a
+  bond. If nobody disputes within a challenge window, that outcome is
+  final. If somebody disputes (also bonded), UMA token holders vote on
+  the truth.
+- **Aggregated data feeds (Chainlink, custom).** For markets settling
+  on numerical data — sports scores, asset prices, weather — many
+  venues use a deterministic feed plus a tie-breaking dispute window.
+
+Each model trades off speed, cost, and decentralisation differently.
+We've written a deep-dive on this — see <a href="/blog/2026-04-resolution-and-the-settlement-layer">how resolution actually works under the hood</a> for the
+full mechanics.
+
+<Callout type="info" title="The settlement layer is what scales">
+  Operators tend to over-rotate on the front-end and under-rotate on
+  settlement. But settlement is the part that has to work for thousands
+  of markets across years of operation. A platform's reputation
+  compounds — or collapses — based on how cleanly resolution runs.
+</Callout>
+
+## A short history: from Iowa to Polymarket
+
+Prediction markets are not new. They're an old idea that finally found
+the right substrate.
+
+- **1988 — Iowa Electronic Markets.** A research project at the
+  University of Iowa let academics and a few hundred traders bet small
+  amounts on US elections. The IEM consistently out-predicted polling
+  for two decades. It was operational proof that markets aggregate
+  information.
+- **2003–2013 — InTrade.** The first popular consumer prediction
+  market, based in Ireland. It hit hundreds of millions in annual
+  volume before the CFTC went after it. InTrade shut down in 2013,
+  ostensibly over an internal accounting issue but really because the
+  US regulatory environment didn't tolerate offshore venues.
+- **2016 — Augur.** The first on-chain prediction market, built on
+  Ethereum. Augur showed that the resolution problem could be solved
+  decentrally. It also showed the UX wasn't ready: markets settled
+  weeks late, gas costs ate edge, and most users struggled with
+  on-chain wallets.
+- **2020 — Polymarket.** The first mass-market on-chain venue.
+  Polymarket adopted USDC settlement on Polygon and adapted UMA's
+  optimistic oracle for resolution. The 2024 US election cycle pushed
+  it past $9B in cumulative volume.
+- **2021 — Kalshi.** The first CFTC-regulated event contract exchange
+  in the US. Kalshi's regulated status is what unlocked institutional
+  flow — which is what pushed the category over $18B/month combined.
+
+The pattern is consistent across every prior wave: the technology is
+fine, the user demand is real, and the bottleneck is always
+infrastructure plus regulation. Both of those are now resolved.
+
+## The current state of the market
+
+What changed in the last twenty-four months is not the idea. It's that
+two stable venues now exist (one regulated, one decentralised), they
+have proven they can carry billions of dollars of monthly volume
+without breaking, and a generation of traders who came up trading
+crypto perpetuals find prediction-market mechanics intuitive.
+
+<Comparison
+  columns={["Metric", "End of 2023", "End of 2024", "Q1 2026"]}
+  rows={[
+    ["Combined monthly volume", "$340M", "$3.1B", "$18.3B"],
+    ["Polymarket monthly visits", "1.8M", "12M", "32M"],
+    ["Kalshi annual run rate", "—", "$420M", "$1.4B"],
+    ["Active markets / week", "≈ 600", "≈ 2,400", "≈ 9,800"],
+    ["Institutional volume share", "<3%", "≈ 14%", "≈ 31%"],
+  ]}
+/>
+
+The institutional share is the most important line in that table. The
+whole shape of an asset class changes when professional desks start
+quoting it. Spreads compress, position sizes scale, and the cost of
+executing a $5M view moves from "impossible" to "routine."
+
+The category has crossed the threshold where it can no longer be
+dismissed as a niche. Three of the largest broker-dealers we speak with
+have a prediction-market initiative on their 2026 roadmap.
+
+## Why 95% of the world hasn't accessed them yet
+
+Despite that growth, prediction markets are still functionally
+unavailable to most of the people who'd trade them. The gap is a
+combination of geography and brand.
+
+**Geography.** Polymarket is geo-blocked in the US (regulatory). Kalshi
+is unavailable outside the US (also regulatory, mirrored). Together,
+that means a trader in São Paulo, London, or Singapore who wants to
+take a view on US monetary policy has to either route through a
+crypto-native interface that wasn't built for them or skip the trade.
+Roughly two-thirds of Polymarket's traffic already comes from outside
+the US, on a platform that doesn't market itself there.
+
+**Brand.** A retail trader in Brazil already trusts a local brokerage
+with their savings. They don't trust a foreign-language website
+without a regulated counterpart in their jurisdiction. The local
+brokerage has the relationship; it just doesn't have the
+infrastructure to host the product.
+
+This is the gap Kuest exists to close. The protocol thesis is simple:
+the local brokerage shouldn't have to build prediction-market
+infrastructure to offer prediction markets. They should be able to
+license it, white-label it, and earn a fee on every trade — the same
+way merchants run on Shopify without writing payment-processing code.
+
+<Callout type="tip" title="The XP × Kalshi precedent">
+  In March 2026, Kalshi announced a strategic distribution partnership
+  with XP Investimentos, one of Brazil's largest brokerages. XP
+  manages local distribution; Kalshi provides the trading technology.
+  That's the operator-plus-infrastructure model — except Kalshi can
+  run that play one country and one institutional partner at a time.
+  A protocol layer can run it at scale, simultaneously, in any
+  jurisdiction.
+</Callout>
+
+## How traders actually use prediction markets
+
+The textbook answer is that traders are expressing views on event
+probabilities. The actual answer is more interesting and gives you a
+better feel for why volume keeps growing.
+
+Three trader profiles dominate the order books today.
+
+**The macro hedger.** This is the professional desk we mentioned
+earlier. A fund with a duration view holds a CPI contract not as a
+view on inflation per se but as a hedge against a specific scenario
+in their main book. A 0.30 contract on "CPI prints above 3.2%"
+becomes a $300k-notional hedge against a $20M Treasury position. The
+asymmetry is what makes it useful — the worst case is that the hedge
+expires worthless, not that the desk takes margin damage.
+
+**The narrative trader.** This is the retail volume that used to live
+in crypto perpetuals and is migrating to prediction markets because
+the unit economics are better. A view on "the Fed cuts in July" is
+expressible in a perp through SOFR-curve approximations, but you
+carry funding, you carry overnight rolls, and you carry execution
+risk. A binary contract removes all of that. You pay your $0.42, you
+hold to settlement, you get $1 or $0. The product is honest in a way
+perps aren't.
+
+**The arbitrageur.** This is the under-discussed profile. There's a
+constant stream of arbitrage between Polymarket, Kalshi, and the
+implied probabilities embedded in traditional derivatives. When
+SOFR-options-implied Fed cut probability is 47% and Kalshi is
+trading at 41%, somebody pulls those into line. As the category
+matures, the arbitrage corridors narrow and the cross-venue
+correlation tightens. This is what makes the asset class behave
+increasingly like a mainstream derivative product.
+
+What you don't see, in any meaningful size yet, is the institutional
+allocator using prediction markets for portfolio-level risk
+expression. That's the next leg of the curve. When a $40B
+multi-strategy fund books a $50M sleeve in macro prediction-market
+exposure as a directional view, the venue infrastructure has to be
+ready to absorb size at that scale. The platforms that will absorb
+that flow are being built now.
+
+## What's coming next
+
+Three forces are converging through 2026 and 2027 that we expect to
+push the category toward $50B+ in monthly volume:
+
+1. **Regulatory clarity in the EU and Brazil.** The CFTC's no-action
+   posture toward Kalshi is being mirrored by ESMA discussion drafts
+   and by Brazilian Ministry of Finance consultations. Once domestic
+   regulated event-contract exchanges become possible in those
+   jurisdictions, the geographic ceiling lifts.
+2. **Institutional flow becomes a majority.** Once professional desks
+   account for >50% of volume on Kalshi and Polymarket, a quote stack
+   forms that absorbs much larger orders. The category starts behaving
+   like a real asset class — option-style risk sleeves at scale.
+3. **The infrastructure layer matures.** White-label deploys, shared
+   liquidity, and managed-resolution rails compress the time from
+   "operator decides to launch" to "platform live with real volume"
+   from quarters to days. That changes who can be an operator. Today
+   it's a venue-builder. Soon it's any brokerage, media company, or
+   creator with an audience.
+
+If you're researching this category as a potential operator,
+distributor, or institutional allocator, the next 18 months are the
+window in which the architecture will be set. The platforms that won
+the perpetuals wave were the ones that committed early; the same will
+be true here.
+
+<KuestCTA
+  headline="Already sketching out a venue? Talk to us early."
+  body="We work with brokerages, media operators, and institutional desks on white-label prediction-market deployments. Audited contracts, shared liquidity, your fee on every trade."
+  primary={{ href: "/launch", label: "Launch a market" }}
+  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+/>

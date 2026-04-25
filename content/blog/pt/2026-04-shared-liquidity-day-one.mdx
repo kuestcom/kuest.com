@@ -1,0 +1,175 @@
+---
+title: "Por Que a Liquidez Compartilhada Decide Quem Vence a Próxima Onda dos Mercados de Previsão"
+description: "Início a frio é o assassino silencioso de novas venues de mercados de previsão. Uma análise 2026 de como o fluxo de ordens compartilhado muda a economia unitária, a matemática de retenção e o mapa competitivo desde o primeiro dia."
+publishedAt: 2026-04-18
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["liquidity", "protocol", "operators", "market-structure"]
+---
+
+A maioria das novas venues de mercados de previsão morre
+silenciosamente em seu primeiro mês — não por mau produto, não
+por audiência pequena, mas por um livro de ordens vazio. O
+trader que chega, vê um spread de 200 bps em um mercado trivial
+e vai embora, nunca volta. Novas venues precisam de profundidade
+para atrair traders, e precisam de traders para construir
+profundidade. Esse loop é brutal, e historicamente foi a maior
+razão pela qual operadores com forte distribuição ainda assim
+falharam em capturar volume de mercados de previsão.
+
+Liquidez compartilhada resolve esse loop diretamente, e nos
+próximos 18 meses será o maior determinante isolado de quais
+marcas de venue vão sobreviver à segunda onda. Este post é o
+desdobramento técnico e econômico do porquê.
+
+Se você está mais cedo na sua avaliação, o
+<a href="/blog/2026-03-prediction-market-land-grab">post de oportunidade de mercado</a>
+cobre por que entrar nessa categoría, e o
+<a href="/blog/2026-04-build-vs-license-prediction-market">post construir-vs-licenciar</a>
+cobre por que a maioria dos operadores não deveria construir a
+venue por conta própria. Este post assume que você passou dessas
+perguntas e precisa entender exatamente por que a liquidez é a
+camada que importa.
+
+<Stat
+  value="68 %"
+  label="Das novas venues de mercados de previsão que falham em alcançar US$ 100k de volume semanal nos primeiros 90 dias, quase inteiramente por liquidez de início a frio"
+  sourceHref="https://kuest.com/research/cold-start"
+  sourceLabel="Pesquisa Kuest, 1T 2026"
+/>
+
+## O que o "início a frio" realmente faz a uma venue
+
+A frase "problema de início a frio" é usada de forma vaga.
+Vale a pena ser específico sobre o que acontece de verdade,
+porque o modo de falha é mais agudo do que a maioria dos
+operadores percebe até estar dentro dele.
+
+Uma venue nova no minuto zero não tem ordens em repouso. O
+livro de cada mercado está vazio. O primeiro trader que chega
+não consegue ver profundidade, não consegue ver um spread, não
+consegue ver fills recentes. Ele toma uma de três decisões,
+todas ruins para a venue:
+
+- **Não negociar.** Muitos fazem isso.
+- **Postar uma ordem limite e esperar.** Alguns fazem. Tornam-se
+  a liquidez. Esperam horas ou dias até alguém pegar o outro
+  lado.
+- **Aceitar um spread amplo.** Um pequeno número paga 200–500
+  bps a uma única contraparte (frequentemente o bot
+  market-maker do operador), e conclui corretamente que essa
+  venue é mais cara que as alternativas.
+
+Cada um desses três traders, individualmente, é uma oportunidade
+perdida. Compostos ao longo dos primeiros cem visitantes, formam
+toda a trajetória de lançamento.
+
+O problema de início a frio não é "baixo volume no mês um". É
+"perda permanente de atribuição de audiência porque as primeiras
+impressões foram ruins".
+
+## O que a liquidez compartilhada de fato muda
+
+Liquidez compartilhada roteia fluxo de ordens real das venues
+externas mais profundas através de cada mercado que espelha
+uma pergunta nessas venues. No momento em que sua plataforma
+lança, os traders veem spreads ao vivo, livros profundos, e
+fills recentes — porque o fluxo está genuinamente presente, não
+sintetizado.
+
+Três coisas mudam no momento em que uma venue está em liquidez
+compartilhada.
+
+**Tempo até o primeiro trade desaba.** Uma venue nova em
+liquidez compartilhada vê seu primeiro trade real em minutos
+do lançamento público.
+
+**O spread do dia um é competitivo.** Em um livro
+compartilhado, spreads em mercados líquidos ficam na faixa
+20–60 bps — a mesma faixa em que Polymarket e Kalshi rodam.
+Em um livro de início a frio, spreads do dia um são 200–500 bps.
+
+**A profundidade do livro é real.** Um livro compartilhado tem
+US$ 50k–US$ 500k de liquidez em repouso no inside spread para
+mercados principais.
+
+<Comparison
+  columns={["Métrica", "Venue início a frio", "Liquidez compartilhada"]}
+  rows={[
+    ["Tempo até o primeiro trade", "3–14 dias", "Minutos"],
+    ["Spread no dia 1", "200–500 bps", "20–60 bps"],
+    ["Profundidade do livro (top of book)", "US$ 0–US$ 500", "US$ 50k–US$ 500k"],
+    ["Retenção semana 2", "12 %", "47 %"],
+    ["Retenção semana 12", "4 %", "29 %"],
+    ["Custo por trader ativo adquirido", "US$ 140–US$ 320", "US$ 22–US$ 48"],
+  ]}
+/>
+
+A assimetria é enorme. Uma plataforma com liquidez compartilhada
+adquire seus primeiros mil traders a 4–6× a taxa de conversão
+de uma venue de início a frio.
+
+## Como a economia unitária muda
+
+<Callout type="info" title="A matemática do break-even, simplificada">
+  Suponha que seu CAC seja US$ 15 por visitante adquirido e seu
+  trader ativado médio gere US$ 42 de receita líquida de taxas
+  nos primeiros seis meses. Em uma venue de início a frio com
+  12 % de ativação, você precisa adquirir 15 / (0,12 × 42) =
+  2,97 visitantes por trader ativado. Em uma venue de liquidez
+  compartilhada com 47 % de ativação, precisa de 0,76. Essa
+  diferença — aproximadamente 4× — é toda a diferença entre uma
+  venue que escala e uma que não escala.
+</Callout>
+
+## Por que operadores tentam fazer bootstrap da própria liquidez
+
+Três razões: querem capturar o spread, querem se diferenciar em
+mercados exclusivos, e subestimam a severidade do início a
+frio. A terceira razão é a mais comum.
+
+## O que isso significa para a estratégia do operador
+
+**Trate a liquidez como uma decisão de design do Dia-1, não
+como uma decisão operacional do Mês-6.**
+
+**As marcas de operador que perderem a próxima onda vão perder
+especificamente nisso.** Distribuição sozinha não é o
+diferencial.
+
+**O interesse do protocolo se alinha ao do operador.**
+
+## Como o livro compartilhado é implementado
+
+A camada de liquidez compartilhada fica entre as instâncias de
+contrato do operador e o matching engine. Quando uma ordem é
+submetida sob a identidade do operador A, o matching engine a
+roteia contra o livro compartilhado. Fills são liquidados pelo
+contrato do operador A, com a taxa do operador A aplicada.
+
+Essa arquitetura tem duas propriedades importantes: **risco
+isolado por operador** e **incentivos alinhados com operador**.
+
+## Por que isso importa para o seu lançamento
+
+Se você opera uma comunidade de qualquer tamanho — Discord, X,
+newsletter, Twitch, uma base de clientes de corretora, uma
+audiência de mídia — pode lançar uma venue de mercado de
+previsão com sua marca e fazê-la se sentir estabelecida desde o
+minuto um.
+
+Uma venue que demora seis meses para chegar a US$ 100k de
+volume semanal é uma distração do seu negócio principal. Uma
+venue que chega a US$ 100k de volume semanal no primeiro mês e
+US$ 500k no primeiro trimestre é uma nova linha de receita
+genuína. A diferença entre essas duas trajetórias é dominada
+pela liquidez, não pela audiência ou pela marca.
+
+<KuestCTA
+  headline="Veja como sua venue ficaria com liquidez compartilhada"
+  body="Um deploy demo com sua marca, com fluxo real de ordens no Dia-1, leva 15 minutos. Mostraremos os spreads, a profundidade e as curvas de ativação que sua audiência veria de verdade."
+  primary={{ href: "/launch", label: "Lançar demo" }}
+  secondary={{ href: "/enterprise", label: "Falar com vendas" }}
+/>

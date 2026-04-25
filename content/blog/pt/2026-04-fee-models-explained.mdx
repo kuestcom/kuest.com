@@ -1,0 +1,199 @@
+---
+title: "Taxas de Trading, Explicadas: Como Definir as Suas Sem Espantar os Traders"
+description: "Um guia prático 2026 para escolher a taxa do seu mercado de previsão — o que vemos funcionar, o que mata o volume, e como evoluí-la conforme você cresce."
+publishedAt: 2026-04-08
+updatedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
+---
+
+A taxa em cada trade é o número mais importante na sua venue
+de mercados de previsão. Defina alta demais e seus traders
+migram silenciosamente para uma venue com execução mais
+apertada; defina baixa demais e você deixa receita recorrente
+material na mesa sem nenhum benefício real. Este post é o
+detalhamento do lado do operador sobre o que vemos realmente
+funcionar em 2026, baseado nas venues vivas no stack da Kuest e
+no que o cenário competitivo (Kalshi, Polymarket, a nova onda
+de white-labels regionais) está fazendo.
+
+Se você está mais cedo na sua avaliação, comece com o
+<a href="/blog/2026-03-prediction-market-land-grab">post de oportunidade de mercado</a>
+ou a <a href="/blog/2026-04-build-vs-license-prediction-market">análise construir-vs-licenciar</a>.
+Este post assume que você já passou dessas perguntas e precisa
+decidir onde colocar a taxa de operador no dia um.
+
+<Stat
+  value="≈ 0,9 %"
+  label="Taxa mediana de operador em venues white-label de mercados de previsão lançadas no 1T 2026, ponderada pelo volume de 30 dias"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Pesquisa de operadores Kuest, 1T 2026"
+/>
+
+## O que é, na prática, uma taxa de mercado de previsão
+
+Antes de discutir percentuais, vale a pena ser explícito sobre o
+que é a taxa e o que não é, porque operadores vindos de
+corretoras às vezes assumem o default errado.
+
+Uma taxa de trading em mercado de previsão é um percentual do
+valor **nocional** de um trade — isto é, tamanho do contrato
+vezes preço executado — cobrado em cada fill. Não é um
+percentual do lucro, não é um spread, e não é uma taxa de
+saque. Um trader que compra 100 contratos SIM a US$ 0,42 tem
+um nocional de US$ 42 e paga uma taxa de US$ 42 × seu
+percentual. A taxa é coletada na execução pelo matching engine
+e roteada para o endereço de liquidação do operador.
+
+Três notas estruturais importantes:
+
+- **Taxas são cobradas em ambos os lados de cada trade.**
+  Comprador e vendedor pagam ambos a taxa do operador. Sua
+  receita efetiva por trade é 2× percentual × nocional.
+- **Taxas se aplicam a fills, não a ordens.** Postar uma ordem
+  que nunca é executada não custa nada ao trader.
+- **A taxa se sobrepõe ao custo implícito do spread.** Um
+  trader que toma uma oferta a US$ 0,43 em vez de US$ 0,42 já
+  está pagando 1 centavo de custo de execução.
+
+A estrutura é a mesma de uma taxa taker de exchange
+centralizada, com duas simplificações: não há rebate de maker
+(porque o protocolo fornece liquidez de um livro compartilhado),
+e o percentual é simétrico nos dois lados.
+
+## Como são os percentuais competitivos em 2026
+
+<Comparison
+  columns={["Tipo de venue", "Taxa típica de operador", "Spread em mercados líquidos", "Custo total ida-e-volta"]}
+  rows={[
+    ["Kalshi (regulado EUA)", "0,0 % (nenhuma)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1,0 % (compartilhada com protocolo)", "20–60 bps", "≈ 1,4–1,6 %"],
+    ["White-labels de corretoras retail regionais", "0,8–1,5 %", "20–80 bps", "≈ 1,2–2,3 %"],
+    ["Overlays de exchange cripto-nativos", "0,3–0,7 %", "20–60 bps", "≈ 0,7–1,4 %"],
+    ["Venues de creator / comunidade", "1,5–2,5 %", "30–100 bps", "≈ 2,0–3,5 %"],
+  ]}
+/>
+
+A taxa headline de 0 % da Kalshi é enganosa porque eles operam
+um modelo de negócio totalmente diferente — são uma bolsa
+regulada nos EUA recuperando custos via spread, vendas de dados
+de mercado, e níveis de acesso institucional. Você não deveria
+tentar igualar o headline deles.
+
+O spread entre o venue de menor taxa (overlays cripto-nativos
+em ~0,5 %) e o mais alto (venues de creator em ~2 %) é cerca de
+4×. Esse spread reflete diferenças de audiência, não um
+mispricing.
+
+## O que de fato dirige a tolerância da audiência
+
+Três forças determinam quanto de taxa uma venue pode cobrar
+antes que o volume por trader comece a cair.
+
+**O custo alternativo de execução.** Um trader em uma venue
+liderada por creator compara seus 2 % com o custo de abrir uma
+conta na Polymarket, aprender outra UX, e fazer self-custody. A
+fricção bate o diferencial de taxa toda vez, até uma lacuna
+significativa.
+
+**A distribuição de tamanho de trade.** Um trader retail
+colocando posições de US$ 50 mal nota uma taxa de 1 % — são US$
+0,50. Um desk profissional rodando posições de US$ 100k nota
+uma taxa de 1 % muito diretamente — são US$ 1.000 por trade.
+
+**O edge implícito no trade.** Um trader que acredita que o
+contrato SIM está mal precificado em 8 % está feliz em pagar
+1 % para tomar essa visão. Um trader "explorando" um mercado
+com convicção fraca rebate em qualquer taxa acima de ~0,5 %.
+
+<Callout type="info" title="O filtro de convicção é uma feature">
+  Taxas mais altas entregam maior lucratividade por trader e
+  menor velocidade de trade. Taxas mais baixas entregam maior
+  velocidade e menor lucratividade. Não há resposta
+  universalmente certa — só uma resposta certa para a audiência
+  e estrutura de custos que você tem.
+</Callout>
+
+## Recomendação concreta de taxa por tipo de operador
+
+**Corretora retail (1k–100k clientes).** Comece em 0,85 % e
+mantenha 90 dias antes de ajustar.
+
+**Overlay cripto-nativo ou add-on de exchange.** Comece em
+0,5 %. Sua audiência te compara com taxas taker de exchanges
+centralizadas no intervalo 0,10–0,30 %.
+
+**Venue liderada por creator.** Comece em 1,50 %.
+
+**Venue voltada para institucional.** Comece em 0,10–0,20 % com
+estrutura tiered.
+
+**Sportsbook ou overlay de fintech consumer.** Comece em 1,0 %.
+
+## Como evoluir a taxa após o lançamento
+
+A regra mais limpa que vemos operadores usarem é o **teste de
+coorte de 90 dias**: escolha um percentual inicial, mantenha-o
+intocado por 90 dias, olhe a curva de velocidade de trade e a
+curva de retenção na semana 12, depois faça um único ajuste.
+
+Três sinais que justificam mudança:
+
+1. **Retenção da semana 12 abaixo de 35 %.**
+2. **Tamanho mediano de trade caindo ao longo de meses.**
+3. **Volume crescendo rápido e contagem de traders crescendo
+   mais rápido.**
+
+## Como taxas interagem com liquidez compartilhada
+
+Se sua venue roda em liquidez compartilhada (o que
+<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fortemente</a>),
+a matemática tem uma nuance que vale a pena entender. O livro
+de ordens compartilhado fornece profundidade a spreads de
+nível-protocolo, o que significa que o custo total de execução
+dos seus traders é sua taxa mais um spread apertado (~30 bps)
+de nível-protocolo.
+
+<Callout type="tip" title="Percentual efetivo, não headline">
+  Quando comparar sua venue com um concorrente, compare o custo
+  total ida-e-volta do trader (taxa × 2 + spread × 2), não a
+  taxa headline.
+</Callout>
+
+## Erros comuns no dia um
+
+**Ancorar-se a taxas spot de exchange cripto.** Operadores com
+background de exchange cripto às vezes precificam contratos de
+previsão a 0,10 % taker, do jeito que precificariam um trade
+BTC-USDT. Isso sub-precifica a complexidade operacional.
+
+**Tiering agressivo demais, cedo demais.**
+
+**Desconto por promoção.** "Zero taxa nos primeiros 30 dias"
+funciona em pagamentos e consumer-fintech porque o custo de
+aquisição excede a receita perdida. Em um mercado de previsão,
+traders que chegam durante uma janela de zero-taxa churnam
+com taxas muito mais altas quando a taxa normaliza.
+
+## Um cronograma de referência que funciona
+
+<Comparison
+  columns={["Estágio", "Taxa de operador", "Tiering", "Por quê"]}
+  rows={[
+    ["Pré-lançamento / beta privada", "0,85 %", "Plana", "Estabelecer baseline; coletar dados de coorte"],
+    ["Lançamento público → mês 6", "0,85 %", "Plana", "Sustentar para coletar sinal"],
+    ["Mês 6 → mês 12", "0,95 %", "Plana", "Subida modesta após retenção provada"],
+    ["Mês 12+", "0,95 % / 0,80 % / 0,65 %", "Três tiers por volume 30 dias", "Reter whales sem perder retail"],
+    ["Ano 2+", "Negociada para desks institucionais", "Custom", "Fluxo prop real entrando"],
+  ]}
+/>
+
+<KuestCTA
+  headline="Quer um modelo de taxas afinado à sua audiência específica?"
+  body="Vamos passar pelo seu perfil de audiência, jurisdição alvo, e os venues com os quais seus traders mais provavelmente te comparam — e te dar um percentual inicial defensável dentro de uma hora."
+  primary={{ href: "/launch", label: "Abrir o wizard de lançamento" }}
+  secondary={{ href: "/enterprise", label: "Marcar call de estratégia" }}
+/>

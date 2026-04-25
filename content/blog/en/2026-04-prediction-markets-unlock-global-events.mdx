@@ -1,0 +1,587 @@
+---
+title: "Why Prediction Markets Are the First Truly Global Asset Class — and How They Unlock the $50 Trillion Events Economy"
+description: "Events are global by definition — Fed decisions, World Cup finals, election outcomes, geopolitical shocks — but the markets that price them have been hopelessly local. A long-form thesis on how prediction markets break that asymmetry and what it unlocks."
+publishedAt: 2026-04-13
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["thesis", "global-markets", "research", "future-of-finance", "borderless"]
+---
+
+A trader in São Paulo wakes up on a Wednesday morning, watches the
+Federal Reserve cut rates by 25 basis points at 2pm Brasília time,
+and immediately understands what the move means for her clients in
+local terms — but if she wants to take a directional position
+ahead of the next decision, she can't. Polymarket geo-blocks her
+country in some categories. Kalshi is closed to her entirely.
+Treasury options are a US-clearing instrument she'd need a
+US-domiciled prime brokerage relationship to access. The local
+brokerage she uses doesn't host event contracts at all. The Fed's
+decision is the most globally consequential financial event of the
+quarter, and yet the venues that price it are functionally
+unavailable to two-thirds of the people who care about the
+outcome.
+
+That asymmetry is the central financial-infrastructure problem of
+the next decade. Events are global by their nature. The markets
+that price them have been hopelessly local. Closing that gap is
+worth multiple trillions of dollars in addressable volume, and
+prediction markets are the first asset class structurally built to
+do it.
+
+This post is the long-form case for why. If you're earlier in your
+evaluation, the
+<a href="/blog/2026-03-what-are-prediction-markets">prediction-market primer</a>
+covers the basics, and
+<a href="/blog/2026-04-why-prediction-markets-are-the-future">the future-of-finance thesis</a>
+covers why the category itself becomes a primitive. This post is
+the geographic and operational extension of that thesis: why
+prediction markets are the first asset class that doesn't have to
+be re-built per jurisdiction, and what becomes possible once an
+event-priced market is genuinely global on day one.
+
+<Stat
+  value="≈ $50T+"
+  label="Annual notional value of globally consequential events that currently lack a directly investable, globally accessible market — covering macro decisions, geopolitics, sports, scientific outcomes, and corporate milestones"
+  sourceHref="https://kuest.com/research/global-events"
+  sourceLabel="Kuest research, 2026"
+/>
+
+The number above is intentionally a wide estimate, because the
+underlying universe of "events that someone would pay to hedge or
+speculate on" is wider than any survey has yet measured. What's
+not in question is that the universe is at least an order of
+magnitude larger than the prediction-market category's current
+$220B annual notional. The gap is the opportunity, and the next
+decade is the window in which it gets bridged.
+
+## Events are global. Markets that price them aren't.
+
+Consider the events most worth pricing in 2026 and ask, for each,
+"who has access to a market that prices this directly?"
+
+A Federal Reserve rate decision is read in Frankfurt, Tokyo, São
+Paulo, Mumbai, and Lagos within seconds of the press conference.
+Macro funds in those cities all run interest-rate exposure
+indirectly — through Treasury futures, through swap markets,
+through FX hedges — but none of them can, in their own
+jurisdiction, take a clean binary view on the next decision. The
+event is global; the priced expression is fragmented.
+
+A FIFA World Cup final is watched by close to two billion people.
+The cultural and economic impact spans every continent. The
+betting markets that price the outcome are licensed in dozens of
+local regimes that don't talk to each other. A trader in Mumbai
+prices a different probability than a trader in Buenos Aires
+because they're trading on different books, with different
+liquidity, behind different geo-blocks. The information is the
+same; the markets aren't.
+
+A geopolitical event — a coup, an election, a treaty, a sanctions
+package — affects supply chains, currencies, and risk premiums
+worldwide. Reinsurance desks in London, oil traders in Houston,
+and policy researchers in Beijing all have skin in the same
+outcome. Yet the only mechanism for them to express that view in
+a binary, settle-on-the-event form is whichever local
+prediction-market venue happens to be available, if any.
+
+A scientific outcome — a clinical trial, a drug approval, a
+replication study, a climate measurement — has consequences that
+move research budgets and capital allocations globally. The
+event is determined by a single committee or a single piece of
+data. The "market" pricing it has historically been zero.
+
+This pattern repeats across category after category. The events
+themselves are inherently global because the world is connected.
+The markets pricing them are inherently local because financial
+regulation is national.
+
+## The historical reason: financial infrastructure has been national
+
+Equity exchanges are national. Futures clearing is national.
+Banking custody is national. Even "global" investment banks
+operate as constellations of national entities held together by
+reporting structures. This is not because anyone wanted national
+fragmentation; it's because the infrastructure that financial
+markets depend on — clearing, settlement, custody, KYC,
+regulatory reporting — was built before the internet and has
+been retrofitted around national legal systems.
+
+That arrangement worked when the things being priced were also
+mostly national. A 19th-century equity in a Liverpool shipping
+firm was traded by people in Liverpool because the relevant
+information was Liverpool-bound. A 20th-century US Treasury
+futures contract was traded by people who could legally
+transact in US dollars through US-cleared exchanges. The
+fragmentation followed the natural shape of the underlying
+asset.
+
+But events don't fragment that way. A US Treasury rate decision
+prices the cost of capital for every borrower in every currency
+worldwide — through swap basis, through FX, through risk
+premiums. It is a globally consequential event whose downstream
+effects ignore borders. Pricing it through a US-only venue is a
+historical accident of how financial infrastructure was built,
+not a property of what the event means economically.
+
+The same is true for almost any consequential event. Events are
+global; the legacy infrastructure that priced them was national.
+Closing that gap requires infrastructure designed to be
+geography-agnostic from day one — which is exactly what
+prediction-market protocols have become.
+
+## The breakthrough: the stablecoin substrate
+
+The technical change that made global event markets possible is
+specific and recent. It's the maturation of stablecoins as a
+settlement substrate.
+
+A prediction market needs three things to work: a way to accept
+collateral, a way to match orders, and a way to settle outcomes.
+Each of those, in legacy infrastructure, requires a regulated
+domestic counterparty — a bank for collateral, an exchange for
+matching, a clearing house for settlement. None of those scale
+globally; each is anchored to a specific jurisdiction.
+
+Stablecoins (specifically USDC and USDT) collapse the first leg
+of that requirement to a public-blockchain primitive. A wallet
+holding USDC is functionally identical in São Paulo, London, and
+Singapore. The collateral is dollar-denominated, on-chain,
+transferable in seconds across borders, and not gated by any
+national banking rail. That alone makes it possible to run a
+single global order book that any wallet can participate in.
+
+The matching engine and settlement layer follow naturally. A
+matching engine running off-chain, settling fills on-chain, can
+serve users in any jurisdiction with the same latency and the
+same fairness guarantees. A settlement contract resolving
+through an optimistic oracle (we covered the mechanics in
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution post</a>)
+doesn't care about the jurisdiction of either counterparty.
+
+Stablecoins are the substrate that made global event markets
+plausible. The protocol layer on top is what turns plausibility
+into product.
+
+## What "global" means in practice
+
+There are levels of "global." A platform that's available to
+users in 50 countries is more global than one available in 5,
+but the operational reality of running a venue that genuinely
+serves every continent has a few specific dimensions.
+
+**Hours of operation.** Traditional financial markets close.
+NYSE closes at 4pm ET. CME has a daily session window. London's
+LSE has its own hours. A trader in Asia who wants to take a US
+event view at 2am ET is locked out of the legacy infrastructure
+entirely. Prediction markets running on permissionless contracts
+don't close. The book is open at 2am ET, 6pm in Mumbai, 9am in
+Sydney. This isn't a feature anyone designs explicitly — it's a
+property of running on infrastructure that doesn't have a
+business hours.
+
+**Latency parity.** A trader in São Paulo on a permissionless
+market sees the same book state as a trader in New York,
+modulo internet round-trip time. There's no privileged feed, no
+co-located market-makers, no asymmetric information edge tied to
+geography. Latency parity matters because professional traders
+will not participate in a market where they're systemically
+disadvantaged by where they live.
+
+**Currency neutrality.** Settlement in stablecoins means the
+trader doesn't have to think about FX risk on the position
+itself. A São Paulo trader who buys a YES contract at $0.42 USDC
+isn't running a BRL-USD exposure in addition to the event view.
+The contract is a clean expression of the event probability.
+
+**Identity friction.** A regulated venue requires KYC, which is
+its own form of geography-binding (the KYC pipelines are
+national). A permissionless market lets a trader connect a
+wallet and trade with no further identity verification. For a
+sophisticated trader in any jurisdiction, that's the difference
+between "I can trade" and "I'd need a domestic broker
+relationship to express this view." Operators that overlay
+optional KYC on top of a permissionless protocol can offer
+identity-based access for users who need it (e.g., institutional
+desks with internal compliance requirements) without imposing
+KYC on retail audiences who don't.
+
+The combination of these properties is what "global by design"
+actually delivers. It's not a marketing claim. It's a structural
+property of running on infrastructure built without national
+assumptions baked in.
+
+## The case study list: events that benefit most
+
+Specific event categories show how dramatic the unlock is. These
+are the categories where the legacy infrastructure leaves the
+most value on the table.
+
+### Macro decisions
+
+Central bank rate decisions, CPI prints, employment reports,
+trade balance announcements. Each is a globally consequential
+event that moves capital flows worldwide. Each is currently
+priced almost entirely through US-cleared instruments
+(Treasury futures, swap rates, options on rates) that are
+inaccessible to most non-US traders.
+
+A global prediction market on Fed decisions instantly opens
+direct expression of macro views to traders in every
+jurisdiction with internet access. The volume in this category
+on Polymarket alone is meaningful (~$300M monthly as of Q1
+2026); the global addressable volume on macro decisions, if
+universally accessible, is plausibly 10–20× that figure.
+
+### Geopolitical and political events
+
+Elections, referenda, treaty outcomes, conflict resolutions.
+These events drive risk premiums in currencies, commodities, and
+sovereign debt across the world. Currently the only direct
+expression is through prediction markets that geo-block large
+populations of interested traders.
+
+The South Asian, Latin American, African, and Middle Eastern
+audiences for political prediction markets are enormous and
+mostly untapped. A locally branded venue running on shared
+global liquidity gives those audiences a venue that respects
+their language, regulatory posture, and payment rails while
+still pricing global events at global liquidity.
+
+### Sports and cultural events
+
+Sports outcomes are the most natively global event category.
+The World Cup, the Olympics, F1, the major tennis tournaments,
+the global football leagues — all watched by audiences spanning
+every continent. The legacy infrastructure here is sportsbooks,
+which are heavily regulated per jurisdiction and have very high
+take rates (4–10% effective vig).
+
+Prediction-market contracts on the same outcomes have
+dramatically better unit economics for the trader (typically
+1% operator fee, 30–60bps spread) and unlock cross-border
+participation. The category is large enough that a single
+event — a World Cup final — can move single-day prediction-
+market volume by an order of magnitude.
+
+### Scientific and corporate milestones
+
+Drug approvals, clinical trial readouts, replication studies,
+M&A close probabilities, earnings outcomes, technology launches.
+These are the long tail of event categories, and most of them
+have effectively no market today. They're forecasted internally
+by analysts and gambled on informally in industry circles, but
+the prices aren't aggregated, the participants aren't paid for
+being right, and the resulting forecasts are roughly as good as
+any individual analyst's guess.
+
+Pricing these events through prediction markets unlocks a
+category of forecasting that has never existed at scale. The
+applications — for pharma research, M&A risk arbitrage,
+corporate strategy — are still being discovered.
+
+### Climate and natural events
+
+Hurricane landfall, drought severity indices, temperature
+anomalies, carbon emissions readings. The economic
+consequences of these events span insurance, agriculture,
+energy, and migration patterns. The current pricing
+mechanisms are catastrophe bonds (institutional only) and
+parametric insurance (specific use cases). Prediction-market
+contracts on the same events would be available to a much
+wider audience and could feed into parametric settlement
+chains, as we touched on in
+<a href="/blog/2026-04-why-prediction-markets-are-the-future">the future-of-finance post</a>.
+
+## How operators unlock these globally — the protocol-layer model
+
+The technical capability to run global event markets exists.
+The harder problem is the distribution. Most traders don't
+discover or trust permissionless platforms; they trust the
+brokerage, exchange, or media brand they already use. The
+gap between "global protocol" and "globally adopted product"
+is local distribution.
+
+The protocol-layer model resolves this gap explicitly. Local
+operators — brokerages, crypto exchanges, media operators,
+sports books — host their own branded prediction-market venues
+on shared global infrastructure. The trader interacts with a
+brand they trust in a language they speak, settles in
+stablecoins they hold, and gets executed against a global
+order book they don't have to know exists.
+
+This is the same shape as global e-commerce. A Brazilian
+shopper buying from a Brazilian merchant doesn't think about
+Stripe or AWS — they see a Portuguese-language storefront with
+local payment methods and local customer service. Underneath,
+the merchant is running on global infrastructure that scales
+across every other merchant in every other jurisdiction.
+Prediction markets reach the same model when local operators
+host global event contracts on a shared protocol.
+
+We covered the operator playbook in
+<a href="/blog/2026-04-launch-prediction-markets">the 15-minute launch post</a>
+and the build-vs-license decision in
+<a href="/blog/2026-04-build-vs-license-prediction-market">the cost-and-time analysis</a>.
+The key point for the global-events thesis is that the
+protocol layer makes the distribution model fragmented while
+keeping the liquidity model unified. Operators win on local
+distribution; the protocol wins on global liquidity; the
+trader wins on both.
+
+<Callout type="info" title="Why the unified-liquidity model is non-negotiable">
+  If every operator brand had its own isolated order book, the
+  global-events thesis would fail. Each book would be too thin
+  to absorb the views being expressed, traders would prefer
+  larger venues, and operators would lose to a few mega-venues
+  with deep books — exactly the legacy outcome we'd be trying
+  to escape. Shared liquidity is what makes hundreds of
+  operator brands viable simultaneously. We covered this in
+  detail in <a href="/blog/2026-04-shared-liquidity-day-one">the shared-liquidity post</a>.
+</Callout>
+
+## What this unlocks economically
+
+The economic implications of pricing global events through a
+unified protocol layer are large enough that even conservative
+estimates produce unfamiliar numbers.
+
+**Direct trading volume.** The current $220B annual notional
+across prediction-market venues is bottlenecked by access. A
+genuinely global category, with local distribution and global
+liquidity, plausibly clears $3–5T annually within a decade —
+more than 10× the current run-rate. This isn't a wild claim;
+it's roughly the same growth multiple equity markets went
+through in the half-century after global exchange access
+opened up post-1980.
+
+**Operator revenue.** Operator fees on $3–5T of annual
+notional, at industry-standard 0.8–1.2% rates, generate
+$24–60B in annual operator revenue distributed across hundreds
+or thousands of operator brands. For comparison, the entire
+global sports-book industry generates roughly $60B in net
+revenue today. Prediction markets at scale are a similarly
+sized adjacent industry that's currently a small fraction of
+that.
+
+**Reduced cost of expression.** A trader expressing an event
+view through a prediction-market contract pays roughly 1% in
+operator fees plus 30–60bps in spread, total round-trip cost
+in the 1.6–2.2% range. Expressing the same view through legacy
+instruments (options, futures, custom derivatives) typically
+costs 2–4× that. The cost reduction is itself an economic
+unlock — views that weren't economic to express through legacy
+infrastructure become tradable through prediction markets,
+which adds new flow to the category.
+
+**Information aggregation value.** The hardest-to-quantify but
+potentially largest impact is the value of better forecasts.
+Central banks, governments, and corporations make decisions
+based on forecasts. Forecasts derived from liquid prediction
+markets are systematically more accurate than expert
+judgement. Even modest improvements in forecast accuracy at
+the macro level translate into meaningful economic value —
+better-targeted policy, better capital allocation, fewer
+forecasting errors at scale.
+
+## Language, currency, and trust — the human-facing global problem
+
+The technical infrastructure for global event markets is the
+back-half of the problem. The front-half is human: traders trust
+brands they recognise, in languages they speak, with payment
+rails they already use. A globally available protocol that
+ignores that reality ends up with most of its potential audience
+sitting on the sidelines.
+
+This is the part that operators handle and that the protocol
+explicitly does not. A Brazilian retail trader trusts XP because
+XP is a Brazilian brand with Brazilian customer support, a
+Brazilian regulator standing behind it, and Portuguese-language
+copy in every part of the experience. That same trader does not
+trust Polymarket — not because Polymarket is untrustworthy, but
+because the brand is unfamiliar and the UX is foreign. The gap
+isn't fixable by Polymarket; it's fixable by a Brazilian brand
+running on the same kind of infrastructure Polymarket uses.
+
+The same is true in every major jurisdiction. A Mumbai-based
+trader needs Hindi-language UX, a familiar payment provider,
+and a brand they already trust. A Berlin-based trader needs
+German UX and a regulated EU custody arrangement. A Riyadh-based
+trader needs Arabic-language copy and Sharia-compliant
+contract design where applicable. The substrate of stablecoins
+and shared liquidity is identical underneath; the
+operator-facing surface is different in every market.
+
+Operators who get this right own permanent audience attribution
+in their region. Operators who try to ship a single global UX
+end up failing in every market that isn't their home market.
+The protocol model exists to make the operator-facing surface
+configurable per region without forcing the underlying
+infrastructure to be re-built per region.
+
+## The regulatory navigation reality
+
+The thesis above assumes regulatory navigation works out. It's
+worth being explicit about what that means in practice, because
+"global protocol with local distribution" is not the same as
+"regulator-free."
+
+The regulatory pattern that's emerging in 2026 across the major
+jurisdictions is a hybrid. The protocol itself operates on
+permissionless infrastructure that any user can access. The
+operator-level overlay is where regulatory compliance lands.
+Operators in Brazil run KYC and reporting compliant with CVM
+guidelines. Operators in the EU run a structure compliant with
+ESMA's emerging event-contract framework. Operators in the US
+either work within Kalshi's regulated model or accept that the
+US is currently outside the addressable market.
+
+This is the same way payments worked through the 2010s.
+Stripe ran a global payment infrastructure. Local merchants
+complied with local payment regulations through Stripe's
+compliance overlay per country. The merchants didn't have to
+become payment-regulation experts; the infrastructure provider
+handled that for them.
+
+The same posture is emerging for prediction markets. The
+protocol provides the global substrate; the operator overlays
+local compliance through pre-built regulatory templates that
+the protocol provider maintains. Operators don't need to
+become event-contract regulatory experts to launch in their
+jurisdiction; they need to inherit compliance from the
+protocol's regulatory engineering.
+
+The reverses we expect to see in 2027 (one or more
+jurisdictions tightening) will sharpen this overlay rather
+than break the protocol model. Operators that had been
+running optimistic compliance will be forced to upgrade;
+operators on the protocol's compliance overlay will already
+be where the new posture demands. We covered this dynamic in
+<a href="/blog/2026-03-prediction-market-land-grab">the market analysis post</a>.
+
+## The competitive shape over the next decade
+
+The market structure that emerges from a successful
+global-events thesis is specific and interesting. Three
+patterns will be visible within five years.
+
+**Few global venues, many local operators.** The venue layer
+will consolidate. Polymarket-equivalents will exist for
+permissionless flow; Kalshi-equivalents will exist per major
+regulated jurisdiction. There will be three to seven
+jurisdiction-defining venues globally, and they'll attract
+the institutional and high-frequency flow.
+
+The operator layer will fragment in the opposite direction.
+Hundreds, then thousands, of local operator brands will host
+prediction-market venues on shared protocol infrastructure.
+The brands will be national (regional brokerages), vertical
+(sports-specific operators, macro-focused operators), or
+audience-specific (creator-led venues). The protocol
+infrastructure underneath will be shared.
+
+**Cross-jurisdictional liquidity flows under the hood.** A
+trader in Brazil placing a position on a Brazilian operator's
+deploy contributes order flow to the same shared book that a
+trader in Singapore is drawing from. They don't see each
+other; they don't need to. The protocol matches their orders
+without exposing the cross-border flow to either side.
+Operators see only the part of the flow that touches their
+venue; the protocol sees the unified book.
+
+**Institutional integration deepens.** Macro funds and prop
+desks integrate prediction-market positions into existing
+risk frameworks. Reporting standards develop for
+prediction-market exposure. Eventually, prediction-market
+contracts become an accepted risk type in standard portfolio
+risk systems, alongside equities, futures, options, and
+swaps.
+
+Each of these patterns reinforces the others. Global venues
+need local operators to capture distribution. Local operators
+need shared liquidity to compete on execution. Institutional
+flow needs both consolidated venues for size and operator-
+level access for jurisdictional fit.
+
+## What operators should do about it now
+
+The actionable implications fall into three categories,
+depending on where you sit.
+
+**If you're a regional brokerage.** Start evaluating
+prediction-market product overlays specifically for global
+event categories your audience cares about. Macro and
+political events have the cleanest fit because the regulatory
+landscape is most permissive. Sports and corporate events
+will follow as those frameworks mature.
+
+The cost of evaluation is small (a sandbox deploy through a
+protocol layer takes hours). The cost of being late to your
+jurisdiction is large (whoever launches first gets the
+audience attribution that compounds for years).
+
+**If you're a crypto-native exchange.** Add prediction-market
+SKUs to your existing trading product. Your audience is
+already comfortable with stablecoin settlement, on-chain
+custody, and permissionless access. The value-add of
+prediction markets in your UX is incremental and the
+regulatory overhead is low because your audience is already
+inside the on-chain regulatory perimeter (or outside the
+fiat-rails regulatory perimeter, depending on jurisdiction).
+
+**If you're a media or creator operator.** The prediction-
+market vertical that's most underdeveloped is the niche-
+specific category. Creator audiences are highly engaged on
+specific topics, and pricing those topics through prediction
+contracts unlocks both monetization and engagement. The unit
+economics for a creator-led venue are dramatically better
+than the unit economics of advertising or affiliate revenue
+on the same audience.
+
+We've worked with operators across all three of these
+categories and the playbook is well-defined. The
+<a href="/blog/2026-04-launch-prediction-markets">15-minute launch playbook</a>
+covers the deploy. The
+<a href="/blog/2026-04-fee-models-explained">fee models post</a>
+covers monetization. The patterns work.
+
+## Why this is a 2026–2028 window
+
+The reason "now" matters specifically is that the protocol
+infrastructure is mature enough to support the global-events
+thesis, but the operator landscape is still mostly empty. By
+2028, the audience attribution in major jurisdictions will be
+locked in by the operators who launched in 2026.
+
+Operators in 2026 are competing for greenfield. Operators in
+2028 will be competing against incumbents. The cost of audience
+acquisition rises by an order of magnitude in that transition,
+and the operators who locked in their audience in the early
+window will continue to compound while the late entrants pay
+acquisition costs that make their unit economics marginal.
+
+The same pattern played out in payments (Stripe's window was
+2010–2014), in cloud infrastructure (AWS's window was
+2008–2012), in crypto exchanges (the leading global brands
+locked their position in 2017–2019). Categories that scale
+through a protocol-plus-operator model have a window during
+which positioning is cheap, after which it's not.
+
+For prediction markets, that window is now and runs through
+roughly the end of 2027. By 2028, the major operator brands
+in each jurisdiction will be visible. By 2030, displacing them
+will require capital and patience that most challengers won't
+have.
+
+The operators who define the global-events economy are the ones
+who launched while the launching was easy. The protocol layer
+makes the launching easy; the audience captures will be
+permanent.
+
+<KuestCTA
+  headline="Ready to host global event markets in your jurisdiction?"
+  body="We'll walk through the global event categories that fit your audience, the regulatory overlay you'd need, and the launch timeline that gets you live in days. The next 18 months are when audience attribution gets set."
+  primary={{ href: "/launch", label: "Launch a global venue" }}
+  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+/>

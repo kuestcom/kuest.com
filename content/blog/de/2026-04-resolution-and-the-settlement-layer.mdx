@@ -1,0 +1,334 @@
+---
+title: "Wie die Auflösung von Vorhersagemärkten wirklich funktioniert: UMA, Oracles und der Settlement-Layer"
+description: "Eine tiefe technische Analyse, wie Vorhersagemarkt-Verträge aufgelöst werden — der optimistic oracle, die Mechanik von Disputes, Eskalationsspiele und warum Settlement der Teil ist, der entscheidet, welche Plattformen überleben."
+publishedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "settlement", "oracle", "technical"]
+---
+
+Wenn man genug Zeit unter Vorhersagemarkt-Bauern verbringt, wird man
+feststellen, dass sich die Gespräche sauber in zwei Lager teilen: das
+vordere Ende des Stacks (Matching, UX, Liquidität) und das hintere
+Ende des Stacks (Auflösung, Settlement, Oracles). Die Probleme am
+vorderen Ende sind mit Engineering-Stunden und Kapital lösbar. Die
+Probleme am hinteren Ende sind mit kryptoökonomischem Design lösbar —
+und genau dort entscheidet sich, ob Vorhersagemarkt-Plattformen
+überleben oder sterben.
+
+Dieser Beitrag richtet sich an Betreiber und Engineers, die den
+Business Case bereits verstanden haben (beginnen Sie mit <a href="/blog/2026-03-prediction-market-land-grab">unserer Marktanalyse</a>, falls
+nicht) und wissen wollen, wie der Settlement-Layer tatsächlich
+funktioniert.
+
+<Stat
+  value="≈ 0.18%"
+  label="Anteil der UMA-aufgelösten Märkte auf Polymarket, die in einen Dispute gehen; 99,82% lösen sich sauber über den optimistischen Pfad auf"
+  sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
+  sourceLabel="UMA-Dokumentation, 2026"
+/>
+
+Diese Zahl ist das wichtigste Ergebnis aus etwa sechs Jahren
+optimistic-oracle-Design: Die überwältigende Mehrheit der Auflösungen
+benötigt nie eine Abstimmung, weil das System darauf ausgelegt ist,
+ehrliche Proposer günstiger zu machen als unehrliche. Im Folgenden
+wird beschrieben, wie das erreicht wird, wo es bricht und was es für
+jeden Betreiber bedeutet, der echtes Volumen darauf abwickelt.
+
+## Das Settlement-Problem, sauber formuliert
+
+Jeder Vorhersagemarkt-Vertrag hat am Ende seines Lebens eine einzige
+Aufgabe: einen Auszahlung an die Seite auszuschütten, die richtig
+lag. Damit das gelingt, muss der Vertrag wissen, was tatsächlich
+geschehen ist. Die Herausforderung: Ein smart contract hat keine
+Augen — er kann CNN nicht schauen, keine CPI-Veröffentlichung lesen
+und keinen Sportergebnis prüfen. Er hängt von einem externen
+Mechanismus ab, der ihm die Wahrheit mitteilt.
+
+Dieser externe Mechanismus ist das **Oracle**. Jeder Vorhersagemarkt
+sitzt auf einem solchen. Das Oracle ist die Vertrauensannahme des
+gesamten Systems. Es ist der Grund, warum „Die Verträge wurden von
+OpenZeppelin auditiert" weniger zählt, als die Leute denken — die
+Verträge können fehlerfrei sein und die Plattform scheitert dennoch,
+wenn das Oracle manipulierbar ist.
+
+In diesem Kontext muss jedes Oracle drei Eigenschaften liefern:
+
+1. **Korrektheit.** Das gemeldete Ergebnis muss der Realität entsprechen.
+2. **Liveness.** Das Ergebnis muss innerhalb eines vernünftigen
+   Zeitfensters nach Auflösung gemeldet werden; Märkte dürfen nicht
+   unbegrenzt hängen.
+3. **Zensurresistenz.** Kein einzelner Akteur darf verhindern können,
+   dass ein wahres Ergebnis erfasst wird.
+
+Der Trade-off-Raum zwischen diesen drei Eigenschaften ist das gesamte
+Feld des Oracle-Designs.
+
+## Zentralisierte Auflösung: einfach, schnell, fragil
+
+Der älteste und einfachste Ansatz besteht darin, dass der Betreiber
+(oder ein dafür benanntes Marktintegritäts-Team) Märkte direkt
+auflöst. Kalshi macht das so: Die Börse konsultiert vorab
+veröffentlichte Datenquellen, wendet ihre dokumentierte
+Auflösungsrichtlinie an und veröffentlicht das Ergebnis.
+
+Das funktioniert gut, wenn:
+
+- Die Datenquelle eindeutig und verfügbar ist (z. B. die BLS-
+  CPI-Veröffentlichung).
+- Der Betreiber eine regulierte Identität hat (im Fall von Kalshi die CFTC).
+- Die Auflösungsrichtlinie im Voraus veröffentlicht ist und sich nicht ändert.
+
+Es scheitert, wenn:
+
+- Die Datenquelle mehrdeutig oder umstritten ist.
+- Der Betreiber ein finanzielles Interesse am Ergebnis hat.
+- Die Auflösungsrichtlinie nachträglich umgeschrieben wird.
+
+Zentralisierte Auflösung ist für stark regulierte, eng begrenzte
+Vertragsbereiche angemessen. Sie ist strukturell ungeeignet für den
+Long Tail von Märkten, der den Großteil des Vorhersagemarkt-Volumens
+ausmacht — Sport-Edge-Cases, geopolitische Ereignisse, alles, wo die
+zugrunde liegende Tatsache eher interpretiert als gemessen wird.
+
+## Das Optimistic-Oracle-Muster
+
+Das optimistic oracle, popularisiert durch UMA im Jahr 2020, ersetzt
+einen einzelnen vertrauenswürdigen Auflöser durch einen
+spieltheoretischen Behauptungs- und Anfechtungsprozess. Die Struktur
+ist intuitiv, sobald man sie sieht.
+
+**Schritt 1. Vorschlag.** Jeder kann ein Ergebnis für einen Markt
+vorschlagen, indem er eine Sicherheitsleistung postet. „Ich behaupte,
+der Vertrag zu `Wird die Fed im Juli die Zinsen senken?` löst mit JA
+auf." Der Proposer hinterlegt Collateral (typischerweise einige
+hundert Dollar in USDC) und reicht ein.
+
+**Schritt 2. Anfechtungsfenster.** Ein Timer startet — üblicherweise
+2 Stunden bei Echtgeldmärkten, länger bei Märkten mit höherem
+Einsatz. Während dieses Fensters kann jeder den Vorschlag anfechten,
+indem er seinen eigenen Bond postet.
+
+**Schritt 3. Zwei Pfade.**
+
+- **Keine Anfechtung.** Wenn niemand innerhalb des
+  Anfechtungsfensters einen Dispute erhebt, ist das vorgeschlagene
+  Ergebnis endgültig. Der Bond des Proposers wird zurückgegeben und
+  eine kleine Belohnung für die Vorschlagsarbeit ausgezahlt.
+- **Anfechtung.** Wenn jemand (mit Bond) anficht, eskaliert die
+  Frage zu einer Abstimmung der UMA-Tokeninhaber. Die Abstimmung
+  klärt, welche Seite richtig lag. Der Bond der unterlegenen Seite
+  wird an die gewinnende Seite und das Protokoll ausgezahlt. Die
+  gewinnende Seite erhält ihren Bond zurück und kassiert eine
+  Belohnung.
+
+Die Ökonomie ist bewusst asymmetrisch. Ein wahrheitsgetreuer
+Proposer erwartet keine Anfechtung — denn jeder Beobachter sieht,
+dass das Ergebnis wahr ist, und ein wahres Ergebnis anzufechten
+bedeutet, den Bond zu verlieren. Ein wahrheitsgetreuer Disputer
+ficht nur dann an, wenn das vorgeschlagene Ergebnis sichtbar falsch
+ist — denn auch ein leichtfertiger Dispute kostet den Bond.
+
+Das praktische Ergebnis ist, dass fast jede Auflösung über den
+optimistischen Pfad abgewickelt wird. Der Dispute-Pfad existiert
+hauptsächlich als glaubwürdige Drohung, die den optimistischen Pfad
+ehrlich hält.
+
+<Callout type="info" title="Warum dies sicherer ist, als es scheint">
+  Die Kosten, das optimistic oracle anzugreifen, entsprechen den
+  Kosten, den Dispute-Mechanismus zu überwältigen — also entweder
+  genug UMA zu erwerben, um eine Abstimmung zu kippen, oder genug
+  Disputes zu koordinieren, um das Kapital ehrlicher Disputer zu
+  erschöpfen. Beide Angriffe sind öffentlich beobachtbar und haben
+  klar definierte Kostenuntergrenzen, die mit dem Wert auf dem Spiel
+  skalieren. Das ist dieselbe Designfamilie wie Ethereums
+  Slashing-Ökonomie: billig, ehrlich zu sein, teuer, falsch zu liegen.
+</Callout>
+
+## Wie Disputes tatsächlich eskalieren
+
+Der interessante Failure-Modus ist der Dispute selbst. Wenn eine
+echte Meinungsverschiedenheit eine Abstimmung erreicht, muss das
+Protokoll drei Teilprobleme handhaben:
+
+1. **Abstimmungsintegrität.** UMAs Voting nutzt Commit-Reveal, damit
+   Voter sich nicht gegenseitig kopieren können. Voter committen
+   einen gehashten Vote und enthüllen ihn später. Das verhindert
+   triviale Kollusion.
+2. **Schelling-Punkt-Auflösung.** Voter werden dafür entlohnt, mit
+   der Mehrheit anderer ehrlicher Voter zu stimmen. Das Protokoll
+   nimmt an, dass für jeden gut spezifizierten Vertrag ein
+   fokaler Punkt (die „offensichtliche" Antwort) natürlich entsteht.
+   Das funktioniert genauso gut wie die Vertragsspezifikation — vage
+   Verträge bekommen vage Auflösungen.
+3. **Final-Arbiter-Eskalation.** Für sehr hochwertige Disputes hat
+   UMA eine mehrstufige Eskalation: Wenn eine Abstimmung mehrdeutig
+   ist, kann sie mit einem höheren Quorum und einem längeren
+   Abstimmungsfenster erneut durchgeführt werden. Das wird in der
+   Praxis vielleicht eine Handvoll Mal pro Jahr genutzt.
+
+Die Protokoll-Kosten eines streitigen Marktes sind hoch. Disputer
+und Proposer haben beide Kapital gebunden. UMA-Voter investieren
+echte Aufmerksamkeit. Eine saubere Plattform vermeidet Disputes,
+indem sie Märkte schreibt, die keine erzeugen. Die Disziplin der
+Vertragsspezifikation — die wie ein Verwaltungsproblem klingt — ist
+in Wirklichkeit der wichtigste operative Hebel, den eine Venue hat.
+
+## Warum die meisten Plattformen das falsch machen
+
+Der mit Abstand häufigste Fehler, den wir bei Betreiberprojekten
+sehen, ist es, Auflösung als Backoffice-Anliegen zu behandeln, das
+sich mit „Wir gleichen das einfach manuell ab" lösen lässt. Das
+funktioniert bei 50 Märkten pro Woche und bricht bei 5.000.
+
+Drei Failure-Modi tauchen konsistent auf:
+
+**Der Fehler durch vage Verträge.** Der Markt ist mehrdeutig
+formuliert (z. B. „Wird der Konflikt 2026 enden?" ohne Definition
+von „enden"). Zwei Ergebnisse sind vertretbar wahr. Der Markt geht
+in Dispute, der Dispute zieht sich, Trader verlieren Vertrauen, und
+die Reputation des Betreibers nimmt einen Schaden, der sich nicht
+umkehren lässt.
+
+**Der Fehler durch verschobene Datenquellen.** Der Markt spezifiziert
+eine Datenquelle, die mitten in der Laufzeit umbenannt,
+umstrukturiert oder hinter eine Paywall verschoben wird. Der Vertrag
+verweist auf eine Quelle, die nicht mehr existiert, und die
+Auflösung muss manuell rekonstruiert werden.
+
+**Der Fehler durch Interessenkonflikte.** Der Betreiber (oder jemand
+in seinem Umfeld) hält eine Position im Markt. Wenn die Auflösung
+intransparent ist, wird daraus ein öffentlicher Skandal, ungeachtet
+dessen, was der Betreiber tatsächlich getan hat. Die Optik allein
+zerstört die Glaubwürdigkeit der Plattform.
+
+Die sauberste Verteidigung gegen alle drei besteht darin, den
+Vertrag so zu gestalten, dass der Auflösungspfad nicht vom Ermessen
+des Betreibers abhängt. Das Optimistic-Oracle-Muster passt
+strukturell gut dazu: Der Betreiber ist nicht der Auflöser, die
+Datenquelle ist bei Marktanlage benannt und gesperrt, und der
+Dispute-Mechanismus ist öffentlich.
+
+<Comparison
+  columns={["Failure-Modus", "Zentralisierter Auflöser", "Optimistic Oracle"]}
+  rows={[
+    ["Vager Vertrag", "Hohe Exponierung", "Disputes; identifiziert schlechte Spec korrekt"],
+    ["Datenquelle verschiebt sich", "Manueller Abgleich", "Replay über Dispute"],
+    ["Interessenkonflikt des Betreibers", "Existenziell", "Strukturell getrennt"],
+    ["Kosten böswilliger Auflösung", "Vertrauenskollaps", "Bond + Vote-Rewrite"],
+    ["Geschwindigkeit bei trivialen Märkten", "Schneller", "Gleich (kein Dispute-Pfad)"],
+  ]}
+/>
+
+## Was Kuest auf dem Settlement-Layer tatsächlich tut
+
+Kuests Ansatz übernimmt das Optimistic-Oracle-Muster aus Polymarkets
+Produktionsarchitektur und härtet es für Multi-Operator-Deployment
+ab. Die Kernänderungen:
+
+- **Betreiber-isolierte Auflösungs-Scopes.** Jedes Markt eines
+  Betreibers löst sich in einem Scope auf, der auditierbar und
+  nachweislich isoliert von den Märkten anderer Betreiber ist. Eine
+  fehlerhafte Auflösung in den Märkten von Betreiber A kann nicht in
+  die Bücher von Betreiber B überschwappen.
+- **Pre-Flight-Vertragsvalidierung.** Bevor ein Markt live geht,
+  wird die URL der Auflösungsquelle abgerufen, geparst und auf die
+  Art von Daten validiert, die der Vertrag erwartet. Märkte, die
+  auf mehrdeutige oder bewegliche Quellen verweisen, werden bei der
+  Erstellung abgelehnt, nicht erst bei der Auflösung.
+- **Vorfinanzierte Dispute-Bonds.** Das Protokoll unterhält einen
+  Kapitalpool, der Bonds im Auftrag von Betreibern finanziert, sodass
+  ein kleiner Betreiber eine Venue betreiben kann, ohne
+  Bond-Kapital in der Bilanz zu halten. Der Pool wird auf
+  Protokollebene verwaltet, nicht von einem einzelnen Betreiber.
+- **Auflösungs-Telemetrie für Betreiber.** Betreiber sehen in
+  Echtzeit, wie ihre Märkte sich auflösen — welche Vorschläge
+  unbestritten waren, welche in Dispute gingen, welche im Berufungsverfahren neu aufgelöst wurden. Das ist dieselbe Haltung, die
+  eine regulierte Venue einnimmt; auf einer permissionless Schicht
+  ist das ungewöhnlich.
+
+Der Sinn von all dem ist es, Auflösung langweilig zu machen. Eine
+Plattform, auf der die Auflösung das Aufregendste ist, was passiert,
+ist eine Plattform, die kurz davor ist, Nutzer zu verlieren.
+
+## Wie sich Dispute-Ökonomie unter Last tatsächlich verhält
+
+Eine Subtilität, bei der es sich zu verweilen lohnt: Optimistic-
+Oracle-Dispute-Ökonomie ist nicht nur Theorie. Sie wurde durch
+echtes adversariales Volumen Stresstests unterzogen, und die Daten
+sagen einem etwas Nützliches darüber, wo das Modell hält und wo es
+unter Druck gerät.
+
+Die größten umstrittenen Märkte auf Polymarket seit 2023 haben eine
+gemeinsame Form. Sie häufen sich um Verträge, bei denen das
+zugrunde liegende Ereignis in der realen Welt tatsächlich umstritten
+ist — nicht, wo der Vertrag schlecht spezifiziert war, sondern wo
+vernünftige Beobachter unterschiedlicher Meinung darüber waren, was
+geschehen ist. Ein geopolitisches Ereignis mit zwei plausiblen
+Interpretationen, ein Wahlereignis mit überlappenden Auszählfristen,
+ein Sportereignis, bei dem ein Post-Game-Review das Ergebnis
+Stunden später verändert. Der Dispute-Mechanismus handhabt diese,
+indem er die Frage zur Abstimmung zwingt, aber die Abstimmung selbst
+spiegelt eine echte Mehrdeutigkeit in der Welt wider. Das Protokoll
+leistet so viel, wie ein Protokoll leisten kann; es kann keine
+Tatsachen auflösen, die die Welt selbst noch nicht aufgelöst hat.
+
+Was das in der Praxis für einen Betreiber bedeutet: Der Dispute-Pfad
+ist keine „Ausnahme", die man als Systemversagen behandeln sollte.
+Er ist ein eingebauter Mechanismus zur Bewältigung der nicht
+reduzierbaren Mehrdeutigkeit realer Ereignisse. Märkte, die in
+Dispute gehen und sich dann korrekt auflösen, sind das System, das
+wie vorgesehen arbeitet — nicht das System, das bricht.
+
+Die Disziplin auf Betreiberseite besteht darin, die Dispute-Rate
+in dem Bereich zu halten, der strukturell erklärbar ist. Wenn die
+Dispute-Rate Ihrer Venue 0,1–0,3 % beträgt (entsprechend Polymarkets
+Langzeitrate), schreiben Sie wahrscheinlich gute Märkte. Wenn Sie
+über 1 % sehen, sind die Märkte selbst unterspezifiziert, und Sie
+haben ein Problem im Vertragsdesign, kein Problem im Settlement-Layer.
+
+Das Dispute-Modell hat auch bekannte weiche Kanten, um die reife
+Betreiber Pläne machen. Streitige Märkte können mehrere Tage in der
+Voting-Schwebe hängen, während UMA-Voter abstimmen, was ein
+UX-Problem ist, wenn ein Trader Kapital in der Position gebunden
+hat und das Geld aus unabhängigen Gründen braucht. Die meisten
+Betreiber gehen damit um, indem sie das maximale Dispute-Fenster
+für unkritische Märkte deckeln und im Tausch für die Vorhersehbarkeit
+einen kleinen Protokoll-Gebühr-Overhead akzeptieren.
+
+## Was das bedeutet, wenn Sie betreiben
+
+Drei Implikationen ergeben sich daraus direkt für jeden Betreiber,
+der auf Kuest läuft oder das Protokoll gegen Alternativen bewertet.
+
+1. **Investieren Sie mehr Zeit in die Vertragsspezifikation, als Sie
+   denken.** Jede Mehrdeutigkeit im Marktwortlaut erzeugt
+   Auflösungsexponierung. Die Betreiber, mit denen wir
+   zusammenarbeiten, behandeln Marktspezifikation als Senior-Rolle,
+   nicht als Junior-Aufgabe.
+2. **Übernehmen Sie ein Settlement-Modell, bauen Sie keines.** Die
+   Kosten für ein hausgemachtes Oracle sind enorm, die Failure-Modi
+   sind katastrophal, und die Alternative — UMA-artige Auflösung als
+   Service zu nutzen — ist reif, auditiert und im Echtbetrieb
+   bewährt. Es gibt im Jahr 2026 im Wesentlichen keinen Fall für den
+   Bau eines eigenen Oracles, es sei denn, Oracle-Design ist Ihr
+   Hauptprodukt.
+3. **Beobachten Sie die Dispute-Rate als Frühindikator.** Eine
+   Dispute-Rate über etwa 0,5 % auf einer Venue ist ein Signal, dass
+   Vertragsspezifikationen lockerer werden. Sie geht der Verschlechterung
+   des Nutzervertrauens um mehrere Wochen voraus. Die meisten
+   Betreiber beobachten diese Metrik nicht; sie sollten es tun.
+
+Der Settlement-Layer ist der Teil des Stacks, der am direktesten
+darüber entscheidet, ob Ihre Venue eine Venue ist oder eine
+Kuriosität. Die gute Nachricht ist, dass es auch der Teil ist, in
+dem die Schwerarbeit bereits geleistet ist.
+
+<KuestCTA
+  headline="Neugierig, wie Kuests Auflösungs-Schienen sich gegen Ihre aktuelle Spec schlagen?"
+  body="Wir gehen Ihre Vertragsvorlagen, Edge Cases und Dispute-Exponierung durch — und zeigen Ihnen, wie dieselben Märkte unter geteilter Auflösung aussähen."
+  primary={{ href: "/launch", label: "Meine Märkte auditieren" }}
+  secondary={{ href: "/enterprise", label: "Mit dem Engineering sprechen" }}
+/>

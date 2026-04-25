@@ -1,0 +1,332 @@
+---
+title: "Cómo funciona realmente la resolución en mercados de predicción: UMA, oracles y la capa de liquidación"
+description: "Un desglose técnico profundo de cómo se resuelven los contratos de mercado de predicción — el optimistic oracle, la mecánica de disputas, los juegos de escalada y por qué la liquidación es la parte que decide qué plataformas sobreviven."
+publishedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "settlement", "oracle", "technical"]
+---
+
+Si pasas suficiente tiempo entre constructores de mercados de
+predicción, notarás que las conversaciones se dividen limpiamente
+en dos campos: el frente del stack (matching, UX, liquidez) y el
+fondo del stack (resolución, liquidación, oracles). Los problemas
+del frente del stack son resolubles con horas de ingeniería y
+capital. Los problemas del fondo del stack son resolubles con
+diseño criptoeconómico — y son donde las plataformas de mercados
+de predicción realmente viven o mueren.
+
+Este artículo es para operadores e ingenieros que ya entienden el
+caso de negocio (empieza con <a href="/blog/2026-03-prediction-market-land-grab">nuestro análisis de mercado</a> si
+no) y quieren saber cómo funciona realmente la capa de liquidación.
+
+<Stat
+  value="≈ 0.18%"
+  label="Proporción de mercados resueltos por UMA en Polymarket que llegan a disputa; 99,82% se resuelven limpiamente por la vía optimista"
+  sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
+  sourceLabel="Documentación de UMA, 2026"
+/>
+
+Ese número es el resultado titular de aproximadamente seis años de
+diseño de optimistic oracle: la abrumadora mayoría de las
+resoluciones nunca necesita un voto, porque el sistema está
+diseñado para hacer que los proposers honestos sean más baratos que
+los deshonestos. A continuación se explica cómo se logra eso, dónde
+se rompe y qué implica para cualquier operador que mueva volumen
+real encima de él.
+
+## El problema de la liquidación, planteado limpiamente
+
+Cada contrato de mercado de predicción tiene un único trabajo al
+final de su vida: emitir un pago a la parte que tuvo razón. Para
+hacer eso, el contrato tiene que saber qué pasó realmente. El reto
+es que un smart contract no tiene ojos — no puede ver CNN, leer
+una publicación de IPC ni comprobar un marcador deportivo. Depende
+de un mecanismo externo para que le diga la verdad.
+
+Ese mecanismo externo es el **oracle**. Cada mercado de predicción
+se asienta sobre uno. El oracle es la asunción de confianza de
+todo el sistema. Es la razón por la que „los contratos están
+auditados por OpenZeppelin" importa menos de lo que la gente cree —
+los contratos pueden ser impecables y la plataforma fracasar igual
+si el oracle es manipulable.
+
+Hay tres propiedades que cualquier oracle en este contexto debe
+ofrecer:
+
+1. **Corrección.** El resultado reportado debe coincidir con la realidad.
+2. **Liveness.** El resultado debe reportarse dentro de una ventana
+   razonable tras la resolución; los mercados no pueden quedar
+   colgados indefinidamente.
+3. **Resistencia a la censura.** Ningún actor único puede impedir
+   que se registre un resultado verdadero.
+
+El espacio de compromisos entre estas tres propiedades es todo el
+campo del diseño de oracles.
+
+## Resolución centralizada: simple, rápida, frágil
+
+El enfoque más antiguo y simple consiste en que el operador (o un
+equipo designado de integridad de mercado) resuelva los mercados
+directamente. Kalshi lo hace así: el exchange consulta fuentes de
+datos pre-publicadas, aplica su política de resolución documentada
+y publica el resultado.
+
+Esto funciona bien cuando:
+
+- La fuente de datos es inequívoca y está disponible (p. ej., la
+  publicación del IPC de la BLS).
+- El operador tiene una identidad regulada (en el caso de Kalshi, la CFTC).
+- La política de resolución se publica con antelación y no cambia.
+
+Falla cuando:
+
+- La fuente de datos es ambigua o impugnada.
+- El operador tiene un interés financiero en el resultado.
+- La política de resolución se reescribe retroactivamente.
+
+La resolución centralizada es apropiada para espacios de contratos
+estrechos y altamente regulados. Es estructuralmente inadecuada
+para la cola larga de mercados que mueve la mayor parte del volumen
+de mercados de predicción — casos límite deportivos, eventos
+geopolíticos, todo aquello donde el hecho subyacente se interpreta
+en lugar de medirse.
+
+## El patrón de optimistic oracle
+
+El optimistic oracle, popularizado por UMA en 2020, sustituye a un
+único resolutor de confianza por un proceso de afirmación-y-desafío
+basado en teoría de juegos. La estructura es intuitiva una vez que
+la ves.
+
+**Paso 1. Propuesta.** Cualquiera puede proponer un resultado para
+un mercado depositando un bond. „Afirmo que el contrato sobre `¿La
+Fed bajará tipos en julio?` se resuelve SÍ." El proposer adjunta
+garantía (típicamente unos cientos de dólares en USDC) y envía.
+
+**Paso 2. Ventana de desafío.** Arranca un temporizador —
+normalmente 2 horas en mercados de dinero real, más en mercados
+de mayor riesgo. Durante esa ventana, cualquiera puede disputar la
+propuesta depositando su propio bond.
+
+**Paso 3. Dos vías.**
+
+- **Sin desafío.** Si nadie disputa dentro de la ventana de
+  desafío, el resultado propuesto es definitivo. El bond del
+  proposer se devuelve y se paga una pequeña recompensa por el
+  trabajo de proponer.
+- **Desafío.** Si alguien disputa (con bond), la cuestión escala a
+  un voto de los tenedores del token UMA. El voto decide qué parte
+  tenía razón. La garantía del bando perdedor se paga al ganador
+  y al protocolo. El bando ganador recupera su bond y cobra una
+  recompensa.
+
+La economía es deliberadamente asimétrica. Un proposer veraz no
+espera desafío — porque cualquiera que mire puede ver que el
+resultado es cierto, y desafiar un resultado cierto significa
+perder tu bond. Un disputador veraz solo desafía cuando el
+resultado propuesto es visiblemente erróneo — porque una disputa
+frívola también cuesta el bond.
+
+El resultado, en la práctica, es que casi cada resolución se cierra
+por la vía optimista. La vía de disputa existe principalmente como
+amenaza creíble que mantiene honesta la vía optimista.
+
+<Callout type="info" title="Por qué esto es más seguro de lo que parece">
+  El coste de atacar el optimistic oracle es el coste de superar el
+  mecanismo de disputa — es decir, o adquirir suficiente UMA para
+  inclinar un voto, o coordinar suficientes disputas para agotar el
+  capital de los disputadores honestos. Ambos ataques son
+  públicamente observables y tienen suelos de coste bien definidos
+  que escalan con el valor en juego. Es la misma familia de diseño
+  que la economía de slashing de Ethereum: barato ser honesto, caro
+  estar equivocado.
+</Callout>
+
+## Cómo escalan realmente las disputas
+
+El modo de fallo interesante es la disputa misma. Cuando un
+desacuerdo real llega a votación, el protocolo tiene que manejar
+tres subproblemas:
+
+1. **Integridad del voto.** La votación de UMA usa commit-reveal
+   para que los votantes no puedan copiarse. Los votantes envían un
+   voto hasheado y lo revelan después. Eso evita la colusión
+   trivial.
+2. **Resolución por punto de Schelling.** Los votantes son
+   recompensados por votar con la mayoría de otros votantes
+   honestos. El protocolo asume que para cualquier contrato bien
+   especificado emerge naturalmente un punto focal (la respuesta
+   „obvia"). Eso funciona tan bien como la especificación del
+   contrato — los contratos vagos reciben resoluciones vagas.
+3. **Escalada al árbitro final.** Para disputas de muy alto valor,
+   UMA tiene una escalada multironda: si un voto es ambiguo, se
+   puede repetir con quórum más alto y ventana de votación más
+   larga. En la práctica se usa quizá un puñado de veces al año.
+
+El coste a nivel de protocolo de un mercado disputado es alto. El
+disputador y el proposer tienen ambos capital bloqueado. Los
+votantes de UMA invierten atención real. Una plataforma limpia
+evita disputas escribiendo mercados que no las generen. La
+disciplina de la especificación de contrato — que suena a un
+problema de papeleo — es en realidad la palanca operativa más
+importante que tiene una venue.
+
+## Por qué la mayoría de plataformas se equivoca aquí
+
+El error individual más común que vemos en construcciones de
+operadores es tratar la resolución como una preocupación de
+back-office que se puede gestionar con „ya conciliamos
+manualmente". Eso funciona con 50 mercados a la semana y se rompe
+con 5.000.
+
+Tres modos de fallo aparecen consistentemente:
+
+**El fallo del contrato vago.** El mercado está redactado de forma
+ambigua (p. ej., „¿Terminará el conflicto en 2026?" sin definición
+de „terminar"). Dos resultados son defendiblemente ciertos. El
+mercado va a disputa, la disputa se prolonga, los traders pierden
+confianza y la reputación del operador recibe un golpe que no se
+revierte.
+
+**El fallo del cambio de fuente de datos.** El mercado especifica
+una fuente de datos que se renombra, reestructura o pasa a estar
+tras un muro de pago a mitad de vida. El contrato apunta a una
+fuente que ya no existe y la resolución debe reconstruirse
+manualmente.
+
+**El fallo del conflicto de intereses.** El operador (o alguien
+cercano al operador) tiene una posición en el mercado. Cuando la
+resolución es opaca, esto se convierte en un escándalo público
+independientemente de lo que el operador haya hecho realmente. La
+óptica por sí sola destruye la credibilidad de la plataforma.
+
+La defensa más limpia contra los tres es diseñar el contrato de
+forma que la vía de resolución no dependa del criterio del
+operador. El patrón de optimistic oracle se ajusta estructuralmente
+bien a esto: el operador no es el resolutor, la fuente de datos
+está nombrada y bloqueada en la creación del mercado, y el
+mecanismo de disputa es público.
+
+<Comparison
+  columns={["Modo de fallo", "Resolutor centralizado", "Optimistic oracle"]}
+  rows={[
+    ["Contrato vago", "Alta exposición", "Disputas; identifica correctamente la mala spec"],
+    ["La fuente de datos cambia", "Conciliación manual", "Replay vía disputa"],
+    ["Conflicto de intereses del operador", "Existencial", "Estructuralmente separado"],
+    ["Coste de resolución maliciosa", "Colapso de confianza", "Bond + reescritura por voto"],
+    ["Velocidad en mercados triviales", "Más rápido", "Igual (sin vía de disputa)"],
+  ]}
+/>
+
+## Qué hace realmente Kuest en la capa de liquidación
+
+El enfoque de Kuest hereda el patrón de optimistic oracle de la
+arquitectura productiva de Polymarket y lo endurece para
+despliegues multi-operador. Los cambios clave:
+
+- **Ámbitos de resolución aislados por operador.** Los mercados de
+  cada operador se resuelven en un ámbito auditable y demostrablemente
+  aislado de los mercados de otros operadores. Una resolución
+  defectuosa en los mercados del operador A no puede contagiar los
+  libros del operador B.
+- **Validación previa al lanzamiento del contrato.** Antes de que
+  un mercado se active, la URL de la fuente de resolución se
+  obtiene, se parsea y se valida frente al tipo de datos que el
+  contrato espera. Los mercados que apuntan a fuentes ambiguas o
+  móviles se rechazan en la creación, no en la resolución.
+- **Bonds de disputa prefondeados.** El protocolo mantiene un pool
+  de capital que financia bonds en nombre de los operadores, de
+  modo que un operador pequeño puede operar una venue sin retener
+  capital de bond en su balance. El pool se gestiona a nivel de
+  protocolo, no por ningún operador individual.
+- **Telemetría de resolución expuesta a operadores.** Los operadores
+  ven en tiempo real cómo se resuelven sus mercados — qué
+  propuestas no fueron impugnadas, cuáles fueron a disputa, cuáles
+  se re-resolvieron en apelación. Es la misma postura que adopta
+  una venue regulada; es inusual verlo en una capa permissionless.
+
+El sentido de todo esto es hacer que la resolución sea aburrida.
+Una plataforma donde la resolución es lo más emocionante que pasa
+es una plataforma a punto de perder usuarios.
+
+## Cómo se comporta realmente la economía de disputas bajo carga
+
+Una sutileza en la que merece la pena detenerse: la economía de
+disputas del optimistic oracle no es solo teórica. Ha sido sometida
+a pruebas de estrés con volumen adversarial real, y los datos te
+dicen algo útil sobre dónde aguanta el modelo y dónde se tensiona.
+
+Los mayores mercados disputados en Polymarket desde 2023 han
+compartido una forma común. Se agrupan en torno a contratos donde
+el evento subyacente está genuinamente disputado en el mundo real
+— no donde el contrato estaba mal especificado, sino donde
+observadores razonables discrepaban sobre lo que pasó. Un evento
+geopolítico con dos interpretaciones plausibles, un evento electoral
+con plazos de recuento solapados, un evento deportivo con una
+revisión post-partido cambiando el resultado horas más tarde. El
+mecanismo de disputa los gestiona forzando la cuestión a votación,
+pero el voto en sí refleja una ambigüedad genuina en el mundo. El
+protocolo hace todo lo que un protocolo puede hacer; no puede
+resolver hechos que el mundo aún no ha resuelto.
+
+Lo que esto significa en la práctica para un operador: la vía de
+disputa no es una „excepción" que debas tratar como un fallo del
+sistema. Es un mecanismo diseñado para gestionar la ambigüedad
+irreducible de los eventos del mundo real. Los mercados que van a
+disputa y luego se liquidan correctamente son el sistema funcionando
+como se pretendía, no el sistema rompiéndose.
+
+La disciplina del lado del operador consiste en mantener la tasa
+de disputas dentro del rango estructuralmente explicable. Si la
+tasa de disputas de tu venue es de 0,1–0,3 % (en línea con la tasa
+de largo plazo de Polymarket), probablemente estás escribiendo
+mercados bien. Si ves más de 1 %, los mercados están infraespecificados
+y tienes un problema de diseño de contrato, no un problema de capa
+de liquidación.
+
+El modelo de disputas también tiene aristas blandas conocidas
+alrededor de las cuales planifican los operadores maduros. Los
+mercados disputados pueden quedar colgados en limbo de votación
+durante varios días mientras los votantes de UMA resuelven, lo cual
+es un problema de UX si un trader tiene capital atado en la
+posición y necesita el efectivo por motivos no relacionados. La
+mayoría de operadores lo aborda capando la ventana máxima de
+disputa para mercados no críticos y aceptando un pequeño sobrecoste
+de tarifa de protocolo a cambio de previsibilidad.
+
+## Qué significa esto si estás operando
+
+Tres implicaciones se desprenden directamente para cualquier
+operador que corra sobre Kuest o evalúe el protocolo frente a
+alternativas.
+
+1. **Dedica más tiempo del que crees a la especificación de
+   contratos.** Cada ambigüedad en la redacción del mercado crea
+   exposición de resolución. Los operadores con los que trabajamos
+   tratan la especificación de mercado como un rol senior, no junior.
+2. **Hereda un modelo de liquidación, no construyas uno.** El coste
+   de un oracle casero es enorme, los modos de fallo son
+   catastróficos y la alternativa — usar resolución estilo UMA como
+   servicio — es madura, auditada y probada en batalla. En 2026 no
+   hay esencialmente caso para construir un oracle propio a menos
+   que el diseño de oracles sea tu producto principal.
+3. **Vigila la tasa de disputas como indicador adelantado.** Una
+   tasa de disputas por encima de ~0,5 % en una venue es señal de
+   que las especificaciones de contrato se están aflojando. Precede
+   a la degradación de la confianza del usuario en varias semanas.
+   La mayoría de operadores no vigila esta métrica; deberían.
+
+La capa de liquidación es la parte del stack que más directamente
+determina si tu venue es una venue o una curiosidad. La buena
+noticia es que también es la parte donde el trabajo pesado ya está
+hecho.
+
+<KuestCTA
+  headline="¿Curioso por saber cómo se comparan los rieles de resolución de Kuest con tu spec actual?"
+  body="Repasamos contigo tus plantillas de contrato, casos límite y exposición a disputas — y te mostramos cómo se verían los mismos mercados bajo resolución compartida."
+  primary={{ href: "/launch", label: "Auditar mis mercados" }}
+  secondary={{ href: "/enterprise", label: "Hablar con ingeniería" }}
+/>

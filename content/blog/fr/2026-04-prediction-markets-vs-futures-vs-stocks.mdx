@@ -1,0 +1,472 @@
+---
+title: "Marchés de prédiction vs futures vs marchés actions : une comparaison structurelle pour 2026"
+description: "Ce que valorisent les marchés de prédiction, comment ils diffèrent des futures et des actions sur l'efficacité du capital, le règlement, la liquidité et l'agrégation d'information — et où les frontières s'estompent."
+publishedAt: 2026-04-15
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "market-structure", "futures", "equities"]
+---
+
+Le premier réflexe de la plupart des analystes en regardant les
+marchés de prédiction est de demander à laquelle des catégories
+existantes des marchés financiers ils appartiennent. Sont-ils une
+sorte d'action ? Une sorte de contrat à terme ? Quelque chose de
+nouveau ? La réponse honnête est que les marchés de prédiction
+partagent des caractéristiques mécaniques avec les actions comme
+avec les futures, mais valorisent quelque chose qu'aucun des deux
+ne valorise — c'est pourquoi ils ne s'insèrent pas proprement dans
+l'une ou l'autre catégorie.
+
+Ce billet est la comparaison structurelle : ce que valorise
+réellement chaque instrument, comment diffèrent les carnets
+d'ordres et les mécaniques de règlement, où se situe l'efficacité
+du capital, à quoi ressemblent les dynamiques de liquidité, et
+pourquoi les frontières entre ces trois classes d'actifs commencent
+à s'estomper de manières qui favorisent les marchés de prédiction
+au cours de la prochaine décennie.
+
+Si vous êtes plus tôt dans votre évaluation de la catégorie, le
+<a href="/blog/2026-03-what-are-prediction-markets">guide d'introduction des marchés de prédiction</a>
+couvre les bases. Ce billet suppose que vous avez dépassé ces
+bases et souhaitez situer les marchés de prédiction dans un cadre
+plus large de structure de marché.
+
+<Stat
+  value="≈ 1,4 quadrillion $"
+  label="Volume notionnel annuel combiné sur les marchés boursiers mondiaux, les marchés de futures et les dérivés OTC en 2025 — contre ~220 Md $ pour les marchés de prédiction, la classe d'actifs avec la courbe de croissance la plus raide de toutes"
+  sourceHref="https://www.bis.org/statistics"
+  sourceLabel="BIS / WFE / données agrégées de l'industrie, 2025"
+/>
+
+## Ce que valorise réellement chaque marché
+
+La façon la plus propre de comparer trois types de marchés
+financiers est de commencer par ce qu'ils valorisent, parce que le
+reste de la structure (appariement, règlement, capital, liquidité)
+découle de ce seul fait.
+
+**Un marché actions valorise une créance sur les flux de trésorerie
+futurs d'une entreprise.** Lorsque vous achetez une action Apple,
+vous achetez une créance résiduelle sur le flux de trésorerie libre
+d'Apple à perpétuité, plus les droits de vote, plus la priorité de
+liquidation en dessous de la dette. Le prix reflète la valeur
+actuelle de tous les flux de trésorerie futurs attendus, actualisés
+au taux de rendement requis sur les fonds propres. Ce prix change
+constamment parce que les attentes sur ces flux de trésorerie
+changent.
+
+**Un marché de futures valorise la livraison à terme d'un actif
+sous-jacent.** Un contrat à terme WTI pour livraison en septembre
+valorise le prix spot attendu d'un baril de pétrole à la date de
+règlement de septembre, plus le coût de portage d'ici là (stockage,
+financement, rendement de commodité). Le contrat est une obligation
+de livrer ou d'accepter la livraison du sous-jacent. Même lorsqu'il
+est réglé en espèces, le prix suit le spot sous-jacent.
+
+**Un marché de prédiction valorise la probabilité d'un événement
+spécifique.** Un contrat binaire qui paie 1 $ si la Fed baisse les
+taux en juillet est valorisé à la probabilité implicite par le
+marché de cette baisse. Il n'y a pas d'actif sous-jacent, pas de
+flux de trésorerie, pas de livraison. Le prix est une estimation
+pure de probabilité, libellée dans la devise de règlement.
+
+Ce sont trois choses structurellement différentes. Une action est
+une créance sur la propriété ; un future est une créance sur la
+livraison ; un contrat de prédiction est une créance sur la vérité
+d'une affirmation future. Les mécaniques qui découlent de chacune
+de ces créances divergent de manières importantes.
+
+## Efficacité du capital : la différence la plus sous-estimée
+
+L'histoire de l'efficacité du capital est l'endroit où les marchés
+de prédiction surpassent silencieusement à la fois les actions et
+les futures, et c'est l'histoire que la plupart des investisseurs
+découvrent tard.
+
+**Efficacité du capital sur le marché actions.** Lorsque vous
+prenez une vue directionnelle de 100 $ en actions, vous engagez
+100 $ de capital. Vous pouvez utiliser la marge pour le levier de
+2 à 4 fois selon Reg T ou votre prime broker, mais l'intensité
+capitalistique sous-jacente est élevée. Pour exprimer une vue
+directionnelle de 1 M $ en actions, vous avez besoin de l'ordre de
+250 000 à 500 000 $ en capital.
+
+**Efficacité du capital des futures.** Les futures sont compensés
+par marge, donc le capital initial est beaucoup plus petit —
+typiquement 5 à 15 % du notionnel, selon le contrat. Pour prendre
+une vue directionnelle de 1 M $ sur les futures S&P du CME, vous
+déposez environ 50 000 à 80 000 $ en marge initiale. Le compromis
+est que vous êtes exposé aux appels de marge mark-to-market entre
+maintenant et l'échéance ; un mouvement défavorable peut forcer la
+liquidation avant que votre vue ne soit juste.
+
+**Efficacité du capital des marchés de prédiction.** Les contrats
+de prédiction ont un plafond de capital intégré : le pire cas pour
+un contrat YES est qu'il se règle à 0 $, donc la perte maximale est
+la prime payée. Pour exprimer une vue équivalente à 1 M $ sur un
+marché de prédiction, vous avez besoin exactement du coût des
+contrats, qui dépend de la probabilité implicite. Un contrat YES
+qui se négocie à 0,42 $ sur une vue notionnelle de 1 M $ coûte
+420 000 $. La variance est bornée ; il n'y a pas d'appels de
+marge ; le pire cas est entièrement collatéralisé à l'entrée de
+l'ordre.
+
+<Comparison
+  columns={["Dimension", "Actions", "Futures", "Marchés de prédiction"]}
+  rows={[
+    ["Capital requis pour une vue directionnelle de 1 M $", "250k-500k $", "50k-80k $", "Prime seulement (ex. 420k $)"],
+    ["Risque d'appel de marge avant échéance", "Limité (Reg T)", "Élevé", "Aucun"],
+    ["Perte maximale", "Taille de la position", "Illimitée (perpetual contracts)", "Prime payée"],
+    ["Risque de décroissance temporelle", "Aucun", "Quasi nul (coût de portage)", "Faible (binaire au terme)"],
+    ["Coût de portage", "Emprunt si shorté", "Stockage, financement", "Aucun"],
+  ]}
+/>
+
+L'histoire de l'efficacité du capital est ce qui rend les marchés
+de prédiction utiles comme couverture. Un fonds détenant une
+position de 50 M $ en Treasuries avec un risque de duration peut se
+couvrir contre un scénario spécifique de baisse de la Fed en
+achetant une position notionnelle de 300 000 $ dans un contrat
+binaire CPI ou de décision de taux. Le contrat expire à une date
+connue avec une perte bornée ; il n'y a pas d'appels de marge ; le
+coût est exactement la prime. C'est beaucoup plus efficace en
+capital que de construire la même couverture via des options
+Treasury ou des contrats à terme sur taux.
+
+## Mécaniques de règlement : terminal vs continu
+
+Les trois classes d'actifs se règlent très différemment, et le
+mécanisme de règlement façonne matériellement l'expérience du
+trader.
+
+**Le règlement du marché actions est continu.** Les actions
+n'expirent pas. Vous les détenez jusqu'à ce que vous décidiez de
+vendre. Le « règlement » n'est que le clearing T+2 (ou T+1, sur les
+marchés modernes) des transactions que vous avez exécutées. La
+position elle-même peut être détenue indéfiniment, avec des flux de
+trésorerie arrivant sous forme de dividendes.
+
+**Le règlement des futures est terminal mais roulé.** Chaque
+contrat à terme expire à une date définie. À l'échéance, la
+position se règle au prix de règlement final — soit physiquement
+(livraison du sous-jacent), soit en espèces. Les traders qui
+veulent une exposition continue doivent « rouler » — fermer le
+contrat qui expire et ouvrir le suivant, encourant des coûts de
+transaction à chaque cycle.
+
+**Le règlement du marché de prédiction est entièrement terminal.**
+Chaque contrat de prédiction a une date de résolution unique. À la
+résolution, le contrat paie 1 $ au camp qui avait raison et 0 $ au
+camp qui avait tort. Il n'y a pas de roulement, pas d'exposition
+continue, pas de taux de financement. Le contrat a une échéance
+connue et une distribution de valeur terminale connue (binaire).
+
+Cette structure terminale-et-bornée est ce qui permet aux contrats
+de marché de prédiction d'agir comme des expressions plus propres
+de conviction. Un trader qui pense que la Fed baissera les taux en
+juillet n'a pas à rouler des contrats à terme trimestriels ou à
+maintenir une marge contre une exposition indéfinie. Il achète le
+contrat, le détient jusqu'au règlement, et soit collecte 1 $, soit
+accepte que la vue était fausse. La discipline imposée par le
+règlement terminal est, paradoxalement, l'une des choses qui rend
+les traders de marchés de prédiction plus disciplinés que les
+traders d'actions ou de futures en moyenne.
+
+Nous avons couvert les mécaniques de résolution en détail dans le
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">billet sur la couche de résolution et de règlement</a>.
+Pour le contexte de comparaison ici, ce qui importe est seulement
+que la structure de paiement terminal est fondamentalement
+différente de la structure de roulement des futures ou de la
+structure de détention indéfinie des actions.
+
+## Dynamiques de liquidité : où divergent les carnets
+
+Les carnets d'ordres pour les actions, les futures et les marchés
+de prédiction utilisent tous la même primitive — un Carnet d'ordres
+à cours limité centralisé — mais ils diffèrent dans la manière dont
+le carnet se comporte à l'approche de l'échéance et dans la
+manière dont la profondeur est répartie sur le spectre de prix.
+
+**Carnets du marché actions.** Les actions ont des horizons
+temporels effectivement continus, donc le carnet est à peu près
+stationnaire dans le temps. La profondeur est répartie sur une
+large plage de prix (parce que la valeur sous-jacente bouge), et le
+carnet est typiquement le plus profond près du prix actuel. Les
+grandes actions (composantes du S&P) portent plus de 10 M $ à
+l'écart interne ; les mid-caps portent 100 k-1 M $ ; les small-caps
+peuvent être négociées de manière mince.
+
+**Carnets de futures.** Les futures ont une échéance définie. Le
+carnet est le plus profond dans le contrat du mois proche et
+s'amincit pour les contrats à dates plus lointaines. À l'approche
+de l'échéance, le carnet du mois proche devient plus dense (plus de
+participants se concentrant sur le contrat sur le point d'être
+réglé) et le carnet du mois suivant commence à prendre le relais.
+La dynamique de roulement crée une structure prévisible.
+
+**Carnets de marché de prédiction.** Les contrats de prédiction
+ont aussi une échéance terminale, mais la distribution de la
+profondeur est qualitativement différente. Le carnet est le plus
+profond **près de la probabilité implicite** — c'est-à-dire le
+point médian où la plupart des traders ont une vue similaire. À
+l'approche de la résolution, le carnet se comprime vers 0 ou 1 :
+un marché à 0,95 $ une semaine avant la résolution converge
+typiquement à 0,99+ à mesure que le résultat devient de plus en
+plus clair. La nature binaire terminale signifie que la profondeur
+se concentre autour de la probabilité de consensus, avec une
+liquidité mince aux extrémités — une forme différente de celle des
+actions ou des futures.
+
+Cette forme a des conséquences pratiques. Un trader de marché de
+prédiction qui essaie d'exprimer une forte vue contrarienne
+(c'est-à-dire essayer d'acheter YES quand la probabilité implicite
+est de 5 %) fait face à une liquidité mince à l'extrémité.
+Inversement, lever un marché 50/50 est presque toujours bon marché.
+Le trader qui comprend cette structure a un avantage informatif
+significatif ; le trader qui traite le carnet comme un carnet
+d'actions sera surpris par les coûts d'exécution aux extrêmes.
+
+## Agrégation d'information : marchés comme oracles
+
+La raison la plus profonde pour laquelle les marchés de prédiction
+comptent n'est pas leur efficacité du capital ni leurs mécaniques
+de règlement. C'est qu'ils agrègent l'information sur les
+événements futurs plus proprement que tout autre mécanisme que les
+humains aient inventé, y compris les prévisions d'experts, les
+sondages et la modélisation des politiques publiques.
+
+**Les actions agrègent l'information sur les entreprises.** Le prix
+d'Apple encode la vue collective du marché sur les flux de
+trésorerie futurs d'Apple. Les estimations des analystes actions
+sont calibrées par rapport aux prix des actions, et non l'inverse —
+quand les prix et les estimations des analystes divergent, les
+prix gagnent à long terme.
+
+**Les futures agrègent l'information sur l'offre, la demande et
+les prix à terme des matières premières.** La courbe WTI à un
+moment donné est l'attente collective du marché sur les prix du
+pétrole pour les 24 prochains mois. Les raffineurs, producteurs et
+traders ont tous de l'argent matériel en jeu, et la courbe a un
+long historique d'être plus précise que les prévisions d'experts.
+
+**Les marchés de prédiction agrègent l'information sur les
+événements futurs discrets.** La probabilité implicite sur un
+contrat de décision de la Fed est la vue collective du marché sur
+la probabilité de la baisse — et cette probabilité implicite a
+constamment surpassé les prévisionnistes experts, les sondages et
+les modèles d'agences de notation sur des échantillons
+pluriannuels. Les Iowa Electronic Markets l'ont démontré pour les
+élections américaines dans les années 1990 ; Polymarket l'a
+démontré pour les événements politiques et macro à une échelle
+beaucoup plus grande dans les années 2020.
+
+Les classes d'actifs partagent une propriété commune : lorsque les
+participants ont de l'argent réel en jeu, les prix qu'ils affichent
+collectivement sont plus honnêtes que les opinions qu'ils
+offriraient autrement volontairement. Mais les marchés de
+prédiction sont positionnés de manière unique pour faire cela pour
+des événements qui n'ont pas de marché actions ou de futures — la
+« longue traîne » d'événements futurs discrets qui comptent pour
+les opérateurs, les gouvernements et les allocataires mais qui ne
+sont pas naturellement couverts par des instruments traditionnels.
+
+<Callout type="info" title="Pourquoi c'est la propriété la plus sous-estimée">
+  Les actions agrègent l'information sur les entreprises. Les
+  futures agrègent l'information sur les matières premières. Les
+  marchés de prédiction agrègent l'information sur tout le reste —
+  et « tout le reste » est la majorité des questions réellement
+  conséquentes en politique, en affaires et en finance. C'est
+  pourquoi nous nous attendons à ce que cette catégorie s'étende
+  plus rapidement que l'une ou l'autre des deux autres au cours de
+  la prochaine décennie.
+</Callout>
+
+## Profil de risque : borné vs illimité
+
+Le profil de risque d'une position sur un marché de prédiction est
+qualitativement différent d'une position en actions ou en futures
+parce que le paiement est borné par construction.
+
+**Actions.** Une position longue en actions a un risque baissier
+borné (la perte maximale est la taille de la position) et un
+potentiel de hausse illimité. Une position courte en actions a
+l'inverse — potentiel de hausse borné (l'action ne peut pas
+descendre en dessous de 0 $) et risque baissier illimité. La
+plupart des portefeuilles d'actions sont nets longs, donc
+l'asymétrie est favorable, mais les appels de marge et les
+liquidations forcées introduisent un risque non linéaire.
+
+**Futures.** Une position de futures a théoriquement un risque
+baissier illimité des deux côtés parce que le sous-jacent peut
+bouger de manière inattendue et que les appels de marge peuvent se
+composer. En pratique, les coupe-circuits imposés par la bourse et
+les limites de position plafonnent le pire cas, mais l'expérience
+de recevoir un appel de marge à cause d'un mouvement à 4σ est tout
+à fait possible sur les futures de matières premières ou de taux.
+
+**Marchés de prédiction.** Les deux côtés d'une transaction sur
+marché de prédiction sont bornés par construction. Les contrats
+YES paient 0 $ ou 1 $ ; les contrats NO paient 0 $ ou 1 $ ; la
+perte maximale pour chaque côté est la prime payée. Il n'y a pas
+d'appels de marge parce que le pire cas est déjà collatéralisé à
+l'entrée de l'ordre. Cette structure est attrayante pour les
+traders qui veulent prendre des vues expressives sans s'exposer à
+la complexité opérationnelle de la gestion du risque
+mark-to-market.
+
+Le revers de la médaille est que le potentiel de hausse est aussi
+borné. Un contrat YES acheté à 0,42 $ a un paiement maximal de
+1 $, un rendement de 138 %. C'est un paiement solide pour la bonne
+vue, mais ce ne sont pas des rendements « 10x » de style crypto.
+Les marchés de prédiction sont un endroit pour exprimer des vues
+de haute conviction, pas pour viser le jackpot.
+
+## Quand chaque instrument est le bon
+
+Toutes les vues ne sont pas mieux exprimées sur un marché de
+prédiction. Le cadrage honnête est que chacun des trois
+instruments est le bon outil pour une classe différente de vue.
+
+**Utilisez les actions quand** votre vue porte sur les flux de
+trésorerie à long terme d'une entreprise. « Apple vendra plus
+d'iPhones que ce que le consensus attend au cours des cinq
+prochaines années » est une vue actions. Il n'y a pas
+d'expression propre en marché de prédiction ou en futures pour
+cela.
+
+**Utilisez les futures quand** votre vue porte sur le prix d'un
+actif sous-jacent sur un horizon défini. « Le brut WTI se
+négociera au-dessus de 90 $ dans six mois » est une vue futures.
+Vous pourriez l'exprimer dans un marché de prédiction sous forme
+de contrat binaire, mais vous perdez le paiement linéaire qui
+rend les futures attrayants pour les hedgers et les producteurs.
+
+**Utilisez les marchés de prédiction quand** votre vue porte sur
+un événement futur discret avec un résultat binaire ou scalaire.
+« La Fed baisse les taux en juillet. » « Le CPI imprime au-dessus
+de 3,2 % à la publication de septembre. » « La Coupe du Monde
+2026 est gagnée par l'Argentine. » « L'inflation arrive en
+dessous du consensus à la prochaine impression. » Ce sont les
+foyers naturels des marchés de prédiction, et c'est une classe de
+vue que ni les actions ni les futures n'expriment proprement.
+
+L'expansion qui se produit jusqu'en 2026 est que la troisième
+classe — les vues d'événements discrets — est beaucoup plus
+grande que la plupart des participants ne le réalisaient. Presque
+toute décision d'affaires conséquente, question politique ou
+thèse d'investissement est en aval d'un petit nombre d'événements
+discrets. Valoriser ces événements directement, plutôt que de les
+inférer via des positions actions ou futures, est plus efficace.
+
+## Pourquoi les frontières s'estompent
+
+Les classes d'actifs traditionnelles ne sont pas statiques ; elles
+évoluent les unes vers les autres lorsque l'infrastructure est en
+place. Trois schémas de convergence sont visibles.
+
+**Hybrides actions-événement.** Certains contrats d'événements
+liés aux actions (par ex. « Tesla annoncera-t-elle une production
+supérieure à 600 000 unités au T3 ? ») se situent à l'intersection
+de l'analyse actions et des marchés de prédiction. La vue
+sous-jacente porte sur une entreprise, mais l'expression est un
+contrat d'événement binaire. Les opérateurs s'attendent à ce que
+cette catégorie croisse à mesure que les analystes et les traders
+recherchent des expressions plus propres de catalyseurs
+spécifiques.
+
+**Hybrides futures-événement.** Les contrats d'événements de
+volatilité (par ex. « La vol implicite sur le S&P clôturera-t-elle
+au-dessus de 25 % le jour du FOMC ? ») permettent aux traders de
+prendre des vues sur les régimes de volatilité via des contrats
+binaires plutôt que des positions options chargées en vega.
+L'efficacité du capital est meilleure et la surcharge
+opérationnelle est plus faible.
+
+**Contrats scalaires de marché de prédiction.** Les contrats de
+prédiction les plus simples sont binaires, mais les contrats
+scalaires (qui paient un montant proportionnel à la valeur
+sous-jacente) sont de plus en plus courants. Ceux-ci ressemblent
+mécaniquement aux options ou aux futures mais avec un règlement
+plus simple et un profil de capital plus serré.
+
+Les trois classes d'actifs convergent vers un substrat
+d'infrastructure partagé. Les opérateurs, bourses et protocoles
+qui découvrent comment héberger les trois sous un même toit sont
+positionnés pour capturer cette convergence. Nous avons conçu le
+protocole Kuest avec cet avenir en tête — les opérateurs sur
+Kuest pourront héberger des contrats de prédiction binaires, des
+contrats scalaires et des dérivés liés à des événements sous un
+seul deploy, à mesure que le catalogue des types de contrats
+pris en charge s'étendra jusqu'en 2026.
+
+## Une note sur les devises de règlement
+
+Une autre différence structurelle vaut la peine d'être signalée :
+chaque classe d'actifs a un substrat de règlement par défaut, et
+ce substrat façonne qui peut participer.
+
+Les actions se règlent en monnaie fiat via des chambres de
+compensation nationales. L'accès nécessite une relation de
+courtage dans la juridiction concernée. Les futures se règlent en
+fiat via des chambres de compensation des bourses avec des
+exigences strictes pour les membres. Les marchés de prédiction,
+sous leur forme on-chain dominante, se règlent en stablecoins
+(USDC) sur des chaînes publiques. Cela rend la participation
+effectivement globale par défaut — quiconque possède un wallet et
+des stablecoins peut négocier — et rend la couche opérateur (KYC,
+rampes fiat, restrictions juridictionnelles) optionnelle plutôt
+que de base. Cela signifie également que le coût de gestion de
+l'infrastructure est plus faible, ce qui fait partie de la raison
+pour laquelle un modèle au niveau du protocole fonctionne pour
+les marchés de prédiction d'une manière qui ne fonctionnerait pas
+pour les actions.
+
+## Ce que cela signifie pour les traders, les opérateurs et les allocataires
+
+Trois implications découlent directement de la comparaison
+structurelle.
+
+**Pour les traders.** Les marchés de prédiction sont un
+instrument à haute conviction. Utilisez-les lorsque vous avez une
+vue forte sur un événement spécifique et que vous voulez un
+risque borné. N'essayez pas de les utiliser comme substitut aux
+positions actions ou futures où la vue porte sur les flux de
+trésorerie ou les prix des matières premières.
+
+**Pour les opérateurs.** L'attrait structurel des marchés de
+prédiction pour votre audience est l'efficacité du capital et le
+risque borné. Ce message devrait être central dans la façon dont
+vous commercialisez votre plateforme. Les traders venant des
+actions ou des futures apprécieront l'absence d'appels de marge ;
+les traders venant du jeu apprécieront la meilleure économie
+unitaire. Les deux traductions sont valides et les deux sont
+nettement positives.
+
+**Pour les allocataires.** Les marchés de prédiction ne sont pas
+encore une allocation centrale dans la plupart des portefeuilles
+institutionnels, mais la catégorie sera allouée dans les 24
+prochains mois. Les fonds qui construisent une expertise de
+recherche maintenant — particulièrement en macro événementielle
+et en risque politique — seront positionnés pour capturer l'alpha
+qui vient avec la montée en puissance institutionnelle. Les
+données de volume montrent déjà que la part institutionnelle
+croît rapidement ; le cadre d'allocation n'a pas rattrapé son
+retard.
+
+La comparaison entre les marchés de prédiction, les futures et
+les actions n'est pas une bataille pour la domination. C'est une
+histoire d'une troisième classe d'actifs prenant sa place aux
+côtés des deux autres comme instrument principal pour un type
+spécifique de vue. L'infrastructure pour faire en sorte que cela
+se produise à grande échelle est ce qui se construit en ce moment
+même, et les opérateurs qui choisissent le bon côté du build
+définiront la catégorie.
+
+<KuestCTA
+  headline="Vous voulez héberger des contrats d'événements aux côtés de votre produit de trading existant ?"
+  body="Que votre audience négocie des actions, des futures ou de la crypto aujourd'hui, les marchés de prédiction se composent avec ce que vous offrez déjà. Nous vous montrerons comment."
+  primary={{ href: "/launch", label: "Lancer l'assistant de lancement" }}
+  secondary={{ href: "/enterprise", label: "Parler aux ventes" }}
+/>

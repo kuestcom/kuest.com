@@ -1,0 +1,677 @@
+---
+title: "Cómo operar tu propio venue de mercado de predicción: el manual completo del operador 2026"
+description: "Un manual completo del operador para los primeros 365 días de un venue de mercado de predicción — KPIs, cadencia de creación de mercados, evolución de comisiones, retención, soporte, operaciones de resolución, postura regulatoria, crecimiento de audiencia y la transición del año 1 al año 2."
+publishedAt: 2026-04-24
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "operations", "scaling", "infrastructure"]
+---
+
+Lanzar un venue de mercado de predicción es un proyecto.
+Operarlo es otro distinto. El playbook de lanzamiento termina
+en el día 30; este manual comienza en el día 31 y se extiende
+hasta la transición del año 1 al año 2. La mayor parte del
+valor del operador creado en esta categoría en 2026 será
+creado por operadores que gestionen bien sus venues después
+del lanzamiento — mucho más que el creado por operadores que
+simplemente lanzaron primero.
+
+Este es el manual del operador para esa operación. Asume que
+ya has lanzado (el
+<a href="/blog/2026-04-how-to-open-prediction-market">playbook de lanzamiento</a>
+cubre el envío; el
+<a href="/blog/2026-04-launch-prediction-markets">tutorial de 15 minutos</a>
+cubre el despliegue técnico). Asume que tienes una audiencia,
+volumen real y un equipo pequeño capaz de ejecutar las
+decisiones del operador. A partir de ahí, así es como operar
+el venue durante el primer año y entrar en el segundo.
+
+<Stat
+  value="≈ 4×"
+  label="Múltiplo mediano de volumen a 12 meses para operadores de mercados de predicción que ejecutan el playbook operativo a continuación, frente a operadores que lanzan y luego subinvierten en operaciones"
+  sourceHref="https://kuest.com/research/operator-cohort-2025"
+  sourceLabel="Estudio de cohorte de operadores de Kuest, 2025"
+/>
+
+La cifra de 4× es la brecha entre operadores que gestionan el
+venue con atención y operadores que lo gestionan como un
+producto lanzado que no manejan activamente. La infraestructura
+es la misma; las decisiones del operador no.
+
+## Los tres KPIs que realmente importan
+
+Un venue en operación genera docenas de métricas, pero tres de
+ellas explican casi todo sobre la trayectoria del venue.
+
+**Traders activos semanales (WAT).** El recuento de traders
+únicos que colocaron al menos una operación en los últimos
+siete días. Este es el número individual más importante para
+predecir dónde estará el venue en doce meses. El crecimiento
+sostenido de WAT se compone en volumen; la disminución de WAT
+es el indicador adelantado de problemas operativos que se
+manifestarán en métricas de volumen en un mes.
+
+**Tamaño mediano de operación.** La mediana (no la media) del
+nocional por operación en todo el venue. La mediana es más
+honesta que la media porque unas pocas operaciones
+institucionales grandes distorsionan la media sin afectar la
+experiencia típica de la audiencia. Un tamaño mediano de
+operación creciente con el tiempo señala que la audiencia está
+ganando convicción y dimensionando posiciones; un tamaño
+mediano plano o decreciente señala que la audiencia se está
+cubriendo o perdiendo confianza.
+
+**Tasa de disputa de resolución.** La fracción de mercados
+resueltos que pasaron a disputa en lugar del camino limpio del
+optimistic-oracle (cubrimos la mecánica en
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">el post de resolución</a>).
+En un venue saludable este número está por debajo del 0,3 %.
+Por encima del 0,5 %, indica problemas de especificación de
+contrato que erosionarán la confianza del trader durante
+semanas. La métrica es adelantada; el colapso de confianza es
+rezagado.
+
+Estos tres KPIs deben ser visibles en todo momento para el
+operador. La revisión semanal de solo estos tres números, con
+la disciplina de actuar sobre lo que revelan, es la base para
+operar bien un venue. Otras métricas importan, pero son
+mayormente diagnósticas de estas tres.
+
+<Comparison
+  columns={["KPI", "Saludable", "Vigilar", "Malo"]}
+  rows={[
+    ["Crecimiento de traders activos semanales (m/m)", ">15 %", "5–15 %", "<5 % o negativo"],
+    ["Crecimiento del tamaño mediano de operación (m/m)", ">5 %", "0–5 %", "Negativo"],
+    ["Tasa de disputa de resolución", "<0,3 %", "0,3–0,5 %", ">0,5 %"],
+  ]}
+/>
+
+## Cadencia de creación de mercados
+
+La palanca operativa de mayor apalancamiento individual es la
+cadencia y calidad de los nuevos mercados. Las audiencias
+operan lo que está disponible. La pipeline de nuevos mercados
+es lo que mantiene a los traders existentes regresando y lo
+que atrae nuevas audiencias de segmentos adyacentes.
+
+La pregunta de cadencia es "¿cuántos mercados nuevos por
+semana?" La respuesta depende del tamaño de la audiencia y la
+vertical, pero los patrones que funcionan son más estrechos de
+lo que la mayoría de los operadores espera.
+
+Para un venue con 1.000 traders activos semanales en una
+vertical enfocada (por ejemplo, contratos macro), la cadencia
+correcta es de aproximadamente 8–15 mercados nuevos por
+semana. Por debajo de 5 por semana, los traders que regresan
+no encuentran nada nuevo y se van. Por encima de 25 por
+semana, la calidad cae porque la especificación reflexiva de
+contratos a ese volumen requiere más capacidad de operador de
+la que es sensata.
+
+Para un venue con 10.000 traders activos semanales en
+múltiples verticales, la cadencia es de aproximadamente 30–50
+por semana, distribuida entre las verticales activas. Más allá
+de eso, la creación de mercados tiene que automatizarse
+parcialmente a través de pipelines basadas en plantillas.
+
+La disciplina es más difícil de lo que sugiere el número de
+cadencia. Cada nuevo mercado es una decisión de
+especificación de contrato (qué fuente de datos, qué regla de
+resolución, qué casos límite), una decisión de liquidez (¿es
+este mercado lo suficientemente mainstream para compartir
+liquidez, o necesita seeding?) y una decisión operativa
+(¿cuándo cierra, cuál es la exposición de soporte si va a
+disputa?). Un venue que envía 10 mercados por semana necesita
+un proceso para tomar esas decisiones de manera consistente.
+
+El patrón que funciona consistentemente: un equipo de creación
+de mercados de 1–2 personas, cada una con una vertical
+definida de la que es responsable, trabajando desde un backlog
+de mercados candidatos sugeridos por la audiencia y guiados
+por el calendario de eventos. La salida se revisa
+semanalmente contra la tasa de disputa; si las disputas se
+disparan en los mercados de un creador específico, la
+disciplina de especificación se endurece.
+
+## Decisiones de listing: el problema de señal vs ruido
+
+Una tentación natural a medida que el venue crece es listar
+más mercados, más variedad, más verticales. Los datos muestran
+consistentemente que esto es un error. Los venues que tienen
+mejor desempeño son los que listan con disciplina.
+
+El marco para las decisiones de listing tiene tres filtros que
+cada mercado candidato debe pasar:
+
+1. **Claridad de resolución.** ¿Puede escribirse la regla de
+   resolución en dos oraciones sin ambigüedad? Si no, el
+   mercado no está listo para listar. Casi todos los problemas
+   de tasa de disputa se remontan a listings que fallaron esta
+   prueba en la creación.
+2. **Interés de audiencia.** ¿Tomarán al menos 15 traders una
+   posición en este mercado en la primera semana? Esto es
+   difícil de predecir perfectamente, pero si el operador no
+   puede hacer un argumento defendible de por qué este mercado
+   le importa a la audiencia, probablemente no le importa.
+3. **Viabilidad de liquidez.** ¿Puede operar el mercado con un
+   spread por debajo de 100 bps en las primeras 24 horas? Si
+   la respuesta es "no, pero podemos hacer market-making", el
+   operador está añadiendo costo. Si la respuesta es "no, y la
+   liquidez compartida no cubre esta categoría", el mercado no
+   operará bien y no debería enviarse.
+
+Un mercado que falle cualquiera de los tres no debería
+listarse. La mayoría de los operadores que luchan con la
+retención lo hacen porque están listando mercados que fallan
+el filtro 1 (claridad de resolución) o el filtro 3 (liquidez),
+y la audiencia experimenta esos fallos como problemas a nivel
+de venue aunque sean problemas a nivel de listing.
+
+<Callout type="warning" title="La trampa del 'alguien podría operar esto'">
+  La decisión de listing mala más común es "listémoslo porque
+  alguien podría querer operarlo". En un venue con miles de
+  mercados, el costo de listar un mercado que no opera es
+  pequeño. En un venue con una vertical enfocada y una
+  audiencia pequeña, cada mercado listado que no opera diluye
+  la atención de los mercados que sí deberían. El filtro es
+  "¿producirá este mercado actividad real?", no "¿podría este
+  mercado producir actividad real?"
+</Callout>
+
+## Evolución de comisiones a lo largo del tiempo
+
+El plan de comisiones que recomendamos para el lanzamiento
+(cubierto en el
+<a href="/blog/2026-04-fee-models-explained">post de modelos de comisiones</a>)
+es una posición inicial, no un ajuste permanente. El trabajo
+del operador durante el primer año es evolucionar la comisión
+basándose en lo que los datos revelan sobre la tolerancia de
+la audiencia.
+
+Las tres señales que justifican un cambio de comisión:
+
+1. **Retención en la semana 12 por debajo del 35 %.** La
+   comisión está dañando el volumen más de lo que está
+   generando ingresos. Reduce la tasa en 20–25 bps y vuelve a
+   probar durante otros 90 días.
+2. **El tamaño mediano de operación disminuye durante varios
+   meses.** Los traders se están volviendo sensibles al
+   costo. Reduce la tasa en 10–15 bps y observa si el tamaño
+   mediano de operación se recupera.
+3. **WAT crece más rápido que el volumen por trader.** Existe
+   poder de fijación de precios. La comisión puede subir 10–15
+   bps sin perder audiencia.
+
+La cadencia de los cambios de comisión también es disciplina
+operativa. Los operadores agresivos quieren cambiar las
+comisiones mensualmente. Los datos no respaldan los cambios
+mensuales; la señal en el comportamiento de la tasa de
+comisión tarda 8–10 semanas en estabilizarse, y los ajustes
+más rápidos inyectan ruido sin producir mejor comprensión.
+
+La disciplina que funciona consistentemente: mantener la
+comisión de lanzamiento durante los primeros 90 días, ejecutar
+un ajuste bien considerado en el día 90 basado en datos de
+retención, mantenerlo durante 90 días más, y considerar
+comisiones por niveles solo después de que el venue tenga 6+
+meses de operación consistente y un flujo institucional
+significativo.
+
+## Estrategias de retención de traders que realmente funcionan
+
+La retención es el indicador adelantado de cualquier otra
+métrica. Los traders adquiridos que no regresan cuestan casi
+tanto como los traders adquiridos que nunca operan. Las
+estrategias de retención que producen resultados
+consistentemente son operativamente simples, pero deben
+hacerse deliberadamente.
+
+**Comunicación de resolución.** Cuando un mercado se resuelve,
+el trader debe recibir una notificación en minutos (no horas)
+mostrando el resultado, su posición y el monto acreditado.
+Esto suena trivial; muchos operadores lo hacen ligeramente mal
+(notificaciones retrasadas, resúmenes de posición poco claros)
+y pierden 5–8 puntos porcentuales de retención como resultado.
+
+**Relevancia de los nuevos mercados.** Los nuevos mercados
+enviados cada semana deben ser relevantes para la audiencia
+existente. A una audiencia centrada en macro no se le lanzan
+mercados deportivos; a una audiencia centrada en deportes no
+se le lanzan mercados políticos. El resumen semanal de nuevos
+mercados debe sentirse como si el venue "entendiera" lo que le
+importa al trader.
+
+**UX de gestión de posiciones.** Los traders deben poder ver
+todas las posiciones abiertas en un solo lugar, cerrar
+posiciones con un clic y ver sus P&L realizadas y no
+realizadas sin navegación. La UX de posiciones fragmentada es
+la razón #1 por la que los traders se van después de sus
+primeras semanas; no pueden saber cómo les está yendo, así
+que dejan de operar.
+
+**Contenido educativo para el segundo nivel.** Los traders que
+se registran pero solo realizan una o dos operaciones en su
+primer mes son los que necesitan educación para convertirse en
+actividad real. El contenido (boletines, videos tutoriales,
+hilos explicativos) que va específicamente a esta cohorte
+duplica aproximadamente su conversión a traders activos en
+comparación con dejarlos en paz.
+
+El patrón en los cuatro es que la retención es calidad
+operativa, no genio estratégico. Los operadores que tienen
+mejor desempeño en retención son los que tienen atención
+operativa disciplinada a estos puntos de contacto específicos.
+La estrategia es simple; la ejecución es lo que diferencia.
+
+## Soporte al cliente como palanca de retención
+
+El soporte generalmente se trata como un centro de costos. En
+un venue de mercado de predicción, el soporte es uno de los
+mecanismos de retención más efectivos disponibles, y los
+operadores que lo hacen bien ven una composición de retención
+significativa a partir de él.
+
+El patrón que funciona:
+
+- **Primera respuesta dentro de una hora.** La primera
+  respuesta no tiene que resolver el problema; tiene que
+  reconocerlo y establecer expectativas. Los traders que se
+  sienten escuchados dentro de una hora retienen a tasas
+  significativamente más altas que los traders que esperan
+  seis horas, incluso si ambos terminan resolviéndose por
+  igual.
+- **Nombres reales de humanos reales.** Las respuestas de
+  soporte firmadas por personas con nombre, no "el equipo de
+  soporte", producen una confianza del trader dramáticamente
+  mejor. El costo de tener nombres reales en las respuestas es
+  diminuto; el impacto en la retención es significativo.
+- **Categorización de problemas que impulsa correcciones de
+  producto.** Cada ticket de soporte debe etiquetarse por
+  categoría (problema de depósito, claridad del mercado,
+  confusión de posición, retraso de retiro, error técnico). La
+  revisión semanal de la mezcla de categorías identifica las
+  brechas de producto que producen carga de soporte. Cerrar
+  esas brechas es una mejora permanente de la retención.
+
+El volumen de soporte en sí es una métrica. Saludable: menos
+de 5 tickets por cada 100 traders activos semanales. Vigilar:
+5–15. Malo: por encima de 15. Un pico en el volumen de soporte
+es un indicador adelantado ya sea de un incidente específico
+(que la rotación de guardia maneja) o una brecha de UX
+específica que el equipo de producto debería abordar.
+
+## Operaciones de resolución como trabajo continuo
+
+La resolución a veces se trata como infraestructura
+automatizada que no necesita atención del operador. Eso es
+incorrecto. Un venue en operación con cientos de mercados al
+mes tiene docenas de casos límite por semana — mercados donde
+los datos subyacentes son ambiguos, donde la fuente se mueve,
+donde un evento importante reformula la pregunta de
+resolución. Cada uno necesita el juicio del operador.
+
+El playbook de operaciones de resolución del operador:
+
+- **Una persona o rotación de "resolution-ops" definida.** Una
+  persona con nombre por semana es responsable de monitorear
+  activamente las resoluciones, atender casos límite y aprobar
+  resoluciones que se marcaron para revisión.
+- **Una política de resolución pre-publicada.** Un documento
+  que indica cómo se manejan los casos ambiguos. Los traders
+  deben poder leerlo antes de que ocurran las disputas, no
+  después. La política en sí no tiene que ser larga; tiene que
+  ser clara.
+- **Documentación pública cuando se maneja un caso límite.**
+  Cuando el operador toma una decisión de resolución no
+  trivial, publicar el razonamiento públicamente (no solo a
+  los traders afectados) construye confianza a largo plazo.
+  Los operadores con las reputaciones de resolución más
+  fuertes son los que han sido transparentes sobre su
+  razonamiento, no los que nunca tuvieron casos límite.
+- **Una relación con el soporte de resolución del protocolo.**
+  Algunos casos límite requieren escalada a nivel de protocolo
+  (especialmente cualquier cosa que involucre el camino de
+  disputa del optimistic-oracle). Los operadores deben tener
+  un camino de escalada documentado con el proveedor del
+  protocolo y usarlo proactivamente en lugar de
+  reactivamente.
+
+Una práctica limpia de resolution-ops es lo que separa los
+venues con tasas de disputa del 0,2 % de los venues con tasas
+de disputa del 0,6 %. La mecánica a nivel de protocolo es la
+misma; lo que difiere es la disciplina a nivel de operador.
+
+## Comunicación durante incidentes
+
+Cada venue en operación tiene incidentes — interrupciones de
+proveedores de pago, retrasos en la resolución de mercados,
+mantenimiento programado, errores ocasionales. La comunicación
+del operador durante los incidentes es lo que determina si
+dañan la confianza o no.
+
+Los patrones de comunicación que funcionan consistentemente:
+
+- **Divulgación proactiva.** Cuéntale a la audiencia sobre el
+  incidente antes de que pregunten. Una publicación de Twitter
+  de 10 minutos reconociendo "estamos viendo una resolución
+  más lenta en el mercado X, investigando" construye
+  confianza. Un silencio de 24 horas seguido de "tenemos una
+  actualización" la destruye.
+- **Cronogramas específicos.** "Esperamos resolución en la
+  próxima hora" es mejor que "actualizaremos pronto". Si el
+  cronograma se desliza, actualiza. La disciplina está en ser
+  específico incluso cuando hay incertidumbre.
+- **Resúmenes posteriores al incidente.** Después de cualquier
+  incidente no trivial, escribe un post-mortem público que
+  explique qué pasó, qué se vio afectado y qué se está
+  cambiando para prevenir la recurrencia. Los operadores que
+  hacen esto consistentemente construyen credibilidad a largo
+  plazo que sobrevive a los incidentes.
+- **Reconocimiento personal a los traders afectados.**
+  Contacto directo con traders cuyas posiciones fueron
+  específicamente afectadas. No correos automáticos —
+  mensajes humanos reales. Esto es caro en tiempo del operador
+  y vale la pena el costo.
+
+El patrón en los cuatro es que los incidentes son
+oportunidades para fortalecer la confianza si se manejan bien,
+y oportunidades para perderla si se manejan mal. Los
+operadores que tratan los incidentes como riesgos de PR en
+lugar de eventos de confianza tienen un desempeño inferior.
+
+## Gestión de la relación regulatoria
+
+Durante el primer año de operación, la relación regulatoria en
+la jurisdicción primaria del operador tiene que madurar de
+"lanzamos cumpliendo" a "el regulador nos conoce, ve nuestro
+reporte y está cómodo con nuestra postura". Esto es más
+difícil de lo que la mayoría de los operadores anticipa porque
+los reguladores se mueven lentamente y requieren continuidad.
+
+La práctica regulatoria mínima del lado del operador:
+
+- **Presentaciones escritas trimestrales.** Incluso cuando no
+  son requeridas, los informes trimestrales voluntarios al
+  regulador relevante mostrando volumen, recuento de traders,
+  tasa de disputa y métricas de cumplimiento construyen una
+  relación que se vuelve invaluable cuando algo sale mal.
+- **Divulgación preventiva de cambios.** Si el operador cambia
+  el modelo de comisiones, el alcance del mercado, la
+  segmentación de audiencia o cualquier parámetro relevante
+  para el cumplimiento, el regulador se entera antes que el
+  público. La sorpresa es lo único que más les disgusta a los
+  reguladores.
+- **Un enlace regulatorio con nombre en el equipo del
+  operador.** No un asesor legal a tiempo parcial — una
+  persona con nombre a tiempo completo que sea dueña de la
+  relación con el regulador. Para cuando la relación importa,
+  el operador desea haber contratado a esta persona antes.
+- **Una separación limpia entre decisiones operativas y
+  decisiones de cara al regulador.** Las operaciones se mueven
+  rápido; los cambios de cara al regulador se mueven
+  lentamente. El proceso del operador debe hacer esto
+  explícito para que las mejoras operativas no violen
+  accidentalmente la postura de cumplimiento.
+
+Los ciclos de endurecimiento regulatorio sucederán. Los
+operadores que sobreviven a ellos son los que construyeron la
+relación durante el período de calma. Los operadores que se
+saltaron la gestión de la relación se quedan fuera cuando el
+ciclo se endurece.
+
+## Crecimiento de audiencia: la pregunta del segundo año
+
+Los primeros 6 meses de la vida de un venue tratan sobre
+activación y retención. Los segundos 6 meses tratan sobre
+crecimiento de audiencia. El cambio es más difícil de lo que
+la mayoría de los operadores anticipa porque el playbook es
+diferente.
+
+Para el crecimiento de audiencia en los meses 7–12, tres
+canales producen retornos de manera confiable:
+
+**Mecánicas de referidos dentro de la audiencia existente.** Un
+trader que ha estado activo durante 60+ días tiene
+significativamente más probabilidades de referir a otro trader
+que un trader en su primer mes. Los programas de referidos
+funcionan mejor en la segunda mitad del año que en la primera.
+Construye la mecánica de referidos en el mes 6, no en el
+lanzamiento.
+
+**SEO impulsado por contenido y expansión de audiencia.** Para
+el mes 6, el venue tiene suficientes datos operativos para
+escribir contenido autorizado sobre su nicho — análisis de
+mercado, comportamiento de audiencia, patrones de resolución.
+Ese contenido se compone en los rankings de búsqueda durante
+12+ meses y es un canal de adquisición principal para el mes
+18.
+
+**Expansión vertical a audiencias adyacentes.** Un venue
+centrado en macro en el mes 8 puede agregar responsablemente
+una vertical deportiva o política sin diluir la audiencia
+macro. La expansión trae audiencias de la nueva vertical;
+algunas de ellas también se quedan en el lado macro.
+
+El patrón que no funciona en esta etapa: gastar mucho en
+adquisición pagada en frío. La economía unitaria para los
+mercados de predicción en 2026 no soporta CAC pagado por
+encima de ~30 $ por trader activo, que es aproximadamente 3×
+más barato que el CAC fintech típico. Los operadores que
+intentan "crecer más rápido a través de pagos" terminan
+quemando capital en traders que no se activan.
+
+## Introducción de niveles: cuándo y cómo
+
+Para el mes 9–12, la mayoría de los operadores tienen
+suficiente distribución de volumen para introducir comisiones
+por niveles. La estructura de niveles que funciona
+consistentemente es un sistema de tres niveles basado en
+volumen de 30 días, con cortes de nivel en umbrales de volumen
+significativos.
+
+Patrón común:
+
+- **Nivel estándar (predeterminado).** Cualquiera que sea la
+  comisión de lanzamiento, por ejemplo, 0,95 %.
+- **Nivel medio (>10.000 $ de volumen de 30 días).** Un
+  pequeño descuento, por ejemplo, 0,80 %.
+- **Nivel superior (>100.000 $ de volumen de 30 días).** Un
+  descuento significativo, por ejemplo, 0,65 %.
+
+Los umbrales y los tamaños de descuento deben ajustarse a la
+distribución específica del venue. La disciplina es introducir
+niveles solo después de que el venue tenga operaciones
+estables, comunicar la estructura de niveles claramente y
+otorgar los niveles apropiados a los traders existentes en
+función de su actividad histórica.
+
+El tiering antes del mes 9 es consistentemente un error. Los
+datos no son lo suficientemente estables; los descuentos
+confunden a la audiencia; la complejidad operativa supera la
+optimización de ingresos.
+
+## Reportes y analíticas
+
+Para el mes 6, el operador debe tener una configuración de
+reporte que muestre los tres KPIs centrales (WAT, tamaño
+mediano de operación, tasa de disputa) más un conjunto
+estructurado de métricas secundarias (tasa de activación por
+canal de adquisición, retención por cohorte, volumen de
+soporte por categoría, tiempo de resolución por tipo de
+mercado).
+
+La cadencia de reporte que funciona:
+
+- **Diario.** WAT, operaciones, volumen, depósitos, retiros,
+  tickets de soporte. Dashboard del operador.
+- **Semanal.** Retención por cohorte, volumen mercado por
+  mercado, resumen de disputas, ingresos por comisiones.
+  Revisión del equipo del operador.
+- **Mensual.** Revisión estratégica que cubre todos los KPIs,
+  rendimiento del contenido, crecimiento de audiencia,
+  presentaciones regulatorias. Revisión de stakeholders.
+- **Trimestral.** Revisión estratégica completa que incluye
+  posicionamiento competitivo, decisiones de expansión
+  vertical, decisiones de evolución de comisiones y estado de
+  la relación regulatoria. Revisión a nivel de junta /
+  ejecutivo.
+
+Los operadores que no tienen esta cadencia de reportes para el
+mes 6 pasan la segunda mitad del año adivinando métricas que
+deberían conocer con precisión. La configuración de reportes
+se paga muchas veces.
+
+## La transición del año 1 al año 2
+
+Para el mes 11, el operador debería estar planificando la
+estrategia del año 2. La transición del año 1 (lanzamiento +
+activación + retención) al año 2 (expansión + monetización +
+escalado) es un cambio real y vale la pena ser deliberado al
+respecto.
+
+Las prioridades del año 2 que surgen consistentemente:
+
+1. **Expansión vertical.** Agrega una segunda o tercera
+   vertical con la disciplina operativa que el mes 6+
+   demostró que funciona. Comienza estrecho dentro de la
+   nueva vertical y expande desde ahí.
+2. **Expansión entre jurisdicciones.** Agrega una segunda
+   jurisdicción con una capa de cumplimiento específica para
+   esa región. Este es un proyecto de 6–8 semanas por
+   jurisdicción, no un proyecto de una semana, y no debería
+   apresurarse.
+3. **Flujo institucional.** Para el año 2, el venue tiene
+   suficiente volumen para atraer mesas institucionales.
+   Construye el onboarding institucional (rieles de operaciones
+   en bloque, reportes personalizados, gestión dedicada de
+   relaciones). La participación institucional del volumen
+   debe crecer de menos del 5 % en el año 1 a 20–35 % para
+   fines del año 2.
+4. **Profundidad del producto.** El año 1 envía un venue
+   funcional. El año 2 envía uno sofisticado — tipos de orden
+   avanzados, mejores analíticas para traders, mejor gestión
+   de posiciones, profundidad educativa.
+5. **Autoridad de marca.** Para el año 2, el venue debe estar
+   produciendo contenido de liderazgo de pensamiento (notas de
+   investigación, estudios de audiencia, análisis de
+   comportamiento del mercado) que posicionen al operador como
+   una autoridad en su vertical. Esto se compone a lo largo de
+   los años.
+
+La transición del año 2 es lo que determina si el venue se
+estanca a la escala del año 1 o se compone hacia una posición
+duradera. Los operadores que la planifican deliberadamente
+tienen mejor desempeño que los operadores que tratan el año 2
+como "más del año 1".
+
+## Errores comunes después del lanzamiento
+
+Cinco patrones que tienen un desempeño inferior consistente en
+el primer año. Cada uno es solucionable si el operador los ve
+venir.
+
+**Subinvertir en operaciones después del lanzamiento.** Tratar
+el venue como un producto lanzado en lugar de un negocio en
+operación. El multiplicador de 4× mencionado al principio de
+este post es la brecha entre operadores que gestionan
+activamente sus venues y operadores que no lo hacen.
+
+**Listar demasiados mercados demasiado rápido.** Impulsado por
+la intuición de que más mercados significa más ingresos. Lo
+opuesto es cierto; la disciplina de listing produce los venues
+que escalan.
+
+**Cambios agresivos de comisiones.** Ajustar la comisión
+mensualmente o basándose en quejas individuales de traders. La
+señal no es lo suficientemente fuerte; el ruido abruma la
+señal.
+
+**Ignorar las operaciones de resolución.** Tratar la
+resolución como un proceso automatizado en segundo plano que
+no necesita atención. La mayor parte del daño a la reputación
+en esta categoría proviene de fallos de resolución que la
+atención del operador habría prevenido.
+
+**No construir la relación con el regulador.** Esperar hasta
+que el regulador se acerque para empezar a comprometerse. La
+relación tiene que construirse durante el período de calma;
+cuando el ciclo se endurece, es demasiado tarde para empezar.
+
+## Patrones de equipo y contratación durante el primer año
+
+El equipo necesario para operar bien un venue evoluciona a lo
+largo del año, y los operadores que sub-personal en los
+momentos equivocados acumulan deuda operativa silenciosa que
+se vuelve visible solo después de haber dañado el venue.
+
+**Meses 0–3 (post-lanzamiento).** El equipo mínimo viable es
+una persona de producto del lado del operador y una persona de
+creación de mercados a tiempo parcial. El soporte al cliente
+puede subcontratarse a un proveedor generalista inicialmente.
+El proveedor del protocolo absorbe las operaciones de
+infraestructura.
+
+**Meses 4–6.** Agrega una persona dedicada a tiempo completo
+para creación de mercados y trae el soporte al cliente
+internamente (o a un proveedor especializado con experiencia
+en mercados de predicción). El volumen de soporte para el mes
+4 es suficiente para justificar una persona con nombre;
+subcontratar más allá de este punto produce una degradación
+notable de la experiencia del trader.
+
+**Meses 7–9.** Agrega una persona dedicada de operaciones de
+resolución o rotación. Para el mes 7, el volumen de casos
+límite por semana excede lo que la persona de creación de
+mercados puede manejar mientras también crea nuevos mercados.
+El rol de resolution-ops se sienta adyacente al soporte pero
+con autoridad más profunda en decisiones específicas de
+contratos.
+
+**Meses 10–12.** Agrega un enlace regulatorio y un líder de
+contenido / comunicaciones. Estas son las contrataciones
+críticas del año 2 hechas antes de que comience el año 2. Los
+operadores que esperan hasta el año 2 para contratar estos
+roles pasan el primer trimestre del año 2 poniéndose al día en
+relaciones que ya deberían haber estado en su lugar.
+
+El equipo total para un venue funcionando bien en el mes 12 es
+típicamente de 5–7 personas en el lado del operador, más el
+equipo de infraestructura del proveedor del protocolo que el
+operador hereda sin gestionar. Ese es un equipo
+significativamente más pequeño que el equipo de 30–50 personas
+que requeriría un venue desde cero, lo cual es parte de por
+qué el modelo de protocolo licenciado tiene la economía
+operativa que tiene.
+
+## Cómo se ve realmente "operar bien"
+
+Una definición específica: en el mes 12, un venue está
+operando bien si ha sostenido un crecimiento de WAT del 15 %+
+mes a mes durante la segunda mitad del año, una tasa de
+disputa de resolución consistentemente por debajo del 0,3 %,
+volumen de soporte por debajo de 5 tickets por cada 100
+traders activos y el equipo del operador tiene un plan
+documentado del año 2 con el que el negocio más amplio está
+alineado.
+
+Si alcanzas esos números, el venue está en camino a una
+posición duradera y creciente en su categoría. Si no, el
+diagnóstico es cuál de las disciplinas de operación no estaba
+funcionando al nivel que necesitaba estar — y las mejoras
+operativas en el mes 12 son las que se componen a lo largo
+del año 2.
+
+Los operadores que se convierten en las marcas dominantes en
+esta categoría durante los próximos 5 años son los que operan
+sus venues con este tipo de disciplina operativa desde el día
+31 en adelante. El lanzamiento es necesario pero no
+suficiente. La operación es lo que se compone.
+
+<KuestCTA
+  headline="¿Quieres una revisión personalizada de operar-el-venue de tus operaciones?"
+  body="Recorreremos tus KPIs, tu cadencia de creación de mercados, tus curvas de retención y tu plan del año 2 — y te daremos una lista específica de mejoras operativas clasificadas por impacto esperado."
+  primary={{ href: "/launch", label: "Abrir el dashboard del operador" }}
+  secondary={{ href: "/enterprise", label: "Reservar una revisión de operaciones" }}
+/>
