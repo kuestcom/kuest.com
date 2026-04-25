@@ -1,0 +1,55 @@
+---
+title: "Why shared liquidity decides who wins the next prediction-market wave"
+description: "Cold-start is the silent killer of new market venues. Here's how shared order flow changes the unit economics on day one."
+publishedAt: 2026-04-18
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+tags: ["liquidity", "protocol"]
+---
+
+Most prediction-market launches die quietly in their first month — not from a
+bad product, but from an empty order book. New venues need depth before they
+can attract traders, and they need traders before they can build depth. That
+loop is brutal.
+
+<Stat
+  value="68%"
+  label="of new prediction-market venues fail to reach $100k weekly volume in their first 90 days"
+  sourceHref="https://kuest.com/research/cold-start"
+  sourceLabel="Kuest research, Q1 2026"
+/>
+
+Shared liquidity solves the cold-start problem by routing real Polymarket
+order flow through every market that mirrors a Polymarket question. The
+moment your platform launches, traders see live spreads, deep books, and
+recent fills.
+
+## What changes when liquidity is shared
+
+<Comparison
+  columns={["Metric", "Cold-start", "Shared liquidity"]}
+  rows={[
+    ["Time-to-first-trade", "3–14 days", "Minutes"],
+    ["Spread on Day 1", "200–500 bps", "20–60 bps"],
+    ["Order-book depth", "$0–$500", "$50k–$500k"],
+    ["Trader retention week 2", "12%", "47%"],
+  ]}
+/>
+
+The asymmetry is enormous. A platform with shared liquidity acquires its
+first thousand traders at 4–6× the conversion rate of a cold-start venue,
+because the perceived risk to the trader is much lower.
+
+## Why this matters for operators
+
+If you operate a community of any size — Discord, X, newsletter, Twitch —
+you can launch a branded venue and have it feel established from minute one.
+That changes the math on whether a launch is worth your time.
+
+<KuestCTA
+  headline="See what your venue would look like with shared liquidity"
+  body="A demo deploy in your brand, with real order flow, takes 15 minutes."
+  primary={{ href: "/launch", label: "Launch demo" }}
+  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+/>

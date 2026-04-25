@@ -1,0 +1,59 @@
+---
+title: "Trading fees, explained: how to set yours without scaring traders away"
+description: "A practical guide to choosing a fee rate for your prediction market — what we see working, what kills volume, and how to evolve it as you grow."
+publishedAt: 2026-04-08
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+tags: ["operators", "playbook"]
+---
+
+A trading fee is the most direct revenue lever you have as a market
+operator. It's also the easiest one to misprice. Set it too high and you
+choke volume; set it too low and you leave real money on the table — money
+your audience would have happily paid.
+
+This is a practical guide to picking the right number.
+
+## What range actually works
+
+<Callout type="tip" title="Rule of thumb">
+  Most successful Kuest operators sit between **0.8% and 2.5%** in their
+  first 6 months. Below 0.8% you're competing with Polymarket on price you
+  can't sustain; above 2.5% you start losing the bottom of the order book.
+</Callout>
+
+The sweet spot depends on your audience type:
+
+- **Crypto-native communities** — comfortable with 1.5–2.5% fees because
+  they expect on-chain costs. Bots will avoid you above 2%.
+- **Mainstream sports / pop culture** — 1–1.8% is the cap before retention
+  collapses. Casual traders compare fees to free sportsbook bets, not other
+  on-chain venues.
+- **Institutional / professional** — 0.5–1% fees, but with much larger
+  ticket sizes. The volume math beats the per-trade margin.
+
+## The three fee mistakes we see most often
+
+1. **Pricing for revenue, not for volume.** A 3% fee on $10k weekly volume
+   yields $300. A 1% fee on $200k weekly volume yields $2,000. The lower
+   fee is almost always the right call early.
+2. **Changing fees too often.** Traders price your fee into their behavior.
+   Two changes in a month destroys trust. Pick a rate and hold it for at
+   least 90 days.
+3. **Forgetting maker/taker dynamics.** When you can, give makers a 0.2–0.4%
+   discount. Their resting orders are what makes your book look alive.
+
+## How to evolve the fee as you grow
+
+As your venue scales past $1M monthly volume, you have room to introduce
+tiers — institutional accounts at lower fees, retail at standard, bots
+metered separately. But that complexity is overhead. Don't add it until
+you're past the cold-start phase and the simpler model is leaving real
+money on the table.
+
+<KuestCTA
+  headline="Configure your fee in the launch wizard"
+  body="The default starts at 1.2%. You can change it in one click and it goes live on the next trade."
+  primary={{ href: "/launch", label: "Open the wizard" }}
+/>

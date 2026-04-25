@@ -4,6 +4,7 @@ export default function DockMenuControl({
   homeHref,
   enterpriseHref,
   protocolHref,
+  blogHref,
   demoHref,
   demoLabel,
   active,
@@ -12,18 +13,21 @@ export default function DockMenuControl({
   homeLabel,
   enterpriseLabel,
   protocolLabel,
+  blogLabel,
 }: {
   homeHref: string
   enterpriseHref: string
   protocolHref: string
+  blogHref?: string
   demoHref?: string
   demoLabel?: string
-  active: 'home' | 'enterprise' | 'protocol'
+  active: 'home' | 'enterprise' | 'protocol' | 'blog'
   openLabel: string
   menuAriaLabel: string
   homeLabel: string
   enterpriseLabel: string
   protocolLabel: string
+  blogLabel?: string
 }) {
   return (
     <div className="site-language-control site-nav-control" id="dockSiteNavControl">
@@ -106,6 +110,25 @@ export default function DockMenuControl({
                 {protocolLabel}
               </Link>
             )}
+        {blogHref && blogLabel
+          ? (
+              active === 'blog'
+                ? (
+                    <span
+                      className="site-language-option site-nav-option is-disabled"
+                      role="menuitem"
+                      aria-disabled="true"
+                    >
+                      {blogLabel}
+                    </span>
+                  )
+                : (
+                    <Link href={blogHref} className="site-language-option site-nav-option" role="menuitem">
+                      {blogLabel}
+                    </Link>
+                  )
+            )
+          : null}
       </div>
     </div>
   )

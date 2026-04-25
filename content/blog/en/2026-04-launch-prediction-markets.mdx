@@ -1,0 +1,91 @@
+---
+title: "Launch your own prediction market in 15 minutes"
+description: "A walkthrough of the Kuest stack — audited contracts, shared liquidity from day one, and your fee on every trade."
+publishedAt: 2026-04-25
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+tags: ["protocol", "launch"]
+---
+
+export const comparisonColumns = ["Capability", "Kuest", "Build in-house"]
+export const comparisonRows = [
+  ["Audited smart contracts", "Day one", "6–12 months"],
+  ["CLOB + relayer + matching engine", "Included", "Custom build"],
+  ["Shared liquidity at launch", "Yes", "Cold start"],
+  ["Engineering team required", "0", "5–8 engineers"],
+  ["Time to live platform", "Days", "Multiple quarters"],
+]
+
+Prediction markets are no longer fringe. Kalshi and Polymarket together
+clear over $18B in monthly trading volume — and roughly two-thirds of that
+demand sits outside the US, on platforms users don't control.
+
+<Stat
+  value="$18.3B"
+  label="Combined monthly volume, Kalshi + Polymarket"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+The infrastructure question is being decided right now: who operates the
+local platforms users in Brazil, Germany, the UK, and Singapore actually
+trade on? This post walks through the Kuest stack — what's running under
+the hood, why it matters for institutions, and how a deploy works end to
+end.
+
+## What's actually under the hood
+
+The contracts are derived from Polymarket's CLOB architecture, audited by
+OpenZeppelin, and adapted for shared liquidity across multiple operator
+frontends. Settlement uses UMA-based resolution rails. The matching engine
+runs on Polygon mainnet — the same stack that's processed billions in
+verified volume.
+
+<Callout type="info" title="No internal blockchain team needed">
+  Smart contracts, CLOB engine, relayer, settlement, and gas are fully
+  managed on the Kuest side. Your team provides brand assets and the event
+  scope; we handle the rest.
+</Callout>
+
+## How a typical institutional deploy works
+
+Three steps. Days, not quarters.
+
+1. **Define your market scope and fee model.** Pick the event categories
+   that matter to your audience — macro, rates, politics, crypto, sports.
+   Set your trading fee. Configure the brand surface.
+2. **We deploy the full technical stack.** Smart contracts, CLOB, settlement
+   rails, wallet infrastructure, liquidity — all running before your team
+   finishes onboarding.
+3. **Your platform earns a fee on every trade.** No revenue share, no
+   intermediary, no settlement lag.
+
+<MarketEmbed
+  title="Will the Fed cut rates before July?"
+  cat="Macro"
+  cover="/assets/images/fed-rate-move.png"
+  pct={42}
+/>
+
+## How Kuest compares to building from scratch
+
+<Comparison columns={comparisonColumns} rows={comparisonRows} />
+
+The real lock-in isn't the tech — it's the liquidity. Mirroring live
+Polymarket markets means your platform launches with real depth and real
+order flow on day one.
+
+## What ships next
+
+We're rolling out the protocol pitch deck, an SDK for institutional market
+makers, and a managed-deploy path for regulated brokerages. If your team is
+evaluating prediction-market infrastructure, the demo and the launch wizard
+are the two fastest ways to understand whether this fits.
+
+<KuestCTA
+  headline="Ready to launch your own market?"
+  body="OpenZeppelin-audited contracts, shared liquidity from day one, your fee on every trade."
+  primary={{ href: "/launch", label: "Launch now" }}
+  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+/>
