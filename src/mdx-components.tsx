@@ -8,24 +8,29 @@ import MarketEmbed from '@/components/blog/blocks/MarketEmbed'
 import Stat from '@/components/blog/blocks/Stat'
 import TwoColumn from '@/components/blog/blocks/TwoColumn'
 import { Link } from '@/i18n/navigation'
+import { toSafeHref } from '@/lib/url-safety'
 
 export const mdxComponents: MDXComponents = {
   a: ({ href, children, ...rest }) => {
     if (typeof href !== 'string') {
       return <a {...rest}>{children}</a>
     }
+    const safeHref = toSafeHref(href)
+    if (!safeHref) {
+      return <>{children}</>
+    }
     const isExternal
-      = /^https?:\/\//.test(href)
-        || href.startsWith('mailto:')
-        || href.startsWith('tel:')
+      = /^https?:\/\//.test(safeHref)
+        || safeHref.startsWith('mailto:')
+        || safeHref.startsWith('tel:')
     if (isExternal) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+        <a href={safeHref} target="_blank" rel="noopener noreferrer" {...rest}>
           {children}
         </a>
       )
     }
-    if (href.startsWith('/')) {
+    if (safeHref.startsWith('/')) {
       // Static assets, API routes, and any URL with a file extension
       // (sitemap.xml, favicon.ico, /assets/foo.png, etc.) must NOT be
       // routed through the locale-aware Link — that would prefix the
@@ -33,19 +38,19 @@ export const mdxComponents: MDXComponents = {
       // get the Link treatment so /de posts linking to /blog/foo
       // resolve to /de/blog/foo.
       const isStaticOrApi
-        = href.startsWith('/api/')
-          || href.startsWith('/_next/')
-          || /\.[a-z0-9]+(?:[?#]|$)/i.test(href)
+        = safeHref.startsWith('/api/')
+          || safeHref.startsWith('/_next/')
+          || /\.[a-z0-9]+(?:[?#]|$)/i.test(safeHref)
       if (isStaticOrApi) {
-        return <a href={href} {...rest}>{children}</a>
+        return <a href={safeHref} {...rest}>{children}</a>
       }
       return (
-        <Link href={href as never} {...rest}>
+        <Link href={safeHref as never} {...rest}>
           {children}
         </Link>
       )
     }
-    return <a href={href} {...rest}>{children}</a>
+    return <a href={safeHref} {...rest}>{children}</a>
   },
   img: ({ src, alt, width, height }) => {
     const resolvedSrc = typeof src === 'string' ? src : ''
