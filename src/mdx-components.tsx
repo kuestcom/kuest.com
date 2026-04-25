@@ -7,19 +7,35 @@ import KuestCTA from '@/components/blog/blocks/KuestCTA'
 import MarketEmbed from '@/components/blog/blocks/MarketEmbed'
 import Stat from '@/components/blog/blocks/Stat'
 import TwoColumn from '@/components/blog/blocks/TwoColumn'
+import { Link } from '@/i18n/navigation'
 
 export const mdxComponents: MDXComponents = {
   a: ({ href, children, ...rest }) => {
-    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href)
-    return (
-      <a
-        href={href}
-        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        {...rest}
-      >
-        {children}
-      </a>
-    )
+    if (typeof href !== 'string') {
+      return <a {...rest}>{children}</a>
+    }
+    const isExternal
+      = /^https?:\/\//.test(href)
+        || href.startsWith('mailto:')
+        || href.startsWith('tel:')
+    if (isExternal) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+          {children}
+        </a>
+      )
+    }
+    if (href.startsWith('/')) {
+      // Internal link — route through the locale-aware Link so a /de
+      // post linking to /blog/foo navigates to /de/blog/foo, not to the
+      // default-locale page.
+      return (
+        <Link href={href as never} {...rest}>
+          {children}
+        </Link>
+      )
+    }
+    return <a href={href} {...rest}>{children}</a>
   },
   img: ({ src, alt, width, height }) => {
     const resolvedSrc = typeof src === 'string' ? src : ''

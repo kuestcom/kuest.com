@@ -9,21 +9,26 @@ type PageToken = number | 'gap-left' | 'gap-right'
  *   - When total ≤ 7, return [1..total].
  *   - Otherwise: first, optional left gap, neighbours of current,
  *     optional right gap, last.
+ *
+ * The gaps are derived from `start`/`end` so that any skipped page
+ * always renders an ellipsis — including the boundary case where a
+ * single page (e.g. page 2) is hidden between `1` and the neighbour
+ * window.
  */
 function buildPageList(current: number, total: number): PageToken[] {
   if (total <= 7) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
   const tokens: PageToken[] = [1]
-  if (current > 4) {
-    tokens.push('gap-left')
-  }
   const start = Math.max(2, current - 1)
   const end = Math.min(total - 1, current + 1)
+  if (start > 2) {
+    tokens.push('gap-left')
+  }
   for (let p = start; p <= end; p++) {
     tokens.push(p)
   }
-  if (current < total - 3) {
+  if (end < total - 1) {
     tokens.push('gap-right')
   }
   tokens.push(total)
