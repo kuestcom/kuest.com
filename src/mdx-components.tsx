@@ -26,9 +26,19 @@ export const mdxComponents: MDXComponents = {
       )
     }
     if (href.startsWith('/')) {
-      // Internal link — route through the locale-aware Link so a /de
-      // post linking to /blog/foo navigates to /de/blog/foo, not to the
-      // default-locale page.
+      // Static assets, API routes, and any URL with a file extension
+      // (sitemap.xml, favicon.ico, /assets/foo.png, etc.) must NOT be
+      // routed through the locale-aware Link — that would prefix the
+      // locale and break the resource. Only locale-bound page paths
+      // get the Link treatment so /de posts linking to /blog/foo
+      // resolve to /de/blog/foo.
+      const isStaticOrApi
+        = href.startsWith('/api/')
+          || href.startsWith('/_next/')
+          || /\.[a-z0-9]+(?:[?#]|$)/i.test(href)
+      if (isStaticOrApi) {
+        return <a href={href} {...rest}>{children}</a>
+      }
       return (
         <Link href={href as never} {...rest}>
           {children}
