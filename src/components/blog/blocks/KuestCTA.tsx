@@ -11,7 +11,7 @@ function isStaticOrApiPath(path: string): boolean {
   return (
     path.startsWith('/api/')
     || path.startsWith('/_next/')
-    || /\.[a-z0-9]+(?:[?#]|$)/i.test(path)
+    || /\/[^/?#]+\.(?:avif|gif|ico|jpe?g|png|svg|webp|css|js|map|txt|xml|json|pdf|woff2?|ttf|eot)(?:[?#]|$)/i.test(path)
   )
 }
 
