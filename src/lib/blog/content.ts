@@ -112,6 +112,28 @@ function slugify(value: string): string {
     .replace(/-+$/g, '')
 }
 
+function decodeSlugSegment(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  }
+  catch {
+    return value
+  }
+}
+
+function normalizeSlugForLookup(value: string): string {
+  return decodeSlugSegment(value)
+    .trim()
+    .toLowerCase()
+    .normalize('NFKC')
+}
+
+function normalizeAsciiSlugForLookup(value: string): string {
+  return normalizeSlugForLookup(value)
+    .normalize('NFKD')
+    .replace(/\p{Mark}+/gu, '')
+}
+
 function buildLocalizedSlug(frontmatter: BlogFrontmatter, fallback: string): string {
   const base = frontmatter.slug?.trim() || frontmatter.title
   return slugify(base) || slugify(fallback) || fallback
@@ -193,8 +215,20 @@ function isPublished(post: { frontmatter: BlogFrontmatter }): boolean {
 
 export function getPost(slug: string, locale: SupportedLocale): BlogPost | null {
   const localePosts = loadAllPosts().filter(entry => entry.locale === locale)
-  const post = localePosts.find(entry => entry.slug === slug)
-    ?? localePosts.find(entry => entry.contentSlug === slug)
+  const decodedSlug = decodeSlugSegment(slug)
+  const normalizedSlug = normalizeSlugForLookup(slug)
+  const normalizedAsciiSlug = normalizeAsciiSlugForLookup(slug)
+
+  const post = localePosts.find(entry => entry.slug === slug || entry.slug === decodedSlug)
+    ?? localePosts.find(entry => entry.contentSlug === slug || entry.contentSlug === decodedSlug)
+    ?? localePosts.find(
+      entry => normalizeSlugForLookup(entry.slug) === normalizedSlug
+        || normalizeSlugForLookup(entry.contentSlug) === normalizedSlug,
+    )
+    ?? localePosts.find(
+      entry => normalizeAsciiSlugForLookup(entry.slug) === normalizedAsciiSlug
+        || normalizeAsciiSlugForLookup(entry.contentSlug) === normalizedAsciiSlug,
+    )
 
   if (!post || !isPublished(post)) {
     return null
