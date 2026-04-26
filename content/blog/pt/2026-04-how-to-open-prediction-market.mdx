@@ -244,28 +244,22 @@ destes sem forte razão têm desempenho inferior.
 ## Fase 5: Overlay de conformidade e KYC
 
 A configuração de conformidade é onde a maioria dos operadores
-sub-orçamenta tempo. A boa notícia é que o overlay de
-conformidade do protocolo lida com a mecânica central; a
-configuração específica da jurisdição é o overlay do operador
-em cima.
+sub-orçamenta tempo. A boa notícia é que o protocolo lida
+com a mecânica central de trading; a política de conformidade
+por jurisdição fica na camada do operador.
 
 Para um lançamento de jurisdição única, a configuração é
 tipicamente:
 
 - **Provedor de verificação de identidade.** O protocolo se
-  integra com os principais provedores (Onfido, Persona,
-  Sumsub, opções locais por jurisdição). Escolha aquele que
-  sua audiência espera ver.
+  onde for exigido, o operador conecta seu próprio provedor
+  de KYC/KYB e regras de elegibilidade.
 - **Requisitos de documento.** Cada jurisdição tem um conjunto
-  de documentos padrão diferente. O Brasil tipicamente exige
-  CPF + identificação com foto + comprovante de endereço. A
-  UE exige um passaporte ou identidade nacional + verificação
-  de vivacidade por selfie. Configure uma vez por jurisdição.
-- **Hooks de reporting.** Para jurisdições reguladas, cada
-  trade emite um evento estruturado que alimenta sua
-  ferramenta de conformidade. Configure a cadência e o
-  destino do relatório (tipicamente um data warehouse ou uma
-  ferramenta de reporting voltada para regulador).
+  de documentos diferente. Configure sua política de
+  onboarding por jurisdição.
+- **Fluxo de reporting.** Defina como dados de trade e
+  atividade serão exportados para suas ferramentas internas de
+  conformidade.
 - **Restrições geográficas.** Configure quais jurisdições
   podem acessar a venue. A maioria dos operadores executa
   acesso permissivo com bloqueios explícitos em jurisdições
@@ -273,10 +267,10 @@ tipicamente:
   operadores não-EUA, mais um pequeno conjunto de jurisdições
   de alto risco).
 
-Para lançamentos multi-jurisdicionais, toda essa config se
-repete por jurisdição. Os templates do protocolo tornam isso
-configuração em vez de engenharia, mas ainda são algumas
-horas de configuração cuidadosa por região.
+Para lançamentos multi-jurisdicionais, essa configuração se
+repete por jurisdição. É mais trabalho operacional do que de
+engenharia, mas ainda exige algumas horas de configuração
+cuidadosa por região.
 
 ## Fase 6: Configuração de liquidez
 
@@ -569,8 +563,8 @@ Concentre-se, prove as unit economics, depois expanda.
 
 **Sub-orçamentar o tempo de configuração de conformidade.**
 O deploy técnico leva minutos. O overlay de conformidade
-(provedores de KYC, hooks de reporting, requisitos de
-documento específicos da jurisdição) leva várias horas por
+(checagens de elegibilidade, fluxo de reporting e requisitos
+de documento específicos da jurisdição) leva várias horas por
 jurisdição. Operadores que não orçamentam para isso descobrem
 no dia do lançamento.
 
@@ -669,7 +663,7 @@ fundação de uma venue que escala.
 
 <KuestCTA
   headline="Pronto para abrir sua própria venue de mercado de previsão?"
-  body="O assistente de lançamento o leva por cada etapa deste playbook em menos de 15 minutos. Provisionaremos seu escopo de operador, faremos o deploy de contratos sob sua marca, e lhe daremos o dashboard de onde rodar os primeiros 30 dias."
+  body="O assistente de lançamento leva você por cada etapa deste playbook em menos de 15 minutos. Vamos configurar seu operador, fazer o deploy dos contratos sob sua marca e entregar o dashboard para rodar os primeiros 30 dias."
   primary={{ href: "/launch", label: "Abrir o assistente de lançamento" }}
   secondary={{ href: "/enterprise", label: "Agendar uma chamada de estratégia de lançamento" }}
 />

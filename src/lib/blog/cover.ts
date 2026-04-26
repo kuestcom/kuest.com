@@ -11,7 +11,7 @@ export function getPostCoverSrc(post: BlogPost | BlogPostSummary): string {
     return cover
   }
   if (cover.startsWith('./')) {
-    return `/assets/blog/${post.slug}/${cover.slice(2)}`
+    return `/blog-assets/${post.contentSlug}/${cover.slice(2)}`
   }
-  return `/assets/blog/${post.slug}/${cover}`
+  return `/blog-assets/${post.contentSlug}/${cover}`
 }

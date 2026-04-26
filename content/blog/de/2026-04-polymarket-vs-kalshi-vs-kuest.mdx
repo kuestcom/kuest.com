@@ -193,9 +193,8 @@ Die Architektur hat vier Schichten und der Betreiber erbt alle vier:
   wichtig ist, im
   <a href="/blog/2026-04-shared-liquidity-day-one">Beitrag zur geteilten Liquidität</a>.
 - **Verwaltete Auflösung.** UMA-basiertes Optimistic Oracle mit
-  betreiberisoliertem Auflösungs-Scope, sodass eine fehlerhafte
-  Auflösung in den Märkten eines Betreibers die eines anderen nicht
-  beeinflussen kann.
+  expliziten Marktregeln, Source-Metadaten und öffentlichem
+  Dispute-Prozess.
 
 Wofür Kuest gemacht ist:
 
@@ -206,7 +205,7 @@ Wofür Kuest gemacht ist:
   Mio. USD und 8 bis 14 Monate dafür ausgeben möchte, Infrastruktur
   zu bauen, die er nicht besitzen muss.
 - **Multi-Jurisdiktions-Deployments.** Ein einzelner Betreiber kann
-  Overlays pro Jurisdiktion (KYC-Anbieter, Gebührentemplates,
+  Overlays pro Jurisdiktion (Access-Policy, Gebühren-Setup und
   Sprachpakete) bereitstellen, ohne mehrere Builds zu betreiben.
 - **Long-Tail-Märkte im großen Maßstab.** Die Protokollebene kann
   den Long Tail von Märkten hosten, den eine einzelne regulierte
@@ -259,9 +258,9 @@ Ein granularerer Vergleich über die Dimensionen, die Betreibern
   columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
     ["Settlement-Asset", "USDC On-Chain", "USD Bankenverwahrung", "USDC On-Chain (Betreiber kann Fiat überlagern)"],
-    ["Auflösungsmodell", "UMA Optimistic Oracle", "Zentralisiertes Marktintegritätsteam", "UMA-basiert, betreiberisolierter Scope"],
+    ["Auflösungsmodell", "UMA Optimistic Oracle", "Zentralisiertes Marktintegritätsteam", "UMA-basiert, mit expliziten Regeln und öffentlichem Dispute-Prozess"],
     ["Geografische Verfügbarkeit", "Global außer USA", "Nur USA", "Pro Betreiber konfigurierbar"],
-    ["KYC-Anforderung", "Keine (nur Wallet)", "Vollständiges US-reguliertes KYC", "Pro Betreiber / Jurisdiktion konfigurierbar"],
+    ["KYC-Anforderung", "Keine (nur Wallet)", "Vollständiges US-reguliertes KYC", "Vom Betreiber definiert (wallet-only oder externe KYC-Schicht)"],
     ["Markterstellung", "Permissionless (Admin-Kuration)", "Vorab durch Börse genehmigt", "Vom Betreiber innerhalb der Protokollgrenzen verwaltet"],
     ["Verwahrungsmodell", "Self-Custody", "Regulierter Bankpartner", "Konfigurierbar: selbst oder reguliert"],
     ["Orderbuch-Tiefe beim Start", "Bestehend (etablierte Venue)", "Bestehend (etablierte Venue)", "Geteilt (Day-1-Tiefe für neue Betreiber)"],

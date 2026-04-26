@@ -10,10 +10,6 @@ const ICONS: Record<CalloutType, typeof InfoIcon> = {
   error: XCircleIcon,
 }
 
-function isCalloutType(value: unknown): value is CalloutType {
-  return typeof value === 'string' && Object.hasOwn(ICONS, value)
-}
-
 export default function Callout({
   type = 'info',
   title,
@@ -23,11 +19,9 @@ export default function Callout({
   title?: string
   children: ReactNode
 }) {
-  const resolvedType = isCalloutType(type) ? type : 'info'
-  const Icon = ICONS[resolvedType]
-
+  const Icon = ICONS[type]
   return (
-    <aside className="blog-callout" data-type={resolvedType}>
+    <aside className="blog-callout" data-type={type}>
       <span className="blog-callout-icon" aria-hidden="true">
         <Icon size={15} strokeWidth={2.25} />
       </span>

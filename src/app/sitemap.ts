@@ -27,11 +27,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  const blogEntries = listPostSitemapEntries().map(({ slug, locales, lastModified }) => {
+  const blogEntries = listPostSitemapEntries().map(({ contentSlug, locales, localizedSlugs, lastModified }) => {
     const localeUrls = Object.fromEntries(
       locales.map(locale => [
         locale,
-        new URL(getPathname({ locale, href: `/blog/${slug}` }), siteOrigin).toString(),
+        new URL(
+          getPathname({ locale, href: `/blog/${localizedSlugs[locale] ?? contentSlug}` }),
+          siteOrigin,
+        ).toString(),
       ]),
     )
     const defaultUrl = localeUrls[DEFAULT_LOCALE] ?? Object.values(localeUrls)[0]

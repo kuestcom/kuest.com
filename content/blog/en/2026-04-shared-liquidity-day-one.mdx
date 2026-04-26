@@ -225,7 +225,7 @@ launch. A protocol that pools liquidity gets denser as more
 operators launch, because every new operator contributes order
 flow to the shared book. This is the structural reason we
 designed Kuest's liquidity layer to be shared rather than
-operator-isolated.
+operator-siloed.
 
 ## How the shared book is implemented
 
@@ -241,9 +241,9 @@ through; their economics are protocol-level, not operator-level.
 
 This architecture has two important properties:
 
-- **Operator-isolated risk.** A faulty market on operator A's
-  scope cannot consume liquidity from operator B's expected book
-  depth. The shared liquidity is not a shared exposure.
+- **Market-level risk boundaries.** Exposure follows each
+  market's own contracts and rules. Shared liquidity does not
+  imply operators share a single risk book.
 - **Operator-aligned incentives.** Operators benefit from each
   other's volume because the book gets denser. There's no
   zero-sum between operator brands at the protocol level.

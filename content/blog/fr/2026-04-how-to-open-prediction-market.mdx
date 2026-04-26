@@ -253,28 +253,25 @@ raison forte sous-performent.
 
 La configuration de la conformité est l'endroit où la plupart
 des opérateurs sous-budgètent le temps. La bonne nouvelle est
-que l'overlay de conformité du protocole gère la mécanique
-centrale ; la configuration spécifique à la juridiction est
-l'overlay de l'opérateur par-dessus.
+que le protocole gère la mécanique de trading centrale ; la
+politique de conformité spécifique à la juridiction est
+configurée par l'opérateur.
 
 Pour un lancement mono-juridictionnel, la configuration est
 typiquement :
 
 - **Fournisseur de vérification d'identité.** Le protocole
-  s'intègre avec les principaux fournisseurs (Onfido, Persona,
-  Sumsub, options locales par juridiction). Choisissez celui
-  que votre audience s'attend à voir.
+  s'intègre là où nécessaire ; les opérateurs connectent leur
+  propre fournisseur KYC/KYB et leurs contrôles d'éligibilité.
 - **Exigences de documents.** Chaque juridiction a un
   ensemble de documents par défaut différent. Le Brésil exige
   typiquement CPF + pièce d'identité avec photo + justificatif
   de domicile. L'UE exige un passeport ou une pièce d'identité
   nationale + vérification de vivacité par selfie. Configurez
-  une fois par juridiction.
-- **Hooks de reporting.** Pour les juridictions réglementées,
-  chaque trade émet un événement structuré qui alimente votre
-  outil de conformité. Configurez la cadence et la destination
-  du rapport (typiquement un data warehouse ou un outil de
-  reporting orienté régulateur).
+  votre politique d'onboarding par juridiction.
+- **Workflow de reporting.** Définissez comment les données de
+  trading et d'activité sont exportées vers vos outils internes
+  de conformité et à quelle cadence elles sont revues.
 - **Restrictions géographiques.** Configurez quelles
   juridictions peuvent accéder à la venue. La plupart des
   opérateurs exécutent un accès permissif avec des blocages
@@ -590,8 +587,8 @@ Concentrez-vous, prouvez les unit economics, puis étendez.
 
 **Sous-budgéter le temps de configuration de la conformité.**
 Le déploiement technique prend des minutes. L'overlay de
-conformité (fournisseurs KYC, hooks de reporting, exigences de
-documents spécifiques à la juridiction) prend plusieurs heures
+conformité (stack KYC/KYB, workflow de reporting, exigences de
+documents propres à chaque juridiction) prend plusieurs heures
 par juridiction. Les opérateurs qui ne budgètent pas pour cela
 le découvrent le jour du lancement.
 
@@ -694,7 +691,7 @@ scale.
 
 <KuestCTA
   headline="Prêt à ouvrir votre propre venue de marché de prédiction ?"
-  body="L'assistant de lancement vous guide à travers chaque étape de ce playbook en moins de 15 minutes. Nous provisionnerons votre périmètre d'opérateur, déploierons des contrats sous votre marque, et vous donnerons le dashboard depuis lequel exécuter les 30 premiers jours."
+  body="L'assistant de lancement vous guide à travers chaque étape de ce playbook en moins de 15 minutes. Nous configurons votre profil opérateur, déployons les contrats sous votre marque, et vous donnons le dashboard pour piloter les 30 premiers jours."
   primary={{ href: "/launch", label: "Ouvrir l'assistant de lancement" }}
   secondary={{ href: "/enterprise", label: "Réserver un appel de stratégie de lancement" }}
 />

@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import BlogPostFooter from '@/components/blog/BlogPostFooter'
 import BlogPostHero from '@/components/blog/BlogPostHero'
-import LocalizedMdxContent from '@/components/blog/LocalizedMdxContent'
 import MarketingDockNav from '@/components/MarketingDockNav'
 import MarketingPageRuntime from '@/components/MarketingPageRuntime'
 import SiteFooter from '@/components/SiteFooter'
@@ -15,9 +14,8 @@ import { getPost, listPosts, listPostStaticParams } from '@/lib/blog/content'
 import { getPostCoverSrc } from '@/lib/blog/cover'
 import { CONTACT_HREF } from '@/lib/constants'
 import { resolveSiteUrl } from '@/lib/site-url'
-import { createLocalizedMdxComponents } from '@/mdx-components'
 
-export const dynamicParams = false
+export const dynamicParams = true
 
 export async function generateStaticParams() {
   return listPostStaticParams()
@@ -36,13 +34,17 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/blog/[sl
   }
 
   const siteOrigin = resolveSiteUrl(process.env)
-  const canonical = new URL(getPathname({ href: `/blog/${slug}`, locale }), siteOrigin)
+  const canonicalPath = `/blog/${post.slug}`
+  const canonical = new URL(getPathname({ href: canonicalPath, locale }), siteOrigin)
   const ogImage = new URL(getPostCoverSrc(post), siteOrigin)
 
   const languages = Object.fromEntries(
     post.availableLocales.map(l => [
       l,
-      new URL(getPathname({ href: `/blog/${slug}`, locale: l }), siteOrigin).toString(),
+      new URL(
+        getPathname({ href: `/blog/${post.localizedSlugs[l] ?? post.slug}`, locale: l }),
+        siteOrigin,
+      ).toString(),
     ]),
   )
 
@@ -93,16 +95,18 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
   const siteOrigin = resolveSiteUrl(process.env)
   const coverSrc = getPostCoverSrc(post)
   const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
+  const localizedPathByLocale = Object.fromEntries(
+    post.availableLocales.map(l => [l, `/blog/${post.localizedSlugs[l] ?? post.slug}`]),
+  )
 
-  const { default: PostContent } = await import(`@content/blog/${locale}/${slug}.mdx`)
-  const mdxComponents = createLocalizedMdxComponents(locale)
+  const { default: PostContent } = await import(`@content/blog/${locale}/${post.contentSlug}.mdx`)
 
   const related = listPosts(locale).filter(p => p.slug !== post.slug).slice(0, 2)
   const relatedDateLabels = Object.fromEntries(
     related.map(p => [p.slug, dateFormatter.format(p.frontmatter.publishedAt)]),
   )
 
-  const postUrl = new URL(getPathname({ href: `/blog/${slug}`, locale }), siteOrigin).toString()
+  const postUrl = new URL(getPathname({ href: `/blog/${post.slug}`, locale }), siteOrigin).toString()
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -130,19 +134,25 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
     'keywords': post.frontmatter.tags.join(', '),
     'isAccessibleForFree': true,
   }
+  const safeJsonLd = JSON
+    .stringify(jsonLd)
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
 
   return (
     <>
       <Script
         id={`blog-jsonld-${post.slug}`}
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
       <MarketingDockNav
         locale={locale}
         active="blog"
-        languagePath={`/blog/${slug}`}
+        languagePath={`/blog/${post.slug}`}
+        languagePathByLocale={localizedPathByLocale}
         availableLocales={post.availableLocales}
         languageFallbackPath="/blog"
         ctaHref={CONTACT_HREF}
@@ -159,11 +169,7 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
         />
 
         <article className="blog-prose blog-post-article">
-          <LocalizedMdxContent
-            Content={PostContent}
-            components={mdxComponents}
-            locale={locale}
-          />
+          <PostContent />
         </article>
 
         <BlogPostFooter

@@ -177,8 +177,8 @@ The architecture has four layers and the operator inherits all four:
   see real Day-1 depth from the moment they launch. We covered why
   this matters in <a href="/blog/2026-04-shared-liquidity-day-one">the shared-liquidity post</a>.
 - **Managed resolution.** UMA-based optimistic oracle with
-  operator-isolated resolution scopes, so a faulty resolution on
-  one operator's markets cannot affect another's.
+  explicit market rules, source metadata, and a public dispute
+  process.
 
 What Kuest is for:
 
@@ -189,7 +189,7 @@ What Kuest is for:
   $3.4M–$7.2M and 8–14 months building infrastructure they don't
   need to own.
 - **Multi-jurisdiction deployments.** A single operator can deploy
-  per-jurisdiction overlays (KYC providers, fee templates, language
+  per-jurisdiction overlays (access policy, fee setup, language
   bundles) without running multiple builds.
 - **Long-tail markets at scale.** The protocol layer can host the
   long tail of markets that a single regulated venue can't approve
@@ -239,9 +239,9 @@ care about:
   columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
     ["Settlement asset", "USDC on-chain", "USD bank custody", "USDC on-chain (operator may layer fiat)"],
-    ["Resolution model", "UMA Optimistic Oracle", "Centralised market-integrity team", "UMA-based, operator-isolated scope"],
+    ["Resolution model", "UMA Optimistic Oracle", "Centralised market-integrity team", "UMA-based with explicit rules and public dispute process"],
     ["Geographic availability", "Global except US", "US only", "Configurable per operator"],
-    ["KYC requirement", "None (wallet-only)", "Full US-regulated KYC", "Configurable per operator / jurisdiction"],
+    ["KYC requirement", "None (wallet-only)", "Full US-regulated KYC", "Operator-defined (wallet-only or external KYC layer)"],
     ["Market creation", "Permissionless (admin curation)", "Pre-approved by exchange", "Operator-managed within protocol limits"],
     ["Custody model", "Self-custody", "Regulated banking partner", "Configurable: self or regulated"],
     ["Order-book depth on launch", "Existing (mature venue)", "Existing (mature venue)", "Shared (Day-1 deep for new operators)"],

@@ -202,9 +202,8 @@ quatre :
   au moment du lancement. Nous avons couvert pourquoi cela importe
   dans <a href="/blog/2026-04-shared-liquidity-day-one">le billet sur la liquidité partagée</a>.
 - **Résolution gérée.** Optimistic oracle basé sur UMA avec des
-  périmètres de résolution isolés par opérateur, de sorte qu'une
-  résolution défaillante sur les marchés d'un opérateur ne peut pas
-  affecter ceux d'un autre.
+  règles de marché explicites, des métadonnées de source et un
+  processus de contestation public.
 
 Ce pour quoi Kuest est conçu :
 
@@ -215,7 +214,7 @@ Ce pour quoi Kuest est conçu :
   pas dépenser 3,4 à 7,2 millions de dollars et 8 à 14 mois pour
   construire une infrastructure qu'elle n'a pas besoin de posséder.
 - **Déploiements multi-juridictions.** Un seul opérateur peut
-  déployer des overlays par juridiction (fournisseurs KYC, modèles
+  déployer des overlays par juridiction (politique d'accès, modèles
   de frais, packs linguistiques) sans exécuter plusieurs builds.
 - **Marchés de longue traîne à grande échelle.** La couche
   protocole peut héberger la longue traîne de marchés qu'une seule
@@ -270,9 +269,9 @@ opérateurs accordent généralement de l'importance :
   columns={["Fonctionnalité", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
     ["Actif de règlement", "USDC on-chain", "Custody bancaire en USD", "USDC on-chain (l'opérateur peut superposer du fiat)"],
-    ["Modèle de résolution", "UMA Optimistic Oracle", "Équipe centralisée d'intégrité du marché", "Basé sur UMA, périmètre isolé par opérateur"],
+    ["Modèle de résolution", "UMA Optimistic Oracle", "Équipe centralisée d'intégrité du marché", "Basé sur UMA, avec règles explicites et processus public de contestation"],
     ["Disponibilité géographique", "Mondiale sauf États-Unis", "États-Unis uniquement", "Configurable par opérateur"],
-    ["Exigence KYC", "Aucune (wallet uniquement)", "KYC complet régulé américain", "Configurable par opérateur / juridiction"],
+    ["Exigence KYC", "Aucune (wallet uniquement)", "KYC complet régulé américain", "Défini par l'opérateur (wallet-only ou couche KYC externe)"],
     ["Création de marchés", "Permissionless (curation admin)", "Pré-approuvée par l'exchange", "Gérée par l'opérateur dans les limites du protocole"],
     ["Modèle de custody", "Auto-custody", "Partenaire bancaire régulé", "Configurable : propre ou régulé"],
     ["Profondeur du carnet d'ordres au lancement", "Existante (venue mature)", "Existante (venue mature)", "Partagée (Jour 1 profond pour les nouveaux opérateurs)"],

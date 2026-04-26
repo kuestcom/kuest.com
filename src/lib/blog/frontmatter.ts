@@ -1,17 +1,18 @@
 import { z } from 'zod'
 
 export const blogFrontmatterSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
+  title: z.string().trim().min(1),
+  slug: z.string().trim().min(1).optional(),
+  description: z.string().trim().min(1),
   publishedAt: z.coerce.date(),
   updatedAt: z.coerce.date().optional(),
   author: z.object({
-    name: z.string().min(1),
-    url: z.string().url().optional(),
-    avatar: z.string().optional(),
+    name: z.string().trim().min(1),
+    url: z.string().trim().url().optional(),
+    avatar: z.string().trim().min(1).optional(),
   }),
-  cover: z.string().optional(),
-  tags: z.array(z.string()).default([]),
+  cover: z.string().trim().min(1).optional(),
+  tags: z.array(z.string().trim().min(1)).default([]),
   draft: z.boolean().default(false),
 })
 

@@ -1,59 +1,64 @@
-import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronRightIcon } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
+import { toSafeHref } from '@/lib/url-safety'
 
 interface CtaLink {
   href: string
   label: string
 }
 
-function isInternalPageHref(href: string): boolean {
-  return href.startsWith('/')
-    && !href.startsWith('//')
-    && !href.startsWith('/api/')
-    && !href.startsWith('/_next/')
-    && !/\.[a-z0-9]+(?:[?#]|$)/i.test(href)
-}
-
-function isExternalHref(href: string): boolean {
-  return /^https?:\/\//.test(href)
-}
-
-function CtaButton({
-  cta,
-  className,
-  locale,
-}: {
-  cta: CtaLink
-  className: string
-  locale?: SupportedLocale
-}) {
-  const content = (
-    <>
-      <span className="cta-label">{cta.label}</span>
-      <ChevronRightIcon />
-    </>
+function isStaticOrApiPath(path: string): boolean {
+  return (
+    path.startsWith('/api/')
+    || path.startsWith('/_next/')
+    || /\/[^/?#]+\.(?:avif|gif|ico|jpe?g|png|svg|webp|css|js|map|txt|xml|json|pdf|woff2?|ttf|eot)(?:[?#]|$)/i.test(path)
   )
+}
 
-  if (isInternalPageHref(cta.href)) {
+function renderCtaLink(link: CtaLink, className: string, isPrimary: boolean) {
+  const safeHref = toSafeHref(link.href)
+  if (!safeHref) {
+    if (!isPrimary) {
+      return null
+    }
     return (
-      <Link href={cta.href as never} locale={locale} className={className}>
-        {content}
+      <span className={`${className} is-disabled`} aria-disabled="true">
+        <span className="cta-label">{link.label}</span>
+        <ChevronRightIcon />
+      </span>
+    )
+  }
+
+  if (safeHref.startsWith('/')) {
+    if (isStaticOrApiPath(safeHref)) {
+      return (
+        <a href={safeHref} className={className}>
+          <span className="cta-label">{link.label}</span>
+          <ChevronRightIcon />
+        </a>
+      )
+    }
+    return (
+      <Link href={safeHref as never} className={className}>
+        <span className="cta-label">{link.label}</span>
+        <ChevronRightIcon />
       </Link>
     )
   }
 
-  if (isExternalHref(cta.href)) {
+  if (/^https?:\/\//i.test(safeHref)) {
     return (
-      <a href={cta.href} target="_blank" rel="noopener noreferrer" className={className}>
-        {content}
+      <a href={safeHref} className={className} target="_blank" rel="noopener noreferrer">
+        <span className="cta-label">{link.label}</span>
+        <ChevronRightIcon />
       </a>
     )
   }
 
   return (
-    <a href={cta.href} className={className}>
-      {content}
+    <a href={safeHref} className={className}>
+      <span className="cta-label">{link.label}</span>
+      <ChevronRightIcon />
     </a>
   )
 }
@@ -63,24 +68,20 @@ export default function KuestCTA({
   body,
   primary,
   secondary,
-  locale,
 }: {
   headline: string
   body?: string
-  primary: CtaLink
-  secondary?: CtaLink
-  locale?: SupportedLocale
+  primary: { href: string, label: string }
+  secondary?: { href: string, label: string }
 }) {
   return (
     <aside className="blog-cta">
       <h3 className="blog-cta-headline">{headline}</h3>
       {body ? <p className="blog-cta-body">{body}</p> : null}
       <div className="cta-btns">
-        <CtaButton cta={primary} locale={locale} className="btn-cta btn-cta-primary" />
+        {renderCtaLink(primary, 'btn-cta btn-cta-primary', true)}
         {secondary
-          ? (
-              <CtaButton cta={secondary} locale={locale} className="btn-cta btn-cta-secondary" />
-            )
+          ? renderCtaLink(secondary, 'btn-cta btn-cta-secondary', false)
           : null}
       </div>
     </aside>

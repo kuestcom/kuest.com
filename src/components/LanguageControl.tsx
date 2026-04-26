@@ -7,6 +7,7 @@ import { getPathname } from '@/i18n/navigation'
 export default function LanguageControl({
   locale,
   path,
+  pathByLocale,
   availableLocales,
   fallbackPath,
   controlId,
@@ -18,6 +19,7 @@ export default function LanguageControl({
 }: {
   locale: SupportedLocale
   path: string
+  pathByLocale?: Partial<Record<SupportedLocale, string>>
   availableLocales?: SupportedLocale[]
   fallbackPath?: string
   controlId: string
@@ -60,7 +62,10 @@ export default function LanguageControl({
       <div id={menuId} className="site-language-menu" role="listbox" aria-label={ariaLabel}>
         {LANGUAGE_OPTIONS.map((option) => {
           const isAvailable = !limitToAvailable || availableLocales!.includes(option.code)
-          const targetPath = isAvailable ? path : (fallbackPath ?? path)
+          const localizedPath = pathByLocale?.[option.code]
+          const targetPath = isAvailable
+            ? (localizedPath ?? path)
+            : (fallbackPath ?? path)
           return (
             <a
               key={option.code}

@@ -13,6 +13,8 @@ interface MarketingDockNavProps {
   active: MarketingActiveSection
   /** Path used by the language switcher to route to the same page in another locale. */
   languagePath: string
+  /** Optional locale-specific paths (used for localized slugs). */
+  languagePathByLocale?: Partial<Record<SupportedLocale, string>>
   /** Locales for which the current page exists; others fall back to languageFallbackPath. */
   availableLocales?: SupportedLocale[]
   /** Path used when switching to a locale not in availableLocales. */
@@ -29,6 +31,7 @@ export default async function MarketingDockNav({
   locale,
   active,
   languagePath,
+  languagePathByLocale,
   availableLocales,
   languageFallbackPath,
   demoHref,
@@ -39,7 +42,7 @@ export default async function MarketingDockNav({
   const t = await getExtracted()
 
   return (
-    <nav id="dockNav" className="dock-nav" aria-hidden="true">
+    <nav id="dockNav" className="dock-nav" aria-label={t('Site navigation')}>
       <a href="#page-top" className="nav-logo">
         <KuestMark />
         Kuest
@@ -63,6 +66,7 @@ export default async function MarketingDockNav({
         <LanguageControl
           locale={locale}
           path={languagePath}
+          pathByLocale={languagePathByLocale}
           availableLocales={availableLocales}
           fallbackPath={languageFallbackPath}
           controlId="dockSiteLanguageControl"

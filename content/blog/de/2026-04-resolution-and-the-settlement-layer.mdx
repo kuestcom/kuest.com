@@ -24,8 +24,8 @@ nicht) und wissen wollen, wie der Settlement-Layer tatsächlich
 funktioniert.
 
 <Stat
-  value="≈ 0.18%"
-  label="Anteil der UMA-aufgelösten Märkte auf Polymarket, die in einen Dispute gehen; 99,82% lösen sich sauber über den optimistischen Pfad auf"
+  value="Niedrig"
+  label="In reifen UMA-basierten Märkten eskaliert nur eine Minderheit der Auflösungen in formale Disputes; die meisten finalisieren über den optimistischen Pfad"
   sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
   sourceLabel="UMA-Dokumentation, 2026"
 />
@@ -226,28 +226,20 @@ Dispute-Mechanismus ist öffentlich.
 
 Kuests Ansatz übernimmt das Optimistic-Oracle-Muster aus Polymarkets
 Produktionsarchitektur und härtet es für Multi-Operator-Deployment
-ab. Die Kernänderungen:
+ab. In der Praxis:
 
-- **Betreiber-isolierte Auflösungs-Scopes.** Jedes Markt eines
-  Betreibers löst sich in einem Scope auf, der auditierbar und
-  nachweislich isoliert von den Märkten anderer Betreiber ist. Eine
-  fehlerhafte Auflösung in den Märkten von Betreiber A kann nicht in
-  die Bücher von Betreiber B überschwappen.
-- **Pre-Flight-Vertragsvalidierung.** Bevor ein Markt live geht,
-  wird die URL der Auflösungsquelle abgerufen, geparst und auf die
-  Art von Daten validiert, die der Vertrag erwartet. Märkte, die
-  auf mehrdeutige oder bewegliche Quellen verweisen, werden bei der
-  Erstellung abgelehnt, nicht erst bei der Auflösung.
-- **Vorfinanzierte Dispute-Bonds.** Das Protokoll unterhält einen
-  Kapitalpool, der Bonds im Auftrag von Betreibern finanziert, sodass
-  ein kleiner Betreiber eine Venue betreiben kann, ohne
-  Bond-Kapital in der Bilanz zu halten. Der Pool wird auf
-  Protokollebene verwaltet, nicht von einem einzelnen Betreiber.
-- **Auflösungs-Telemetrie für Betreiber.** Betreiber sehen in
-  Echtzeit, wie ihre Märkte sich auflösen — welche Vorschläge
-  unbestritten waren, welche in Dispute gingen, welche im Berufungsverfahren neu aufgelöst wurden. Das ist dieselbe Haltung, die
-  eine regulierte Venue einnimmt; auf einer permissionless Schicht
-  ist das ungewöhnlich.
+- **UMA-basierter Dispute-Flow.** Auflösungsvorschläge folgen der
+  Optimistic-Oracle-Mechanik von UMA statt ad-hoc
+  Betreiberentscheidungen.
+- **Regeln und Source-Metadaten auf Marktebene.** Jeder Markt trägt
+  explizite Regeln und optional eine Auflösungs-Source-URL, sichtbar
+  im Event-Rules-Panel.
+- **Qualitätschecks vor Veröffentlichung.** Der Event-Creation-Flow
+  prüft Pflichtfelder und validiert das URL-Format der
+  Auflösungsquelle vor dem Launch.
+- **Dispute-Sichtbarkeit in Plattformdaten.** Market-Payloads
+  enthalten Dispute-Statusfelder (z. B. ob eine Auflösung
+  angefochten wurde) für operatives Monitoring.
 
 Der Sinn von all dem ist es, Auflösung langweilig zu machen. Eine
 Plattform, auf der die Auflösung das Aufregendste ist, was passiert,

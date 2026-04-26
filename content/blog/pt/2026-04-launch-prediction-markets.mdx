@@ -82,9 +82,8 @@ por ordem para os traders, e liquidação determinística no
 Polygon mainnet.
 
 **Trilhos de resolução que não dependem do operador.** Mercados
-resolvem via Optimistic Oracle da UMA, com escopos de
-resolução isolados por operador, de modo que uma resolução
-defeituosa nos mercados de um operador não pode afetar outro.
+resolvem via Optimistic Oracle da UMA, com regras explícitas
+de mercado, metadados de fonte e caminho público de disputa.
 Cobrimos a mecânica completa no
 <a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre a camada de resolução e liquidação</a>.
 
@@ -122,8 +121,8 @@ Contratos inteligentes, CLOB, trilhos de liquidação,
 infraestrutura de wallet, liquidez — tudo rodando antes de sua
 equipe terminar o onboarding. O deploy é parametrizado: sua
 identidade de operador é codificada nas instâncias do contrato,
-sua taxa acumula no seu endereço, seus escopos de resolução são
-isolados.
+sua taxa acumula no seu endereço e a configuração de mercado é
+aplicada no seu deploy.
 
 ### 3. Sua plataforma ganha uma taxa em cada trade
 
