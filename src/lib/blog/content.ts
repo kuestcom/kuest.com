@@ -229,6 +229,12 @@ export function getPost(slug: string, locale: SupportedLocale): BlogPost | null 
       entry => normalizeAsciiSlugForLookup(entry.slug) === normalizedAsciiSlug
         || normalizeAsciiSlugForLookup(entry.contentSlug) === normalizedAsciiSlug,
     )
+    ?? localePosts.find(
+      entry => normalizeSlugForLookup(buildLocalizedSlug(entry.frontmatter, entry.contentSlug)) === normalizedSlug,
+    )
+    ?? localePosts.find(
+      entry => normalizeAsciiSlugForLookup(buildLocalizedSlug(entry.frontmatter, entry.contentSlug)) === normalizedAsciiSlug,
+    )
 
   if (!post || !isPublished(post)) {
     return null
