@@ -1,9 +1,10 @@
 const EXTERNAL_PROTOCOL = /^https?:\/\//i
 
 function hasSafeProtocol(value: string): boolean {
+  const lowerValue = value.toLowerCase()
   return (
-    value.startsWith('mailto:')
-    || value.startsWith('tel:')
+    lowerValue.startsWith('mailto:')
+    || lowerValue.startsWith('tel:')
     || EXTERNAL_PROTOCOL.test(value)
   )
 }
@@ -32,4 +33,3 @@ export function toSafeExternalHref(href: string): string | null {
   }
   return safeHref
 }
-

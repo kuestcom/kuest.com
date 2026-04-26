@@ -19,10 +19,7 @@ export const mdxComponents: MDXComponents = {
     if (!safeHref) {
       return <>{children}</>
     }
-    const isExternal
-      = /^https?:\/\//.test(safeHref)
-        || safeHref.startsWith('mailto:')
-        || safeHref.startsWith('tel:')
+    const isExternal = /^(https?:|mailto:|tel:)/i.test(safeHref)
     if (isExternal) {
       return (
         <a href={safeHref} target="_blank" rel="noopener noreferrer" {...rest}>
