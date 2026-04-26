@@ -1,0 +1,675 @@
+---
+title: "Como abrir seu próprio mercado de previsão em 2026: o playbook de lançamento de ponta a ponta para operadores"
+description: "Um playbook operacional, passo a passo, para lançar uma venue de mercado de previsão em 2026 — seleção de audiência, jurisdição, design de mercado, especificação de contrato, taxas, marca, KYC, liquidez, beta privada, lançamento público e o monitoramento da primeira semana que decide se a venue escala."
+publishedAt: 2026-04-19
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "launch", "how-to", "infrastructure"]
+---
+
+Se você decidiu abrir seu próprio mercado de previsão, já
+resolveu as questões estratégicas: existe oportunidade de
+audiência, a matemática de construir-vs-licenciar favorece
+licenciar, e a categoria está na janela formativa onde a
+atribuição de audiência se compõe. O que resta é a execução.
+Este é o playbook para essa execução — não a versão de
+marketing, a versão real, escrita para um operador prestes a
+fazê-lo de fato.
+
+Fizemos onboarding de operadores suficientes através de tipos
+de audiência suficientes (corretoras, exchanges crypto-nativas,
+operadores de mídia, casas de apostas esportivas, comunidades
+lideradas por criadores) que o playbook abaixo convergiu em
+uma sequência repetível. Não é a única maneira de lançar uma
+venue de mercado de previsão, mas é a maneira que produz
+consistentemente uma venue com volume real no primeiro mês e
+atribuição de audiência significativa no primeiro trimestre.
+
+Se você está mais cedo na sua avaliação, o
+<a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
+cobre por que vale a pena entrar na categoria, a
+<a href="/blog/2026-04-build-vs-license-prediction-market">análise de construir-vs-licenciar</a>
+cobre a decisão estrutural por trás deste playbook, e o
+<a href="/blog/2026-04-launch-prediction-markets">walkthrough de lançamento de 15 minutos</a>
+cobre o deploy técnico. Este post é a versão mais longa de
+ponta a ponta: cada decisão que você tomará, na ordem em que a
+tomará, com os trade-offs explícitos.
+
+<Stat
+  value="≈ 4 semanas"
+  label="Do engagement assinado à venue pública ao vivo com os primeiros 100 traders ativos, quando o operador segue o playbook padrão abaixo"
+  sourceHref="https://kuest.com/research/operator-launch-times"
+  sourceLabel="Pesquisa de operadores Kuest, T1 2026"
+/>
+
+## Fase 1: Audiência e jurisdição
+
+Todo lançamento bem-sucedido começa com uma definição precisa
+da audiência e da jurisdição. Operadores que pulam esta fase
+enviam para a névoa e descobrem que suas unit economics estão
+erradas seis semanas depois. Operadores que fazem isso com
+cuidado enviam uma venue que corresponde às necessidades reais
+da audiência.
+
+**Defina a audiência.** Não "traders de varejo" — isso é
+abstrato demais. Especificamente: "nossos 80.000 clientes de
+varejo em São Paulo que já operam ações através de nós, que
+têm entre 28 e 45 anos, que mantêm um saldo médio de conta
+de 4.200 USD". Ou: "os 35.000 assinantes de newsletter que já
+leem nossa análise macro semanal e que respondem à pesquisa de
+engagement sobre visões de mercado". Quanto mais estreita a
+definição, mais afiado o resto do playbook fica.
+
+A definição de audiência determina cinco escolhas a jusante:
+os mercados que você hospedará primeiro, a taxa de operador
+que você definirá, o idioma e a marca da UX, o overlay
+regulatório que você precisa, e o canal de marketing que
+você usará para impulsionar a ativação. Pular a definição de
+audiência faz com que todas as cinco decisões se tornem
+suposições.
+
+**Escolha a jurisdição (ou jurisdições).** A maioria dos
+operadores lança primeiro em sua jurisdição primária e
+adiciona outras quando o playbook operacional está provado.
+Escolha a jurisdição onde você tem distribuição, posição
+regulatória, e a melhor chance de validar as unit economics
+rapidamente.
+
+Algumas realidades jurisdicionais para sinalizar
+antecipadamente:
+
+- **Estados Unidos.** Os mercados de previsão nos EUA são
+  uma categoria regulada acessível principalmente através do
+  Kalshi. Operadores que querem flow dos EUA trabalham com o
+  Kalshi como parceiro de distribuição ou aceitam que os EUA
+  estão atualmente fora de seu mercado endereçável. Construir
+  uma venue regulada concorrente nos EUA é sua própria jornada
+  de vários anos, não uma decisão de lançamento de operador.
+- **União Europeia.** O framework emergente de contratos de
+  evento da ESMA é permissivo o suficiente para suportar
+  lançamentos de operador sob um overlay de conformidade
+  compartilhado. Operadores na UE podem lançar através do
+  pipeline de conformidade do protocolo sem passar por
+  licenciamento nacional individual inicialmente.
+- **Brasil e a região LatAm mais ampla.** O framework
+  emergente mais ativo. As consultas da CVM e o framework
+  conduzido pelo Ministério da Fazenda são construtivos o
+  suficiente para que os operadores lancem com overlays de
+  KYC amigáveis à audiência.
+- **Ásia (excluindo China continental).** Singapura, Hong Kong
+  e Japão são as jurisdições asiáticas mais amigáveis aos
+  operadores em 2026. Cada uma requer um overlay de
+  conformidade específico; os templates do protocolo cobrem os
+  padrões principais.
+
+A escolha jurisdicional molda tudo a jusante. Escolha uma vez,
+valide e adicione jurisdições sequencialmente.
+
+## Fase 2: Escopo de mercado e design de contrato
+
+Uma vez que você sabe quem e onde, você decide o quê. A
+seleção dos mercados iniciais determina a velocidade de
+volume, a retenção e a complexidade operacional aproximadamente
+nessa ordem.
+
+**Escolha uma vertical primária.** Os lançamentos mais
+bem-sucedidos que vemos se comprometem com uma vertical
+primária e a dominam antes de expandir. Um lançamento focado
+em macro hospeda divulgações do CPI, decisões de bancos
+centrais e divulgações de dados econômicos — e resiste à
+tentação de também hospedar mercados esportivos no primeiro
+mês. Um lançamento focado em esportes hospeda os principais
+torneios e ligas — e resiste à tentação de também hospedar
+mercados políticos.
+
+A concentração importa porque a liquidez importa. Doze
+mercados de alta qualidade em uma vertical atraem mais volume
+por mercado do que sessenta mercados medíocres em cinco
+verticais. A expansão entre verticais vem depois que a
+vertical primária prova a audiência.
+
+**Escolha cuidadosamente a especificação de mercado inicial.**
+A especificação de contrato é a parte mais subdimensionada da
+maioria dos lançamentos. Contratos vagos produzem disputas.
+Disputas destroem confiança. A disciplina de escrever uma
+especificação de contrato que se resolve sem ambiguidade é a
+parte mais difícil não relacionada a engenharia de operar um
+mercado de previsão.
+
+Uma boa especificação tem três propriedades:
+
+1. **A fonte de dados é nomeada explicitamente.** "Divulgação
+   do CPI do BLS, o número manchete ano-a-ano CPI-U da tabela
+   publicada em bls.gov/news.release/cpi.t01.htm". Não apenas
+   "CPI".
+2. **A regra de resolução é inequívoca.** "Resolve-se SIM se
+   o número reportado for maior que 3,0%; resolve-se NÃO caso
+   contrário. Estimativas iniciais e revisões não afetam a
+   resolução; o primeiro número reportado prevalece".
+3. **Casos extremos são pré-especificados.** "Se o BLS não
+   publicar um relatório do CPI na data de divulgação
+   programada, o mercado se resolve para NA e todas as
+   posições retornam o capital".
+
+Cobrimos a mecânica de resolução em detalhe no
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre a camada de resolução e settlement</a>.
+A disciplina da especificação de contrato é o que determina
+se a taxa de resolução de sua venue permanece acima de 99,5%
+(o que é aceitável) ou cai para 98% (que é o limiar abaixo do
+qual a confiança do trader começa a colapsar).
+
+## Fase 3: A decisão sobre a taxa do operador
+
+A taxa é a alavanca que determina a receita da venue e a
+tolerância da audiência. Cobrimos a questão da seleção de
+alíquota em profundidade no
+<a href="/blog/2026-04-fee-models-explained">post sobre modelos de taxas</a>
+— aqui está o resumo específico do lançamento.
+
+Escolha uma alíquota inicial baseada em seu perfil de
+audiência:
+
+<Comparison
+  columns={["Tipo de audiência", "Taxa inicial", "Janela de ajuste alvo"]}
+  rows={[
+    ["Clientes de varejo de corretora", "0,85%", "Manter 90 dias, depois reavaliar"],
+    ["Overlay de exchange crypto-nativa", "0,50%", "Manter 90 dias, depois reavaliar"],
+    ["Comunidade liderada por criador", "1,50%", "Manter 90 dias, depois reavaliar"],
+    ["Mesas institucionais", "0,10–0,20%", "Por tier desde o lançamento, manter 60 dias"],
+    ["Overlay de casa de apostas esportivas", "1,00%", "Manter 90 dias, depois reavaliar"],
+  ]}
+/>
+
+O erro mais comum que vemos é operadores precificarem sua taxa
+com base em metas de receita em vez de tolerância da audiência.
+Se sua audiência é uma base de clientes de varejo de corretora
+acostumada a taxas de trading de ações de 0,5%, uma taxa de
+mercado de previsão de 2% será percebida como cara, mesmo
+estando bem dentro da norma da indústria. Ancore-se às
+expectativas de taxa existentes de sua audiência, não ao
+máximo que o mercado tolerará.
+
+**Não mude a taxa nos primeiros 90 dias.** O sinal nos dados
+de alíquota leva cerca de 8 semanas para se estabilizar.
+Operadores que ajustam mais rápido que isso só injetam ruído.
+Escolha uma alíquota inicial defensável, mantenha-a, colete
+sinal e depois ajuste.
+
+## Fase 4: Marca, UX e copy
+
+Uma vez tomadas as decisões estratégicas e de preço, a camada
+voltada para o operador é marca, UX e copy. Estas determinam
+se a audiência confia na venue à primeira impressão.
+
+**Decisões de marca.** A venue deve ser marcada como sua
+marca existente voltada para audiência, não como uma
+sub-marca. Uma corretora lançando mercados de previsão deve
+chamar o produto de "[Nome da Corretora] Markets" ou
+similar — usando a marca existente para transferência de
+confiança. Um operador de mídia deve manter sua voz de marca
+e identidade visual existentes. Uma venue liderada por
+criador deve se sentir nativa ao conteúdo existente do
+criador.
+
+**Copy para a audiência, não para a categoria.** O erro de
+copy mais comum é usar jargão de mercado de previsão para
+descrever um produto a uma audiência que nunca o encontrou.
+"Contrato binário sobre a probabilidade de resolução de um
+evento discreto" é tecnicamente correto e operacionalmente
+inútil para uma audiência de varejo. "Tome uma posição sobre
+se o Fed cortará taxas em julho — ganhe 1 USD se você estiver
+certo, 0 USD se estiver errado" é a mesma ideia em uma
+linguagem que a audiência consegue analisar.
+
+**Padrões de UX que funcionam consistentemente.** Através dos
+lançamentos que vimos:
+
+- Uma página de lista de mercados limpa ordenada por prazo
+  (eventos resolvendo mais cedo no topo).
+- Uma página de detalhes de mercado com a especificação de
+  contrato, a fonte de resolução e o livro de ordens, todos
+  visíveis sem rolar.
+- Um resumo de posição em cada página, para que os traders
+  sempre saibam sua exposição aberta.
+- Um caminho claro de volta para depositar / retirar sem sair
+  da superfície do produto.
+
+Estes não são padrões de UX inovadores; são os padrões que
+produzem taxas de ativação acima de 40% e taxas de retenção
+acima de 35% na semana 12. Padrões de UX que se afastam
+destes sem forte razão têm desempenho inferior.
+
+## Fase 5: Overlay de conformidade e KYC
+
+A configuração de conformidade é onde a maioria dos operadores
+sub-orçamenta tempo. A boa notícia é que o overlay de
+conformidade do protocolo lida com a mecânica central; a
+configuração específica da jurisdição é o overlay do operador
+em cima.
+
+Para um lançamento de jurisdição única, a configuração é
+tipicamente:
+
+- **Provedor de verificação de identidade.** O protocolo se
+  integra com os principais provedores (Onfido, Persona,
+  Sumsub, opções locais por jurisdição). Escolha aquele que
+  sua audiência espera ver.
+- **Requisitos de documento.** Cada jurisdição tem um conjunto
+  de documentos padrão diferente. O Brasil tipicamente exige
+  CPF + identificação com foto + comprovante de endereço. A
+  UE exige um passaporte ou identidade nacional + verificação
+  de vivacidade por selfie. Configure uma vez por jurisdição.
+- **Hooks de reporting.** Para jurisdições reguladas, cada
+  trade emite um evento estruturado que alimenta sua
+  ferramenta de conformidade. Configure a cadência e o
+  destino do relatório (tipicamente um data warehouse ou uma
+  ferramenta de reporting voltada para regulador).
+- **Restrições geográficas.** Configure quais jurisdições
+  podem acessar a venue. A maioria dos operadores executa
+  acesso permissivo com bloqueios explícitos em jurisdições
+  onde o operador não quer exposição (tipicamente os EUA para
+  operadores não-EUA, mais um pequeno conjunto de jurisdições
+  de alto risco).
+
+Para lançamentos multi-jurisdicionais, toda essa config se
+repete por jurisdição. Os templates do protocolo tornam isso
+configuração em vez de engenharia, mas ainda são algumas
+horas de configuração cuidadosa por região.
+
+## Fase 6: Configuração de liquidez
+
+A liquidez é a propriedade make-or-break de um lançamento, e o
+modelo de liquidez compartilhada do protocolo lida com a
+maioria disso. Cobrimos o caso técnico e econômico no
+<a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartilhada</a>.
+Para fins de lançamento, as decisões do operador são:
+
+- **Confirme a cobertura de liquidez compartilhada de seus
+  mercados iniciais.** O livro compartilhado tem cobertura
+  profunda de mercados mainstream (macro, esportes
+  principais, eventos políticos). Mercados de nicho (eventos
+  específicos de vertical de criador, eventos políticos muito
+  locais, eventos corporativos personalizados) são
+  cold-bootstrap e precisam ou de market-making do lado do
+  operador ou de liquidez impulsionada pela audiência ao
+  longo do tempo. Saiba quais de seus mercados iniciais são
+  quais.
+- **Decida se deve semear liquidez em mercados de nicho.**
+  Alguns operadores escolhem semear liquidez inicial em seus
+  mercados cold-start para garantir uma experiência de trader
+  utilizável no Dia 1. A semeadura não precisa ser grande
+  (5–25k USD por mercado é típico), e pode ser desfeita à
+  medida que a liquidez da audiência cresce.
+- **Configure parâmetros de spread onde você tem controle.**
+  O protocolo limita os spreads máximos em deploys de
+  operador para preservar a experiência do trader; dentro
+  desses limites, os operadores podem configurar spreads
+  mais apertados em mercados que lhes importam.
+
+A combinação de liquidez compartilhada em mercados mainstream
+mais semeadura modesta em mercados de nicho é o que produz
+uma experiência de Dia 1 onde cada mercado tem profundidade
+visível e spreads negociáveis. Sem isso, as taxas de ativação
+colapsam.
+
+## Fase 6.5: Validação pré-lançamento com a audiência
+
+Antes da beta privada — mais cedo do que a maioria dos
+operadores considera — há uma etapa de validação que custa
+quase nada e salva todo o lançamento de uma suposição errada.
+Fale com a audiência.
+
+Escolha 15–25 pessoas da sua audiência-alvo e execute
+conversas estruturadas de 30 minutos com cada uma.
+Mostre-lhes um protótipo clicável ou um deploy de sandbox.
+Faça três perguntas:
+
+1. **O que você negociaria nesta venue e por quê?** Isso
+   revela se seu escopo de mercado inicial corresponde ao
+   interesse real da audiência. Muitas vezes, os mercados que
+   o operador pensava serem primários acabam sendo
+   secundários na hierarquia real da audiência.
+2. **O que o impediria de negociar aqui?** Isso revela os
+   pontos de fricção — mais frequentemente complexidade de
+   KYC, métodos de depósito, percepção de taxas, ou a
+   credibilidade percebida da marca no novo produto.
+3. **O que faria você confiar nesta venue com 1.000 USD?**
+   Isso revela o limiar de confiança. As respostas se
+   agrupam em torno de postura regulatória, familiaridade
+   com a marca e credibilidade de resolução — e dizem qual
+   delas enfatizar nas comunicações de lançamento.
+
+O padrão que emerge consistentemente: as suposições do
+operador sobre as preferências da audiência estão cerca de
+60% corretas. Os outros 40% são o que essas conversas
+revelam. Pular esta etapa significa lançar com 40% de suas
+suposições mal calibradas.
+
+Execute conversas de validação antes de finalizar o escopo de
+mercado (Fase 2), taxas (Fase 3), ou copy (Fase 4). Elas
+influenciam todas estas.
+
+## Fase 7: Beta privada
+
+Antes do lançamento público, execute uma beta privada com uma
+audiência pequena e conhecida. O ponto não é marketing; é
+sinal. O comportamento real do trader em um ambiente de
+produção real revela problemas que nenhuma quantidade de
+testes internos revela.
+
+**Escolha cuidadosamente a coorte beta.** 50–200 traders que
+correspondam ao seu perfil de audiência-alvo e que estejam
+dispostos a dar feedback. Power users existentes do seu
+produto principal são ideais. Evite a tentação de executar
+beta apenas com funcionários; o comportamento deles não se
+generaliza.
+
+**Execute beta por 7–10 dias.** Tempo suficiente para revelar
+padrões de ativação, curto o suficiente para manter a coorte
+engajada. Durante esta janela, monitore:
+
+- **Taxa de ativação.** Que porcentagem dos participantes da
+  beta coloca pelo menos um trade? Saudável: 50%+. Doentio:
+  abaixo de 30%.
+- **Tempo até o primeiro trade.** Quanto tempo do sign-in até
+  o primeiro fill? Saudável: abaixo de 10 minutos. Doentio:
+  acima de uma hora.
+- **Tamanho mediano do trade.** Os traders estão dimensionando
+  ou apenas testando? Saudável: uma parcela significativa de
+  trades acima de 50 USD. Doentio: cada trade está no mínimo.
+- **Volume de suporte.** Que perguntas as pessoas estão
+  fazendo? Cada pergunta é uma lacuna de UX a fechar antes do
+  lançamento público.
+
+Ajuste com base no que a beta revela. Ajustes comuns nesta
+etapa são clareza de copy (reformulação de especificações de
+mercado, simplificação de fluxos de depósito), escopo de
+mercado (adicionar mercados que a audiência pede, remover
+mercados que ninguém negocia), e ajustes de taxa (raros, mas
+ocasionalmente apropriados).
+
+## Fase 8: Lançamento público
+
+O lançamento público é o momento em que a audiência pode
+acessar a venue. Também é o momento em que a reputação da
+venue é fixada na memória coletiva da audiência, então a
+barra é "sem falhas em escala" em vez de "tudo está
+otimizado".
+
+**A checklist de lançamento:**
+
+1. **Verifique se a liquidez compartilhada está presente em
+   cada mercado destacado.** Verifique por amostra puxando
+   manualmente o livro de ordens em cada mercado e
+   confirmando a profundidade dentro do spread.
+2. **Verifique o fluxo de depósito e retirada de ponta a
+   ponta.** Envie um pequeno depósito através do fluxo de
+   produção, coloque um trade, feche a posição, retire. O
+   loop completo deve funcionar em menos de cinco minutos.
+3. **Verifique se a telemetria de resolução está ao vivo.**
+   Eventos de resolução devem estar fluindo para o dashboard
+   do operador. Confirme que pelo menos um mercado está
+   configurado para resolver nas primeiras 48 horas para que
+   você possa validar o caminho de resolução sob condições
+   reais.
+4. **Verifique o roteamento de suporte ao cliente.** Teste o
+   canal de suporte de uma conta de usuário nova. A primeira
+   resposta deve ser humana ou de qualidade humana dentro de
+   uma hora do contato.
+5. **Verifique se reporting e analytics estão sendo
+   populados.** Volume, contagem de traders, métricas de
+   retenção, volume de suporte. Se os dados não estão
+   fluindo no primeiro dia, você não saberá se o lançamento
+   está funcionando.
+
+**Soft launch primeiro se possível.** Abra a venue para sua
+audiência existente sem um grande empurrão de marketing nas
+primeiras 24–48 horas. Isso pega qualquer coisa que a beta
+perdeu antes de expor a venue a uma coorte maior. Após a
+janela suave, dispare a campanha de marketing.
+
+## Fase 8.5: A estratégia de canais de marketing
+
+Operadores tratam consistentemente o marketing como um
+problema do Dia 1 em vez de um problema de estratégia de
+lançamento. O resultado são campanhas genéricas que produzem
+tráfego caro de baixa qualidade. Os operadores que lançam bem
+tratam o marketing como uma decisão estrutural tomada em
+paralelo com o resto do playbook.
+
+A forma de uma estratégia de canal de marketing eficaz depende
+do tipo de audiência:
+
+- **Operadores de corretora e exchange com audiências
+  instaladas.** O canal primário é sua base de clientes
+  existente. Email, notificação in-app e conteúdo educacional
+  embutido na superfície do produto que você já opera. Taxas
+  de conversão de audiências instaladas são 5–15× mais altas
+  do que tráfego frio, e o custo de aquisição de cliente é
+  efetivamente zero. Não gaste em aquisição paga fria até que
+  a audiência instalada esteja amplamente ativada.
+- **Overlays de exchange crypto-nativa.** O canal primário é
+  a promoção cruzada dentro da UX existente da exchange. Um
+  banner na página de spot trading que aponta para o novo
+  produto de mercado de previsão converte a taxas
+  significativamente mais altas do que qualquer campanha
+  externa. As comunidades de Telegram e Discord que a
+  exchange já opera são o segundo canal.
+- **Venues lideradas por criador.** O canal primário é a
+  superfície de distribuição existente do criador
+  (newsletter, podcast, vídeo, mídia social). O lançamento
+  deve ser cronometrado para uma peça de conteúdo que
+  apresenta a venue e explica os mercados com os quais a
+  audiência se importará. Aquisição paga fria para venues
+  lideradas por criador raramente funciona; a audiência tem
+  que vir através da marca do criador.
+- **Casas de apostas esportivas e overlays de fintech de
+  consumo.** O canal primário é a colocação de funcionalidade
+  dentro do app existente. Um prompt "preveja neste jogo"
+  embutido no fluxo existente de apostas esportivas converte
+  a taxas muito mais altas do que qualquer colocação externa.
+- **Novos operadores autônomos sem audiência instalada.**
+  Esta é a posição mais difícil de onde lançar. Os canais
+  realistas são social pago (Twitter/X, TikTok para
+  audiências mais jovens), parcerias com influenciadores, e
+  marketing de conteúdo via SEO. O custo de aquisição de
+  cliente é alto o suficiente para que as unit economics
+  sejam apertadas; operadores nessa posição devem considerar
+  se um modelo de distribuição por parceria faz mais sentido
+  do que um modelo de lançamento direto.
+
+O padrão que tem desempenho inferior consistentemente: gastar
+em campanhas amplas de social pago para adquirir traders
+novos líquidos para uma marca da qual nunca ouviram falar. A
+taxa de ativação em aquisição paga fria para mercados de
+previsão em 2026 está na faixa de 8–14%, o que faz com que
+as unit economics funcionem apenas com suposições de alta
+frequência de trade que a maioria dos operadores não atinge.
+
+Escolha o canal que corresponde ao seu perfil de audiência e
+comprometa-se com ele pelos primeiros 30 dias. Evite a
+tentação de executar cinco canais simultaneamente no
+lançamento — o sinal é confuso e o loop de otimização nunca
+converge.
+
+## Fase 9: Monitoramento da primeira semana
+
+Os primeiros sete dias definem a trajetória. Monitore
+obsessivamente durante esta janela — não porque algo
+provavelmente quebrará, mas porque os padrões que você verá
+na primeira semana lhe dizem quais decisões revisitar no mês
+seguinte.
+
+As métricas a observar, em ordem de prioridade:
+
+<Comparison
+  columns={["Métrica", "Saudável", "Observar", "Ruim"]}
+  rows={[
+    ["Retenção de traders ativos no Dia 7", ">35%", "25–35%", "<25%"],
+    ["Crescimento do tamanho mediano do trade", "Tendência de alta", "Plano", "Tendência de baixa"],
+    ["Tempo até o primeiro trade (novos usuários)", "<15 min", "15–60 min", ">60 min"],
+    ["Tickets de suporte / 100 traders ativos", "<5", "5–15", ">15"],
+    ["Taxa de disputa de resolução", "<0,2%", "0,2–0,5%", ">0,5%"],
+    ["Spread nos Top-5 mercados", "<60 bps", "60–120 bps", ">120 bps"],
+  ]}
+/>
+
+Se alguma métrica está na coluna "ruim" no sétimo dia,
+aborde-a especificamente antes de escalar o marketing.
+Empilhar mais audiência em cima de uma venue com má
+ativação, má retenção ou maus spreads apenas amplifica o
+problema.
+
+## Fase 10: Revisão estratégica dos primeiros 30 dias
+
+No dia trinta, o lançamento transita do lançamento para
+operações contínuas. A revisão do dia 30 é o momento de
+fazer os primeiros ajustes estratégicos reais com base em
+um mês de dados de produção.
+
+A revisão deve responder a cinco perguntas:
+
+1. **A velocidade da audiência é o que esperávamos?** Novos
+   cadastros de traders por dia, comparação com a previsão
+   inicial.
+2. **A monetização por trader é o que esperávamos?** Receita
+   líquida por trader ativo, comparação com suposições de
+   alíquota.
+3. **Os mercados que estamos hospedando são os certos?**
+   Volume de trade por mercado, retenção por vertical de
+   mercado.
+4. **Estamos perdendo traders para uma fricção específica?**
+   Puxe dados de pesquisa de saída, temas de tickets de
+   suporte, cascata de retenção.
+5. **Qual é o próximo gargalo?** Esta é a pergunta mais
+   prospectiva. O gargalo no dia 30 provavelmente é diferente
+   do gargalo no lançamento, e o do dia 60 será diferente
+   novamente. Identifique-o explicitamente.
+
+A maioria dos operadores no dia 30 está entre dois resultados:
+significativamente acima da previsão, ou significativamente
+abaixo. Cada caso justifica uma resposta estratégica
+específica. Operadores acima da previsão devem expandir
+mercados e verticais mais agressivamente do que o plano
+inicial; operadores abaixo da previsão devem manter o escopo
+existente e apertar a segmentação de audiência.
+
+## Erros comuns durante a abertura
+
+Cinco padrões que vemos em operadores que têm desempenho
+inferior no lançamento. Cada um é corrigível se você o vir
+chegando.
+
+**Lançar muito amplo.** Tentar hospedar todas as categorias
+de mercado de uma vez dilui a liquidez, dilui a clareza do
+copy e confunde a audiência sobre para que serve a venue.
+Concentre-se, prove as unit economics, depois expanda.
+
+**Sub-orçamentar o tempo de configuração de conformidade.**
+O deploy técnico leva minutos. O overlay de conformidade
+(provedores de KYC, hooks de reporting, requisitos de
+documento específicos da jurisdição) leva várias horas por
+jurisdição. Operadores que não orçamentam para isso descobrem
+no dia do lançamento.
+
+**Economizar na especificação de contrato.** Um mercado que
+se resolve ambiguamente gera uma disputa, e disputas geram
+uma quantidade desproporcional de carga de suporte e dano à
+reputação. A disciplina de escrever especificações
+inequívocas no lançamento se paga adiante para a vida da
+venue.
+
+**Não executar beta privada.** Operadores que pulam a beta
+privada "para economizar tempo" descobrem que os problemas
+que teriam vindo à tona na beta agora vêm à tona durante o
+lançamento público, quando consertá-los custa dano à
+reputação em vez de apenas tempo.
+
+**Definir a taxa com base em aspiração em vez de tolerância
+da audiência.** Precificar para a receita que você quer em
+vez da taxa que sua audiência aceitará significa que você tem
+uma venue com altas taxas nominais e nenhum trader.
+Sempre precifique para a tolerância da audiência primeiro;
+aperte mais tarde se os dados apoiarem.
+
+## Configuração de resposta a incidentes pré-lançamento
+
+A outra coisa que a maioria dos operadores não configura
+antes do lançamento, mas precisa desesperadamente até a
+primeira semana, é a resposta a incidentes. Uma venue de
+mercado de previsão em produção terá momentos em que algo dá
+errado — uma fonte de mercado cai, um provedor de pagamento
+tem uma breve interrupção, um caso extremo de resolução gera
+uma onda de tickets de suporte. Operadores que pré-constroem
+o playbook de resposta a incidentes lidam com estes
+calmamente. Operadores que não acabam improvisando sob
+pressão com sua reputação em jogo.
+
+A configuração mínima de resposta a incidentes antes do
+lançamento:
+
+- **Uma única rotação on-call nomeada** com transferências
+  claras. Pré-lançamento, uma única pessoa on-call.
+  Pós-lançamento, rotação de duas pessoas com janelas de
+  transferência. A pessoa on-call tem autoridade para tomar
+  decisões em nível de incidente sem escalonamento.
+- **Um template de comunicação ao cliente pré-escrito** para
+  as três classes de incidente mais comuns: atraso na
+  resolução de mercado, pausa de depósito/retirada,
+  manutenção programada. Pré-escrever a linguagem economiza
+  30–60 minutos de tempo de decisão durante um incidente
+  real.
+- **Uma superfície de página de status** em
+  status.yourbrand.com ou similar, onde o operador pode
+  postar incidentes proativamente em vez de responder
+  perguntas uma por uma. Mesmo uma simples página atualizada
+  manualmente é suficiente; o que importa é que os clientes
+  tenham um único lugar para olhar.
+- **Um caminho de escalonamento predefinido para o provedor
+  do protocolo** para problemas em nível de protocolo.
+  Incidentes do lado do operador (bugs de UX, interrupções de
+  provedores de pagamento) o operador lida. Incidentes do
+  lado do protocolo (matching engine, settlement) escalam
+  para o on-call do protocolo dentro de um SLA documentado.
+
+Toda essa configuração leva 2–4 horas pré-lançamento. Ela se
+paga dentro da primeira semana em que a venue está ao vivo.
+
+## O que "lançamento" realmente significa
+
+Uma definição específica é útil: um lançamento bem-sucedido é
+uma venue que, no dia 30, tem mais de 100 traders ativos,
+mais de 50k USD de volume semanal, uma taxa de retenção do
+Dia 7 acima de 35%, e uma carga de suporte de menos de 15
+tickets por 100 traders ativos. Se você atingir esses
+números, a venue está no caminho para escalar e o playbook
+daqui em diante é monetização, expansão e retenção em vez de
+ativação.
+
+Se você não atingir esses números, o playbook é
+diagnóstico: qual suposição estava errada (tamanho da
+audiência, tolerância de taxa, ajuste de mercado, clareza de
+UX), e o que especificamente deve mudar antes do próximo
+empurrão. A camada de protocolo torna esse loop de
+diagnóstico barato porque a venue em si não precisa ser
+reconstruída; apenas a configuração do lado do operador
+muda.
+
+Os operadores que se transformam em vencedores de longo prazo
+não são aqueles que fizeram tudo certo no lançamento. São
+aqueles que configuraram o lançamento para ser
+diagnosticável e que fizeram os ajustes certos nos dias 30,
+60 e 90 com base no sinal que o lançamento produziu.
+Planeje o lançamento como a primeira iteração de um loop de
+composição de vários trimestres, não como um evento único, e
+o playbook acima deixa de ser uma checklist e começa a ser a
+fundação de uma venue que escala.
+
+<KuestCTA
+  headline="Pronto para abrir sua própria venue de mercado de previsão?"
+  body="O assistente de lançamento o leva por cada etapa deste playbook em menos de 15 minutos. Provisionaremos seu escopo de operador, faremos o deploy de contratos sob sua marca, e lhe daremos o dashboard de onde rodar os primeiros 30 dias."
+  primary={{ href: "/launch", label: "Abrir o assistente de lançamento" }}
+  secondary={{ href: "/enterprise", label: "Agendar uma chamada de estratégia de lançamento" }}
+/>

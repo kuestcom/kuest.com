@@ -6,10 +6,10 @@ import { getExtracted } from 'next-intl/server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
-import DockMenuControl from '@/components/DockMenuControl'
 import HeroMarketStage from '@/components/HeroMarketStage'
 import KuestMark from '@/components/KuestMark'
 import LanguageControl from '@/components/LanguageControl'
+import MarketingDockNav from '@/components/MarketingDockNav'
 import MarketingPageRuntime from '@/components/MarketingPageRuntime'
 import NicheShowcase from '@/components/NicheShowcase'
 import RotatingProofCards from '@/components/RotatingProofCards'
@@ -550,47 +550,15 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
         </div>
       </nav>
 
-      <nav id="dockNav" className="dock-nav" aria-hidden="true">
-        <a href="#page-top" className="nav-logo">
-          <KuestMark />
-          Kuest
-        </a>
-        <div className="nav-r">
-          <DockMenuControl
-            homeHref="/"
-            enterpriseHref="/enterprise"
-            protocolHref="/protocol"
-            demoHref="#p3-demo"
-            demoLabel="Demo"
-            active="home"
-            openLabel={t('Open site navigation')}
-            menuAriaLabel={t('Site navigation')}
-            homeLabel={t('Home')}
-            enterpriseLabel={t('Enterprise')}
-            protocolLabel={t('The Protocol')}
-          />
-          <LanguageControl
-            locale={locale}
-            path="/"
-            controlId="dockSiteLanguageControl"
-            buttonId="dockSiteLanguageButton"
-            menuId="dockSiteLanguageMenu"
-            flagId="dockSiteLanguageCurrentFlag"
-            labelId="dockSiteLanguageCurrentLabel"
-            ariaLabel={t('Change site language')}
-          />
-          <ThemeToggle
-            id="dockThemeToggle"
-            className="dock-theme-toggle"
-            labelToDark={t('Switch to dark mode')}
-            labelToLight={t('Switch to light mode')}
-          />
-          <a href={launchHref} className="nb nb-solid nav-cta">
-            <span className="cta-label">{t('Start your prediction market')}</span>
-            <ChevronRightIcon />
-          </a>
-        </div>
-      </nav>
+      <MarketingDockNav
+        locale={locale}
+        active="home"
+        languagePath="/"
+        demoHref="#p3-demo"
+        demoLabel="Demo"
+        ctaHref={launchHref}
+        ctaLabel={t('Start your prediction market')}
+      />
 
       <main id="page-top" className="page">
         <section className="panel-wrap panel-static hero-stack-panel" id="p0">

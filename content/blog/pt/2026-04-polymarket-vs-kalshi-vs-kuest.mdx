@@ -1,0 +1,471 @@
+---
+title: "Polymarket vs Kalshi vs Kuest: a comparação de 2026 que todo operador precisa"
+description: "Uma comparação honesta e de ponta a ponta entre Polymarket, Kalshi e Kuest — o que cada um é, para quem se destinam, sua economia de taxas, postura regulatória e por que a camada de protocolo é uma categoria diferente das venues."
+publishedAt: 2026-04-12
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["comparison", "polymarket", "kalshi", "platforms", "protocol"]
+---
+
+Se você está olhando para a categoria de mercados de previsão em
+2026, rapidamente se deparará com três nomes: Polymarket, Kalshi e
+Kuest. Eles são citados no mesmo fôlego, listados nos mesmos artigos,
+comparados nos mesmos pitches a operadores. Essa comparação é
+enganosa porque os três não competem pela mesma prateleira. Polymarket
+e Kalshi são **venues** — lugares onde os traders vão para tomar uma
+posição. Kuest é um **protocolo** — infraestrutura que outros
+operadores usam para operar suas próprias venues. Tratá-los como
+concorrentes diretos leva a más decisões estratégicas dos dois lados
+da mesa.
+
+Este post é a comparação honesta e de ponta a ponta que gostaríamos
+que existisse quando estávamos tentando explicar a distinção. Ele
+cobre o que cada plataforma realmente é, para quem foi construída,
+como é a sua economia de taxas, onde se situam suas posições
+regulatórias e como um operador deveria pensar em usá-las em
+combinação em vez de escolher entre elas.
+
+Se você está mais cedo na sua avaliação, o
+<a href="/blog/2026-03-what-are-prediction-markets">primer sobre mercados de previsão</a>
+cobre o básico, o
+<a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
+explica por que vale a pena entrar nesta categoria, e a
+<a href="/blog/2026-04-build-vs-license-prediction-market">análise build vs licenciar</a>
+trata da decisão central que está por trás de toda esta comparação.
+
+<Stat
+  value="$18.3B"
+  label="Volume mensal combinado do Q1 2026 entre Kalshi e Polymarket — e cerca de dois terços da demanda global continuam fora das plataformas que qualquer uma delas pode atender diretamente"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+## As três plataformas em um parágrafo cada
+
+Antes de aprofundar, a introdução mais curta possível para cada uma:
+
+**Polymarket** é a maior venue on-chain de mercado de previsão.
+Funciona como uma exchange permissionless liquidada em USDC sobre
+Polygon, usa o Optimistic Oracle da UMA para resolução e liquida a
+maior parte do volume global de contratos de evento em mercados fora
+do perímetro regulado dos EUA. A maior parte de seu volume é varejo;
+uma parcela crescente vem de mesas profissionais que operam de fora
+dos EUA.
+
+**Kalshi** é a primeira exchange de contratos de evento regulada pela
+CFTC nos Estados Unidos. Os mercados são operados como contratos
+binários em uma venue de derivativos americana regulada, com
+resolução centralizada pela equipe de integridade de mercado da
+Kalshi usando fontes de dados pré-publicadas. A Kalshi não está
+disponível para usuários fora dos EUA e é a porta de entrada
+institucional para a categoria para mesas sediadas nos EUA.
+
+**Kuest** é uma camada de protocolo para operadores de mercados de
+previsão. Ela fornece smart contracts, uma matching engine, liquidez
+compartilhada e trilhos de resolução gerenciada para que qualquer
+operador — uma corretora regional, uma exchange cripto-nativa, uma
+empresa de mídia, uma mesa institucional — possa lançar sua própria
+venue de mercados de previsão com marca própria sem construir a
+infraestrutura. Kuest não é uma venue; é a camada abaixo das venues.
+
+A distinção importa porque uma comparação de "Kuest vs Polymarket"
+ou "Kuest vs Kalshi" compara um protocolo com uma venue, o que é o
+mesmo erro de categoria que comparar a Stripe com uma cafeteria.
+
+## O que a Polymarket realmente é
+
+A Polymarket é uma única venue, permissionless e on-chain. Os
+usuários conectam uma carteira de auto-custódia, depositam USDC e
+operam contratos de evento diretamente com outros usuários através
+de um livro de ordens implantado em Polygon. A camada de protocolo
+sob a Polymarket é sob medida — eles construíram e operam seus
+próprios contratos, sua própria matching engine, seu próprio programa
+de liquidez e sua própria integração com a UMA para a resolução.
+
+O que funciona extremamente bem na Polymarket:
+
+- **Volume nos mercados que hospedam.** A Polymarket tem os livros
+  on-chain mais profundos para eventos políticos, eventos macro e
+  marcos cripto. Se você é um trader que quer tomar uma posição
+  nessas categorias, a Polymarket é atualmente a melhor execução.
+- **Credibilidade da resolução.** O optimistic oracle baseado em UMA
+  já resolveu centenas de milhares de mercados com taxa de resolução
+  limpa de 99,8 % ou mais. O caminho de disputa é bem definido e
+  foi testado em campo por volume adversarial. Cobrimos toda a
+  mecânica em
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">nossa análise aprofundada da resolução</a>.
+- **Acesso permissionless.** Qualquer pessoa com uma carteira e USDC
+  pode operar na Polymarket. A plataforma não restringe o acesso por
+  jurisdição via KYC; opera fora do perímetro regulado dos EUA e se
+  apoia em geo-bloqueio para conformidade.
+
+Para o que a Polymarket não foi projetada:
+
+- **Hospedar outras marcas de operadores.** A Polymarket é uma única
+  venue. Você não pode operar "a venue de previsão da sua corretora
+  com tecnologia Polymarket" — não há API para operadores, não há
+  deploy white-label, não há modelo de taxas por operador. Se você
+  quer uma venue com marca própria, a Polymarket não é sua camada de
+  infraestrutura.
+- **Fluxo institucional dos EUA.** Traders sediados nos EUA não
+  conseguem acessar a Polymarket diretamente sem uma VPN, o que mesas
+  profissionais não farão. A oportunidade institucional dos EUA está
+  na Kalshi, não na Polymarket.
+- **Usuários não cripto-nativos.** O onboarding da Polymarket exige
+  uma carteira, USDC e familiaridade com UX on-chain. Para a base de
+  clientes de uma corretora regional de varejo, esse atrito é fatal.
+
+## O que a Kalshi realmente é
+
+A Kalshi é a exchange americana regulada de contratos de evento. Ela
+opera como um Designated Contract Market (DCM) registrado na CFTC, o
+que significa que cada mercado que hospeda foi avaliado contra o
+arcabouço da CFTC para contratos de evento antes de entrar no ar. A
+liquidação é em USD, a custódia é feita por meio de um parceiro
+bancário regulado nos EUA e a resolução é realizada pela equipe de
+integridade de mercado da Kalshi usando fontes de dados pré-publicadas.
+
+O que funciona extremamente bem na Kalshi:
+
+- **Acesso institucional dos EUA.** Fundos macro, hedge funds e mesas
+  proprietárias operam na Kalshi como uma venue regulada dentro do
+  perímetro dos EUA. Esta é a porta de entrada institucional mais
+  limpa para a classe de ativos globalmente, e o volume reflete isso
+  — a participação institucional do volume da Kalshi ultrapassou
+  30 % em 2025.
+- **Clareza regulatória.** Uma operação na Kalshi é uma operação de
+  derivativo regulada com a mesma postura jurídica que uma operação
+  de futuros do Tesouro na CME. Para um alocador institucional, essa
+  é a diferença entre "podemos tomar tamanho aqui" e "compliance não
+  vai aprovar".
+- **Tipos de mercado específicos.** A Kalshi tem sido particularmente
+  forte em juros, IPC e contratos macro — mercados onde as mesas
+  reguladas dos EUA têm o maior apetite natural.
+
+Para o que a Kalshi não foi projetada:
+
+- **Usuários fora dos EUA.** A Kalshi é geo-restrita a usuários dos
+  EUA. Um trader em São Paulo, Londres ou Singapura não consegue
+  acessar a Kalshi de forma alguma. Isso é regulatório, não técnico,
+  e é espelhado do lado da Polymarket (a Polymarket geo-bloqueia os
+  EUA).
+- **Hospedar outras marcas de operadores.** Como a Polymarket, a
+  Kalshi é uma única venue. Não há API para operadores, não há
+  white-label, não há modelo de taxas por operador. O acordo de
+  distribuição XP × Kalshi é uma parceria, não um produto — não se
+  generaliza para outros operadores que queiram fazer o mesmo.
+- **Mercados de cauda longa.** O arcabouço regulatório da Kalshi
+  exige que cada mercado seja aprovado antes do lançamento. Isso
+  funciona para um catálogo curado de mercados macro e políticos;
+  não escala para os mais de 9.800 mercados por semana que a
+  Polymarket opera em categorias de cauda longa.
+
+## O que a Kuest realmente é
+
+A Kuest é a camada de protocolo abaixo da venue de mercado de
+previsão de qualquer operador. A forma de visualizá-la é: em vez de
+ser uma venue na qual você opera, a Kuest é a infraestrutura sobre a
+qual outras venues funcionam. Uma corretora regional, uma empresa de
+mídia, uma mesa institucional ou uma comunidade liderada por um
+criador pode implantar sua própria venue de mercado de previsão com
+marca própria usando a Kuest em quinze minutos — e a venue funciona
+sobre os mesmos contratos auditados, liquidez compartilhada e
+resolução gerenciada que o protocolo fornece a qualquer outro
+operador.
+
+A arquitetura tem quatro camadas e o operador herda todas as quatro:
+
+- **Smart contracts.** Derivados da arquitetura CLOB da Polymarket,
+  auditados pela OpenZeppelin, implantados no mainnet da Polygon. A
+  identidade do operador está codificada nas instâncias do contrato;
+  as taxas do operador acumulam-se no endereço de liquidação do
+  operador.
+- **Matching engine.** Arquitetura de relayer em produção,
+  fornecendo ordenação sub-milissegundo, sem custos de gas por ordem
+  para os traders e liquidação determinística.
+- **Liquidez compartilhada.** O fluxo de ordens em cada deploy de
+  operador contribui para e busca de um livro de ordens unificado.
+  Novos operadores veem profundidade real desde o Dia 1 a partir do
+  momento em que lançam. Cobrimos por que isso importa no
+  <a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartilhada</a>.
+- **Resolução gerenciada.** Optimistic oracle baseado em UMA com
+  escopos de resolução isolados por operador, de modo que uma
+  resolução defeituosa nos mercados de um operador não pode afetar
+  os de outro.
+
+Para o que a Kuest serve:
+
+- **Qualquer operador que queira sua própria venue sem construir
+  infraestrutura.** Corretoras, exchanges cripto-nativas, operadores
+  de mídia, mesas institucionais, casas de apostas esportivas,
+  comunidades de criadores — qualquer um com distribuição que não
+  queira gastar de US$ 3,4 a 7,2 milhões e de 8 a 14 meses
+  construindo infraestrutura que não precisa possuir.
+- **Deployments multijurisdicionais.** Um único operador pode
+  implantar overlays por jurisdição (provedores de KYC, modelos de
+  taxa, pacotes de idioma) sem rodar múltiplos builds.
+- **Mercados de cauda longa em escala.** A camada de protocolo pode
+  hospedar a cauda longa de mercados que uma única venue regulada
+  não consegue aprovar um a um.
+
+O que a Kuest não é:
+
+- **Uma venue.** Você não pode operar diretamente na Kuest. O
+  protocolo está abaixo das venues dos operadores; as venues são
+  para onde os traders vão.
+- **Uma exchange de derivativos regulada nos EUA.** A Kalshi é. Os
+  operadores que precisam de status de exchange regulada nos EUA
+  trabalham com o canal de parcerias da Kalshi, não com a Kuest.
+
+## Lado a lado: economia de taxas
+
+As três plataformas têm modelos de taxas estruturalmente diferentes
+porque estão jogando posições diferentes na pilha.
+
+<Comparison
+  columns={["Dimensão", "Polymarket", "Kalshi", "Kuest (deploys de operador)"]}
+  rows={[
+    ["Taxa principal do trader", "≈ 1,0 % por lado (rateio protocolo/operador)", "0,0 % (sem taxa por operação)", "Definida pelo operador, tipicamente 0,5–1,5 %"],
+    ["Custos ocultos", "Spread (~30–60 bps)", "Spread + nível de dados de mercado", "Spread (~20–60 bps no livro compartilhado)"],
+    ["Rebate ao maker", "Não", "Não", "Não (design de livro compartilhado)"],
+    ["Participação do operador", "Não se aplica (venue única)", "Não se aplica", "100 % da taxa do operador"],
+    ["Receita do protocolo", "A Polymarket retém sua margem de venue", "Recuperada via receita do ecossistema", "Pequena taxa de protocolo abaixo da taxa do operador"],
+    ["Overrides por jurisdição", "Não", "Não", "Sim"],
+  ]}
+/>
+
+A linha mais importante é a da participação do operador. Polymarket
+e Kalshi operam sua própria venue e mantêm sua margem de venue. O
+modelo da Kuest é estruturalmente diferente — o operador que opera a
+venue mantém quase toda a taxa do operador, com uma pequena taxa de
+protocolo por baixo para cobrir a infraestrutura. É isso que faz o
+modelo da Kuest ser alinhado ao operador em vez de competir com
+operadores.
+
+Para um detalhamento mais profundo de como definir a taxa do
+operador num deploy Kuest, veja o
+<a href="/blog/2026-04-fee-models-explained">post sobre modelos de taxa</a>.
+
+## Lado a lado: matriz de funcionalidades
+
+Uma comparação mais granular nas dimensões com que os operadores
+costumam se importar:
+
+<Comparison
+  columns={["Funcionalidade", "Polymarket", "Kalshi", "Kuest"]}
+  rows={[
+    ["Ativo de liquidação", "USDC on-chain", "Custódia bancária em USD", "USDC on-chain (operador pode sobrepor fiat)"],
+    ["Modelo de resolução", "UMA Optimistic Oracle", "Equipe centralizada de integridade de mercado", "Baseado em UMA, escopo isolado por operador"],
+    ["Disponibilidade geográfica", "Global, exceto EUA", "Apenas EUA", "Configurável por operador"],
+    ["Exigência de KYC", "Nenhuma (apenas carteira)", "KYC completo regulado nos EUA", "Configurável por operador / jurisdição"],
+    ["Criação de mercados", "Permissionless (curadoria de admin)", "Pré-aprovada pela exchange", "Gerenciada pelo operador dentro dos limites do protocolo"],
+    ["Modelo de custódia", "Auto-custódia", "Parceiro bancário regulado", "Configurável: própria ou regulada"],
+    ["Profundidade do livro de ordens no lançamento", "Existente (venue madura)", "Existente (venue madura)", "Compartilhada (Dia 1 profundo para novos operadores)"],
+    ["Branding do operador", "Apenas Polymarket", "Apenas Kalshi", "Por deploy de operador"],
+    ["Encaixe no ecossistema", "Nativo on-chain", "Institucional regulado nos EUA", "Lado do operador (qualquer jurisdição, qualquer público)"],
+  ]}
+/>
+
+As colunas decisivas para a maioria dos operadores são
+"disponibilidade geográfica" e "branding do operador". Se você é um
+operador com público fora dos EUA, a Polymarket não pode hospedar
+seu público sob sua marca e a Kalshi não pode hospedá-lo de forma
+alguma. A Kuest é o caminho.
+
+## Encaixe de público, em linguagem simples
+
+A forma mais clara de pensar sobre qual plataforma é certa para qual
+público é perguntar "quem é o público e onde ele está?"
+
+**Um hedge fund macro sediado nos EUA** quer tomar uma posição
+sobre a próxima decisão do Fed. Ele precisa de uma venue americana
+regulada. **Kalshi** é a resposta. A Kuest é irrelevante para ele —
+ele não está operando uma venue, está operando em uma.
+
+**Um trader cripto-nativo em qualquer lugar fora dos EUA** quer
+tomar uma posição sobre um evento político ou macro. Ele quer
+profundidade, taxas baixas e um onboarding permissionless.
+**Polymarket** é a resposta. A Kuest é irrelevante para ele — ele
+não está operando uma venue.
+
+**Uma corretora regional de varejo com 80.000 clientes em São Paulo**
+quer oferecer mercados de previsão à sua base de clientes existente
+sob sua própria marca, com idioma local, estrutura de taxas local e
+o parceiro bancário regulado em quem seus clientes já confiam. A
+Polymarket não pode hospedá-los. A Kalshi não pode hospedá-los.
+**Kuest** é a resposta.
+
+**Uma exchange cripto-nativa (Kraken, Bitget, etc.)** quer adicionar
+mercados de previsão como um SKU dentro de sua UI de exchange
+existente. Ela precisa de uma API para operadores, branding white-
+label e integração com suas contas de usuário existentes. **Kuest**
+é a resposta.
+
+**Uma comunidade liderada por um criador (newsletter, Twitch, X)**
+quer hospedar mercados específicos para os interesses de seu
+público. Ela precisa de criação de mercados controlada pelo
+operador, superfícies com marca própria e um fluxo de taxas que ela
+detenha. A Polymarket e a Kalshi não conseguem hospedar isso; a
+**Kuest** consegue.
+
+**Uma casa de apostas esportivas sediada nos EUA** quer rodar
+overlays de mercado de previsão para sua base de clientes existente.
+Ela precisa de status regulado nos EUA e desenho de mercado
+específico para seu público. O caminho certo é uma parceria com a
+**Kalshi** (venue americana regulada) ou um build sob medida com seu
+próprio pedido de DCM — não a Kuest, que é estruturalmente do lado
+do operador, e não do lado de venue regulada nos EUA.
+
+## A distinção protocolo-vs-venue, explicada
+
+A analogia mais clara que encontramos é a dos pagamentos. Visa e
+Mastercard são redes de pagamento; a Stripe é uma camada de
+infraestrutura de pagamento; a cafeteria é o operador-comerciante.
+Nenhum deles compete com os outros de forma significativa. Eles
+ocupam posições diferentes na mesma cadeia de valor.
+
+Os mercados de previsão estão no mesmo ponto de sua evolução em que
+os pagamentos estavam por volta de 2010, quando uma geração de
+comerciantes começou a perceber que poderia oferecer pagamentos sem
+construir as próprias redes de processamento de cartões. Os
+comerciantes que entenderam isso mais rápido venceram suas
+categorias. A mesma coisa está acontecendo agora nos mercados de
+previsão.
+
+A Polymarket e a Kalshi são venues — elas detêm o relacionamento com
+o cliente para as operações que acontecem nelas e capturam a margem
+de venue. A Kuest é infraestrutura — ela permite que milhares de
+marcas de operadores detenham o relacionamento com o cliente para
+as operações que acontecem em cada uma de suas venues, com a margem
+de venue fluindo para o operador e uma pequena taxa de protocolo
+por baixo.
+
+A pergunta estratégica para um operador não é "contra qual venue eu
+opero?" — essa é uma pergunta de trader. É "quero construir
+infraestrutura ou operar uma venue?" Se a resposta é "operar uma
+venue" (que é o caso para quase todo operador com distribuição),
+então a Kuest é o caminho, porque a Polymarket e a Kalshi não estão
+no negócio de infraestrutura para operadores.
+
+<Callout type="info" title="Por que essa distinção é estrategicamente importante">
+  Operadores que tratam a comparação como "Kuest vs Polymarket"
+  acabam tentando otimizar para uma competição que não existe. A
+  comparação correta é "Kuest vs construir você mesmo", que é a que
+  cobrimos no
+  <a href="/blog/2026-04-build-vs-license-prediction-market">post de build vs licenciar</a>.
+  A Polymarket é a venue contra cuja execução seus traders podem
+  comparar; a Kuest é a infraestrutura que permite que você compita
+  em público em vez de competir em infraestrutura.
+</Callout>
+
+## Casos de uso que se encaixam em cada combinação
+
+Os operadores não precisam escolher um. As estratégias de operador
+mais sofisticadas em 2026 usam combinações.
+
+**Combinação 1: deploy Kuest + parceria institucional com Kalshi.**
+Um operador sediado nos EUA pode rodar um deploy internacional
+movido a Kuest para públicos fora dos EUA enquanto persegue um
+acordo de distribuição com a Kalshi (semelhante a XP × Kalshi) para
+fluxo institucional dos EUA. Esse foi o padrão que a própria XP
+seguiu: ela é parceira de distribuição da Kalshi para fluxo
+institucional na venue americana e, separadamente, está avaliando a
+infraestrutura da Kuest para o público brasileiro de varejo que a
+Kalshi não consegue atender.
+
+**Combinação 2: deploy Kuest + espelho de liquidez Polymarket.** O
+deploy de um operador na Kuest pode espelhar mercados da Polymarket
+quando as questões subjacentes são as mesmas. O fluxo de ordens no
+deploy do operador contribui para e busca de um livro compartilhado
+que inclui profundidade alinhada à Polymarket. O operador obtém
+liquidez de qualidade Polymarket sob sua própria marca, em sua
+própria jurisdição.
+
+**Combinação 3: deploy Kuest + criação de mercados sob medida.** Um
+operador de mídia com um público de nicho pode rodar
+majoritariamente mercados de cauda longa específicos para seu nicho,
+com a opção de também hospedar mercados mainstream espelhados. Os
+mercados mainstream recebem liquidez compartilhada; os mercados de
+cauda longa partem do público do operador.
+
+Os operadores que definirão esta categoria nos próximos 24 meses
+não são os operadores que escolhem uma plataforma; são os
+operadores que combinam plataformas para se ajustar ao seu público
+e à sua posição.
+
+## O que esperamos que mude nos próximos 12 meses
+
+A categoria está se movendo rápido o suficiente para que qualquer
+comparação honesta tenha meia-vida de 12 meses. Três deslocamentos
+são visíveis de onde estamos, e devem entrar em uma decisão de
+horizonte longo.
+
+**A Polymarket está subindo de mercado em direção ao acesso
+institucional.** A captação de 2025 colocou a Polymarket em um
+caminho rumo a um onboarding institucional mais sofisticado —
+trilhos de block-trade, mesas OTC e infraestrutura de reporting que
+atende às necessidades de alocadores profissionais em jurisdições
+que já permitem participação on-chain. A expectativa é que dentro de
+um ano, a distância entre operar na Polymarket e operar em uma
+venue americana regulada se estreite significativamente para o
+fluxo institucional fora dos EUA.
+
+**A Kalshi está descendo de mercado em direção ao varejo e aos
+contratos de cauda longa.** As recentes adições de contratos de
+evento esportivo e a trilha de parcerias exemplificada pela XP
+sugerem que a Kalshi vai expandir tanto a amplitude dos contratos
+quanto a do acesso. Espere experiências de varejo movidas a Kalshi
+em mais canais de distribuição dos EUA e espere que o catálogo de
+contratos aprovados se amplie mais rápido do que historicamente.
+
+**A camada de protocolo da Kuest está se densificando.** À medida
+que mais operadores fazem deploy sobre a mesma liquidez
+compartilhada, a profundidade do livro unificado cresce de forma
+multiplicativa. Esperamos que os spreads do Dia 1 em um deploy de
+operador na Kuest se estreitem outros 30 a 40 % no próximo ano à
+medida que mais marcas de operadores contribuírem com fluxo de
+ordens para o livro compartilhado. Isso amplia a distância entre a
+qualidade de execução para o trader em uma venue movida a Kuest e
+as alternativas.
+
+A estratégia de operador que envelhece melhor através desses três
+deslocamentos é a que detém o público e herda a infraestrutura. A
+Polymarket e a Kalshi estão evoluindo como venues; a Kuest está
+evoluindo como protocolo; os operadores que se compõem ao longo das
+mudanças são aqueles cuja própria marca está à frente de uma pilha
+em evolução que eles não mantêm pessoalmente.
+
+## Como pensar a decisão
+
+Um arcabouço curto para chegar à resposta certa:
+
+1. **Você é um trader?** Use a Polymarket se estiver fora dos EUA,
+  a Kalshi se estiver dentro dos EUA. A Kuest não é a sua
+  plataforma — você opera em venues de operadores construídas sobre
+  a Kuest.
+2. **Você é uma instituição sediada nos EUA buscando exposição
+  regulada?** Kalshi, possivelmente com um deploy Kuest para
+  públicos fora dos EUA em paralelo.
+3. **Você é qualquer outro operador com distribuição?** Corretora,
+  exchange cripto-nativa, mídia, criador, casa de apostas
+  esportivas, fintech. Kuest, com quase certeza.
+4. **Você está tentando ser a próxima Polymarket ou Kalshi?**
+  Construa sua própria infraestrutura de venue. O caminho do
+  protocolo não vai te ajudar; você precisa ser dono de cada camada
+  porque o seu moat é a própria venue.
+
+Para a esmagadora maioria dos operadores com quem trabalhamos, a
+resposta é a opção 3: eles têm distribuição, não querem ser um
+concorrente dono de venue da Polymarket e da Kalshi, e querem
+infraestrutura que lhes permita atender ao seu público sob sua
+própria marca. Essa é a tese da camada de protocolo, e é a posição
+que a Kuest ocupa.
+
+<KuestCTA
+  headline="Quer mapear seu público contra a combinação certa de plataformas?"
+  body="Vamos percorrer seu público, sua jurisdição, sua posição competitiva e a combinação certa de pontos de acesso da Kuest, da Polymarket e da Kalshi para o seu caso específico."
+  primary={{ href: "/launch", label: "Rodar o assistente de lançamento" }}
+  secondary={{ href: "/enterprise", label: "Agendar uma chamada estratégica" }}
+/>

@@ -444,18 +444,26 @@ export default function MarketingPageRuntime({
     const nextSection = document.getElementById(nextSectionId)
     const finalSection = finalSectionId ? document.getElementById(finalSectionId) : null
 
+    if (!dockNav) {
+      return
+    }
+
     function sync() {
-      if (!heroNav || !dockNav || !nextSection) {
+      if (!dockNav) {
         return
       }
 
-      const reachedContent = nextSection.getBoundingClientRect().top <= window.innerHeight * 0.72
+      const reachedContent = nextSection
+        ? nextSection.getBoundingClientRect().top <= window.innerHeight * 0.72
+        : true
       const reachedFinal = finalSection
         ? finalSection.getBoundingClientRect().top <= window.innerHeight * 0.9
         : false
       const showDock = reachedContent && !reachedFinal
 
-      heroNav.classList.toggle('is-hidden', reachedContent)
+      if (heroNav) {
+        heroNav.classList.toggle('is-hidden', reachedContent)
+      }
       dockNav.classList.toggle('is-visible', showDock)
       dockNav.setAttribute('aria-hidden', String(!showDock))
     }

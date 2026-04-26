@@ -1,0 +1,290 @@
+---
+title: "Comment Lancer Votre Propre Marché de Prédiction en 2026 (Guide en 15 Minutes)"
+description: "Une visite guidée de bout en bout du stack Kuest — contrats intelligents audités, liquidité partagée, résolution gérée et votre commission opérateur sur chaque trade. De l'inscription au premier trade en direct en un quart d'heure."
+publishedAt: 2026-04-25
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "launch", "operators", "infrastructure"]
+---
+
+Les marchés de prédiction ne sont plus une classe d'actifs
+marginale. Kalshi et Polymarket ont ensemble dégagé plus de
+18 milliards de dollars de volume mensuel au T1 2026 — et environ
+deux tiers de cette demande se trouvent hors des États-Unis, sur
+des plateformes que les utilisateurs de ces pays ne contrôlent
+pas. La question d'infrastructure se décide maintenant : qui
+exploitera les plateformes locales sur lesquelles les
+utilisateurs au Brésil, en Allemagne, au Royaume-Uni et à
+Singapour vont réellement trader ?
+
+Cet article parcourt le stack Kuest — ce qui tourne sous le
+capot, pourquoi cela compte pour les institutions et les
+opérateurs, et comment un déploiement fonctionne exactement de
+bout en bout. À la fin de cette page, vous aurez une image
+concrète de la façon dont une venue passe de l'inscription à son
+premier trade en direct en quinze minutes.
+
+Si vous êtes plus tôt dans votre évaluation, l'<a href="/blog/2026-03-what-are-prediction-markets">introduction aux marchés de prédiction</a>
+couvre les bases, et l'<a href="/blog/2026-04-build-vs-license-prediction-market">analyse construire-vs-licencier</a>
+explique pourquoi la plupart des opérateurs ne devraient pas
+construire le stack eux-mêmes.
+
+<Stat
+  value="18,3 Md$"
+  label="Volume mensuel combiné sur Kalshi et Polymarket au T1 2026, avec deux tiers de la demande située hors des États-Unis"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, T1 2026"
+/>
+
+## Pourquoi « 15 minutes » est un chiffre significatif
+
+La plupart des opérateurs qui évaluent l'infrastructure de
+marchés de prédiction mesurent le temps avant lancement en mois.
+Une venue tournant sur des contrats faits maison, un moteur de
+matching personnalisé, une intégration oracle interne et un
+pipeline de conformité sur mesure prend systématiquement 8 à 14
+mois pour livrer — et c'est l'estimation optimiste, avant que
+les cycles d'audit ne dérapent et que les négociations avec les
+fournisseurs de liquidité ne stagnent.
+
+Le temps de déploiement de Kuest est de quinze minutes parce que
+le gros œuvre est déjà fait. Les contrats sont audités. Le
+moteur de matching est en production. La liquidité partagée est
+déjà là. Les rails de résolution sont déjà câblés. Ce que vous
+configurez au moment du déploiement n'est pas de
+l'infrastructure — ce sont les paramètres qui rendent la venue
+*vôtre* : marque, frais, périmètre des marchés, juridictions
+cibles, audience.
+
+Le passage de « quinze mois » à « quinze minutes » n'est pas un
+argument marketing. C'est la différence entre licencier une
+infrastructure qui existe déjà et la reconstruire.
+
+## Ce qui tourne réellement sous le capot
+
+Le stack sous chaque déploiement Kuest a quatre couches, dont
+chacune est héritée par l'opérateur sans qu'il en porte la
+responsabilité opérationnelle.
+
+**Contrats intelligents dérivés de l'architecture CLOB de
+Polymarket.** Le design de base du contrat est le même que celui
+qui a porté des milliards de dollars de volume sur la venue
+on-chain la plus suivie de la catégorie. Les contrats ont été
+audités par OpenZeppelin et adaptés à la liquidité partagée
+entre plusieurs frontends d'opérateurs. Ce dernier élément —
+faire en sorte qu'une instance de contrat serve plusieurs
+marques d'opérateur sans qu'elles s'entrechoquent — est la
+partie spécifique à une couche de protocole, que vous ne
+répliqueriez pas facilement en interne.
+
+**Un moteur de matching en production.** La couche de matching
+est une architecture relayer : les traders soumettent les ordres
+off-chain, le relayer applique l'équité et l'ordre, et seules
+les exécutions atterrissent sur la chaîne. Cela vous donne un
+ordonnancement infra-milliseconde, pas de coûts de gas par
+ordre pour les traders, et un règlement déterministe sur
+Polygon mainnet.
+
+**Des rails de résolution qui ne dépendent pas de l'opérateur.**
+Les marchés se résolvent via l'Optimistic Oracle d'UMA, avec
+des scopes de résolution isolés par opérateur, de sorte qu'une
+résolution défectueuse sur les marchés d'un opérateur ne peut
+pas affecter ceux d'un autre. Nous avons couvert la mécanique
+complète dans le
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sur la couche de résolution et de règlement</a>.
+
+**Liquidité partagée à l'échelle du protocole.** Le flux d'ordres
+sur chaque marque d'opérateur contribue à et puise dans un
+carnet unifié qui reflète les venues externes les plus
+profondes. Les nouveaux opérateurs voient des écarts en direct
+et une profondeur réaliste dès le moment où ils lancent. Nous
+avons écrit séparément sur <a href="/blog/2026-04-shared-liquidity-day-one">pourquoi la liquidité partagée décide qui gagne la prochaine vague</a>.
+
+<Callout type="info" title="Aucune équipe blockchain interne nécessaire">
+  Contrats intelligents, moteur CLOB, relayer, règlement, gas et
+  fourniture de liquidité sont entièrement gérés du côté Kuest.
+  Votre équipe fournit les actifs de marque et le périmètre des
+  événements ; nous gérons le reste. Si votre organisation
+  d'ingénierie est occupée sur son produit principal, c'est très
+  bien — vous n'avez pas besoin de doter en personnel une
+  infrastructure blockchain pour livrer une venue de marché de
+  prédiction.
+</Callout>
+
+## Comment fonctionne un déploiement institutionnel typique
+
+Le processus de déploiement comprime ce qui était autrefois une
+construction d'un an en trois étapes de configuration
+explicites. Nous l'avons exécuté avec des opérateurs crypto-
+natifs (sans overlay de conformité) et des courtiers retail
+réglementés (KYC complet + règles juridictionnelles). Le flux
+est le même ; seules les densités de configuration diffèrent.
+
+### 1. Définissez le périmètre du marché et le modèle de frais
+
+Choisissez les catégories d'événements qui comptent pour votre
+audience — macro, taux, politique, crypto, sport, géopolitique.
+Définissez vos frais de trading (le
+<a href="/blog/2026-04-fee-models-explained">post sur les modèles de frais</a>
+détaille la sélection du tarif). Configurez la surface de
+marque : logo, couleur d'accent, copy.
+
+C'est l'étape où se passe la plupart de votre réflexion
+stratégique. Les marchés spécifiques que vous choisissez
+d'héberger façonnent chaque pièce en aval — composition
+d'audience, complexité de résolution, sensibilité aux frais,
+copy marketing. Les opérateurs tentés d'« héberger tout »
+tôt devraient résister à l'impulsion. Une venue avec huit
+marchés de haute qualité dans une verticale surperforme une
+venue avec quatre-vingts marchés médiocres dans cinq
+verticales.
+
+### 2. Nous déployons l'ensemble du stack technique
+
+Contrats intelligents, CLOB, rails de règlement, infrastructure
+de wallet, liquidité — le tout en marche avant que votre équipe
+ne termine l'onboarding. Le déploiement est paramétré : votre
+identité d'opérateur est encodée dans les instances de
+contrats, votre commission s'accumule à votre adresse
+d'opérateur, vos scopes de résolution sont isolés. En coulisses,
+vous partagez une infrastructure plus profonde avec tous les
+autres opérateurs du protocole ; du point de vue de vos
+traders, c'est votre venue.
+
+Quelques spécificités à connaître :
+
+- **Le déploiement de contrats est sur Polygon mainnet.** Vos
+  traders interagissent avec la même chaîne qui a traité des
+  milliards de dollars en volume vérifié de marchés de
+  prédiction. Le gas est payé par le protocole ; les traders
+  ne voient jamais de frais réseau.
+- **La custody est configurable.** Les opérateurs crypto-natifs
+  peuvent fonctionner avec des wallets self-custodial. Les
+  opérateurs réglementés peuvent router via des comptes de
+  fonds clients ségrégués via les partenaires bancaires du
+  protocole.
+- **Le scope de résolution est isolé par opérateur.** Tout
+  marché créé sous votre identité d'opérateur se résout via
+  votre scope.
+
+### 3. Votre plateforme gagne une commission sur chaque trade
+
+Pas de partage de revenus, pas d'intermédiaire, pas de retard de
+règlement. La commission opérateur s'accumule à votre adresse
+de règlement à mesure que les exécutions ont lieu. Vous retirez
+au rythme qui a du sens pour votre comptabilité.
+
+L'économie des commissions est claire et le surcoût du
+protocole est suffisamment petit pour que les opérateurs
+puissent pratiquer des taux affichés agressivement compétitifs
+sans sacrifier de marge.
+
+<MarketEmbed
+  title="La Fed baissera-t-elle ses taux avant juillet ?"
+  cat="Macro"
+  cover="/assets/images/fed-rate-move.png"
+  pct={42}
+/>
+
+## Ce qui se configure par juridiction
+
+Si vous déployez une venue destinée à une seule juridiction
+(par ex. une venue US-uniquement, ou Brésil-uniquement sous le
+cadre local), la configuration ci-dessus est essentiellement
+complète.
+
+Les opérateurs multi-juridictions ont une fine couche de
+configuration supplémentaire : fournisseurs KYC par juridiction,
+modèles de frais par juridiction, hooks de reporting pour les
+audits régulateurs, bundles de frontend par langue. Pour la
+plupart des opérateurs, cet overlay ajoute environ une heure au
+premier déploiement.
+
+## Comment Kuest se compare à la construction interne
+
+<Comparison
+  columns={["Capacité", "Kuest", "Construction interne"]}
+  rows={[
+    ["Contrats intelligents audités", "Jour un (OpenZeppelin)", "6–12 mois"],
+    ["CLOB + relayer + matching engine", "Inclus", "520 k$–980 k$ build sur mesure"],
+    ["Liquidité partagée au lancement", "Oui, profondeur réelle Jour-1", "Démarrage à froid"],
+    ["Intégration règlement / oracle", "Gérée (basée UMA)", "180 k$–360 k$ d'intégration"],
+    ["Overlay par juridiction", "Configuration", "+200 k$ chacun"],
+    ["Équipe d'ingénierie requise", "0", "5–8 ETP"],
+    ["Délai jusqu'au premier trade en direct", "≈ 15 minutes", "8–14 mois"],
+    ["Capital initial", "≈ 0 $", "3,4 M$–7,2 M$"],
+  ]}
+/>
+
+Le chemin de la construction n'est pas faux pour tout le monde.
+Si vous êtes la venue elle-même, construire est le bon choix.
+Pour tous les autres profils d'opérateur (courtier régional,
+overlay crypto-natif, venue créateur, sportsbook, opérateur de
+médias, desk institutionnel), le chemin du protocole est la
+route la plus rapide, la moins chère et structurellement la
+moins risquée.
+
+Le véritable verrouillage pour les marchés de prédiction n'est
+pas la technologie — c'est la liquidité. Refléter les marchés
+externes en direct signifie que votre plateforme se lance avec
+une profondeur réelle et un flux d'ordres réel dès le premier
+jour.
+
+## Le déploiement en 15 minutes, dans l'ordre
+
+Voici la séquence réelle, de l'inscription au premier trade en
+direct. Chaque étape est une configuration, pas de l'ingénierie.
+
+1. **S'inscrire et vérifier l'identité de l'opérateur.** ≈ 2
+   minutes.
+2. **Choisir les marchés et le périmètre d'audience.** ≈ 4
+   minutes.
+3. **Définir les frais et les paramètres de marque.** ≈ 3
+   minutes.
+4. **Configurer l'overlay juridictionnel (si multi-
+   juridiction).** ≈ 4 minutes.
+5. **Vérifier et déployer.** ≈ 2 minutes.
+
+Cela fait quinze minutes entre « je n'ai pas commencé » et
+« j'ai une venue de marchés de prédiction en direct avec ma
+marque dessus, ma commission qui s'accumule, et de la liquidité
+partagée déjà présente dans le carnet ».
+
+Les premiers trades arrivent généralement dans la première
+heure, parce que le carnet partagé garantit qu'il y a de vrais
+écarts à lever. Le canal de distribution sur lequel vous
+poussez votre venue (newsletter, base clients du courtier, X,
+communauté) détermine la vitesse de volume à partir de là.
+
+## Ce qui vient ensuite sur la feuille de route du protocole
+
+Un instantané de ce que nous expédions pour le reste de 2026 :
+un pitch deck du protocole pour les partenaires institutionnels,
+un SDK pour les market makers institutionnels, un chemin de
+déploiement géré pour les courtiers réglementés, et des bundles
+de langues additionnels.
+
+Si votre équipe évalue l'infrastructure de marchés de
+prédiction, le déploiement de démo et le wizard de lancement
+sont les deux moyens les plus rapides de comprendre si cela
+correspond. La démo est paramétrée par rapport à votre profil
+d'audience et tourne pendant la durée de votre évaluation ; le
+wizard vous emmène vers une venue en direct.
+
+Le moyen le plus rapide de savoir si une venue de marchés de
+prédiction est le bon produit pour votre audience n'est pas de
+lire une analyse de plus — c'est de déployer une démo contre un
+échantillon de votre vraie audience et d'observer les données
+d'activation pendant une semaine. Nous avons vu des opérateurs
+passer de « évaluons la catégorie » à « livré, en direct,
+monétisant » en moins de cinq jours ouvrables avec exactement
+ce loop.
+
+<KuestCTA
+  headline="Prêt à lancer votre propre marché de prédiction ?"
+  body="Contrats audités par OpenZeppelin, liquidité partagée dès le premier jour, votre commission sur chaque trade. Quinze minutes de l'inscription au premier trade en direct."
+  primary={{ href: "/launch", label: "Lancer maintenant" }}
+  secondary={{ href: "/enterprise", label: "Parler aux ventes" }}
+/>

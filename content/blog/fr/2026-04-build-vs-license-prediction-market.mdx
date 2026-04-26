@@ -1,0 +1,327 @@
+---
+title: "Construire ou licencier un marché de prédiction : analyse des coûts et délais pour 2026"
+description: "Ce que coûte vraiment la construction d'un marché de prédiction de zéro — ingénierie, audits, oracles, conformité, liquidité — par rapport à la licence d'infrastructure. Chiffres réels, calendriers réels."
+publishedAt: 2026-04-02
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "infrastructure"]
+---
+
+Si vous êtes une brokerage, un opérateur de médias ou une fintech qui
+a décidé de lancer une venue de marché de prédiction, la décision
+suivante est de savoir si vous construisez l'infrastructure vous-même
+ou si vous la licenciez. La plupart des équipes abordent cette
+question avec des estimations approximatives et finissent surprises
+par les chiffres réels. Voici la décomposition que nous aurions aimé
+avoir.
+
+Cet article s'adresse aux opérateurs qui comprennent déjà
+l'opportunité (sinon, commencez par <a href="/blog/2026-03-prediction-market-land-grab">notre analyse de marché</a>). La
+question ici est purement d'exécution : combien cela coûte-t-il, en
+dollars et en mois, de livrer une venue crédible capable de porter un
+volume réel ?
+
+<Stat
+  value="$3.8M – $7.2M"
+  label="Fourchette réaliste du coût de construction d'une plateforme de marché de prédiction de qualité production avec contrats audités, matching engine en interne et rails de résolution de base"
+  sourceHref="https://kuest.com/research/build-vs-license"
+  sourceLabel="Enquête opérateurs Kuest, T1 2026"
+/>
+
+## Ce que « le construire » signifie réellement
+
+Avant de parler de coût, il est utile d'être précis sur ce qu'exige
+une plateforme complète de marché de prédiction. Les opérateurs
+sous-dimensionnent systématiquement cette liste parce qu'une partie
+en est invisible jusqu'à ce qu'on soit profondément engagé dans
+l'implémentation.
+
+Une venue de qualité production a besoin, au minimum :
+
+- **Contrats d'outcome.** Smart Contracts (ou leur équivalent
+  off-chain) qui définissent le payoff conditionnel, acceptent la
+  collatéralisation et paient à la résolution. Ils doivent gérer les
+  contrats YES/NO, les marchés multi-outcomes et les dépendances
+  conditionnelles. Ils doivent être audités.
+- **Une matching engine.** Un carnet d'ordres à limite centralisé,
+  fonctionnant souvent sur une architecture de relayer afin que les
+  utilisateurs ne paient pas de gas pour chaque ordre. C'est un
+  logiciel non trivial — ordonnancement sub-milliseconde, garanties
+  d'équité, mécanique des exécutions partielles, sémantique de
+  cancel-replace.
+- **Infrastructure de settlement.** Un moyen de déterminer les
+  outcomes et de régler les marchés. Soit une équipe centralisée
+  d'intégrité de marché, une intégration d'oracle optimiste (UMA),
+  soit un réseau d'oracles propre. Chaque chemin a sa propre charge
+  opérationnelle continue.
+- **Wallet et custody.** Si vous êtes crypto-native, cela signifie
+  intégration de wallet plus custody on-chain. Si vous êtes régulé,
+  ce sont les rampes fiat d'entrée/sortie plus les fonds clients
+  ségrégués plus la piste d'audit pour défendre cette ségrégation.
+- **Pipelines KYC, AML et conformité.** Par juridiction. Chaque
+  juridiction a sa propre stack de fournisseurs, ses exigences en
+  documents d'identité et ses obligations de reporting.
+- **Frontend et applications mobiles.** L'UX de trading, les flux de
+  dépôt/retrait, la découverte de marchés, les graphiques, la gestion
+  de positions, les notifications. La majeure partie de l'expérience
+  utilisateur.
+- **Apport de liquidité.** Soit des bots de market making, des
+  relations contractuelles avec des market makers, soit un accord de
+  liquidité partagée avec une autre venue. Sans cela, vous n'avez
+  pas de venue.
+- **Opérations.** Monitoring 24/7, réponse aux incidents, support
+  client, gestion des litiges, pipelines de création de marchés,
+  capacités de surcharge manuelle pour les cas limites.
+
+Huit piliers. Chacun est un projet d'ingénierie sérieux à lui seul.
+
+## Le coût réaliste d'une construction de zéro
+
+Voici la structure de coûts qui ressort systématiquement dans les
+plans de construction d'opérateurs que nous avons examinés. Ce sont
+des chiffres 2026, dimensionnés pour une équipe qui sait ce qu'elle
+fait — pas la construction la moins chère possible.
+
+<Comparison
+  columns={["Composant", "Coût initial", "Délai", "Récurrent"]}
+  rows={[
+    ["Smart Contracts + audit (OpenZeppelin ou Trail of Bits)", "$280k – $520k", "4–6 mois", "$30k / an"],
+    ["Matching engine + architecture de relayer", "$520k – $980k", "5–8 mois", "$140k / an"],
+    ["Settlement / intégration d'oracle", "$180k – $360k", "3–5 mois", "$60k / an"],
+    ["Wallet + custody (juridiction régulée)", "$420k – $800k", "5–9 mois", "$220k / an"],
+    ["Pipeline KYC / AML (1 juridiction)", "$140k – $260k", "2–4 mois", "$80k / an"],
+    ["Frontend + mobile + design system", "$580k – $1.1M", "5–7 mois", "$280k / an"],
+    ["Liquidité (market making initial)", "$1.0M – $2.5M", "continu", "très variable"],
+    ["Ops / support / infrastructure de monitoring", "$320k – $640k", "2–3 mois", "$340k / an"],
+  ]}
+/>
+
+Cela donne 3,4 M$ à 7,2 M$ de coût initial, plus de 1,15 M$ par an
+en opex récurrent et un calendrier de chemin critique d'environ 8 à
+14 mois — le workstream individuel le plus long est la matching
+engine, mais la contrainte bloquante en pratique est l'audit, parce
+que la matching engine dépend d'interfaces de contrat stables, et
+celles-ci ne sont pas livrées avant que l'audit n'ait clos sa
+deuxième manche.
+
+Les chiffres ci-dessus supposent une juridiction, une langue et une
+classe d'actifs unique. Chaque juridiction supplémentaire ajoute
+environ $200k en initial et 6 à 10 semaines. Le support multi-actifs
+(sport + macro + crypto, par exemple) ajoute un autre niveau de
+complexité dans la création de marchés et l'automatisation du
+settlement.
+
+## Les coûts cachés que personne ne dimensionne
+
+Les postes ci-dessus sont les évidents. Il y en a six autres que
+les opérateurs sous-estiment systématiquement.
+
+**Cycles d'audit au pluriel, pas au singulier.** Un premier audit
+remonte des findings. Vous les corrigez, vous refactorisez et vous
+ré-auditez. Puis un troisième passage. Chaque cycle dure 6 à 10
+semaines et coûte $90k–$160k. La plupart des équipes budgètent un
+seul audit et découvrent qu'il leur en faut trois.
+
+**La liquidité n'est pas un coût ponctuel.** Un accord de market
+making est soit une commission contractuelle payée pour la fourniture
+d'écart, soit un livre interne qui doit être capitalisé. Dans les
+deux cas, le coût court indéfiniment et augmente avec le volume au
+lieu de décliner avec le temps.
+
+**L'engagement réglementaire est bilatéral.** Vous n'obtenez pas une
+licence ; vous construisez une relation avec un régulateur sur des
+mois ou des années. Cette relation a des coûts indirects (temps de
+direction, conseil juridique, soumissions écrites périodiques,
+réunions en personne) qui ne figurent sur aucune feuille de coûts.
+
+**Opérations de résolution.** Une plateforme avec 9 800 marchés
+actifs par semaine, comme l'état actuel de Polymarket, a des
+dizaines de résolutions de cas limites par jour — marchés où les
+données sous-jacentes sont ambiguës, où la source bouge, où un
+événement majeur reformule la question d'outcome. Chacun nécessite
+un jugement humain, un raisonnement documenté et une défendabilité
+publique. Les opérateurs ne budgètent systématiquement pas l'effectif
+de resolution-ops que cela implique.
+
+**Surface d'attaque de l'infrastructure.** Chaque composant que vous
+construisez est un composant que vous devez défendre. Front-running,
+manipulation d'oracle, extraction MEV, phishing du frontend, échecs
+de gestion de clés — le modèle de menace est large et les
+conséquences sont publiques. Les opérateurs en production
+consacrent 20 à 30 % de leur capacité d'ingénierie au durcissement
+après le lancement.
+
+**Le coût d'opportunité d'un lancement tardif.** Les marques
+opérateurs qui fixent les attentes du public en 2026 vont composer.
+Un retard de 12 mois au lancement, ce ne sont pas seulement 12 mois
+de revenus perdus — c'est une avance de 12 mois offerte à celui qui
+aura lancé en premier dans votre audience cible.
+
+<Callout type="warning" title="Un exemple réel que nous entendons à répétition">
+  Une brokerage régionale avec une distribution forte démarre une
+  construction au T2, prévoit un lancement pour la fin d'année,
+  livre au T2 de l'année suivante. Au moment où elle est en ligne,
+  un concurrent avec la même audience a 18 mois de données
+  comportementales, de l'attribution intégrée à son CRM, et un coût
+  d'acquisition client bien plus bas. Rattraper coûte plus cher que
+  la construction initiale.
+</Callout>
+
+## Ce que la licence débloque réellement
+
+Licencier l'infrastructure n'est pas une réponse partielle. Les
+opérateurs qui licencient proprement opèrent avec la même surface
+produit que les opérateurs qui ont construit — mêmes contrats, même
+profondeur, même sophistication d'UX — avec une structure de coûts
+différente.
+
+<Comparison
+  columns={["Dimension", "Construire", "Licencier (Kuest)"]}
+  rows={[
+    ["Délai jusqu'au premier trade en direct", "8–14 mois", "Jours"],
+    ["Capital initial", "$3.4M – $7.2M", "≈ $0"],
+    ["Liquidité au lancement", "Démarrage à froid", "Partagée depuis les venues existantes"],
+    ["Propriété de l'audit", "Opérateur", "Hérité (OpenZeppelin)"],
+    ["Rails de résolution", "Construire / intégrer", "Géré"],
+    ["Overlay par juridiction", "+$200k chacune", "Configuration"],
+    ["Taille de l'équipe d'ingénierie", "5–8 ETP", "0"],
+    ["Commission d'opérateur sur chaque trade", "Oui", "Oui"],
+  ]}
+/>
+
+La commission d'opérateur est le point économique clé. Licencier ne
+dilue pas votre revenu par trade de manière significative — la
+plupart des accords d'infrastructure tarifent les frais de plateforme
+comme une fraction de la commission d'opérateur, pas en partage de
+revenus. Vous gardez la marge de la brokerage ; vous externalisez la
+construction d'ingénierie.
+
+Pour la plupart des opérateurs, la question pertinente n'est pas
+« combien j'économise en licenciant ? » — c'est « combien plus tôt
+je capture l'attribution d'audience ? ». Les économies sur la
+construction sont réelles, mais elles ne sont qu'une fraction de la
+valeur d'être en ligne 9 à 12 mois plus tôt.
+
+## Quand construire a vraiment du sens
+
+Il y a trois scénarios où construire a véritablement du sens, et il
+vaut la peine d'être honnête à leur sujet.
+
+**Vous êtes la venue, pas l'opérateur.** Si votre position
+stratégique est d'être la venue mondiale (comme Polymarket ou
+Kalshi), vous devez posséder l'infrastructure, parce que c'est le
+fossé. Vous ne licencierez pas. Vous construisez, vous levez du
+capital institutionnel pour financer la construction et vous
+acceptez le calendrier de deux ans.
+
+**Vous avez une conception de contrat unique que le protocole ne
+prend pas en charge.** Si votre proposition de valeur est exotique —
+un nouveau contrat multi-collatéral, un produit de prédiction
+perpétuel, un wrapper contract-as-derivative — les abstractions du
+protocole pourraient ne pas convenir. La plupart des opérateurs ne
+tombent pas dans ce cas, mais quelques-uns oui.
+
+**Vous êtes un acteur souverain ou quasi-souverain.** Certaines
+institutions doivent posséder l'infrastructure pour des raisons non
+commerciales — fonds souverains, venues adjacentes aux banques
+centrales, grandes bourses étatiques. Elles construisent parce que
+licencier crée une dépendance non économique qu'elles ne peuvent
+pas accepter.
+
+Pour tout le monde — chaque brokerage retail, chaque fintech grand
+public, chaque opérateur de médias avec une audience — la voie de la
+construction est une distraction.
+
+## Ce qui tourne mal sur le chemin de la construction et que personne n'anticipe
+
+Même les équipes qui entrent les yeux ouverts sur le coût et le
+calendrier sont prises en embuscade par une classe spécifique de
+problèmes qui n'apparaît dans aucune roadmap. Trois schémas se
+répètent à travers les tentatives de construction de zéro que nous
+avons observées (et dans certains cas reprises au stade de la
+récupération).
+
+**Attrition d'ingénierie en plein build.** Un ingénieur senior
+Smart Contracts part au septième mois. Son remplaçant commence au
+neuvième. Le transfert de connaissances mange deux mois de plus
+par-dessus. L'audit est retardé d'un trimestre parce que la surface
+du contrat n'a cessé de bouger pendant la passation. Ce n'est pas
+hypothétique — c'est le mode de défaillance modal des constructions
+en interne, parce que les personnes qualifiées pour écrire ces
+contrats sont rares et ont des options.
+
+**L'économie des fournisseurs de liquidité change en plein
+lancement.** L'opérateur signe un accord de market making au
+quatrième mois avec des conditions qui semblent correctes. Les
+opportunités de carnet concurrent du market maker s'améliorent au
+dixième mois. La renégociation place l'opérateur sur de moins
+bonnes conditions ou force un basculement vers un market making
+interne, ce qui ajoute une ligne de capital de 1 M$+ qui n'était
+pas dans le budget initial.
+
+**Dérive réglementaire pendant la construction.** Le cadre vers
+lequel vous construisez au mois un n'est pas le cadre qui existe au
+mois quatorze quand vous êtes prêt à demander une no-action letter.
+Les opérateurs sous-estiment systématiquement le retravail créé par
+la dérive réglementaire sur une construction d'un an et plus. Nous
+avons vu des constructions livrées et techniquement opérationnelles
+mais qui ne pouvaient pas demander la licence pour laquelle elles
+avaient été conçues parce que les règles avaient changé.
+
+La propriété structurelle commune des trois est le risque de durée.
+Chaque mois où vous êtes en phase de construction, les hypothèses
+qui sous-tendent votre plan doivent tenir. Elles ne tiennent pas, de
+manière fiable. Licencier fait s'effondrer la phase de construction
+à des jours, ce qui fait s'effondrer le risque de durée à
+approximativement zéro — vous opérez contre les conditions actuelles,
+pas contre des conditions dont vous pariez qu'elles existeront dans
+un an.
+
+## Un cadre rapide de décision
+
+Trois questions, dans l'ordre, qui vous mènent à la bonne réponse :
+
+1. **Votre fossé concurrentiel est-il la venue, ou l'audience ?** Si
+   c'est l'audience, licenciez la venue. Si c'est la venue
+   elle-même, construisez.
+2. **Pouvez-vous livrer un produit utilisable en moins de 12 mois ?**
+   Si oui, construire est sur la table. Si non, vous offrez votre
+   audience à celui qui le peut.
+3. **Votre produit nécessite-t-il des conceptions de contrat qui
+   n'existent sur aucun protocole ?** Si oui, construisez. Si vos
+   besoins se situent dans l'espace standard des contrats binaires /
+   multi-outcomes / scalaires, licenciez.
+
+La plupart des opérateurs qui réfléchissent honnêtement à cela
+répondent « audience, moins de 12 mois est peu probable, les
+besoins de contrat sont standard ». C'est une décision de licence.
+
+## À quoi ressemble la licence en pratique
+
+Un déploiement de licence propre avec Kuest ressemble à ceci en
+temps et en ordre :
+
+- **Jour 0.** Actifs de marque, modèle de commission, définition
+  d'audience, juridictions cibles soumis via l'assistant de
+  lancement.
+- **Jour 0 – 1.** Smart Contracts déployés sous votre identité
+  d'opérateur. Types de marché personnalisés configurés. Sources de
+  résolution sélectionnées.
+- **Jour 1 – 3.** Frontend habillé à votre marque. Flux de
+  conformité configurés par juridiction. Fournisseur KYC intégré.
+- **Jour 3 – 5.** Soft launch auprès d'une audience fermée pour
+  validation comportementale. Liquidité déjà présente depuis le
+  flux d'ordres partagé.
+- **Jour 5 – 14.** Lancement public. Commission d'opérateur
+  collectée à chaque trade. Équipe d'ingénierie à zéro.
+
+Le même périmètre, construit de zéro, prend un an et demi.
+
+<KuestCTA
+  headline="Vous voulez voir à quoi ressemble votre point d'équilibre construire vs licencier ?"
+  body="Nous pouvons parcourir votre périmètre spécifique, votre audience et vos juridictions cibles et vous donner un calcul concret construire-vs-licencier en moins d'une heure."
+  primary={{ href: "/launch", label: "Lancer l'assistant de lancement" }}
+  secondary={{ href: "/enterprise", label: "Parler aux ventes" }}
+/>

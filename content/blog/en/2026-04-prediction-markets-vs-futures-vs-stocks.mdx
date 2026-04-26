@@ -1,0 +1,412 @@
+---
+title: "Prediction Markets vs Futures vs Stock Markets: A 2026 Structural Comparison"
+description: "What prediction markets price, how they differ from futures and equities on capital efficiency, settlement, liquidity, and information aggregation — and where the boundaries are blurring."
+publishedAt: 2026-04-15
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "market-structure", "futures", "equities"]
+---
+
+The first instinct most analysts have when looking at prediction
+markets is to ask which of the existing financial-market categories
+they belong in. Are they a kind of equity? A kind of futures contract?
+Something new? The honest answer is that prediction markets share
+mechanical features with both stocks and futures but price something
+neither of them prices, which is why they don't slot neatly into
+either category.
+
+This post is the structural comparison: what each instrument actually
+prices, how the order books and settlement mechanics differ, where
+capital efficiency lands, what the liquidity dynamics look like, and
+why the boundaries between these three asset classes are starting to
+blur in ways that favour prediction markets over the next decade.
+
+If you're earlier in your evaluation of the category, the
+<a href="/blog/2026-03-what-are-prediction-markets">prediction-market primer</a>
+covers the basics. This post assumes you're past those basics and
+want to place prediction markets inside a broader market-structure
+framing.
+
+<Stat
+  value="≈ $1.4 quadrillion"
+  label="Combined annual notional volume across global stock markets, futures markets, and OTC derivatives in 2025 — versus ~$220B for prediction markets, the asset class with the steepest growth curve of any of them"
+  sourceHref="https://www.bis.org/statistics"
+  sourceLabel="BIS / WFE / aggregated industry data, 2025"
+/>
+
+## What each market actually prices
+
+The cleanest way to compare three financial-market types is to start
+with what they price, because the rest of the structure (matching,
+settlement, capital, liquidity) follows from that one fact.
+
+**A stock market prices a claim on the future cash flows of a firm.**
+When you buy a share of Apple, you are buying a residual claim on
+Apple's free cash flow forever, plus voting rights, plus liquidation
+seniority below debt. The price reflects the present value of all
+expected future cash flows discounted by the equity's required
+return. That price changes constantly because expectations about
+those cash flows change.
+
+**A futures market prices the forward delivery of an underlying
+asset.** A WTI futures contract for September delivery prices the
+expected spot price of a barrel of oil at the September settlement
+date, plus the cost of carry from now to then (storage, financing,
+convenience yield). The contract is an obligation to deliver or
+accept delivery of the underlying. Even when settled in cash, the
+price tracks the underlying spot.
+
+**A prediction market prices the probability of a specific event.**
+A binary contract that pays $1 if the Fed cuts rates in July is
+priced at the market's implied probability of that cut. There is no
+underlying asset, no cash flow, no delivery. The price is a pure
+probability estimate, denominated in the settlement currency.
+
+These are three structurally different things. A stock is a claim on
+ownership; a future is a claim on delivery; a prediction contract is
+a claim on the truth of a future statement. The mechanics that
+follow from each of those claims diverge in important ways.
+
+## Capital efficiency: the most underrated difference
+
+The capital-efficiency story is where prediction markets quietly
+out-perform both equities and futures, and it's the story that most
+investors discover late.
+
+**Stock-market capital efficiency.** When you take a $100 directional
+view in equities, you put $100 of capital up. You can use margin to
+lever it 2–4× depending on Reg T or your prime broker, but the
+underlying capital intensity is high. To express a $1M directional
+view in equities you need on the order of $250k–$500k in capital.
+
+**Futures capital efficiency.** Futures clear through margin, so the
+upfront capital is much smaller — typically 5–15% of the notional,
+depending on the contract. To take a $1M directional view in CME
+S&P futures, you put up roughly $50k–$80k in initial margin. The
+trade-off is that you're exposed to mark-to-market margin calls
+between now and expiry; an adverse move can force liquidation
+before your view is right.
+
+**Prediction-market capital efficiency.** Prediction contracts have
+a built-in capital cap: the worst case for a YES contract is that
+it settles at $0, so the maximum loss is the premium paid. To
+express a $1M-equivalent view in a prediction market, you need
+exactly the cost of the contracts, which depends on the implied
+probability. A YES contract trading at $0.42 on a $1M notional view
+costs $420k. The variance is bounded; there are no margin calls;
+the worst case is fully collateralised at order entry.
+
+<Comparison
+  columns={["Dimension", "Stocks", "Futures", "Prediction markets"]}
+  rows={[
+    ["Capital required for $1M directional view", "$250k–$500k", "$50k–$80k", "Premium only (e.g. $420k)"],
+    ["Margin-call risk pre-expiry", "Limited (Reg T)", "High", "None"],
+    ["Maximum loss", "Position size", "Unbounded (perpetual contracts)", "Premium paid"],
+    ["Time decay risk", "None", "Mostly none (cost of carry)", "Low (binary at terminal)"],
+    ["Carry cost", "Borrow if shorted", "Storage, financing", "None"],
+  ]}
+/>
+
+The capital-efficiency story is what makes prediction markets useful
+as a hedge. A fund holding a $50M Treasury position with duration
+risk can hedge against a specific Fed-cut scenario by buying a
+$300k notional position in a binary CPI or rate-decision contract.
+The contract expires at a known date with a bounded loss; there are
+no margin calls; the cost is exactly the premium. That is much more
+capital-efficient than building the same hedge through Treasury
+options or rates futures.
+
+## Settlement mechanics: terminal vs ongoing
+
+The three asset classes settle very differently, and the settlement
+mechanism shapes the trader's experience materially.
+
+**Stock-market settlement is ongoing.** Stocks don't expire. You
+hold them until you decide to sell. The "settlement" is just the
+T+2 (or T+1, in modern markets) clearing of trades you've executed.
+The position itself can be held indefinitely, with cash flows
+arriving as dividends.
+
+**Futures settlement is terminal but rolled.** Each futures contract
+expires on a defined date. At expiry, the position settles to the
+final settlement price — either physically (delivery of the
+underlying) or in cash. Traders who want continuous exposure have
+to "roll" — close the expiring contract and open the next one,
+incurring transaction costs each cycle.
+
+**Prediction-market settlement is fully terminal.** Every prediction
+contract has a single resolution date. At resolution, the contract
+pays $1 to the side that was right and $0 to the side that was
+wrong. There is no roll, no continuous exposure, no funding rate.
+The contract has a known expiry and a known terminal value
+distribution (binary).
+
+This terminal-and-bounded structure is what lets prediction-market
+contracts act as cleaner expressions of conviction. A trader who
+believes the Fed will cut rates in July doesn't have to roll
+quarterly futures or maintain margin against an indefinite
+exposure. They buy the contract, hold it to settlement, and either
+collect $1 or accept that the view was wrong. The discipline
+imposed by terminal settlement is, perversely, one of the things
+that makes prediction-market traders more disciplined than equity
+or futures traders on average.
+
+We covered the resolution mechanics in detail in the
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">resolution and settlement layer post</a>.
+For the comparison context here, what matters is just that the
+terminal-payoff structure is fundamentally different from the
+rolling structure of futures or the indefinite-hold structure of
+equities.
+
+## Liquidity dynamics: where the books diverge
+
+The order books for stocks, futures, and prediction markets all use
+the same primitive — a Central Limit Order Book — but they differ in
+how the book behaves as expiry approaches and how depth is
+distributed across the price spectrum.
+
+**Stock-market books.** Equities have effectively continuous time
+horizons, so the book is roughly stationary in time. Depth is
+distributed across a wide price range (because the underlying value
+moves), and the book is typically deepest near the current price.
+Major equities (S&P constituents) carry $10M+ at the inside spread;
+mid-caps carry $100k–$1M; small-caps can be thinly traded.
+
+**Futures books.** Futures have a defined expiry. The book is
+deepest in the front-month contract and thins out for further-dated
+contracts. As expiry approaches, the front-month book gets denser
+(more participants concentrating on the contract about to settle)
+and the next-month book starts to take over. The roll dynamic
+creates predictable structure.
+
+**Prediction-market books.** Prediction contracts have terminal
+expiry too, but the depth distribution is qualitatively different.
+The book is deepest **near the implied probability** — i.e., the
+midpoint where most traders have a similar view. As resolution
+approaches, the book compresses toward 0 or 1: a market that's at
+$0.95 a week before resolution typically converges to $0.99+ as
+the outcome becomes increasingly clear. The terminal binary nature
+means depth concentrates around the consensus probability, with
+thin liquidity at the tails — a different shape from equities or
+futures.
+
+This shape has practical consequences. A prediction-market trader
+trying to express a strong contrarian view (i.e., trying to buy YES
+when the implied probability is 5%) faces thin liquidity at the
+tail. Conversely, lifting a 50/50 market is almost always cheap.
+The trader who understands this structure is at a meaningful
+informational advantage; the trader who treats the book as
+equity-like will be surprised by execution costs at the extremes.
+
+## Information aggregation: markets as oracles
+
+The deepest reason prediction markets matter is not their capital
+efficiency or settlement mechanics. It's that they aggregate
+information about future events more cleanly than any other
+mechanism humans have invented, including expert forecasting,
+polling, and policy modelling.
+
+**Stocks aggregate information about firms.** The price of Apple
+encodes the market's collective view of Apple's future cash flows.
+Equity-analyst estimates are calibrated against equity prices,
+not the other way around — when prices and analyst estimates
+diverge, prices win in the long run.
+
+**Futures aggregate information about commodity supply, demand, and
+forward prices.** The WTI curve at any given moment is the
+market's collective expectation of oil prices over the next 24
+months. Refiners, producers, and traders all have material money
+on the line, and the curve has a long track record of being more
+accurate than expert forecasts.
+
+**Prediction markets aggregate information about discrete future
+events.** The implied probability on a Fed-decision contract is the
+market's collective view of the probability of the cut — and that
+implied probability has consistently out-performed expert
+forecasters, polling, and rating-agency models over multi-year
+samples. The Iowa Electronic Markets demonstrated this for US
+elections in the 1990s; Polymarket has demonstrated it for
+political and macro events at much larger scale in the 2020s.
+
+The asset classes share a common property: when participants have
+real money at stake, the prices they collectively post are more
+honest than the opinions they would otherwise volunteer. But
+prediction markets are uniquely positioned to do this for events
+that don't have a stock or futures market — the "long tail" of
+discrete future events that matter to operators, governments, and
+allocators but aren't naturally hedged through traditional
+instruments.
+
+<Callout type="info" title="Why this is the most underrated property">
+  Stocks aggregate information about firms. Futures aggregate
+  information about commodities. Prediction markets aggregate
+  information about everything else — and "everything else" is
+  most of the actually consequential questions in policy, business,
+  and finance. That's why we expect this category to expand
+  faster than either of the others over the next decade.
+</Callout>
+
+## Risk profile: bounded vs unbounded
+
+The risk profile of a prediction-market position is qualitatively
+different from a stock or futures position because the payoff is
+bounded by construction.
+
+**Stocks.** A long stock position has bounded downside (maximum
+loss is the position size) and unbounded upside. A short stock
+position has the opposite — bounded upside (the stock can't go
+below $0) and unbounded downside. Most equity portfolios are net
+long, so the asymmetry is favourable, but margin calls and forced
+liquidations introduce non-linear risk.
+
+**Futures.** A futures position has theoretically unbounded
+downside on both sides because the underlying can move in
+unanticipated ways and margin calls can compound. In practice,
+exchange-imposed circuit breakers and position limits cap the
+worst case, but the experience of being margin-called by a 4σ
+move is entirely possible in commodity or rates futures.
+
+**Prediction markets.** Both sides of a prediction-market trade
+are bounded by construction. YES contracts pay $0 or $1; NO
+contracts pay $0 or $1; the maximum loss for either side is the
+premium paid. There are no margin calls because the worst case is
+already collateralised at order entry. This structure is
+attractive for traders who want to take expressive views without
+exposing themselves to the operational complexity of managing
+mark-to-market risk.
+
+The flip side is that the upside is also bounded. A YES contract
+bought at $0.42 has a maximum payoff of $1, a return of 138%.
+That's a strong payoff for the right view, but it's not "10x"
+crypto-style returns. Prediction markets are a place to express
+high-confidence views, not to swing for the fences.
+
+## When each instrument is the right one
+
+Not every view is best expressed in a prediction market. The
+honest framing is that each of the three instruments is the right
+tool for a different class of view.
+
+**Use stocks when** your view is about a firm's long-term cash
+flows. "Apple will sell more iPhones than the consensus expects
+over the next five years" is an equity view. There is no clean
+prediction-market or futures expression for that.
+
+**Use futures when** your view is about the price of an underlying
+asset over a defined horizon. "WTI crude will trade above $90 in
+six months" is a futures view. You could express it in a prediction
+market as a binary contract, but you lose the linear payoff that
+makes futures attractive for hedgers and producers.
+
+**Use prediction markets when** your view is about a discrete
+future event with a binary or scalar outcome. "The Fed cuts rates
+in July." "The CPI prints above 3.2% on the September release."
+"The 2026 World Cup is won by Argentina." "Inflation comes in
+below the consensus on the next print." These are the natural
+home of prediction markets, and they're a class of view that
+neither equities nor futures express cleanly.
+
+The expansion happening through 2026 is that the third class —
+discrete event views — is much larger than most participants
+realised. Almost every consequential business decision, policy
+question, or investment thesis is downstream of a small number of
+discrete events. Pricing those events directly, rather than
+inferring them through equity or futures positions, is more
+efficient.
+
+## Why the boundaries are blurring
+
+Traditional asset classes are not static; they evolve into each
+other when the infrastructure is in place. Three convergence
+patterns are visible.
+
+**Equity-event hybrids.** Some equity-linked event contracts (e.g.,
+"Will Tesla announce production above 600k units in Q3?") sit at
+the intersection of equity analysis and prediction markets. The
+underlying view is about a firm, but the expression is a binary
+event contract. Operators expect this category to grow as
+analysts and traders look for cleaner expressions of specific
+catalysts.
+
+**Futures-event hybrids.** Volatility-event contracts (e.g., "Will
+implied vol on the S&P close above 25% on FOMC day?") let traders
+take views on volatility regimes through binary contracts rather
+than vega-laden options positions. The capital efficiency is
+better and the operational overhead is lower.
+
+**Prediction-market scalar contracts.** The simplest prediction
+contracts are binary, but scalar contracts (paying out an amount
+proportional to the underlying value) are increasingly common.
+These look mechanically similar to options or futures but with a
+simpler settlement and a tighter capital profile.
+
+The three asset classes are converging on a shared infrastructure
+substrate. The operators, exchanges, and protocols that figure
+out how to host all three under one roof are positioned to
+capture that convergence. We've designed the Kuest protocol with
+that future in mind — operators on Kuest will be able to host
+binary prediction contracts, scalar contracts, and event-linked
+derivatives under a single deploy, as the catalogue of supported
+contract types expands through 2026.
+
+## A note on settlement currencies
+
+One more structural difference worth flagging: each asset class has
+a default settlement substrate, and that substrate shapes who can
+participate.
+
+Equities settle in fiat through national clearing houses. Access
+requires a brokerage relationship in the relevant jurisdiction.
+Futures settle in fiat through exchange clearing houses with strict
+member requirements. Prediction markets, in their dominant on-chain
+form, settle in stablecoins (USDC) on public chains. That makes
+participation effectively global by default — anyone with a wallet
+and stablecoins can trade — and it makes the operator overlay (KYC,
+fiat ramps, jurisdictional gating) optional rather than baseline. It
+also means the cost of running infrastructure is lower, which is
+part of why a protocol-layer model works for prediction markets in
+ways it wouldn't for equities.
+
+## What this means for traders, operators, and allocators
+
+Three implications fall out of the structural comparison directly.
+
+**For traders.** Prediction markets are a high-conviction
+instrument. Use them when you have a strong view on a specific
+event and want bounded risk. Don't try to use them as a
+substitute for equity or futures positions where the view is
+about cash flows or commodity prices.
+
+**For operators.** The structural appeal of prediction markets to
+your audience is the capital efficiency and the bounded risk.
+That message should be central to how you market your venue.
+Traders who come from equities or futures will appreciate the
+absence of margin calls; traders who come from gambling will
+appreciate the better unit economics. Both translations are valid
+and both are net positives.
+
+**For allocators.** Prediction markets are not yet a core
+allocation in most institutional portfolios, but the category
+will be allocated to in the next 24 months. Funds that build
+research expertise now — particularly in event-driven macro and
+political risk — will be positioned to capture the alpha that
+comes with the institutional ramp-up. The volume data already
+shows the institutional share growing fast; the allocation
+framework hasn't caught up.
+
+The comparison between prediction markets, futures, and stocks is
+not a battle for dominance. It's a story about a third asset
+class taking its place alongside the other two as a primary
+instrument for a specific kind of view. The infrastructure to
+make that happen at scale is what's being built right now, and
+the operators that pick the right side of the build will define
+the category.
+
+<KuestCTA
+  headline="Want to host event contracts alongside your existing trading product?"
+  body="Whether your audience trades equities, futures, or crypto today, prediction markets compose with what you already offer. We'll show you how."
+  primary={{ href: "/launch", label: "Run the launch wizard" }}
+  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+/>

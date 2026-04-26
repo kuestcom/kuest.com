@@ -6,10 +6,10 @@ import { getExtracted, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
-import DockMenuControl from '@/components/DockMenuControl'
 import HeroMarketStage from '@/components/HeroMarketStage'
 import KuestMark from '@/components/KuestMark'
 import LanguageControl from '@/components/LanguageControl'
+import MarketingDockNav from '@/components/MarketingDockNav'
 import MarketingPageRuntime from '@/components/MarketingPageRuntime'
 import NicheShowcase from '@/components/NicheShowcase'
 import ShowcaseIcon from '@/components/ShowcaseIcon'
@@ -482,47 +482,15 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
         </div>
       </nav>
 
-      <nav id="dockNav" className="dock-nav" aria-hidden="true">
-        <a href="#page-top" className="nav-logo">
-          <KuestMark />
-          Kuest
-        </a>
-        <div className="nav-r">
-          <DockMenuControl
-            homeHref="/"
-            enterpriseHref="/enterprise"
-            protocolHref="/protocol"
-            demoHref="#p3-demo"
-            demoLabel="Demo"
-            active="enterprise"
-            openLabel={t('Open site navigation')}
-            menuAriaLabel={t('Site navigation')}
-            homeLabel={t('Home')}
-            enterpriseLabel={t('Enterprise')}
-            protocolLabel={t('The Protocol')}
-          />
-          <LanguageControl
-            locale={locale}
-            path="/enterprise"
-            controlId="dockSiteLanguageControl"
-            buttonId="dockSiteLanguageButton"
-            menuId="dockSiteLanguageMenu"
-            flagId="dockSiteLanguageCurrentFlag"
-            labelId="dockSiteLanguageCurrentLabel"
-            ariaLabel={t('Change site language')}
-          />
-          <ThemeToggle
-            id="dockThemeToggle"
-            className="dock-theme-toggle"
-            labelToDark={t('Switch to dark mode')}
-            labelToLight={t('Switch to light mode')}
-          />
-          <a href={CONTACT_HREF} className="nb nb-solid nav-cta">
-            <span className="cta-label">{t('Contact us')}</span>
-            <ChevronRightIcon />
-          </a>
-        </div>
-      </nav>
+      <MarketingDockNav
+        locale={locale}
+        active="enterprise"
+        languagePath="/enterprise"
+        demoHref="#p3-demo"
+        demoLabel="Demo"
+        ctaHref={CONTACT_HREF}
+        ctaLabel={t('Contact us')}
+      />
 
       <main id="page-top" className="page enterprise-page">
         <section className="panel-wrap panel-static hero-stack-panel" id="p0">

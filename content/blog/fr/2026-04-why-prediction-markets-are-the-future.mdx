@@ -1,0 +1,496 @@
+---
+title: "Pourquoi les marchés de prédiction sont l'avenir de la finance"
+description: "Une thèse approfondie expliquant pourquoi les marchés de prédiction deviendront une primitive financière centrale au cours de la prochaine décennie — agrégation d'informations, efficacité du capital, programmabilité, complémentarité avec l'AI et cas d'usage qui vont bien au-delà de ce que les actions ou les futures peuvent exprimer."
+publishedAt: 2026-04-23
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["thesis", "research", "future-of-finance", "market-structure"]
+---
+
+La plupart des catégories de marchés financiers mettent des
+décennies à trouver leur place dans la pile mondiale du capital.
+Les actions ont mis 200 ans depuis la Compagnie néerlandaise des
+Indes orientales jusqu'à la bourse cotée moderne. Les futures
+ont mis environ 150 ans depuis les fosses à grains de Chicago
+jusqu'aux courbes mondiales des taux et de l'énergie. Le crypto
+est passé en 15 ans du whitepaper de Bitcoin à une classe
+d'actifs valant plusieurs milliers de milliards. Les marchés de
+prédiction se trouvent désormais dans la phase de début de
+courbe S que ces catégories antérieures ont traversée, et les
+raisons structurelles pour lesquelles ils y appartiennent sont plus
+solides que les raisons que beaucoup de ces catégories
+antérieures avaient au même point de leur évolution.
+
+Ce billet est la thèse approfondie expliquant pourquoi les marchés
+de prédiction deviendront une primitive financière centrale au
+cours de la prochaine décennie — pas seulement un produit grand
+public de niche, mais une catégorie qui gagne sa place aux côtés
+des actions, des futures et des marchés de crédit dans la façon
+dont les institutions sérieuses allouent du capital et dont les
+opérateurs sérieux monétisent les audiences.
+
+Si vous êtes plus tôt dans votre évaluation, le
+<a href="/blog/2026-03-what-are-prediction-markets">guide d'introduction aux marchés de prédiction</a>
+couvre les bases, et
+<a href="/blog/2026-04-prediction-markets-vs-futures-vs-stocks">la comparaison structurelle</a>
+couvre comment ils diffèrent mécaniquement des actions et des
+futures. Ce billet va plus loin : pourquoi les avantages
+structurels se composent en l'infrastructure dominante
+d'agrégation d'informations des années 2030.
+
+<Stat
+  value="≈ 6× / an"
+  label="Taux de croissance composé du volume combiné des marchés de prédiction de 2024 au T1 2026 — la courbe de croissance la plus raide de toute classe d'actifs majeure dans la même fenêtre"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, T1 2026"
+/>
+
+## Le problème d'agrégation d'informations que personne d'autre ne résout proprement
+
+La plupart des décisions importantes dans le monde dépendent du
+fait que quelqu'un, quelque part, prévoit un événement futur. Une
+banque centrale qui décide de baisser les taux a besoin d'une
+prévision de l'inflation. Un détaillant qui décide de ses stocks
+a besoin d'une prévision de la demande. Un assureur qui tarifie
+une police a besoin d'une prévision des sinistres. Un gouvernement
+qui planifie un déploiement a besoin d'une prévision d'un scénario
+géopolitique. Une startup qui s'engage sur une embauche a besoin
+d'une prévision des conditions de financement.
+
+Pour chacune de ces décisions, l'option par défaut historique a
+été la prévision experte — analystes, sondages, commentateurs,
+publications spécialisées, modélisation interne. La qualité des
+prévisions de ces sources est, en moyenne, médiocre. Les deux
+décennies de recherche en prévision de Tetlock l'ont établi de
+manière définitive : les experts dans les domaines politiques et
+de policy prévoient à peu près au niveau du hasard sur des
+horizons pluriannuels. Le même schéma apparaît dans les prévisions
+des analystes financiers (qui sont calibrées par rapport à
+l'action des prix, et non l'inverse), dans les prévisions
+macroéconomiques (où la prévision médiane de Wall Street pour la
+croissance du PIB de l'année suivante se situe rarement à moins de
+1,5 points de pourcentage du chiffre réel) et dans les prévisions
+sportives (où le pronostic médian des experts est à peine meilleur
+que le consensus du public).
+
+Les marchés de prédiction résolvent ce problème d'une manière
+structurellement différente. Ils mettent de l'argent réel en jeu,
+agrègent les vues de milliers de participants ayant
+individuellement de petits avantages d'information, et produisent
+un prix unique qui reflète la vue collective pondérée. Le
+mécanisme est « la sagesse des foules, avec sa peau en jeu ». Il
+fonctionne pour la même raison que les marchés actions produisent
+des valorisations d'entreprises plus précises que les notes des
+analystes en recherche actions : lorsque les participants sont
+payés pour avoir raison, le signal agrégé est plus net que ne
+pourrait l'être n'importe quel signal individuel.
+
+Les Iowa Electronic Markets l'ont démontré pour les élections
+américaines dans les années 1990, surclassant systématiquement les
+sondages. Les marchés de prédiction l'ont démontré à grande
+échelle pour les catégories politique, macro, sportive et
+événementielle dans les années 2020. Le bilan empirique est
+maintenant suffisamment solide pour que la « probabilité implicite
+du marché de prédiction » soit un input principal dans la
+recherche institutionnelle sérieuse, même lorsque l'institution
+ne trade pas directement sur les marchés.
+
+## Pourquoi les foules battent les experts (sous conditions)
+
+L'argument de la « sagesse des foules » est parfois survendu, il
+vaut donc la peine d'être précis sur quand il fonctionne et quand
+il ne fonctionne pas.
+
+L'agrégation des foules fonctionne quand :
+
+- **La foule a des informations diverses.** Différents participants
+  ont différentes pièces du puzzle, et le marché agrège ces pièces
+  en une estimation plus nette qu'aucun individu ne pourrait
+  produire.
+- **Les participants sont prêts à mettre de l'argent sur le
+  désaccord.** La pression de prix qui fait bouger le marché
+  provient des traders qui croient que le consensus a tort et sont
+  prêts à soutenir cette conviction avec du capital.
+- **Le coût de trading est suffisamment bas pour rendre les petits
+  avantages d'information rentables.** Un trader avec un avantage
+  de 3% ne peut pas se permettre de trader sur un spread de 5%. À
+  mesure que l'infrastructure du marché s'améliore et que les
+  coûts de transaction diminuent, davantage d'avantages
+  d'information deviennent négociables.
+
+L'agrégation des foules NE fonctionne PAS quand :
+
+- **La foule a des informations corrélées.** Si tout le monde lit
+  la même source, la « foule » n'est qu'un expert avec mille
+  voix, et l'agrégation n'apporte aucun avantage.
+- **Les participants ne sont pas payés pour avoir raison.** Les
+  sondages, les commentaires et les prédictions non structurées
+  (sans peau en jeu) s'effondrent dans ce qui constitue le récit
+  dominant.
+- **Le marché est trop mince.** Un marché avec seulement dix
+  participants n'agrège pas l'information ; il moyenne juste dix
+  suppositions.
+
+Les marchés de prédiction à l'échelle à laquelle ils opèrent
+maintenant remplissent les conditions de manière constante. La
+diversité des participants est large, les incitations financières
+sont réelles, et l'infrastructure est suffisamment moderne pour
+que les petits avantages soient négociables. La sur-performance
+empirique par rapport aux experts en est le résultat.
+
+## Pourquoi l'AI ne remplace pas cela — elle l'amplifie
+
+Le contre-argument le plus courant que nous entendons est « la
+prévision par AI sera si bonne que les marchés de prédiction
+deviendront inutiles ». L'argument est exactement à l'envers.
+L'AI rend les marchés de prédiction plus importants, pas moins.
+
+Il y a trois raisons.
+
+**Les participants AI augmentent la liquidité, ils ne la
+remplacent pas.** Les marchés de prédiction modernes ont déjà des
+participants algorithmiques — desks faisant tourner des modèles de
+pricing, market-makers faisant tourner des moteurs de spread, et
+traders systématiques basés sur la recherche. L'AI ne fait
+qu'affûter ces participants. Le résultat est des spreads plus
+serrés et des carnets plus profonds, ce qui rend les marchés de
+prédiction plus utiles pour les traders humains, pas moins.
+
+**La prévision par AI est mieux validée par rapport aux prix de
+marché.** Le test de « cette prévision AI est-elle bonne ? » est
+de savoir si elle est meilleure que le prix du marché de
+prédiction. Si oui, l'AI peut trader sur l'écart et générer du
+rendement ; sinon, l'AI n'est qu'un commentaire d'expert coûteux.
+Les marchés de prédiction sont le mécanisme de calibrage pour la
+prévision par AI, pas sa concurrence.
+
+**L'AI génère plus de décisions qui nécessitent une prévision.**
+Chaque agent AI prenant des décisions pour une institution génère
+plus d'événements prévisibles : « Mon déploiement AI tiendra-t-il
+le budget ? » « Ce contrat finira-t-il en litige juridique ? »
+« Le fournisseur livrera-t-il à temps ? » Ces prévisions étaient
+autrefois internes et privées ; avec la prolifération de l'AI,
+elles deviennent des décisions explicites qui méritent d'être
+tarifées. La demande pour des contrats prévisibles croît avec
+l'adoption de l'AI.
+
+Le schéma est le même que celui que nous avons vu avec la relation
+entre les moteurs de recherche et Wikipedia, ou entre les LLM et
+Stack Overflow. La nouvelle technologie augmente la valeur du
+substrat de calibrage curé par les humains. Les marchés de
+prédiction sont ce substrat pour la prévision.
+
+## Efficacité du capital à grande échelle
+
+Nous avons couvert l'histoire de l'efficacité du capital dans
+<a href="/blog/2026-04-prediction-markets-vs-futures-vs-stocks">le billet de comparaison structurelle</a>,
+mais cela vaut la peine d'être réaffirmé car c'est la propriété
+qui rend les marchés de prédiction utiles comme instrument de
+couverture à l'échelle institutionnelle.
+
+Un contrat de prédiction binaire est l'expression la moins chère
+possible d'une vue sur un événement discret. Le trader paie la
+probabilité implicite, la perte maximale est bornée, le gain
+maximal est borné, et la position se règle à une date connue. Il
+n'y a pas d'appels de marge, pas de funding rates, pas de rolls.
+
+Pour un desk institutionnel couvrant une position de Trésor de
+50M USD contre un scénario de baisse de la Fed, exprimer cette
+couverture par des contrats binaires sur l'IPC ou les décisions
+de taux coûte une petite fraction de ce que la même couverture
+par des options sur Trésor ou des futures sur taux coûterait. Le
+compromis est que le payoff est binaire plutôt que linéaire — mais
+pour couvrir un scénario discret, binaire est exactement la bonne
+forme.
+
+L'adoption institutionnelle des marchés de prédiction en 2025 a été
+portée exactement par cette prise de conscience. Les fonds qui
+exprimaient auparavant des vues événementielles à travers des
+structures dérivées compliquées ont découvert que les contrats
+binaires sur les mêmes événements étaient moins chers, plus
+propres et ne nécessitaient pas de lignes de marge. À mesure que
+plus de fonds opèrent cette transition, la part institutionnelle
+du volume croît, ce qui attire plus de market-makers, ce qui
+resserre les spreads, ce qui rend les contrats utiles pour une
+gamme encore plus large de stratégies. C'est un volant d'inertie,
+et il tourne déjà.
+
+## Programmabilité : la propriété que ni les actions ni les futures n'ont
+
+La propriété qui distingue le plus nettement les marchés de
+prédiction des actions et des futures est la programmabilité. Un
+contrat de prédiction est une unité programmable. Il peut être
+intégré dans d'autres contrats, utilisé comme input de règlement,
+composé avec d'autres contrats de prédiction et tradé sur les
+surfaces des opérateurs avec une liquidité partagée.
+
+Ce que cela permet, concrètement :
+
+- **Contrats conditionnels.** « Payer 1 USD si l'événement A se
+  produit ET l'événement B se produit. » Composer deux contrats
+  de prédiction en un contrat conjoint, ce sont quelques lignes
+  de code. La même opération en actions ou en futures nécessite
+  une structure dérivée personnalisée dont la conception et l'audit
+  coûtent des millions.
+- **Paiements smart contract liés à l'événement.** Une DAO peut
+  router des fonds de trésorerie en fonction de la résolution
+  d'un contrat de prédiction. Un protocole d'assurance peut régler
+  des sinistres d'assurance paramétrique en fonction d'une
+  résolution de marché de prédiction. Un programme de subventions
+  peut libérer des fonds conditionnés au fait qu'un contrat de
+  jalon se résolve à YES. Ce sont des cas d'usage réels
+  aujourd'hui, et ils sont impossibles dans l'infrastructure de
+  marché traditionnelle.
+- **Composabilité entre opérateurs.** Un trader peut détenir une
+  position sur le deploy d'un opérateur et la compenser sur le
+  deploy d'un autre opérateur via la couche de liquidité partagée,
+  le règlement passant par le protocole. La fragmentation qui
+  pénalise les venues traditionnelles devient invisible pour le
+  trader.
+
+La programmabilité est la même propriété qui a rendu les
+stablecoin précieux dans DeFi — ce ne sont pas que de la monnaie
+numérique, c'est de la monnaie programmable. Les contrats de
+marché de prédiction ne sont pas que des affirmations
+probabilistes, ce sont des affirmations probabilistes
+programmables. Les cas d'usage qui découlent de la programmabilité
+sont encore en cours de découverte.
+
+<Callout type="info" title="Pourquoi la programmabilité se compose au fil du temps">
+  Chaque nouveau cas d'usage programmatique pour les contrats de
+  marché de prédiction génère une demande de nouveaux marchés, ce
+  qui génère une demande de plus de liquidité, ce qui génère une
+  demande de plus d'opérateurs, ce qui génère une demande de plus
+  de cas d'usage programmatiques. L'effet de composition est ce qui
+  nous fait penser que les marchés de prédiction deviennent une
+  primitive, pas un produit — ils sont la couche en dessous, pas
+  un objet sur l'étagère.
+</Callout>
+
+## Cas d'usage au-delà du jeu
+
+Le plus gros problème de perception de la catégorie est la
+confusion avec le jeu. La comparaison mécanique est tendue — le
+jeu est un divertissement à somme nulle avec une espérance de gain
+négative ; les marchés de prédiction sont une agrégation
+d'informations à somme positive avec une variance bornée — mais
+le chevauchement culturel est réel. La catégorie se débarrassera
+de l'association avec le jeu à mesure que les cas d'usage
+au-delà du trading grand public deviendront visibles.
+
+Trois cas d'usage non liés au jeu sont déjà opérationnels à
+grande échelle :
+
+**Couverture des risques macro.** Les fonds, les banques et les
+trésoreries d'entreprise couvrent des scénarios d'événements
+spécifiques par des contrats de prédiction. Le volume est
+institutionnel, les contrats sont macroéconomiques, et le cas
+d'usage est la gestion des risques.
+
+**Assurance et sinistres paramétriques.** Certains produits
+d'assurance paramétrique se règlent désormais sur la base des
+résolutions de marchés de prédiction sur la météo, les retards de
+vols ou les catastrophes naturelles. Le prix de marché est le
+déclencheur paramétrique ; le règlement est automatisé.
+
+**Marchés de décision d'entreprise.** Au sein des grandes
+organisations, les marchés de prédiction sont utilisés pour
+prévoir les dates d'achèvement des projets, les résultats des
+embauches, les probabilités de clôture de M&A et les calendriers
+de lancement de produits. La qualité du signal d'un marché interne
+bat la qualité du signal des estimations d'experts internes par
+de larges marges.
+
+Trois autres émergent :
+
+**Prévision souveraine.** Certains gouvernements et banques
+centrales ont commencé à expérimenter avec les signaux des marchés
+de prédiction pour les inputs de policy — en particulier
+l'inflation, la croissance et les prévisions liées aux élections.
+La sensibilité politique est élevée, mais l'argument de la qualité
+du signal est suffisamment fort pour que l'expérimentation ait
+lieu.
+
+**Prévision scientifique.** Les marchés de prédiction du taux de
+réplication, les contrats sur les résultats d'essais cliniques et
+les marchés de performance des subventions scientifiques sont tous
+en pilote. Le problème d'agrégation d'informations est le même que
+celui que les marchés de prédiction ont résolu en politique et
+macro ; l'application est juste plus précoce.
+
+**Gouvernance distribuée.** Les DAO et les organisations
+décentralisées utilisent les signaux des marchés de prédiction
+comme inputs dans les décisions de gouvernance. « Quelle est la
+probabilité de la communauté que cette proposition atteigne ses
+KPI à 6 mois ? » tarifée sur des marchés réels est un signal plus
+net que la discussion en comité.
+
+L'agrégat de ces cas d'usage est bien plus important que la
+catégorie de jeu grand public. Nous nous attendons à ce que le
+volume non lié au jeu dépasse le volume de trading grand public
+dans les cinq ans.
+
+## L'argument de la compression des frais
+
+Chaque catégorie de marché financier passe par une compression
+des frais à mesure qu'elle mûrit. Les commissions sur actions sont
+passées de 50 USD par trade en 1980 à zéro aujourd'hui. La
+compensation des futures est passée de dollars par côté à quelques
+centimes. Les frais des exchanges crypto sont passés de 0,5% par
+côté à 0,05% en cinq ans.
+
+Les marchés de prédiction sont au début de cette courbe. Les frais
+de trader affichés sur les plateformes les plus fréquentées
+aujourd'hui sont d'environ 1% par côté. Nous nous attendons à ce
+qu'une compression similaire se produise — le coût tout compris
+du trading d'un contrat de prédiction devrait se comprimer à
+quelques points de base dans une décennie à mesure que
+l'infrastructure mûrit, que le market-making devient plus
+compétitif et que les efficacités au niveau du protocole se
+composent.
+
+La compression des frais est bonne pour la catégorie dans son
+ensemble mais crée une situation stratégique intéressante pour les
+opérateurs. Les opérateurs qui s'en sortent bien dans un monde aux
+frais comprimés sont ceux dont l'activité est l'audience et la
+distribution, pas l'infrastructure. Si le coût tout compris pour
+le trader doit se comprimer 10× sur une décennie, la couche
+infrastructure capture moins de marge par trade, et l'opérateur
+qui capte la distribution capte plus de la chaîne de valeur.
+
+C'est la raison structurelle pour laquelle nous avons construit
+Kuest comme une couche de protocole alignée sur les opérateurs
+plutôt que comme un venue. L'avenir de la catégorie, ce sont des
+centaines de marques d'opérateurs servant des audiences distinctes,
+avec une infrastructure partagée en dessous. Le schéma correspond
+exactement à ce à quoi ressemblaient les paiements lorsqu'ils se
+sont banalisés : beaucoup de marchands, infrastructure partagée,
+marge distribuée.
+
+## Critiques et réfutations
+
+Il vaut la peine de prendre au sérieux les critiques les plus
+fortes, car ce sont les cadres auxquels la catégorie devra
+répondre dans les prochaines années.
+
+**« Ce n'est que du jeu avec des étapes en plus. »** La
+comparaison mécanique échoue — les contrats de marché de prédiction
+ne sont pas à somme nulle contre la maison ; les participants
+tradent net les uns contre les autres, la plateforme gagnant un
+petit frais. Mais le cadre culturel est réel. La réponse est la
+prolifération de cas d'usage non liés au jeu (couverture
+institutionnelle, assurance paramétrique, marchés de décision
+d'entreprise) qui font paraître l'association avec le jeu de plus
+en plus dépassée. À mesure que ces cas d'usage prennent de
+l'ampleur, le cadre se déplace.
+
+**« La liquidité est trop fine pour être utile au flux
+institutionnel. »** C'était vrai en 2022. Ça ne l'est plus en
+2026. Le volume combiné sur Polymarket et Kalshi est désormais
+suffisant pour absorber des positions institutionnelles
+significatives, et le modèle de liquidité partagée au niveau du
+protocole sur Kuest étend cette profondeur à travers les marques
+d'opérateurs. La critique reste valable pour les marchés très
+profonds en queue de distribution mais n'est plus valable pour
+les catégories centrales où se situe le volume institutionnel.
+
+**« Le risque de résolution est trop élevé. »** C'est en partie
+vrai et c'est le bon risque à signaler. Les litiges de résolution
+sont un vrai mode d'échec, et la conception des systèmes
+d'oracle optimistes est ce qui protège contre eux. Nous avons
+couvert la mécanique dans
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">le billet sur la résolution</a>.
+Le schéma qui émerge est que les plateformes matures ont un taux
+de litige de résolution bien inférieur à 0,5%, ce qui est
+acceptable pour que la catégorie soit utile à grande échelle. Les
+plateformes plus récentes ou conçues de façon bâclée continueront
+d'échouer sur cette dimension ; c'est une pression de sélection
+qui filtre les opérateurs au fil du temps.
+
+**« La régulation va la tuer. »** La trajectoire réglementaire est
+passée d'une menace existentielle (2018–2020) à constructive
+(2024–2026). La posture de no-action de la CFTC, les documents de
+discussion de l'UE et les consultations du ministère des Finances
+brésilien indiquent tous une voie au niveau de la catégorie vers
+la reconnaissance plutôt que l'interdiction. Des reculs sont
+possibles — nous nous attendons à au moins un cycle de
+durcissement en 2027 — mais la direction à long terme est claire.
+
+## La trajectoire à long terme
+
+Prédire la trajectoire d'une catégorie de marché financier sur une
+décennie est exactement le genre de problème pour lequel les
+marchés de prédiction sont meilleurs que les experts, donc cette
+section est plus honnête si elle est exprimée comme une
+distribution de probabilité plutôt qu'une prévision confiante.
+
+Le scénario de base (nous lui donnerions 65% de probabilité) :
+les marchés de prédiction deviennent une classe d'actifs reconnue
+avec quelques venues régulés majeurs au niveau mondial, des
+centaines de marques d'opérateurs servant des audiences locales et
+spécifiques verticales sur une infrastructure partagée, et un
+volume notionnel annuel combiné dans la fourchette de 1 à 5
+billions USD dans une décennie. La part institutionnelle dépasse
+50% ; les cas d'usage non liés au jeu dépassent le jeu ; la
+programmabilité devient une propriété principale utilisée dans
+DeFi, l'assurance paramétrique et la prise de décision
+d'entreprise.
+
+Le scénario baissier (15%) : un durcissement réglementaire dans
+une ou plusieurs juridictions majeures ralentit la croissance de
+manière matérielle. Le volume continue de croître mais à des taux
+annuels à un chiffre, la catégorie reste un produit de spécialité,
+et l'équilibre à long terme est de quelques billions de dollars
+en notionnel annuel plutôt que des dizaines de billions. Les
+marchés de prédiction sont réels mais petits.
+
+Le scénario haussier (20%) : la convergence avec les agents AI,
+l'assurance paramétrique et DeFi se compose plus rapidement que
+les estimations du scénario de base, et les contrats de marché de
+prédiction deviennent un composant standard de chaque produit
+fintech, brokerage et de gestion des risques d'entreprise. Le
+notionnel annuel combiné dépasse 20 000 milliards USD dans une
+décennie, comparable au marché actuel des swaps de taux d'intérêt.
+
+L'asymétrie est ce qui compte stratégiquement. La baisse est une
+catégorie réelle mais bornée. Le scénario de base est un marché de
+1 à 5 billions qui remodèle la façon dont les institutions
+tarifent les événements. La hausse est une primitive financière
+fondamentale comparable aux swaps. Le résultat attendu se situe
+quelque part entre la base et la hausse, et les opérateurs qui se
+positionnent pour le scénario de base seront bien positionnés
+même si la trajectoire finit par être haussière.
+
+La thèse d'investissement derrière Kuest est exactement cette
+distribution attendue. Nous ne parions pas que le scénario haussier
+est certain. Nous parions que le scénario de base est de loin le
+plus probable, que les opérateurs qui possèdent l'audience et
+fonctionnent sur une infrastructure partagée captureront la
+majeure partie de la valeur dans le scénario de base, et que le
+scénario haussier transforme le même positionnement en quelque
+chose de significativement plus grand.
+
+L'avenir de la finance est en train d'être structuré en ce moment
+même autour d'une expansion de ce que les marchés financiers sont
+autorisés à tarifer. Pendant deux cents ans, les marchés ont
+tarifé la propriété des entreprises et la livraison à terme des
+matières premières. Pour le siècle prochain, les marchés tarifient
+la véracité de tout événement futur suffisamment bien spécifié.
+Cette expansion est l'avenir de la finance, et les marchés de
+prédiction sont la façon dont elle est dénommée.
+
+Les opérateurs, les allocataires et les institutions qui se
+positionnent dans la catégorie maintenant seront ceux dont les
+noms apparaîtront dans les histoires de la structure de marché de
+la prochaine décennie. Le coût d'arriver tôt est faible ; le coût
+d'arriver tard sera l'écart entre observer la formation de la
+catégorie et la façonner.
+
+<KuestCTA
+  headline="Vous voulez être du bon côté de cette courbe ?"
+  body="Que vous soyez un opérateur cherchant à lancer un venue ou une institution cherchant à allouer à la catégorie, les 18 prochains mois sont le moment où les positions se prennent. Parlons de votre situation."
+  primary={{ href: "/launch", label: "Lancer un venue" }}
+  secondary={{ href: "/enterprise", label: "Parler aux ventes" }}
+/>

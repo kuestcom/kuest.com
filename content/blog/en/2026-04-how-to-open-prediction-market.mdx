@@ -1,0 +1,614 @@
+---
+title: "How to Open Your Own Prediction Market in 2026: The End-to-End Operator's Launch Playbook"
+description: "An operational, step-by-step playbook for launching a prediction-market venue in 2026 — audience selection, jurisdiction, market design, contract spec, fees, brand, KYC, liquidity, private beta, public launch, and the first-week monitoring that decides whether the venue scales."
+publishedAt: 2026-04-19
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "launch", "how-to", "infrastructure"]
+---
+
+If you've decided to open your own prediction market, you've
+already cleared the strategic questions: there's audience
+opportunity, the build-vs-license maths favours licensing, and
+the category is in the formative window where audience
+attribution compounds. What's left is the execution. This is the
+playbook for that execution — not the marketing version, the
+real version, written for an operator about to actually do it.
+
+We've onboarded enough operators across enough audience types
+(brokerages, crypto-native exchanges, media operators, sports
+books, creator-led communities) that the playbook below has
+converged into a repeatable sequence. It's not the only way to
+launch a prediction market venue, but it's the way that
+consistently produces a venue with real volume in the first
+month and meaningful audience attribution in the first quarter.
+
+If you're earlier in your evaluation, the
+<a href="/blog/2026-03-prediction-market-land-grab">market opportunity post</a>
+covers why the category is worth entering, the
+<a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>
+covers the structural decision underneath this playbook, and the
+<a href="/blog/2026-04-launch-prediction-markets">15-minute launch walkthrough</a>
+covers the technical deploy. This post is the longer-form
+end-to-end version: every decision you'll make, in the order
+you'll make it, with the trade-offs explicit.
+
+<Stat
+  value="≈ 4 weeks"
+  label="From signed engagement to live public venue with first 100 active traders, when the operator follows the standard playbook below"
+  sourceHref="https://kuest.com/research/operator-launch-times"
+  sourceLabel="Kuest operator survey, Q1 2026"
+/>
+
+## Phase 1: Audience and jurisdiction
+
+Every successful launch starts with a precise definition of the
+audience and the jurisdiction. Operators who skip this phase
+ship into a fog and find their unit economics are wrong six
+weeks later. Operators who do it carefully ship a venue that
+matches the audience's actual needs.
+
+**Define the audience.** Not "retail traders" — that's too
+abstract. Specifically: "our 80,000 retail clients in São
+Paulo who already trade equities through us, who skew 28–45 in
+age, who hold an average of $4,200 in account balance." Or:
+"the 35,000 newsletter subscribers who already read our
+weekly macro analysis and who answer the engagement survey
+about market views." The narrower the definition, the
+sharper the rest of the playbook gets.
+
+The audience definition determines five downstream choices:
+the markets you'll host first, the operator fee you'll set,
+the language and brand of the UX, the regulatory overlay you
+need, and the marketing channel you'll use to drive activation.
+Skipping audience definition makes all five of those decisions
+guesses.
+
+**Pick the jurisdiction (or jurisdictions).** Most operators
+launch in their primary jurisdiction first and add others
+once the operational playbook is proven. Pick the
+jurisdiction where you have distribution, regulatory standing,
+and the best chance of validating the unit economics quickly.
+
+A few jurisdictional realities to flag up-front:
+
+- **United States.** Prediction markets in the US are a
+  regulated category accessible primarily through Kalshi.
+  Operators who want US flow either work with Kalshi as a
+  distribution partner or accept that the US is currently
+  outside their addressable market. Building a competing US
+  regulated venue is its own multi-year journey, not an
+  operator-launch decision.
+- **European Union.** ESMA's emerging event-contract framework
+  is permissive enough to support operator launches under a
+  shared compliance overlay. Operators in the EU can launch
+  through the protocol's compliance pipeline without going
+  through individual national licensing initially.
+- **Brazil and the broader LatAm region.** The most active
+  emerging framework. CVM consultations and the
+  Ministry-of-Finance-driven framework are constructive enough
+  for operators to launch with audience-friendly KYC overlays.
+- **Asia (excluding mainland China).** Singapore, Hong Kong,
+  and Japan are the most operator-friendly Asian jurisdictions
+  in 2026. Each requires a specific compliance overlay; the
+  protocol's templates cover the major patterns.
+
+The jurisdictional choice shapes everything downstream. Pick
+once, validate, and add jurisdictions sequentially.
+
+## Phase 2: Market scope and contract design
+
+Once you know who and where, you decide what. The selection of
+initial markets determines volume velocity, retention, and
+operational complexity in roughly that order.
+
+**Pick a primary vertical.** The most successful launches we
+see commit to a primary vertical and dominate it before
+expanding. A macro-focused launch hosts CPI prints, central
+bank decisions, and economic data releases — and resists the
+temptation to also host sports markets in the first month. A
+sports-focused launch hosts the major tournaments and leagues —
+and resists the temptation to also host political markets.
+
+Concentration matters because liquidity matters. Twelve
+high-quality markets in one vertical attract more volume per
+market than sixty mediocre markets across five verticals. The
+cross-vertical expansion comes after the primary vertical
+proves the audience.
+
+**Choose initial market spec carefully.** The contract
+specification is the most under-scoped part of most launches.
+Vague contracts produce disputes. Disputes destroy trust.
+The discipline of writing a contract spec that resolves
+unambiguously is the hardest non-engineering part of running
+a prediction market.
+
+A good spec has three properties:
+
+1. **The data source is named explicitly.** "BLS CPI release,
+   the headline year-over-year CPI-U number from the table
+   published at bls.gov/news.release/cpi.t01.htm." Not just
+   "CPI."
+2. **The resolution rule is unambiguous.** "Resolves YES if the
+   reported number is greater than 3.0%; resolves NO
+   otherwise. Initial estimates and revisions do not affect
+   resolution; the first reported figure stands."
+3. **Edge cases are pre-specified.** "If the BLS does not
+   publish a CPI report on the scheduled release date, the
+   market resolves to NA and all positions return capital."
+
+We covered the resolution mechanics in detail in
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution and settlement layer post</a>.
+The discipline of contract specification is what determines
+whether your venue's resolution rate stays above 99.5% (which
+is acceptable) or drops to 98% (which is the threshold below
+which trader trust starts collapsing).
+
+## Phase 3: The operator fee decision
+
+The fee is the lever that determines venue revenue and
+audience tolerance. We covered the rate-selection question in
+depth in the
+<a href="/blog/2026-04-fee-models-explained">fee models post</a>
+— here's the launch-specific summary.
+
+Pick a starting rate based on your audience profile:
+
+<Comparison
+  columns={["Audience type", "Starting fee", "Target adjustment window"]}
+  rows={[
+    ["Retail brokerage clients", "0.85%", "Hold 90 days, then re-evaluate"],
+    ["Crypto-native exchange overlay", "0.50%", "Hold 90 days, then re-evaluate"],
+    ["Creator-led community", "1.50%", "Hold 90 days, then re-evaluate"],
+    ["Institutional desks", "0.10–0.20%", "Tier from launch, hold 60 days"],
+    ["Sports book overlay", "1.00%", "Hold 90 days, then re-evaluate"],
+  ]}
+/>
+
+The most common mistake we see is operators pricing their fee
+based on revenue targets rather than audience tolerance. If
+your audience is a retail brokerage client base accustomed to
+0.5% equity-trading fees, a 2% prediction-market fee will be
+perceived as expensive even though it's well within the
+industry norm. Anchor to your audience's existing fee
+expectations, not to the maximum the market will tolerate.
+
+**Don't change the fee in the first 90 days.** The signal in
+fee-rate data takes about 8 weeks to stabilise. Operators who
+adjust faster than that just inject noise. Pick a defensible
+starting rate, hold it, gather signal, then adjust.
+
+## Phase 4: Brand, UX, and copy
+
+Once the strategic and pricing decisions are made, the
+operator-facing layer is brand, UX, and copy. These determine
+whether the audience trusts the venue at first impression.
+
+**Brand decisions.** The venue should be branded as your
+existing audience-facing brand, not as a sub-brand. A
+brokerage launching prediction markets should call the
+product "[Brokerage Name] Markets" or similar — using the
+existing brand for trust transfer. A media operator should
+keep their existing brand voice and visual identity. A
+creator-led venue should feel native to the creator's existing
+content.
+
+**Copy for the audience, not for the category.** The most
+common copy mistake is using prediction-market jargon to
+describe a product to an audience that has never encountered
+it. "Binary contract on the resolution probability of a
+discrete event" is technically correct and operationally
+useless for a retail audience. "Take a position on whether the
+Fed will cut rates in July — earn $1 if you're right, $0 if
+you're wrong" is the same idea in language the audience can
+parse.
+
+**UX patterns that consistently work.** Across the launches
+we've seen:
+
+- A clean market list page sorted by deadline (events resolving
+  soonest at the top).
+- A market detail page with the contract spec, the resolution
+  source, and the order book all visible without scrolling.
+- A position summary on every page, so traders always know
+  their open exposure.
+- A clear path back to deposit / withdraw without leaving the
+  product surface.
+
+These are not novel UX patterns; they're the patterns that
+produce activation rates above 40% and retention rates above
+35% at week 12. UX patterns that depart from these without
+strong reason underperform.
+
+## Phase 5: Compliance and KYC overlay
+
+The compliance configuration is where most operators
+under-budget time. The good news is that the protocol's
+compliance overlay handles the core mechanics; the
+jurisdiction-specific configuration is the operator's overlay
+on top.
+
+For a single-jurisdiction launch, the configuration is
+typically:
+
+- **Identity verification provider.** The protocol integrates
+  with the major providers (Onfido, Persona, Sumsub,
+  jurisdiction-local options). Pick the one your audience
+  expects to see.
+- **Document requirements.** Each jurisdiction has a different
+  default document set. Brazil typically requires CPF + photo
+  ID + proof of address. The EU requires a passport or
+  national ID + selfie liveness check. Configure once per
+  jurisdiction.
+- **Reporting hooks.** For regulated jurisdictions, every trade
+  emits a structured event that feeds your compliance tooling.
+  Configure the report cadence and destination (typically a
+  data warehouse or a regulator-facing reporting tool).
+- **Geographic restrictions.** Configure which jurisdictions
+  can access the venue. Most operators run permissive access
+  with explicit blocks on jurisdictions where the operator
+  doesn't want exposure (typically the US for non-US
+  operators, plus a small set of high-risk jurisdictions).
+
+For multi-jurisdiction launches, this entire config repeats per
+jurisdiction. The protocol's templates make this configuration
+rather than engineering, but it's still a few hours of careful
+setup per region.
+
+## Phase 6: Liquidity setup
+
+Liquidity is the make-or-break property of a launch, and the
+protocol's shared-liquidity model handles most of it. We
+covered the technical and economic case in
+<a href="/blog/2026-04-shared-liquidity-day-one">the shared-liquidity post</a>.
+For launch purposes, the operator decisions are:
+
+- **Confirm shared-liquidity coverage of your initial
+  markets.** The shared book has deep coverage of mainstream
+  markets (macro, major sports, political events). Niche
+  markets (specific creator-vertical events, very local
+  political events, custom corporate events) are
+  cold-bootstrap and need either operator-side market-making
+  or audience-driven liquidity over time. Know which of your
+  initial markets are which.
+- **Decide whether to seed liquidity on niche markets.** Some
+  operators choose to seed initial liquidity on their
+  cold-start markets to ensure a usable trader experience on
+  Day 1. The seeding doesn't have to be large ($5–$25k per
+  market is typical), and it can be unwound as audience
+  liquidity grows.
+- **Configure spread parameters where you have control.** The
+  protocol caps maximum spreads on operator deploys to
+  preserve trader experience; within those caps, operators can
+  configure tighter spreads on markets they care about.
+
+The combination of shared liquidity on mainstream markets plus
+modest seeding on niche markets is what produces a Day-1
+experience where every market has visible depth and tradeable
+spreads. Without that, activation rates collapse.
+
+## Phase 6.5: Pre-launch validation with the audience
+
+Before private beta — earlier than most operators consider —
+there's a validation step that costs almost nothing and saves
+the entire launch from a wrong assumption. Talk to the audience.
+
+Pick 15–25 people from your target audience and run structured
+30-minute conversations with each. Show them a clickable
+prototype or a sandbox deploy. Ask three questions:
+
+1. **What would you trade on this venue and why?** This
+   surfaces whether your initial market scope matches actual
+   audience interest. Very often, the markets the operator
+   thought were primary turn out to be secondary in the
+   audience's actual hierarchy.
+2. **What would stop you from trading here?** This surfaces
+   the friction points — most often KYC complexity, deposit
+   methods, fee perception, or the brand's perceived
+   credibility on the new product.
+3. **What would make you trust this venue with $1,000?** This
+   surfaces the trust threshold. The answers cluster around
+   regulatory posture, brand familiarity, and resolution
+   credibility — and tell you which of those to emphasize in
+   the launch communications.
+
+The pattern that consistently emerges: the operator's
+assumptions about audience preferences are roughly 60% right.
+The other 40% is what these conversations reveal. Skipping
+this step means launching with 40% of your assumptions
+mis-calibrated.
+
+Run validation conversations before you finalise market scope
+(Phase 2), fees (Phase 3), or copy (Phase 4). They influence
+all of those.
+
+## Phase 7: Private beta
+
+Before the public launch, run a private beta with a small,
+known audience. The point is not marketing; it's signal. Real
+trader behaviour in a real production environment surfaces
+issues that no amount of internal testing reveals.
+
+**Pick the beta cohort carefully.** 50–200 traders who match
+your target audience profile and who are willing to give
+feedback. Existing power users from your core product are
+ideal. Avoid the temptation to run beta with employees only;
+their behaviour doesn't generalise.
+
+**Run beta for 7–10 days.** Long enough to surface activation
+patterns, short enough to keep the cohort engaged. During
+this window, monitor:
+
+- **Activation rate.** What percentage of beta participants
+  place at least one trade? Healthy: 50%+. Unhealthy: under
+  30%.
+- **Time-to-first-trade.** How long from sign-in to first
+  fill? Healthy: under 10 minutes. Unhealthy: over an hour.
+- **Median trade size.** Are traders sizing in or just
+  testing? Healthy: a meaningful share of trades over $50.
+  Unhealthy: every trade is at the minimum.
+- **Support volume.** What questions are people asking? Each
+  question is a UX gap to close before the public launch.
+
+Adjust based on what beta surfaces. Common adjustments at this
+stage are copy clarity (rephrasing market specs, simplifying
+deposit flows), market scope (adding markets the audience
+asks for, removing markets nobody trades), and fee tweaks
+(rare, but occasionally appropriate).
+
+## Phase 8: Public launch
+
+The public launch is the moment the audience can access the
+venue. It's also the moment the venue's reputation gets set in
+the audience's collective memory, so the bar is "no failures
+at scale" rather than "everything is optimised."
+
+**The launch checklist:**
+
+1. **Verify shared liquidity is present on every featured
+   market.** Spot-check by manually pulling the order book on
+   each market and confirming inside-spread depth.
+2. **Verify deposit and withdrawal flow end-to-end.** Send a
+   small deposit through the production flow, place a trade,
+   close the position, withdraw. The full loop should work in
+   under five minutes.
+3. **Verify resolution telemetry is live.** Resolution events
+   should be flowing into the operator dashboard. Confirm at
+   least one market is set to resolve in the first 48 hours
+   so you can validate the resolution path under real
+   conditions.
+4. **Verify customer support routing.** Test the support
+   channel from a fresh user account. The first response
+   should be human or human-quality within an hour of contact.
+5. **Verify reporting and analytics are populating.** Volume,
+   trader count, retention metrics, support volume. If the
+   data isn't flowing on day one, you won't know whether the
+   launch is working.
+
+**Soft launch first if possible.** Open the venue to your
+existing audience without a major marketing push for the
+first 24–48 hours. This catches anything beta missed before
+exposing the venue to a larger cohort. After the soft window,
+trigger the marketing campaign.
+
+## Phase 8.5: The marketing-channel strategy
+
+Operators consistently treat marketing as a Day-1 problem rather
+than a launch-strategy problem. The result is generic campaigns
+that produce expensive low-quality traffic. The operators that
+launch well treat marketing as a structural decision made in
+parallel with the rest of the playbook.
+
+The shape of an effective marketing-channel strategy depends on
+the audience type:
+
+- **Brokerage and exchange operators with installed audiences.**
+  The primary channel is your existing client base. Email,
+  in-app notification, and educational content embedded in the
+  product surface you already operate. Conversion rates from
+  installed audiences are 5–15× higher than cold traffic, and
+  the customer-acquisition cost is effectively zero. Don't
+  spend on cold paid acquisition until the installed audience
+  is largely activated.
+- **Crypto-native exchange overlays.** The primary channel is
+  cross-promotion within the existing exchange UX. A banner on
+  the spot-trading page that points to the new prediction-
+  market product converts at meaningfully higher rates than
+  any external campaign. Telegram and Discord communities the
+  exchange already runs are the second channel.
+- **Creator-led venues.** The primary channel is the creator's
+  existing distribution surface (newsletter, podcast, video,
+  social media). The launch should be timed to a content piece
+  that introduces the venue and explains the markets the
+  audience will care about. Cold paid acquisition for
+  creator-led venues rarely works; the audience has to come
+  through the creator brand.
+- **Sports books and consumer fintech overlays.** The primary
+  channel is feature placement within the existing app. A
+  "predict on this game" prompt embedded in the existing
+  sports-betting flow converts at much higher rates than any
+  external placement.
+- **Standalone new operators without an installed audience.**
+  This is the hardest position to launch from. The realistic
+  channels are paid social (Twitter/X, TikTok for younger
+  audiences), influencer partnerships, and content marketing
+  via SEO. The customer-acquisition cost is high enough that
+  the unit economics are tight; operators in this position
+  should consider whether a partnership distribution model
+  makes more sense than a direct-launch model.
+
+The pattern that consistently underperforms: spending on broad
+paid social campaigns to acquire net-new traders to a brand
+they've never heard of. The activation rate on cold paid
+acquisition for prediction markets in 2026 is in the 8–14%
+range, which makes the unit economics work only at high
+trade-frequency assumptions that most operators don't hit.
+
+Pick the channel that matches your audience profile and commit
+to it for the first 30 days. Avoid the temptation to run
+five channels simultaneously at launch — the signal is messy
+and the optimization loop never converges.
+
+## Phase 9: First-week monitoring
+
+The first seven days set the trajectory. Monitor obsessively
+during this window — not because anything is likely to break,
+but because the patterns you'll see in the first week tell you
+which decisions to revisit in the coming month.
+
+The metrics to watch, in priority order:
+
+<Comparison
+  columns={["Metric", "Healthy", "Watch", "Bad"]}
+  rows={[
+    ["Day-7 active trader retention", ">35%", "25–35%", "<25%"],
+    ["Median trade size growth", "Trending up", "Flat", "Trending down"],
+    ["Time-to-first-trade (new users)", "<15 min", "15–60 min", ">60 min"],
+    ["Support tickets / 100 active traders", "<5", "5–15", ">15"],
+    ["Resolution dispute rate", "<0.2%", "0.2–0.5%", ">0.5%"],
+    ["Spread on top-5 markets", "<60 bps", "60–120 bps", ">120 bps"],
+  ]}
+/>
+
+If any metric is in the "bad" column on day seven, address it
+specifically before scaling marketing. Layering more audience
+on top of a venue with bad activation, bad retention, or bad
+spreads just amplifies the problem.
+
+## Phase 10: First-30-day strategic review
+
+At day thirty, the launch transitions from launch into ongoing
+operations. The day-30 review is the moment to make the first
+real strategic adjustments based on a month of production
+data.
+
+The review should answer five questions:
+
+1. **Is audience velocity what we expected?** New trader
+   signups per day, comparison to initial forecast.
+2. **Is per-trader monetization what we expected?** Net
+   revenue per active trader, comparison to fee-rate
+   assumptions.
+3. **Are the markets we're hosting the right ones?** Trade
+   volume per market, retention per market vertical.
+4. **Are we losing traders to a specific friction?** Pull
+   exit-survey data, support ticket themes, retention
+   waterfall.
+5. **What's the next bottleneck?** This is the most
+   forward-looking question. The bottleneck at day 30 is
+   probably different from the bottleneck at launch, and the
+   one at day 60 will be different again. Identify it
+   explicitly.
+
+Most operators at day 30 are between two outcomes: meaningfully
+above forecast, or meaningfully below. Either case warrants a
+specific strategic response. Above-forecast operators should
+expand markets and verticals more aggressively than the
+initial plan; below-forecast operators should hold the existing
+scope and tighten the audience targeting.
+
+## Common mistakes during opening
+
+Five patterns we see across operators who underperform at
+launch. Each is fixable if you see it coming.
+
+**Launching too broad.** Trying to host every market category
+at once dilutes liquidity, dilutes copy clarity, and confuses
+the audience about what the venue is for. Concentrate, prove
+the unit economics, then expand.
+
+**Underbudgeting compliance configuration time.** The technical
+deploy takes minutes. The compliance overlay (KYC providers,
+reporting hooks, jurisdiction-specific document requirements)
+takes several hours per jurisdiction. Operators who don't budget
+for this discover it on launch day.
+
+**Skimping on contract specification.** A market that resolves
+ambiguously generates a dispute, and disputes generate a
+disproportionate amount of support load and reputation damage.
+The discipline of writing unambiguous specs at launch pays
+forward for the life of the venue.
+
+**Not running private beta.** Operators who skip private beta
+"to save time" find that the issues that would have surfaced
+in beta now surface during the public launch, when fixing them
+costs reputation damage rather than just time.
+
+**Setting the fee based on aspiration rather than audience
+tolerance.** Pricing for the revenue you want rather than the
+fee your audience will accept means you have a venue with high
+nominal fees and no traders. Always price to audience
+tolerance first; tighten later if the data supports it.
+
+## Pre-launch incident response setup
+
+The other thing most operators don't set up before launch but
+desperately need by week one is incident response. A
+production prediction-market venue will have moments where
+something goes wrong — a market source goes down, a payment
+provider has a brief outage, a resolution edge case generates
+a wave of support tickets. Operators who pre-build the
+incident response playbook handle these calmly. Operators who
+don't end up improvising under pressure with their reputation
+on the line.
+
+The minimum incident-response setup before launch:
+
+- **A single named on-call rotation** with clear hand-offs.
+  Pre-launch, a single person on-call. Post-launch, two-person
+  rotation with hand-off windows. The on-call person has the
+  authority to make incident-level decisions without
+  escalation.
+- **A pre-written customer communications template** for the
+  three most common incident classes: market resolution
+  delay, deposit/withdrawal pause, scheduled maintenance.
+  Pre-writing the language saves 30–60 minutes of decision
+  time during a real incident.
+- **A status-page surface** at status.yourbrand.com or
+  similar, where the operator can post incidents proactively
+  rather than fielding questions one-by-one. Even a simple
+  manually-updated page is enough; what matters is that
+  customers have a single place to look.
+- **A pre-defined escalation path to the protocol provider**
+  for protocol-level issues. Operator-side incidents (UX
+  bugs, payment provider outages) the operator handles.
+  Protocol-side incidents (matching engine, settlement)
+  escalate to the protocol's on-call within a documented SLA.
+
+This entire setup takes 2–4 hours pre-launch. It pays back
+within the first week the venue is live.
+
+## What "launch" actually means
+
+A specific definition is useful: a successful launch is a venue
+that, at day 30, has more than 100 active traders, more than
+$50k weekly volume, a Day-7 retention rate above 35%, and a
+support burden of under 15 tickets per 100 active traders. If
+you hit those numbers, the venue is on the path to scale and
+the playbook from here is monetization, expansion, and
+retention rather than activation.
+
+If you don't hit those numbers, the playbook is diagnostic:
+which assumption was wrong (audience size, fee tolerance,
+market fit, UX clarity), and what specifically should change
+before the next push. The protocol layer makes that diagnostic
+loop cheap because the venue itself doesn't have to be
+re-built; only the operator-side configuration changes.
+
+The operators who turn into long-term winners are not the ones
+who got everything right at launch. They're the ones who set
+up the launch to be diagnosable and who made the right
+adjustments at days 30, 60, and 90 based on the signal the
+launch produced. Plan the launch as the first iteration of a
+multi-quarter compounding loop, not as a single one-shot event,
+and the playbook above stops being a checklist and starts being
+the foundation of a venue that scales.
+
+<KuestCTA
+  headline="Ready to open your own prediction market venue?"
+  body="The launch wizard takes you through every step in this playbook in under 15 minutes. We'll provision your operator scope, deploy contracts under your brand, and give you the dashboard to run the first 30 days from."
+  primary={{ href: "/launch", label: "Open the launch wizard" }}
+  secondary={{ href: "/enterprise", label: "Book a launch-strategy call" }}
+/>

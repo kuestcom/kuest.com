@@ -1,0 +1,338 @@
+---
+title: "Comment fonctionne réellement la résolution des marchés de prédiction : UMA, oracles et la couche de règlement"
+description: "Une analyse technique approfondie de la résolution des contrats de marché de prédiction — l'optimistic oracle, la mécanique des contestations, les jeux d'escalade et pourquoi le règlement est la partie qui décide quelles plateformes survivent."
+publishedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "settlement", "oracle", "technical"]
+---
+
+Si vous passez assez de temps parmi les bâtisseurs de marchés de
+prédiction, vous remarquerez que les conversations se divisent
+nettement en deux camps : l'avant du stack (matching, UX, liquidité)
+et l'arrière du stack (résolution, règlement, oracles). Les
+problèmes de l'avant du stack se résolvent avec des heures
+d'ingénierie et du capital. Les problèmes de l'arrière du stack se
+résolvent avec un design crypto-économique — et c'est là que les
+plateformes de marché de prédiction vivent ou meurent réellement.
+
+Ce billet s'adresse aux opérateurs et ingénieurs qui comprennent
+déjà l'argumentaire métier (commencez par <a href="/blog/2026-03-prediction-market-land-grab">notre analyse de marché</a> sinon)
+et veulent savoir comment fonctionne réellement la couche de
+règlement.
+
+<Stat
+  value="≈ 0.18%"
+  label="Part des marchés résolus par UMA sur Polymarket qui passent en contestation ; 99,82 % se résolvent proprement par la voie optimiste"
+  sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
+  sourceLabel="Documentation UMA, 2026"
+/>
+
+Ce chiffre est le résultat phare d'environ six ans de design
+d'optimistic oracle : l'écrasante majorité des résolutions n'a
+jamais besoin de vote, parce que le système est conçu pour rendre
+les proposers honnêtes moins coûteux que les malhonnêtes. Voici
+comment c'est obtenu, où ça casse et ce que cela implique pour tout
+opérateur faisant tourner du volume réel par-dessus.
+
+## Le problème du règlement, posé proprement
+
+Chaque contrat de marché de prédiction n'a qu'une seule mission en
+fin de vie : émettre un paiement vers la partie qui avait raison.
+Pour cela, le contrat doit savoir ce qui s'est réellement passé. Le
+défi : un smart contract n'a pas d'yeux — il ne peut pas regarder
+CNN, lire une publication d'IPC ni vérifier un score sportif. Il
+dépend d'un mécanisme externe pour lui dire la vérité.
+
+Ce mécanisme externe est l'**oracle**. Tout marché de prédiction
+repose sur un oracle. L'oracle est l'hypothèse de confiance de tout
+le système. C'est la raison pour laquelle « les contrats sont
+audités par OpenZeppelin » compte moins que ne le pensent les gens
+— les contrats peuvent être impeccables et la plateforme échouer
+quand même si l'oracle est manipulable.
+
+Tout oracle dans ce contexte doit fournir trois propriétés :
+
+1. **Justesse.** Le résultat rapporté doit correspondre à la réalité.
+2. **Liveness.** Le résultat doit être rapporté dans une fenêtre
+   raisonnable après la résolution ; les marchés ne peuvent pas
+   rester en suspens indéfiniment.
+3. **Résistance à la censure.** Aucun acteur unique ne peut empêcher
+   l'enregistrement d'un résultat véridique.
+
+L'espace des arbitrages entre ces trois propriétés constitue tout le
+champ du design d'oracles.
+
+## Résolution centralisée : simple, rapide, fragile
+
+L'approche la plus ancienne et la plus simple consiste à ce que
+l'opérateur (ou une équipe désignée à l'intégrité de marché) résolve
+les marchés directement. Kalshi fonctionne ainsi : la bourse
+consulte des sources de données pré-publiées, applique sa politique
+de résolution documentée et publie le résultat.
+
+Cela fonctionne bien quand :
+
+- La source de données est non ambiguë et disponible (par ex., la
+  publication d'IPC de la BLS).
+- L'opérateur a une identité régulée (dans le cas de Kalshi, la CFTC).
+- La politique de résolution est publiée à l'avance et ne bouge pas.
+
+Cela échoue quand :
+
+- La source de données est ambiguë ou contestée.
+- L'opérateur a un intérêt financier dans le résultat.
+- La politique de résolution est réécrite rétroactivement.
+
+La résolution centralisée est appropriée pour des espaces de
+contrats étroits, fortement régulés. Elle est structurellement
+inadaptée à la longue traîne de marchés qui génère l'essentiel du
+volume des marchés de prédiction — cas limites sportifs, événements
+géopolitiques, tout ce où le fait sous-jacent est interprété plutôt
+que mesuré.
+
+## Le motif de l'optimistic oracle
+
+L'optimistic oracle, popularisé par UMA en 2020, remplace un
+résolveur unique de confiance par un processus d'assertion-puis-
+contestation issu de la théorie des jeux. La structure est
+intuitive dès qu'on la voit.
+
+**Étape 1. Proposition.** N'importe qui peut proposer un résultat
+pour un marché en déposant une caution. « J'affirme que le contrat
+sur `La Fed va-t-elle baisser ses taux en juillet ?` se résout
+OUI. » Le proposer joint un collateral (typiquement quelques
+centaines de dollars en USDC) et soumet.
+
+**Étape 2. Fenêtre de contestation.** Un timer démarre —
+habituellement 2 heures pour les marchés en argent réel, plus long
+pour les marchés à enjeux plus élevés. Pendant cette fenêtre,
+n'importe qui peut contester la proposition en déposant sa propre caution.
+
+**Étape 3. Deux voies.**
+
+- **Pas de contestation.** Si personne ne conteste pendant la
+  fenêtre, le résultat proposé est définitif. La caution du proposer
+  est restituée et une petite récompense est versée pour le travail
+  de proposition.
+- **Contestation.** Si quelqu'un conteste (avec caution), la
+  question escalade vers un vote des détenteurs du token UMA. Le
+  vote tranche quel camp avait raison. La caution du camp perdant
+  est versée au camp gagnant et au protocole. Le camp gagnant
+  récupère sa caution et touche une récompense.
+
+L'économie est délibérément asymétrique. Un proposer véridique ne
+s'attend à aucune contestation — parce que tout observateur peut
+voir que le résultat est vrai, et contester un résultat vrai
+revient à perdre sa caution. Un contestataire véridique ne conteste
+que lorsque le résultat proposé est visiblement faux — parce qu'une
+contestation frivole coûte aussi la caution.
+
+Le résultat, en pratique, est que presque chaque résolution se règle
+par la voie optimiste. La voie de contestation existe principalement
+comme menace crédible qui maintient la voie optimiste honnête.
+
+<Callout type="info" title="Pourquoi c'est plus sûr qu'il n'y paraît">
+  Le coût d'une attaque contre l'optimistic oracle est le coût pour
+  submerger le mécanisme de contestation — c'est-à-dire soit
+  acquérir assez d'UMA pour faire basculer un vote, soit coordonner
+  assez de contestations pour épuiser le capital des contestataires
+  honnêtes. Les deux attaques sont publiquement observables et ont
+  des planchers de coût bien définis qui s'échelonnent avec la
+  valeur en jeu. C'est la même famille de design que l'économie du
+  slashing d'Ethereum : peu cher d'être honnête, cher de se tromper.
+</Callout>
+
+## Comment les contestations escaladent réellement
+
+Le mode d'échec intéressant est la contestation elle-même. Quand un
+vrai désaccord parvient au vote, le protocole doit gérer trois
+sous-problèmes :
+
+1. **Intégrité du vote.** Le vote d'UMA utilise commit-reveal pour
+   que les votants ne puissent pas se copier les uns les autres.
+   Les votants engagent un vote haché, puis le révèlent plus tard.
+   Cela empêche la collusion triviale.
+2. **Résolution par point de Schelling.** Les votants sont
+   rémunérés pour voter avec la majorité des autres votants
+   honnêtes. Le protocole suppose qu'un point focal (la réponse
+   « évidente ») émerge naturellement pour tout contrat bien
+   spécifié. Cela fonctionne aussi bien que la spécification du
+   contrat — des contrats vagues obtiennent des résolutions vagues.
+3. **Escalade au juge final.** Pour les contestations à très haut
+   enjeu, UMA dispose d'une escalade à plusieurs tours : si un vote
+   est ambigu, il peut être rejoué avec un quorum plus élevé et une
+   fenêtre de vote plus longue. Cela est utilisé en pratique
+   peut-être quelques fois par an.
+
+Le coût au niveau du protocole d'un marché contesté est élevé. Le
+contestataire et le proposer ont tous deux du capital bloqué. Les
+votants UMA dépensent de l'attention réelle. Une plateforme propre
+évite les contestations en écrivant des marchés qui n'en génèrent
+pas. La discipline de la spécification de contrat — qui ressemble à
+un problème administratif — est en réalité le levier opérationnel
+le plus important dont dispose une venue.
+
+## Pourquoi la plupart des plateformes se trompent là-dessus
+
+L'erreur la plus fréquente que nous voyons dans les constructions
+d'opérateurs est de traiter la résolution comme une préoccupation
+de back-office gérable par « on rapprochera manuellement ». Cela
+fonctionne à 50 marchés par semaine et casse à 5 000.
+
+Trois modes d'échec apparaissent de façon récurrente :
+
+**L'échec du contrat vague.** Le marché est rédigé de façon ambiguë
+(par ex., « Le conflit prendra-t-il fin en 2026 ? » sans définition
+de « fin »). Deux résultats sont défendables. Le marché part en
+contestation, la contestation traîne, les traders perdent
+confiance, et la réputation de l'opérateur encaisse un coup qui ne
+se rattrape pas.
+
+**L'échec du déplacement de la source de données.** Le marché
+spécifie une source de données qui est renommée, restructurée ou
+mise derrière un paywall en cours de vie. Le contrat pointe vers
+une source qui n'existe plus, et la résolution doit être
+reconstituée manuellement.
+
+**L'échec du conflit d'intérêts.** L'opérateur (ou quelqu'un de
+proche de l'opérateur) a une position dans le marché. Quand la
+résolution est opaque, cela devient un scandale public quoi que
+l'opérateur ait réellement fait. La perception seule détruit la
+crédibilité de la plateforme.
+
+La défense la plus propre contre les trois consiste à concevoir le
+contrat de telle sorte que la voie de résolution ne dépende pas du
+pouvoir discrétionnaire de l'opérateur. Le motif de l'optimistic
+oracle s'y prête structurellement bien : l'opérateur n'est pas le
+résolveur, la source de données est nommée et verrouillée à la
+création du marché, et le mécanisme de contestation est public.
+
+<Comparison
+  columns={["Mode d'échec", "Résolveur centralisé", "Optimistic oracle"]}
+  rows={[
+    ["Contrat vague", "Forte exposition", "Contestations ; identifie correctement la mauvaise spec"],
+    ["Source de données qui bouge", "Rapprochement manuel", "Replay via contestation"],
+    ["Conflit d'intérêts opérateur", "Existentiel", "Structurellement séparé"],
+    ["Coût d'une résolution malveillante", "Effondrement de la confiance", "Caution + réécriture par vote"],
+    ["Vitesse sur marchés triviaux", "Plus rapide", "Identique (pas de voie de contestation)"],
+  ]}
+/>
+
+## Ce que Kuest fait réellement à la couche de règlement
+
+L'approche de Kuest hérite du motif de l'optimistic oracle de
+l'architecture de production de Polymarket et le durcit pour un
+déploiement multi-opérateurs. Les changements clés :
+
+- **Périmètres de résolution isolés par opérateur.** Les marchés de
+  chaque opérateur se résolvent dans un périmètre auditable et
+  prouvablement isolé des marchés des autres opérateurs. Une
+  résolution défectueuse sur les marchés de l'opérateur A ne peut
+  pas se propager dans les livres de l'opérateur B.
+- **Validation pré-vol du contrat.** Avant qu'un marché ne soit
+  mis en ligne, l'URL de la source de résolution est récupérée,
+  parsée et validée par rapport au type de données qu'attend le
+  contrat. Les marchés pointant vers des sources ambiguës ou
+  mouvantes sont rejetés à la création, pas à la résolution.
+- **Cautions de contestation pré-financées.** Le protocole maintient
+  un pool de capital qui finance les cautions au nom des opérateurs,
+  de sorte qu'un petit opérateur peut faire tourner une venue sans
+  immobiliser de capital de caution dans son bilan. Le pool est géré
+  au niveau du protocole, pas par un opérateur unique.
+- **Télémétrie de résolution exposée aux opérateurs.** Les
+  opérateurs voient en temps réel comment leurs marchés se
+  résolvent — quelles propositions sont passées sans contestation,
+  lesquelles sont allées en contestation, lesquelles ont été
+  re-résolues en appel. C'est la même posture qu'adopte une venue
+  régulée ; il est inhabituel de la voir sur une couche
+  permissionless.
+
+L'objectif de tout cela est de rendre la résolution ennuyeuse. Une
+plateforme où la résolution est la chose la plus excitante qui se
+passe est une plateforme sur le point de perdre des utilisateurs.
+
+## Comment l'économie de contestation se comporte réellement sous charge
+
+Une subtilité qui mérite qu'on s'y attarde : l'économie de
+contestation de l'optimistic oracle n'est pas seulement théorique.
+Elle a été stress-testée par du volume adversariel réel, et les
+données vous disent quelque chose d'utile sur l'endroit où le modèle
+tient et celui où il subit la pression.
+
+Les plus gros marchés contestés sur Polymarket depuis 2023 partagent
+une forme commune. Ils se concentrent sur des contrats où
+l'événement sous-jacent est véritablement contesté dans le monde
+réel — pas là où le contrat était mal spécifié, mais là où des
+observateurs raisonnables n'étaient pas d'accord sur ce qui s'était
+passé. Un événement géopolitique avec deux interprétations
+plausibles, un événement électoral avec des délais de dépouillement
+qui se chevauchent, un événement sportif avec un examen
+post-rencontre qui change le résultat plusieurs heures plus tard.
+Le mécanisme de contestation gère ces cas en forçant la question au
+vote, mais le vote lui-même reflète une véritable ambiguïté du
+monde. Le protocole fait aussi bien qu'un protocole peut faire ; il
+ne peut pas résoudre des faits que le monde n'a pas encore résolus.
+
+Ce que cela signifie en pratique pour un opérateur : la voie de
+contestation n'est pas une « exception » à traiter comme un échec
+système. C'est un mécanisme intégré pour gérer l'ambiguïté
+irréductible des événements du monde réel. Les marchés qui partent
+en contestation puis se règlent correctement, c'est le système qui
+fonctionne comme prévu, pas le système qui casse.
+
+La discipline côté opérateur est de garder le taux de contestation
+dans la fourchette structurellement explicable. Si le taux de
+contestation de votre venue est de 0,1–0,3 % (en ligne avec le taux
+de long terme de Polymarket), vous écrivez probablement bien vos
+marchés. Si vous voyez plus de 1 %, les marchés eux-mêmes sont
+sous-spécifiés et vous avez un problème de design de contrat, pas
+un problème de couche de règlement.
+
+Le modèle de contestation a aussi des arêtes molles connues autour
+desquelles les opérateurs matures planifient. Les marchés contestés
+peuvent rester en limbes de vote pendant plusieurs jours pendant
+que les votants UMA tranchent, ce qui est un problème UX si un
+trader a du capital immobilisé dans la position et a besoin du
+liquide pour des raisons sans lien. La plupart des opérateurs
+adressent cela en plafonnant la fenêtre maximale de contestation
+pour les marchés non critiques et en acceptant un petit surcoût de
+frais protocole en échange de la prévisibilité.
+
+## Ce que cela implique si vous opérez
+
+Trois implications découlent directement pour tout opérateur
+tournant sur Kuest ou évaluant le protocole face aux alternatives.
+
+1. **Passez plus de temps que vous ne le pensez sur la
+   spécification des contrats.** Toute ambiguïté dans la rédaction
+   du marché crée une exposition de résolution. Les opérateurs avec
+   qui nous travaillons traitent la spécification de marché comme
+   un rôle senior, pas junior.
+2. **Héritez d'un modèle de règlement, n'en construisez pas un.**
+   Le coût d'un oracle maison est énorme, les modes d'échec sont
+   catastrophiques, et l'alternative — utiliser une résolution
+   façon UMA en mode service — est mature, auditée et éprouvée. Il
+   n'existe essentiellement aucun cas pour construire un oracle sur
+   mesure en 2026, à moins que le design d'oracles ne soit votre
+   produit principal.
+3. **Surveillez le taux de contestation comme indicateur avancé.**
+   Un taux de contestation au-dessus de ~0,5 % sur une venue est un
+   signal que les spécifications de contrat se relâchent. Il
+   précède la dégradation de la confiance utilisateur de plusieurs
+   semaines. La plupart des opérateurs ne suivent pas cette
+   métrique ; ils le devraient.
+
+La couche de règlement est la partie du stack qui détermine le plus
+directement si votre venue est une venue ou une curiosité. La bonne
+nouvelle, c'est que c'est aussi la partie où le gros du travail est
+déjà fait.
+
+<KuestCTA
+  headline="Curieux de voir comment les rails de résolution de Kuest se comparent à votre spec actuelle ?"
+  body="Nous parcourons vos modèles de contrat, vos cas limites et votre exposition aux contestations — et nous vous montrons à quoi ressembleraient les mêmes marchés en résolution mutualisée."
+  primary={{ href: "/launch", label: "Auditer mes marchés" }}
+  secondary={{ href: "/enterprise", label: "Parler à l'ingénierie" }}
+/>

@@ -1,0 +1,458 @@
+---
+title: "Vorhersagemärkte vs. Futures vs. Aktienmärkte: Ein struktureller Vergleich für 2026"
+description: "Was Vorhersagemärkte bepreisen, wie sie sich von Futures und Aktien hinsichtlich Kapitaleffizienz, Settlement, Liquidität und Informationsaggregation unterscheiden — und wo die Grenzen verschwimmen."
+publishedAt: 2026-04-15
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "market-structure", "futures", "equities"]
+---
+
+Der erste Reflex der meisten Analysten beim Blick auf Vorhersagemärkte
+ist die Frage, in welche der bestehenden Kategorien des
+Finanzmarktes sie einzuordnen sind. Sind sie eine Art Aktie? Eine Art
+Futures-Kontrakt? Etwas Neues? Die ehrliche Antwort lautet, dass
+Vorhersagemärkte mechanische Eigenschaften sowohl mit Aktien als auch
+mit Futures teilen, aber etwas bepreisen, das keiner von beiden
+bepreist — weshalb sie sich nicht sauber in eine der beiden
+Kategorien einfügen lassen.
+
+Dieser Beitrag liefert den strukturellen Vergleich: was jedes
+Instrument tatsächlich bepreist, wie sich Orderbücher und
+Settlement-Mechaniken unterscheiden, wo die Kapitaleffizienz landet,
+wie die Liquiditätsdynamik aussieht und warum die Grenzen zwischen
+diesen drei Anlageklassen in einer Weise verschwimmen, die
+Vorhersagemärkte über das nächste Jahrzehnt begünstigt.
+
+Wenn Sie am Anfang Ihrer Bewertung dieser Kategorie stehen, deckt
+das <a href="/blog/2026-03-what-are-prediction-markets">Vorhersagemarkt-Grundlagenpapier</a>
+die Basics ab. Dieser Beitrag setzt voraus, dass Sie über diese Basics
+hinaus sind und Vorhersagemärkte in einen breiteren marktstrukturellen
+Rahmen einordnen wollen.
+
+<Stat
+  value="≈ 1,4 Billiarden $"
+  label="Kombiniertes jährliches Nominalvolumen über globale Aktienmärkte, Futures-Märkte und OTC-Derivate im Jahr 2025 — gegenüber ~220 Mrd. $ für Vorhersagemärkte, der Anlageklasse mit der steilsten Wachstumskurve aller drei"
+  sourceHref="https://www.bis.org/statistics"
+  sourceLabel="BIS / WFE / aggregierte Branchendaten, 2025"
+/>
+
+## Was jeder Markt tatsächlich bepreist
+
+Der sauberste Weg, drei Finanzmarkttypen zu vergleichen, ist mit dem
+zu beginnen, was sie bepreisen, weil der Rest der Struktur (Matching,
+Settlement, Kapital, Liquidität) aus dieser einen Tatsache folgt.
+
+**Ein Aktienmarkt bepreist einen Anspruch auf die zukünftigen
+Cashflows eines Unternehmens.** Wenn Sie eine Apple-Aktie kaufen,
+kaufen Sie einen Restanspruch auf den freien Cashflow von Apple in
+alle Ewigkeit, plus Stimmrechte, plus Liquidationsrang unterhalb der
+Schulden. Der Preis spiegelt den Barwert aller erwarteten zukünftigen
+Cashflows wider, abgezinst mit der vom Eigenkapital geforderten
+Rendite. Dieser Preis ändert sich ständig, weil sich die Erwartungen
+über diese Cashflows ändern.
+
+**Ein Futures-Markt bepreist die zukünftige Lieferung eines
+Basiswerts.** Ein WTI-Futures-Kontrakt für die September-Lieferung
+bepreist den erwarteten Spotpreis eines Barrels Öl am
+September-Settlement-Termin, plus die Kosten der Halterung von jetzt
+bis dahin (Lagerung, Finanzierung, Convenience Yield). Der Kontrakt
+ist eine Verpflichtung, den Basiswert zu liefern oder dessen
+Lieferung anzunehmen. Selbst bei Cash-Settlement folgt der Preis dem
+zugrunde liegenden Spotpreis.
+
+**Ein Vorhersagemarkt bepreist die Wahrscheinlichkeit eines
+spezifischen Ereignisses.** Ein binärer Kontrakt, der 1 $ zahlt, wenn
+die Fed im Juli die Zinsen senkt, wird zur impliziten
+Wahrscheinlichkeit dieser Senkung gehandelt, die der Markt sieht. Es
+gibt keinen Basiswert, keinen Cashflow, keine Lieferung. Der Preis
+ist eine reine Wahrscheinlichkeitsschätzung, denominiert in der
+Settlement-Währung.
+
+Das sind drei strukturell verschiedene Dinge. Eine Aktie ist ein
+Anspruch auf Eigentum; ein Future ist ein Anspruch auf Lieferung;
+ein Vorhersagekontrakt ist ein Anspruch auf die Wahrheit einer
+zukünftigen Aussage. Die Mechaniken, die sich aus jedem dieser
+Ansprüche ergeben, divergieren in wichtigen Aspekten.
+
+## Kapitaleffizienz: der am meisten unterschätzte Unterschied
+
+Die Geschichte der Kapitaleffizienz ist der Bereich, in dem
+Vorhersagemärkte sowohl Aktien als auch Futures still und leise
+übertreffen — und es ist die Geschichte, die die meisten Investoren
+spät entdecken.
+
+**Kapitaleffizienz am Aktienmarkt.** Wenn Sie eine Direktwette von
+100 $ auf Aktien eingehen, legen Sie 100 $ Kapital ein. Sie können
+Margin nutzen, um das 2- bis 4-fach zu hebeln, je nach Reg T oder
+Ihrem Prime Broker, aber die zugrunde liegende Kapitalintensität ist
+hoch. Um eine Direktposition von 1 Mio. $ in Aktien auszudrücken,
+benötigen Sie in der Größenordnung von 250.000–500.000 $ Kapital.
+
+**Kapitaleffizienz bei Futures.** Futures werden über Margin
+abgewickelt, sodass das anfängliche Kapital wesentlich geringer ist
+— typischerweise 5–15 % des Nominalwerts, je nach Kontrakt. Um eine
+Direktposition von 1 Mio. $ in CME S&P-Futures einzunehmen, hinterlegen
+Sie etwa 50.000–80.000 $ als Initial Margin. Der Trade-off ist, dass
+Sie zwischen jetzt und dem Verfall Mark-to-Market-Margin-Calls
+ausgesetzt sind; eine ungünstige Bewegung kann eine Liquidation
+erzwingen, bevor Ihre Sicht richtig ist.
+
+**Kapitaleffizienz bei Vorhersagemärkten.** Vorhersagekontrakte
+haben eine eingebaute Kapitalobergrenze: das Worst Case für einen
+YES-Kontrakt ist ein Settlement bei 0 $, sodass der maximale Verlust
+die gezahlte Prämie ist. Um eine 1-Mio.-$-äquivalente Sichtweise in
+einem Vorhersagemarkt auszudrücken, benötigen Sie genau die Kosten
+der Kontrakte, die von der impliziten Wahrscheinlichkeit abhängen.
+Ein YES-Kontrakt, der bei 0,42 $ auf eine 1-Mio.-$-Nominalsicht
+gehandelt wird, kostet 420.000 $. Die Varianz ist begrenzt; es gibt
+keine Margin Calls; das Worst Case ist bei der Ordererteilung
+vollständig besichert.
+
+<Comparison
+  columns={["Dimension", "Aktien", "Futures", "Vorhersagemärkte"]}
+  rows={[
+    ["Kapitalbedarf für 1-Mio.-$-Direktsicht", "250k–500k $", "50k–80k $", "Nur Prämie (z. B. 420k $)"],
+    ["Margin-Call-Risiko vor Verfall", "Begrenzt (Reg T)", "Hoch", "Keines"],
+    ["Maximaler Verlust", "Positionsgröße", "Unbegrenzt (perpetual contracts)", "Gezahlte Prämie"],
+    ["Zeitwertverfall-Risiko", "Keines", "Meist keines (Cost of Carry)", "Niedrig (binär am Verfall)"],
+    ["Carry-Kosten", "Leihe bei Short", "Lagerung, Finanzierung", "Keine"],
+  ]}
+/>
+
+Die Geschichte der Kapitaleffizienz ist das, was Vorhersagemärkte
+als Hedge nützlich macht. Ein Fonds, der eine 50-Mio.-$-Position in
+Treasuries mit Durationsrisiko hält, kann sich gegen ein
+spezifisches Fed-Senkungs-Szenario absichern, indem er eine
+Nominalposition von 300.000 $ in einem binären CPI- oder
+Zinsentscheid-Kontrakt kauft. Der Kontrakt verfällt zu einem
+bekannten Datum mit begrenztem Verlust; es gibt keine Margin Calls;
+die Kosten sind genau die Prämie. Das ist deutlich
+kapitaleffizienter, als denselben Hedge über Treasury-options oder
+Zins-futures aufzubauen.
+
+## Settlement-Mechaniken: terminal vs. laufend
+
+Die drei Anlageklassen werden sehr unterschiedlich abgewickelt, und
+der Settlement-Mechanismus prägt das Erlebnis des Traders
+wesentlich.
+
+**Settlement am Aktienmarkt ist laufend.** Aktien verfallen nicht.
+Sie halten sie, bis Sie sich zum Verkauf entscheiden. Die
+"Abwicklung" ist nur das T+2- (oder T+1-, in modernen Märkten)
+Clearing der von Ihnen ausgeführten Trades. Die Position selbst kann
+unbegrenzt gehalten werden, mit Cashflows, die als Dividenden
+ankommen.
+
+**Futures-Settlement ist terminal, aber wird gerollt.** Jeder
+Futures-Kontrakt verfällt zu einem definierten Datum. Bei Verfall
+wird die Position zum endgültigen Settlement-Preis abgewickelt —
+entweder physisch (Lieferung des Basiswerts) oder in Cash. Trader,
+die kontinuierliche Exposition wollen, müssen "rollen" — den
+verfallenden Kontrakt schließen und den nächsten öffnen, was in
+jedem Zyklus Transaktionskosten verursacht.
+
+**Settlement bei Vorhersagemärkten ist vollständig terminal.** Jeder
+Vorhersagekontrakt hat ein einziges Auflösungsdatum. Bei der
+Auflösung zahlt der Kontrakt 1 $ an die Seite, die richtig lag, und
+0 $ an die Seite, die falsch lag. Es gibt kein Rollen, keine
+kontinuierliche Exposition, keine Funding Rate. Der Kontrakt hat
+einen bekannten Verfall und eine bekannte terminale
+Wertverteilung (binär).
+
+Diese terminal-und-begrenzte Struktur ist das, was
+Vorhersagekontrakte zu saubereren Ausdrücken von Überzeugung macht.
+Ein Trader, der glaubt, dass die Fed im Juli die Zinsen senken wird,
+muss keine vierteljährlichen Futures rollen oder Margin gegen eine
+unbegrenzte Exposition aufrechterhalten. Er kauft den Kontrakt, hält
+ihn bis zur Abwicklung und kassiert entweder 1 $ oder akzeptiert,
+dass die Sicht falsch war. Die Disziplin, die durch terminales
+Settlement auferlegt wird, ist paradoxerweise einer der Gründe,
+warum Vorhersagemarkt-Trader im Durchschnitt disziplinierter sind
+als Aktien- oder Futures-Trader.
+
+Wir haben die Auflösungsmechaniken im Detail im
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">Beitrag zur Auflösung und Settlement-Schicht</a>
+behandelt. Für den Vergleichskontext hier ist nur wichtig, dass die
+Terminal-Payoff-Struktur grundlegend anders ist als die Roll-Struktur
+von Futures oder die Halt-auf-unbestimmte-Zeit-Struktur von Aktien.
+
+## Liquiditätsdynamik: wo die Bücher divergieren
+
+Die Orderbücher für Aktien, Futures und Vorhersagemärkte verwenden
+alle dieselbe Primitive — ein Central Limit Order Book — aber sie
+unterscheiden sich darin, wie sich das Buch verhält, wenn der
+Verfall näher rückt, und wie die Tiefe über das Preisspektrum
+verteilt ist.
+
+**Aktienmarkt-Bücher.** Aktien haben effektiv kontinuierliche
+Zeithorizonte, sodass das Buch zeitlich grob stationär ist. Die
+Tiefe ist über eine breite Preisspanne verteilt (weil sich der
+zugrunde liegende Wert bewegt), und das Buch ist typischerweise am
+tiefsten in der Nähe des aktuellen Preises. Große Aktien
+(S&P-Bestandteile) tragen 10 Mio. $+ am inneren Spread; Mid-Caps
+tragen 100k–1 Mio. $; Small-Caps können dünn gehandelt werden.
+
+**Futures-Bücher.** Futures haben einen definierten Verfall. Das
+Buch ist im Front-Month-Kontrakt am tiefsten und verdünnt sich für
+Kontrakte mit weiter entfernten Daten. Wenn der Verfall näher
+rückt, wird das Front-Month-Buch dichter (mehr Teilnehmer
+konzentrieren sich auf den bald abzuwickelnden Kontrakt) und das
+Buch des nächsten Monats beginnt zu übernehmen. Die Roll-Dynamik
+schafft eine vorhersehbare Struktur.
+
+**Vorhersagemarkt-Bücher.** Vorhersagekontrakte haben ebenfalls
+einen terminalen Verfall, aber die Tiefenverteilung ist qualitativ
+unterschiedlich. Das Buch ist am tiefsten **in der Nähe der
+impliziten Wahrscheinlichkeit** — d. h. am Mittelpunkt, wo die
+meisten Trader eine ähnliche Sicht haben. Wenn die Auflösung näher
+rückt, komprimiert sich das Buch in Richtung 0 oder 1: ein Markt,
+der eine Woche vor der Auflösung bei 0,95 $ steht, konvergiert
+typischerweise auf 0,99+, wenn das Ergebnis zunehmend klar wird.
+Die terminale binäre Natur bedeutet, dass sich die Tiefe um die
+Konsenswahrscheinlichkeit konzentriert, mit dünner Liquidität an
+den Enden — eine andere Form als bei Aktien oder Futures.
+
+Diese Form hat praktische Konsequenzen. Ein
+Vorhersagemarkt-Trader, der versucht, eine starke Contrarian-Sicht
+auszudrücken (d. h. YES kaufen, wenn die implizite Wahrscheinlichkeit
+5 % beträgt), trifft auf dünne Liquidität am Ende. Umgekehrt ist das
+Heben eines 50/50-Marktes fast immer günstig. Der Trader, der diese
+Struktur versteht, hat einen bedeutenden informationellen Vorteil;
+der Trader, der das Buch wie ein Aktienbuch behandelt, wird von den
+Ausführungskosten an den Extremen überrascht sein.
+
+## Informationsaggregation: Märkte als Orakel
+
+Der tiefste Grund, warum Vorhersagemärkte wichtig sind, ist nicht
+ihre Kapitaleffizienz oder Settlement-Mechanik. Es ist, dass sie
+Informationen über zukünftige Ereignisse sauberer aggregieren als
+jeder andere Mechanismus, den Menschen erfunden haben, einschließlich
+Expertenprognosen, Umfragen und Politikmodellierung.
+
+**Aktien aggregieren Informationen über Unternehmen.** Der Preis
+von Apple kodiert die kollektive Sicht des Marktes auf Apples
+zukünftige Cashflows. Schätzungen von Aktienanalysten werden gegen
+Aktienpreise kalibriert, nicht umgekehrt — wenn Preise und
+Analystenschätzungen divergieren, gewinnen die Preise auf lange
+Sicht.
+
+**Futures aggregieren Informationen über Rohstoffangebot, -nachfrage
+und Forwardpreise.** Die WTI-Kurve ist zu jedem Zeitpunkt die
+kollektive Erwartung des Marktes über Ölpreise in den nächsten 24
+Monaten. Raffinerien, Produzenten und Trader haben alle erhebliches
+Geld auf der Linie, und die Kurve hat eine lange Erfolgsbilanz, in
+der sie genauer war als Expertenprognosen.
+
+**Vorhersagemärkte aggregieren Informationen über diskrete
+zukünftige Ereignisse.** Die implizite Wahrscheinlichkeit auf einem
+Fed-Entscheidungs-Kontrakt ist die kollektive Sicht des Marktes auf
+die Wahrscheinlichkeit der Senkung — und diese implizite
+Wahrscheinlichkeit hat über mehrjährige Stichproben hinweg
+konsistent Expertenprognostiker, Umfragen und
+Rating-Agentur-Modelle übertroffen. Die Iowa Electronic Markets
+haben dies in den 1990er Jahren für US-Wahlen demonstriert;
+Polymarket hat dies in den 2020er Jahren in viel größerem Maßstab
+für politische und Makro-Ereignisse demonstriert.
+
+Die Anlageklassen teilen eine gemeinsame Eigenschaft: wenn die
+Teilnehmer echtes Geld im Spiel haben, sind die Preise, die sie
+kollektiv setzen, ehrlicher als die Meinungen, die sie sonst
+freiwillig anbieten würden. Aber Vorhersagemärkte sind einzigartig
+positioniert, dies für Ereignisse zu tun, die keinen Aktien- oder
+Futures-Markt haben — der "Long Tail" diskreter zukünftiger
+Ereignisse, die für Operatoren, Regierungen und Allokatoren wichtig
+sind, aber nicht natürlich durch traditionelle Instrumente gehedgt
+werden.
+
+<Callout type="info" title="Warum dies die am meisten unterschätzte Eigenschaft ist">
+  Aktien aggregieren Informationen über Unternehmen. Futures
+  aggregieren Informationen über Rohstoffe. Vorhersagemärkte
+  aggregieren Informationen über alles andere — und "alles andere"
+  ist der Großteil der tatsächlich folgenreichen Fragen in Politik,
+  Wirtschaft und Finanzen. Deshalb erwarten wir, dass diese
+  Kategorie über das nächste Jahrzehnt schneller expandiert als
+  jede der beiden anderen.
+</Callout>
+
+## Risikoprofil: begrenzt vs. unbegrenzt
+
+Das Risikoprofil einer Vorhersagemarkt-Position unterscheidet sich
+qualitativ von einer Aktien- oder Futures-Position, weil das Payoff
+durch die Konstruktion begrenzt ist.
+
+**Aktien.** Eine Long-Aktien-Position hat ein begrenztes
+Abwärtsrisiko (maximaler Verlust ist die Positionsgröße) und ein
+unbegrenztes Aufwärtspotenzial. Eine Short-Aktien-Position hat das
+Gegenteil — begrenztes Aufwärtspotenzial (die Aktie kann nicht unter
+0 $ fallen) und unbegrenztes Abwärtsrisiko. Die meisten
+Aktienportfolios sind netto long, sodass die Asymmetrie günstig ist,
+aber Margin Calls und Zwangsliquidationen führen zu nichtlinearem
+Risiko.
+
+**Futures.** Eine Futures-Position hat theoretisch unbegrenztes
+Abwärtsrisiko auf beiden Seiten, weil sich der Basiswert in
+unerwarteter Weise bewegen kann und sich Margin Calls aufschaukeln
+können. In der Praxis begrenzen börsenseitige Circuit Breaker und
+Positionslimits den Worst Case, aber die Erfahrung, durch eine
+4σ-Bewegung gemargincallt zu werden, ist bei Rohstoff- oder
+Zins-futures durchaus möglich.
+
+**Vorhersagemärkte.** Beide Seiten eines Vorhersagemarkt-Trades
+sind durch die Konstruktion begrenzt. YES-Kontrakte zahlen 0 $ oder
+1 $; NO-Kontrakte zahlen 0 $ oder 1 $; der maximale Verlust für
+beide Seiten ist die gezahlte Prämie. Es gibt keine Margin Calls,
+weil das Worst Case bei der Ordererteilung bereits besichert ist.
+Diese Struktur ist attraktiv für Trader, die ausdrucksstarke
+Sichten einnehmen wollen, ohne sich der operativen Komplexität des
+Mark-to-Market-Risikomanagements auszusetzen.
+
+Die Kehrseite ist, dass auch das Aufwärtspotenzial begrenzt ist.
+Ein YES-Kontrakt, der bei 0,42 $ gekauft wurde, hat ein maximales
+Payoff von 1 $, eine Rendite von 138 %. Das ist ein starkes Payoff
+für die richtige Sicht, aber es sind keine "10x"-Renditen im
+Krypto-Stil. Vorhersagemärkte sind ein Ort, um Sichten mit hoher
+Überzeugung auszudrücken, nicht um auf das ganz große Glück zu
+setzen.
+
+## Wann jedes Instrument das richtige ist
+
+Nicht jede Sicht wird am besten in einem Vorhersagemarkt
+ausgedrückt. Der ehrliche Rahmen ist, dass jedes der drei
+Instrumente das richtige Werkzeug für eine andere Klasse von Sicht
+ist.
+
+**Verwenden Sie Aktien, wenn** Ihre Sicht über die langfristigen
+Cashflows eines Unternehmens geht. "Apple wird in den nächsten fünf
+Jahren mehr iPhones verkaufen als der Konsens erwartet" ist eine
+Aktiensicht. Es gibt keinen sauberen Vorhersagemarkt- oder
+Futures-Ausdruck dafür.
+
+**Verwenden Sie Futures, wenn** Ihre Sicht über den Preis eines
+Basiswerts über einen definierten Horizont geht. "WTI-Rohöl wird in
+sechs Monaten über 90 $ gehandelt" ist eine Futures-Sicht. Sie
+könnten sie als binären Kontrakt in einem Vorhersagemarkt
+ausdrücken, aber Sie verlieren das lineare Payoff, das Futures für
+Hedger und Produzenten attraktiv macht.
+
+**Verwenden Sie Vorhersagemärkte, wenn** Ihre Sicht über ein
+diskretes zukünftiges Ereignis mit binärem oder skalarem Ergebnis
+geht. "Die Fed senkt im Juli die Zinsen." "Der CPI druckt über 3,2 %
+in der September-Veröffentlichung." "Die WM 2026 wird von
+Argentinien gewonnen." "Die Inflation kommt unter dem Konsens beim
+nächsten Druck herein." Das sind die natürlichen Heimaten von
+Vorhersagemärkten, und es ist eine Klasse von Sichten, die weder
+Aktien noch Futures sauber ausdrücken.
+
+Die Expansion, die durch 2026 stattfindet, ist, dass die dritte
+Klasse — diskrete Ereignissichten — viel größer ist, als die
+meisten Teilnehmer erkannten. Fast jede folgenreiche
+Geschäftsentscheidung, politische Frage oder Investmentthese ist
+nachgelagert von einer kleinen Anzahl diskreter Ereignisse. Diese
+Ereignisse direkt zu bepreisen, anstatt sie über Aktien- oder
+Futures-Positionen abzuleiten, ist effizienter.
+
+## Warum die Grenzen verschwimmen
+
+Traditionelle Anlageklassen sind nicht statisch; sie entwickeln
+sich ineinander, wenn die Infrastruktur vorhanden ist. Drei
+Konvergenzmuster sind sichtbar.
+
+**Aktien-Ereignis-Hybride.** Einige aktiengebundene
+Ereigniskontrakte (z. B. "Wird Tesla im Q3 eine Produktion von über
+600.000 Einheiten ankündigen?") sitzen am Schnittpunkt von
+Aktienanalyse und Vorhersagemärkten. Die zugrunde liegende Sicht
+ist über ein Unternehmen, aber der Ausdruck ist ein binärer
+Ereigniskontrakt. Operatoren erwarten, dass diese Kategorie wächst,
+da Analysten und Trader nach saubereren Ausdrücken spezifischer
+Katalysatoren suchen.
+
+**Futures-Ereignis-Hybride.** Volatilitäts-Ereignis-Kontrakte (z. B.
+"Wird die implizite Vol auf den S&P am FOMC-Tag über 25 %
+schließen?") lassen Trader Sichten auf Volatilitätsregime über
+binäre Kontrakte einnehmen, anstatt über vega-lastige
+options-Positionen. Die Kapitaleffizienz ist besser und der
+operative Aufwand niedriger.
+
+**Skalare Vorhersagemarkt-Kontrakte.** Die einfachsten
+Vorhersagekontrakte sind binär, aber skalare Kontrakte (die einen
+Betrag proportional zum zugrunde liegenden Wert auszahlen) werden
+zunehmend häufig. Diese sehen mechanisch ähnlich aus wie options
+oder Futures, aber mit einem einfacheren Settlement und einem
+engeren Kapitalprofil.
+
+Die drei Anlageklassen konvergieren auf einem gemeinsamen
+Infrastruktur-Substrat. Die Operatoren, Börsen und Protokolle, die
+herausfinden, wie sie alle drei unter einem Dach hosten können,
+sind positioniert, diese Konvergenz zu erfassen. Wir haben das
+Kuest-Protokoll mit dieser Zukunft im Sinn entworfen — Operatoren
+auf Kuest werden in der Lage sein, binäre Vorhersagekontrakte,
+skalare Kontrakte und ereignisgebundene Derivate unter einem
+einzigen Deploy zu hosten, da der Katalog unterstützter
+Kontrakttypen bis 2026 erweitert wird.
+
+## Eine Anmerkung zu Settlement-Währungen
+
+Ein weiterer struktureller Unterschied, der erwähnenswert ist:
+jede Anlageklasse hat ein Standard-Settlement-Substrat, und dieses
+Substrat prägt, wer teilnehmen kann.
+
+Aktien werden in Fiat über nationale Clearingstellen abgewickelt.
+Der Zugang erfordert eine Brokerage-Beziehung in der relevanten
+Jurisdiktion. Futures werden in Fiat über Börsen-Clearingstellen
+mit strengen Mitgliedschaftsanforderungen abgewickelt.
+Vorhersagemärkte werden in ihrer dominanten On-Chain-Form in
+stablecoins (USDC) auf öffentlichen Chains abgewickelt. Das macht
+die Teilnahme standardmäßig effektiv global — jeder mit einem
+Wallet und stablecoins kann handeln — und macht das Operator-Overlay
+(KYC, Fiat-Rampen, Jurisdiktions-Gating) optional statt
+Grundausstattung. Es bedeutet auch, dass die Kosten für den Betrieb
+von Infrastruktur niedriger sind, was Teil des Grundes ist, warum
+ein Modell auf Protokollebene für Vorhersagemärkte funktioniert,
+wie es für Aktien nicht würde.
+
+## Was das für Trader, Operatoren und Allokatoren bedeutet
+
+Drei Implikationen ergeben sich direkt aus dem strukturellen
+Vergleich.
+
+**Für Trader.** Vorhersagemärkte sind ein Hochüberzeugungs-Instrument.
+Verwenden Sie sie, wenn Sie eine starke Sicht auf ein spezifisches
+Ereignis haben und begrenztes Risiko wollen. Versuchen Sie nicht,
+sie als Ersatz für Aktien- oder Futures-Positionen zu verwenden,
+wo die Sicht über Cashflows oder Rohstoffpreise geht.
+
+**Für Operatoren.** Die strukturelle Anziehungskraft von
+Vorhersagemärkten für Ihr Publikum ist die Kapitaleffizienz und
+das begrenzte Risiko. Diese Botschaft sollte zentral dafür sein,
+wie Sie Ihre Plattform vermarkten. Trader, die von Aktien oder
+Futures kommen, werden das Fehlen von Margin Calls schätzen;
+Trader, die vom Glücksspiel kommen, werden die besseren
+Stückkosten schätzen. Beide Übersetzungen sind gültig und beide
+sind netto positiv.
+
+**Für Allokatoren.** Vorhersagemärkte sind in den meisten
+institutionellen Portfolios noch keine Kern-Allokation, aber die
+Kategorie wird in den nächsten 24 Monaten allokiert werden. Fonds,
+die jetzt Forschungsexpertise aufbauen — insbesondere in
+ereignisgetriebener Makroanalyse und politischem Risiko — werden
+positioniert sein, das Alpha zu erfassen, das mit der
+institutionellen Hochlaufphase einhergeht. Die Volumendaten zeigen
+bereits, dass der institutionelle Anteil schnell wächst; das
+Allokationsframework hat noch nicht aufgeholt.
+
+Der Vergleich zwischen Vorhersagemärkten, Futures und Aktien ist
+keine Schlacht um Dominanz. Es ist eine Geschichte über eine
+dritte Anlageklasse, die ihren Platz neben den anderen beiden als
+primäres Instrument für eine bestimmte Art von Sicht einnimmt. Die
+Infrastruktur, um das in großem Maßstab geschehen zu lassen, wird
+gerade jetzt gebaut, und die Operatoren, die die richtige Seite
+des Builds wählen, werden die Kategorie definieren.
+
+<KuestCTA
+  headline="Möchten Sie Ereigniskontrakte neben Ihrem bestehenden Trading-Produkt hosten?"
+  body="Egal, ob Ihr Publikum heute Aktien, Futures oder Krypto handelt — Vorhersagemärkte komponieren mit dem, was Sie bereits anbieten. Wir zeigen Ihnen wie."
+  primary={{ href: "/launch", label: "Launch-Assistenten ausführen" }}
+  secondary={{ href: "/enterprise", label: "Mit dem Vertrieb sprechen" }}
+/>
