@@ -91,10 +91,9 @@ producción para los venues que ya están sobre el stack de
 Kuest.
 
 **Rails de resolución que no dependen del operador.** Los
-mercados se resuelven a través del oráculo optimista de UMA,
-con scopes de resolución aislados por operador, de modo que
-una resolución fallida en los mercados de un operador no puede
-afectar a otro. Cubrimos la mecánica completa en el
+mercados se resuelven a través del oráculo optimista de UMA, con
+reglas explícitas por mercado, metadatos de fuente y una vía
+pública de disputa. Cubrimos la mecánica completa en el
 <a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre la capa de resolución y liquidación</a>.
 
 **Liquidez compartida a escala de protocolo.** El order flow en
@@ -149,7 +148,8 @@ infraestructura de wallet, liquidez — todo corriendo antes de
 que tu equipo termine el onboarding. El deploy está
 parametrizado: tu identidad de operador está codificada en las
 instancias del contrato, tu comisión se acumula en tu dirección
-de operador, tus scopes de resolución están aislados. Tras
+de operador y la configuración de mercado se aplica en tu
+despliegue. Tras
 bambalinas compartes infraestructura más profunda con todos los
 operadores del protocolo; desde la perspectiva de tus
 operadores, es tu venue.
@@ -163,12 +163,11 @@ Algunos detalles a saber sobre este paso:
   operadores nunca ven una comisión de red.
 - **La custodia es configurable.** Operadores cripto-nativos
   pueden correr con wallets self-custodial. Operadores
-  regulados pueden rutear a través de cuentas de fondos
-  segregadas vía los socios bancarios del protocolo.
-- **El scope de resolución está aislado por operador.**
-  Cualquier mercado creado bajo tu identidad se resuelve a
-  través de tu scope. Si un mercado en el scope de otro
-  operador entra en disputa, tu venue no se ve afectado.
+  regulados pueden configurar flujos de fondos segregados con
+  su propio stack de custodia y cumplimiento.
+- **La resolución es rules-first.** Cada mercado incluye reglas
+  explícitas y URL de fuente opcional, con disputas manejadas
+  por el proceso público de UMA.
 
 ### 3. Tu plataforma cobra una comisión en cada trade
 
@@ -201,9 +200,8 @@ Los operadores multi-jurisdicción tienen un overlay delgado de
 configuración adicional:
 
 - **Proveedores de KYC e identidad por jurisdicción.** Cada
-  región tiene su stack de verificación preferido. El protocolo
-  integra con los principales proveedores; eliges por mercado o
-  segmento de audiencia.
+  región tiene su stack de verificación preferido. Cuando aplica,
+  el operador integra su propio stack por mercado o segmento.
 - **Plantillas de comisiones por jurisdicción.** Algunas
   jurisdicciones limitan las comisiones retail por regulación,
   otras no. Puedes configurar una tarifa de operador diferente
@@ -262,9 +260,8 @@ flow real desde el día uno.
 Aquí está la secuencia real, desde el registro hasta el primer
 trade en vivo. Cada paso es configuración, no ingeniería.
 
-1. **Registrarse y verificar la identidad de operador.** ≈ 2
-   minutos. Verificamos la entidad detrás de la dirección de
-   operador y aprovisionamos tu scope.
+1. **Registrarse y configurar ajustes de operador.** ≈ 2
+   minutos. Conecta tu wallet y crea tu perfil de operador.
 2. **Elegir mercados y alcance de audiencia.** ≈ 4 minutos.
    Selecciona verticales de una lista, agrega opcionalmente
    mercados custom, define segmentos de audiencia.
@@ -272,11 +269,11 @@ trade en vivo. Cada paso es configuración, no ingeniería.
    minutos. Tasa de operador, color de marca, subida de logo,
    campos de copy.
 4. **Configurar overlay jurisdiccional (si es multi-
-   jurisdicción).** ≈ 4 minutos. Proveedores de KYC,
+   jurisdicción).** ≈ 4 minutos. Política de acceso,
    plantillas de comisiones, bundles de idioma.
 5. **Revisar y desplegar.** ≈ 2 minutos. El wizard valida la
-   configuración, despliega instancias de contrato, conecta el
-   scope de resolución y publica la plataforma detrás de tu
+   configuración, despliega instancias de contrato, aplica la
+   configuración de mercado y publica la plataforma detrás de tu
    dominio o un subdominio hosteado por Kuest.
 
 Eso son quince minutos desde "no he empezado" hasta "tengo un
@@ -306,8 +303,8 @@ del protocolo:
   acepta tamaños mayores en cada venue.
 - **Un camino de deploy gestionado para brokers regulados.**
   Onboarding white-glove para operadores que necesitan una
-  interfaz directa de cumplimiento con los socios bancarios y
-  de KYC del protocolo. El deploy self-service de 15 minutos
+  interfaz directa de cumplimiento con su propio stack regulado.
+  El deploy self-service de 15 minutos
   sigue funcionando para todos los demás.
 - **Bundles de idiomas adicionales.** Priorizamos paquetes de
   idioma según las solicitudes de operadores; si tu mercado

@@ -225,37 +225,32 @@ strong reason underperform.
 ## Phase 5: Compliance and KYC overlay
 
 The compliance configuration is where most operators
-under-budget time. The good news is that the protocol's
-compliance overlay handles the core mechanics; the
-jurisdiction-specific configuration is the operator's overlay
-on top.
+under-budget time. The good news is that the protocol
+handles core trading mechanics; jurisdiction-specific
+compliance policy is configured by the operator on top.
 
 For a single-jurisdiction launch, the configuration is
 typically:
 
 - **Identity verification provider.** The protocol integrates
-  with the major providers (Onfido, Persona, Sumsub,
-  jurisdiction-local options). Pick the one your audience
-  expects to see.
+  where required, operators connect their own KYC/KYB
+  provider and eligibility checks.
 - **Document requirements.** Each jurisdiction has a different
-  default document set. Brazil typically requires CPF + photo
-  ID + proof of address. The EU requires a passport or
-  national ID + selfie liveness check. Configure once per
+  required document set. Configure your onboarding policy per
   jurisdiction.
-- **Reporting hooks.** For regulated jurisdictions, every trade
-  emits a structured event that feeds your compliance tooling.
-  Configure the report cadence and destination (typically a
-  data warehouse or a regulator-facing reporting tool).
+- **Reporting workflow.** Define how trade and activity data
+  is exported to your internal compliance tooling and review
+  cadence.
 - **Geographic restrictions.** Configure which jurisdictions
   can access the venue. Most operators run permissive access
   with explicit blocks on jurisdictions where the operator
   doesn't want exposure (typically the US for non-US
   operators, plus a small set of high-risk jurisdictions).
 
-For multi-jurisdiction launches, this entire config repeats per
-jurisdiction. The protocol's templates make this configuration
-rather than engineering, but it's still a few hours of careful
-setup per region.
+For multi-jurisdiction launches, this config repeats per
+jurisdiction. It's mostly operational work rather than core
+engineering, but it's still a few hours of careful setup per
+region.
 
 ## Phase 6: Liquidity setup
 
@@ -520,8 +515,8 @@ the audience about what the venue is for. Concentrate, prove
 the unit economics, then expand.
 
 **Underbudgeting compliance configuration time.** The technical
-deploy takes minutes. The compliance overlay (KYC providers,
-reporting hooks, jurisdiction-specific document requirements)
+deploy takes minutes. Compliance setup (eligibility checks,
+reporting workflow, jurisdiction-specific document requirements)
 takes several hours per jurisdiction. Operators who don't budget
 for this discover it on launch day.
 
@@ -608,7 +603,7 @@ the foundation of a venue that scales.
 
 <KuestCTA
   headline="Ready to open your own prediction market venue?"
-  body="The launch wizard takes you through every step in this playbook in under 15 minutes. We'll provision your operator scope, deploy contracts under your brand, and give you the dashboard to run the first 30 days from."
+  body="The launch wizard takes you through every step in this playbook in under 15 minutes. We'll set up your operator configuration, deploy contracts under your brand, and give you the dashboard to run the first 30 days from."
   primary={{ href: "/launch", label: "Open the launch wizard" }}
   secondary={{ href: "/enterprise", label: "Book a launch-strategy call" }}
 />

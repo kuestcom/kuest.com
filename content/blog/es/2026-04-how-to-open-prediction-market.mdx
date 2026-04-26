@@ -249,28 +249,21 @@ rendimiento inferior.
 
 La configuración de cumplimiento es donde la mayoría de los
 operadores presupuestan poco tiempo. La buena noticia es que
-el overlay de cumplimiento del protocolo maneja la mecánica
-central; la configuración específica de la jurisdicción es el
-overlay del operador encima.
+el protocolo maneja la mecánica central de trading; la política
+de cumplimiento por jurisdicción la define el operador encima.
 
 Para un lanzamiento de jurisdicción única, la configuración
 es típicamente:
 
 - **Proveedor de verificación de identidad.** El protocolo se
-  integra con los principales proveedores (Onfido, Persona,
-  Sumsub, opciones locales por jurisdicción). Elige el que tu
-  audiencia espera ver.
+  donde sea requerido, el operador conecta su propio proveedor
+  KYC/KYB y sus reglas de elegibilidad.
 - **Requisitos de documento.** Cada jurisdicción tiene un
-  conjunto de documentos por defecto diferente. Brasil
-  típicamente requiere CPF + identificación con foto +
-  comprobante de domicilio. La UE requiere un pasaporte o
-  identificación nacional + verificación de vida con selfie.
-  Configura una vez por jurisdicción.
-- **Hooks de reporting.** Para jurisdicciones reguladas, cada
-  trade emite un evento estructurado que alimenta tu
-  herramienta de cumplimiento. Configura la cadencia y el
-  destino del informe (típicamente un data warehouse o una
-  herramienta de reporting orientada al regulador).
+  conjunto de documentos distinto. Configura tu política de
+  onboarding por jurisdicción.
+- **Flujo de reporting.** Define cómo los datos de trading y
+  actividad se exportan a tus herramientas internas de
+  cumplimiento.
 - **Restricciones geográficas.** Configura qué jurisdicciones
   pueden acceder al venue. La mayoría de los operadores
   ejecutan acceso permisivo con bloqueos explícitos en
@@ -582,7 +575,7 @@ Concéntrate, prueba las unit economics, luego expande.
 
 **Subpresupuestar el tiempo de configuración de cumplimiento.**
 El deploy técnico toma minutos. El overlay de cumplimiento
-(proveedores de KYC, hooks de reporting, requisitos de
+(controles de elegibilidad, flujo de reporting y requisitos de
 documento específicos por jurisdicción) toma varias horas por
 jurisdicción. Los operadores que no presupuestan para esto lo
 descubren el día del lanzamiento.
@@ -682,7 +675,7 @@ comienza a ser la base de un venue que escala.
 
 <KuestCTA
   headline="¿Listo para abrir tu propio venue de mercado de predicción?"
-  body="El asistente de lanzamiento te lleva a través de cada paso de este playbook en menos de 15 minutos. Aprovisionaremos tu alcance de operador, desplegaremos contratos bajo tu marca, y te daremos el dashboard desde el cual ejecutar los primeros 30 días."
+  body="El asistente de lanzamiento te lleva por cada paso de este playbook en menos de 15 minutos. Configuraremos tu operador, desplegaremos contratos bajo tu marca y te daremos el dashboard para ejecutar los primeros 30 días."
   primary={{ href: "/launch", label: "Abrir el asistente de lanzamiento" }}
   secondary={{ href: "/enterprise", label: "Reservar una llamada de estrategia de lanzamiento" }}
 />

@@ -89,10 +89,9 @@ Polygon mainnet.
 
 **Des rails de résolution qui ne dépendent pas de l'opérateur.**
 Les marchés se résolvent via l'Optimistic Oracle d'UMA, avec
-des scopes de résolution isolés par opérateur, de sorte qu'une
-résolution défectueuse sur les marchés d'un opérateur ne peut
-pas affecter ceux d'un autre. Nous avons couvert la mécanique
-complète dans le
+des règles de marché explicites, des métadonnées de source et
+un chemin de contestation public. Nous avons couvert la
+mécanique complète dans le
 <a href="/blog/2026-04-resolution-and-the-settlement-layer">post sur la couche de résolution et de règlement</a>.
 
 **Liquidité partagée à l'échelle du protocole.** Le flux d'ordres
@@ -148,7 +147,8 @@ de wallet, liquidité — le tout en marche avant que votre équipe
 ne termine l'onboarding. Le déploiement est paramétré : votre
 identité d'opérateur est encodée dans les instances de
 contrats, votre commission s'accumule à votre adresse
-d'opérateur, vos scopes de résolution sont isolés. En coulisses,
+d'opérateur, et votre configuration de marché est attachée à
+votre déploiement opérateur. En coulisses,
 vous partagez une infrastructure plus profonde avec tous les
 autres opérateurs du protocole ; du point de vue de vos
 traders, c'est votre venue.
@@ -162,12 +162,12 @@ Quelques spécificités à connaître :
   ne voient jamais de frais réseau.
 - **La custody est configurable.** Les opérateurs crypto-natifs
   peuvent fonctionner avec des wallets self-custodial. Les
-  opérateurs réglementés peuvent router via des comptes de
-  fonds clients ségrégués via les partenaires bancaires du
-  protocole.
-- **Le scope de résolution est isolé par opérateur.** Tout
-  marché créé sous votre identité d'opérateur se résout via
-  votre scope.
+  opérateurs réglementés peuvent configurer des workflows de
+  fonds clients ségrégués via leur propre stack de custody et
+  de conformité.
+- **La résolution est pilotée par les règles.** Chaque marché
+  porte des règles explicites et une URL source optionnelle,
+  avec contestations traitées via le processus public d'UMA.
 
 ### 3. Votre plateforme gagne une commission sur chaque trade
 
@@ -196,9 +196,9 @@ cadre local), la configuration ci-dessus est essentiellement
 complète.
 
 Les opérateurs multi-juridictions ont une fine couche de
-configuration supplémentaire : fournisseurs KYC par juridiction,
-modèles de frais par juridiction, hooks de reporting pour les
-audits régulateurs, bundles de frontend par langue. Pour la
+configuration supplémentaire : politique d'accès par
+juridiction, modèles de frais par juridiction et bundles de
+frontend par langue. Pour la
 plupart des opérateurs, cet overlay ajoute environ une heure au
 premier déploiement.
 
@@ -237,8 +237,9 @@ jour.
 Voici la séquence réelle, de l'inscription au premier trade en
 direct. Chaque étape est une configuration, pas de l'ingénierie.
 
-1. **S'inscrire et vérifier l'identité de l'opérateur.** ≈ 2
-   minutes.
+1. **S'inscrire et configurer les paramètres opérateur.** ≈ 2
+   minutes. Connectez votre wallet et créez votre profil
+   opérateur.
 2. **Choisir les marchés et le périmètre d'audience.** ≈ 4
    minutes.
 3. **Définir les frais et les paramètres de marque.** ≈ 3

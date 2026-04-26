@@ -184,13 +184,11 @@ function loadAllPosts(): BlogPost[] {
   })
 }
 
-const BUILD_TIME = Date.now()
-
 function isPublished(post: { frontmatter: BlogFrontmatter }): boolean {
   if (post.frontmatter.draft) {
     return false
   }
-  return process.env.NODE_ENV !== 'production' || post.frontmatter.publishedAt.getTime() <= BUILD_TIME
+  return process.env.NODE_ENV !== 'production' || post.frontmatter.publishedAt.getTime() <= Date.now()
 }
 
 export function getPost(slug: string, locale: SupportedLocale): BlogPost | null {

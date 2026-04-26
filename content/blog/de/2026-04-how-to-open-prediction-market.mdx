@@ -251,27 +251,22 @@ diesen abweichen, sind unterdurchschnittlich.
 
 Die Compliance-Konfiguration ist der Bereich, in dem die
 meisten Betreiber zu wenig Zeit budgetieren. Die gute Nachricht
-ist, dass das Compliance-Overlay des Protokolls die Kernmechanik
-übernimmt; die jurisdiktionsspezifische Konfiguration ist das
-Overlay des Betreibers darauf.
+ist, dass das Protokoll die Kernmechanik des Tradings
+übernimmt; die Compliance-Policy je Jurisdiktion liegt beim
+Betreiber.
 
 Für einen Single-Jurisdiction-Launch ist die Konfiguration
 typischerweise:
 
 - **Identitätsprüfungsanbieter.** Das Protokoll integriert sich
-  mit den großen Anbietern (Onfido, Persona, Sumsub,
-  jurisdiktionslokale Optionen). Wählen Sie denjenigen, den Ihr
-  Publikum erwartet zu sehen.
+  dort, wo erforderlich, bindet der Betreiber seinen eigenen
+  KYC/KYB-Anbieter und seine Eligibility-Regeln an.
 - **Dokumentenanforderungen.** Jede Jurisdiktion hat ein anderes
-  Standard-Dokumentenset. Brasilien erfordert typischerweise
-  CPF + Lichtbildausweis + Adressnachweis. Die EU erfordert
-  einen Reisepass oder nationalen Ausweis + Selfie-Liveness-
-  Check. Konfigurieren Sie einmal pro Jurisdiktion.
-- **Reporting-Hooks.** Für regulierte Jurisdiktionen emittiert
-  jeder Trade ein strukturiertes Ereignis, das Ihr Compliance-
-  Tooling speist. Konfigurieren Sie die Berichts-Kadenz und das
-  Ziel (typischerweise ein Data Warehouse oder ein
-  regulatororientiertes Reporting-Tool).
+  Dokumentenset. Konfigurieren Sie Ihre Onboarding-Policy pro
+  Jurisdiktion.
+- **Reporting-Workflow.** Definieren Sie, wie Handels- und
+  Aktivitätsdaten in Ihre internen Compliance-Tools exportiert
+  werden.
 - **Geografische Beschränkungen.** Konfigurieren Sie, welche
   Jurisdiktionen auf die Venue zugreifen können. Die meisten
   Betreiber führen permissiven Zugang mit expliziten Sperren
@@ -584,8 +579,9 @@ Economics, dann expandieren Sie.
 
 **Compliance-Konfigurationszeit unterbudgetieren.** Der
 technische Deploy dauert Minuten. Das Compliance-Overlay
-(KYC-Anbieter, Reporting-Hooks, jurisdiktionsspezifische
-Dokumentenanforderungen) dauert mehrere Stunden pro
+(Eligibility-Checks, Reporting-Workflow und
+jurisdiktionsspezifische Dokumentenanforderungen) dauert
+mehrere Stunden pro
 Jurisdiktion. Betreiber, die dies nicht budgetieren, entdecken
 es am Launch-Tag.
 
@@ -683,7 +679,7 @@ die Grundlage einer Venue zu sein, die skaliert.
 
 <KuestCTA
   headline="Bereit, Ihre eigene Vorhersagemarkt-Venue zu eröffnen?"
-  body="Der Launch-Wizard führt Sie in unter 15 Minuten durch jeden Schritt in diesem Playbook. Wir richten Ihren Betreiber-Scope ein, deployen Verträge unter Ihrer Marke und geben Ihnen das Dashboard, von dem aus Sie die ersten 30 Tage führen."
+  body="Der Launch-Wizard führt Sie in unter 15 Minuten durch jeden Schritt in diesem Playbook. Wir konfigurieren Ihren Betreiber, deployen Verträge unter Ihrer Marke und geben Ihnen das Dashboard für die ersten 30 Tage."
   primary={{ href: "/launch", label: "Launch-Wizard öffnen" }}
   secondary={{ href: "/enterprise", label: "Launch-Strategie-Gespräch buchen" }}
 />

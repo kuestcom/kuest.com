@@ -24,8 +24,8 @@ et veulent savoir comment fonctionne réellement la couche de
 règlement.
 
 <Stat
-  value="≈ 0.18%"
-  label="Part des marchés résolus par UMA sur Polymarket qui passent en contestation ; 99,82 % se résolvent proprement par la voie optimiste"
+  value="Faible"
+  label="Sur les marchés matures reposant sur UMA, seule une minorité des résolutions remonte en contestation formelle ; la plupart se finalisent par la voie optimiste"
   sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
   sourceLabel="Documentation UMA, 2026"
 />
@@ -225,30 +225,21 @@ création du marché, et le mécanisme de contestation est public.
 
 L'approche de Kuest hérite du motif de l'optimistic oracle de
 l'architecture de production de Polymarket et le durcit pour un
-déploiement multi-opérateurs. Les changements clés :
+déploiement multi-opérateurs. En pratique :
 
-- **Périmètres de résolution isolés par opérateur.** Les marchés de
-  chaque opérateur se résolvent dans un périmètre auditable et
-  prouvablement isolé des marchés des autres opérateurs. Une
-  résolution défectueuse sur les marchés de l'opérateur A ne peut
-  pas se propager dans les livres de l'opérateur B.
+- **Flux de contestation basé sur UMA.** Les propositions de
+  résolution suivent la mécanique d'optimistic oracle d'UMA plutôt
+  que des décisions ad hoc côté opérateur.
+- **Règles et métadonnées de source au niveau du marché.** Chaque
+  marché porte des règles explicites et une URL de source de
+  résolution optionnelle, visible dans le panneau de règles.
 - **Validation pré-vol du contrat.** Avant qu'un marché ne soit
-  mis en ligne, l'URL de la source de résolution est récupérée,
-  parsée et validée par rapport au type de données qu'attend le
-  contrat. Les marchés pointant vers des sources ambiguës ou
-  mouvantes sont rejetés à la création, pas à la résolution.
-- **Cautions de contestation pré-financées.** Le protocole maintient
-  un pool de capital qui finance les cautions au nom des opérateurs,
-  de sorte qu'un petit opérateur peut faire tourner une venue sans
-  immobiliser de capital de caution dans son bilan. Le pool est géré
-  au niveau du protocole, pas par un opérateur unique.
-- **Télémétrie de résolution exposée aux opérateurs.** Les
-  opérateurs voient en temps réel comment leurs marchés se
-  résolvent — quelles propositions sont passées sans contestation,
-  lesquelles sont allées en contestation, lesquelles ont été
-  re-résolues en appel. C'est la même posture qu'adopte une venue
-  régulée ; il est inhabituel de la voir sur une couche
-  permissionless.
+  mis en ligne, le flux de création vérifie les champs obligatoires
+  et le format d'URL de la source de résolution.
+- **Visibilité des contestations dans les données plateforme.** Les
+  payloads de marché exposent des champs d'état de contestation (par
+  exemple si une résolution a été contestée), afin de suivre la
+  santé de la résolution.
 
 L'objectif de tout cela est de rendre la résolution ennuyeuse. Une
 plateforme où la résolution est la chose la plus excitante qui se

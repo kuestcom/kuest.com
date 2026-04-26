@@ -191,9 +191,8 @@ A arquitetura tem quatro camadas e o operador herda todas as quatro:
   momento em que lançam. Cobrimos por que isso importa no
   <a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartilhada</a>.
 - **Resolução gerenciada.** Optimistic oracle baseado em UMA com
-  escopos de resolução isolados por operador, de modo que uma
-  resolução defeituosa nos mercados de um operador não pode afetar
-  os de outro.
+  regras explícitas por mercado, metadados de fonte e processo
+  público de disputa.
 
 Para o que a Kuest serve:
 
@@ -204,8 +203,8 @@ Para o que a Kuest serve:
   queira gastar de US$ 3,4 a 7,2 milhões e de 8 a 14 meses
   construindo infraestrutura que não precisa possuir.
 - **Deployments multijurisdicionais.** Um único operador pode
-  implantar overlays por jurisdição (provedores de KYC, modelos de
-  taxa, pacotes de idioma) sem rodar múltiplos builds.
+  implantar overlays por jurisdição (política de acesso,
+  configuração de taxas e pacotes de idioma) sem rodar múltiplos builds.
 - **Mercados de cauda longa em escala.** A camada de protocolo pode
   hospedar a cauda longa de mercados que uma única venue regulada
   não consegue aprovar um a um.
@@ -257,9 +256,9 @@ costumam se importar:
   columns={["Funcionalidade", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
     ["Ativo de liquidação", "USDC on-chain", "Custódia bancária em USD", "USDC on-chain (operador pode sobrepor fiat)"],
-    ["Modelo de resolução", "UMA Optimistic Oracle", "Equipe centralizada de integridade de mercado", "Baseado em UMA, escopo isolado por operador"],
+    ["Modelo de resolução", "UMA Optimistic Oracle", "Equipe centralizada de integridade de mercado", "Baseado em UMA, com regras explícitas e processo público de disputa"],
     ["Disponibilidade geográfica", "Global, exceto EUA", "Apenas EUA", "Configurável por operador"],
-    ["Exigência de KYC", "Nenhuma (apenas carteira)", "KYC completo regulado nos EUA", "Configurável por operador / jurisdição"],
+    ["Exigência de KYC", "Nenhuma (apenas carteira)", "KYC completo regulado nos EUA", "Definida pelo operador (wallet-only ou camada externa de KYC)"],
     ["Criação de mercados", "Permissionless (curadoria de admin)", "Pré-aprovada pela exchange", "Gerenciada pelo operador dentro dos limites do protocolo"],
     ["Modelo de custódia", "Auto-custódia", "Parceiro bancário regulado", "Configurável: própria ou regulada"],
     ["Profundidade do livro de ordens no lançamento", "Existente (venue madura)", "Existente (venue madura)", "Compartilhada (Dia 1 profundo para novos operadores)"],

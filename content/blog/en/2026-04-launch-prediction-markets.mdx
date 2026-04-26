@@ -82,9 +82,8 @@ absorbs the operational load of every market created across all
 operators.
 
 **Resolution rails that don't depend on the operator.** Markets
-resolve through UMA's optimistic oracle, with operator-isolated
-resolution scopes so a faulty resolution on one operator's markets
-cannot affect another's. We covered the full mechanics in
+resolve through UMA's optimistic oracle with explicit market rules,
+source metadata, and a public dispute path. We covered the full mechanics in
 <a href="/blog/2026-04-resolution-and-the-settlement-layer">the post on resolution and the settlement layer</a> —
 the short version is that operators inherit a battle-tested
 settlement model rather than building one.
@@ -139,7 +138,7 @@ Smart contracts, CLOB, settlement rails, wallet infrastructure,
 liquidity — all running before your team finishes onboarding. The
 deploy is parameterised: your operator identity is encoded into the
 contract instances, your fee accrues to your operator address, your
-resolution scopes are isolated. Behind the scenes you're sharing
+market configuration is attached to your operator deployment. Behind the scenes you're sharing
 deeper infrastructure with every other operator on the protocol;
 from your traders' perspective, it's your venue.
 
@@ -150,13 +149,12 @@ A few specifics worth knowing about this step:
   dollars in verified prediction-market volume. Gas is paid by the
   protocol; traders never see a network fee.
 - **Custody is configurable.** Crypto-native operators can run with
-  self-custodial wallets. Regulated operators can route through
-  segregated client-fund accounts via the protocol's banking
-  partners.
-- **The resolution scope is operator-isolated.** Any market created
-  under your operator identity resolves through your scope. If a
-  market in another operator's scope goes to dispute, your venue
-  is not affected.
+  self-custodial wallets. Regulated operators can configure
+  segregated client-fund workflows through their own custody and
+  compliance stack.
+- **Resolution is rules-first.** Each market carries explicit
+  resolution rules and optional source URL, with disputes handled
+  through UMA's public process.
 
 ### 3. Your platform earns a fee on every trade
 
@@ -246,19 +244,18 @@ lose 60–80% of their launch audience inside thirty days.
 Here's the actual sequence, from sign-up to first live trade. Each
 step is configuration, not engineering.
 
-1. **Sign up and verify operator identity.** ≈ 2 minutes. We
-   verify the entity behind the operator address and provision your
-   operator scope.
+1. **Sign up and configure operator settings.** ≈ 2 minutes.
+   Connect your wallet and create your operator profile.
 2. **Pick markets and audience scope.** ≈ 4 minutes. Select
    verticals from a list, optionally add custom markets, define
    audience segments.
 3. **Set fees and brand parameters.** ≈ 3 minutes. Operator fee
    rate, brand colour, logo upload, copy fields.
 4. **Configure jurisdictional overlay (if multi-jurisdiction).**
-   ≈ 4 minutes. KYC providers, fee templates, language bundles.
+   ≈ 4 minutes. Access policy, fee setup, language bundles.
 5. **Review and deploy.** ≈ 2 minutes. The wizard validates the
-   configuration, deploys contract instances, wires the
-   resolution scope, and fronts the platform behind your domain
+   configuration, deploys contract instances, applies market
+   settings, and fronts the platform behind your domain
    or a Kuest-hosted subdomain.
 
 That's fifteen minutes from "I haven't started" to "I have a live
@@ -283,7 +280,7 @@ operators who want to plan against the protocol's trajectory:
   tightens spreads further and accepts larger size on every venue.
 - **A managed-deploy path for regulated brokerages.** White-glove
   onboarding for operators that need a direct compliance interface
-  with the protocol's banking and KYC partners. The 15-minute
+  with their regulated stack. The 15-minute
   self-serve deploy continues to work for everyone else.
 - **Additional language bundles.** We're prioritising language
   packs based on operator requests; if your target market is

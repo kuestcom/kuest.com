@@ -42,7 +42,7 @@ export default async function MarketingDockNav({
   const t = await getExtracted()
 
   return (
-    <nav id="dockNav" className="dock-nav" aria-hidden="true">
+    <nav id="dockNav" className="dock-nav" aria-label={t('Site navigation')}>
       <a href="#page-top" className="nav-logo">
         <KuestMark />
         Kuest

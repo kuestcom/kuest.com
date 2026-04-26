@@ -91,10 +91,9 @@ in Produktion für die Venues, die bereits auf dem Kuest-Stack
 sind.
 
 **Resolution-Rails, die nicht vom Betreiber abhängen.** Märkte
-werden durch UMAs Optimistic Oracle aufgelöst, mit
-betreiber-isolierten Resolution-Scopes, sodass eine fehlerhafte
-Auflösung in den Märkten eines Betreibers die eines anderen
-nicht beeinträchtigen kann. Die volle Mechanik haben wir im
+werden über UMAs Optimistic Oracle aufgelöst, mit expliziten
+Marktregeln, Source-Metadaten und einem öffentlichen
+Dispute-Pfad. Die volle Mechanik haben wir im
 <a href="/blog/2026-04-resolution-and-the-settlement-layer">Beitrag zur Resolution- und Settlement-Schicht</a>
 behandelt.
 
@@ -149,8 +148,8 @@ Smart Contracts, CLOB, Settlement-Rails, Wallet-Infrastruktur,
 Liquidität – alles läuft, bevor Ihr Team das Onboarding
 abschließt. Der Deploy ist parametrisiert: Ihre
 Betreiber-Identität ist in die Vertrags-Instanzen kodiert, Ihre
-Betreibergebühr läuft auf Ihre Betreiberadresse auf, Ihre
-Resolution-Scopes sind isoliert. Hinter den Kulissen teilen Sie
+Betreibergebühr läuft auf Ihre Betreiberadresse auf, und die
+Marktkonfiguration wird in Ihrem Deploy angewendet. Hinter den Kulissen teilen Sie
 tiefere Infrastruktur mit jedem anderen Betreiber im Protokoll;
 aus Sicht Ihrer Trader ist es Ihre Venue.
 
@@ -163,12 +162,11 @@ Einige Spezifika zu diesem Schritt:
   Netzwerkgebühr.
 - **Custody ist konfigurierbar.** Krypto-native Betreiber können
   mit Self-Custody-Wallets laufen. Regulierte Betreiber können
-  über segregierte Kundengelder-Konten der Banking-Partner des
-  Protokolls routen.
-- **Der Resolution-Scope ist betreiber-isoliert.** Jeder Markt,
-  der unter Ihrer Betreiberidentität erstellt wird, löst über
-  Ihren Scope auf. Geht ein Markt im Scope eines anderen
-  Betreibers in Dispute, ist Ihre Venue nicht betroffen.
+  segregierte Kundengeld-Workflows mit ihrem eigenen Custody-
+  und Compliance-Stack konfigurieren.
+- **Resolution ist rules-first.** Jeder Markt trägt explizite
+  Regeln und optional eine Source-URL; Disputes laufen über den
+  öffentlichen UMA-Prozess.
 
 ### 3. Ihre Plattform verdient eine Gebühr bei jedem Trade
 
@@ -200,17 +198,16 @@ abgeschlossen.
 Multi-Jurisdiktions-Betreiber haben einen dünnen Overlay
 zusätzlicher Konfiguration:
 
-- **KYC- und Identitätsanbieter pro Jurisdiktion.** Jede Region
-  hat ihren eigenen bevorzugten Identity-Stack. Das Protokoll
-  integriert mit den großen Anbietern; Sie wählen pro Markt
-  oder Publikumsegment.
+- **Identity-Stack pro Jurisdiktion.** Jede Region hat ihren
+  bevorzugten Verifizierungs-Stack. Wo nötig, bindet der
+  Betreiber den eigenen Stack pro Markt oder Zielsegment an.
 - **Gebührenvorlagen pro Jurisdiktion.** Manche Jurisdiktionen
   begrenzen Retail-Trading-Gebühren regulatorisch, andere nicht.
   Sie können einen anderen Betreiber-Tarif pro Jurisdiktion
   konfigurieren, ohne mehrere Deploys zu fahren.
-- **Reporting-Hooks für Regulator-Audit-Trails.** Für
-  regulierte Betreiber emittiert jeder Trade ein strukturiertes
-  Event, das in Ihre Compliance-Tools fließt. Das ist intern
+- **Reporting-Workflow für Regulator-Audit-Trails.** Für
+  regulierte Betreiber muss ein belastbarer Exportpfad in die
+  eigenen Compliance-Tools definiert werden. Das ist intern
   nicht trivial zu bauen und einer der am wenigsten budgetierten
   Teile eines Build-Pfads.
 - **Sprachspezifische Frontend-Bundles.** Lokalisierte Texte und
@@ -267,20 +264,19 @@ Hier ist die tatsächliche Sequenz, von der Anmeldung bis zum
 ersten Live-Trade. Jeder Schritt ist Konfiguration, kein
 Engineering.
 
-1. **Anmelden und Betreiber-Identität verifizieren.** ≈ 2
-   Minuten. Wir verifizieren die Entität hinter der
-   Betreiberadresse und stellen Ihren Betreiber-Scope bereit.
+1. **Anmelden und Betreiber-Setup konfigurieren.** ≈ 2
+   Minuten. Wallet verbinden und Betreiberprofil anlegen.
 2. **Märkte und Publikum-Scope wählen.** ≈ 4 Minuten. Wählen
    Sie Vertikalen aus einer Liste, fügen Sie optional Custom-
    Märkte hinzu, definieren Sie Publikumssegmente.
 3. **Gebühren und Marken-Parameter setzen.** ≈ 3 Minuten.
    Betreiber-Tarif, Markenfarbe, Logo-Upload, Textfelder.
 4. **Jurisdiktions-Overlay konfigurieren (bei Multi-
-   Jurisdiktion).** ≈ 4 Minuten. KYC-Anbieter,
+   Jurisdiktion).** ≈ 4 Minuten. Access-Policy,
    Gebührenvorlagen, Sprach-Bundles.
 5. **Prüfen und deployen.** ≈ 2 Minuten. Der Wizard validiert
-   die Konfiguration, deployed Vertrags-Instanzen, verdrahtet
-   den Resolution-Scope und stellt die Plattform hinter Ihrer
+   die Konfiguration, deployed Vertrags-Instanzen, wendet die
+   Marktkonfiguration an und stellt die Plattform hinter Ihrer
    Domain oder einer Kuest-gehosteten Subdomain bereit.
 
 Das sind fünfzehn Minuten von „Ich habe nicht angefangen" bis
@@ -310,8 +306,8 @@ wollen:
   jeder Venue absorbiert.
 - **Ein Managed-Deploy-Pfad für regulierte Broker.** White-
   Glove-Onboarding für Betreiber, die eine direkte Compliance-
-  Schnittstelle mit den Banking- und KYC-Partnern des
-  Protokolls benötigen. Der 15-Minuten-Self-Service-Deploy
+  Schnittstelle mit ihrem eigenen regulierten Stack benötigen.
+  Der 15-Minuten-Self-Service-Deploy
   läuft für alle anderen weiter.
 - **Zusätzliche Sprach-Bundles.** Wir priorisieren Sprachpakete
   basierend auf Betreiber-Anfragen; falls Ihr Zielmarkt nicht

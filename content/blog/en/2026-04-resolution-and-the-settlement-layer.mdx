@@ -22,8 +22,8 @@ business case (start with <a href="/blog/2026-03-prediction-market-land-grab">ou
 don't) and want to know how the settlement layer actually works.
 
 <Stat
-  value="≈ 0.18%"
-  label="Share of UMA-resolved markets that go to dispute on Polymarket; 99.82% resolve cleanly through the optimistic path"
+  value="Low"
+  label="In mature UMA-powered markets, only a minority of resolutions escalate to formal dispute; most finalize through the optimistic path"
   sourceHref="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work"
   sourceLabel="UMA documentation, 2026"
 />
@@ -203,28 +203,19 @@ at market creation, and the dispute mechanism is public.
 ## What Kuest actually does at the settlement layer
 
 Kuest's approach inherits the optimistic-oracle pattern from Polymarket's
-production architecture and hardens it for multi-operator deployment.
-The core changes:
+production architecture for multi-operator deployment. In practice:
 
-- **Operator-isolated resolution scopes.** Each operator's markets
-  resolve in a scope that's auditable and provably isolated from
-  other operators' markets. A faulty resolution on operator A's
-  markets cannot cascade into operator B's books.
-- **Pre-flight contract validation.** Before a market goes live,
-  the resolution-source URL is fetched, parsed, and validated for
-  the kind of data the contract expects. Markets that point at
-  ambiguous or moving sources are rejected at creation, not at
-  resolution.
-- **Pre-funded dispute bonds.** The protocol maintains a
-  capital pool that funds bonds on behalf of operators, so a small
-  operator can run a venue without holding bond capital on the
-  balance sheet. The pool is managed at the protocol level, not by
-  any single operator.
-- **Resolution telemetry exposed to operators.** Operators see, in
-  real time, how their markets are resolving — which proposals went
-  uncontested, which went to dispute, which were re-resolved on
-  appeal. This is the same posture a regulated venue takes; it's
-  unusual to see it on a permissionless layer.
+- **UMA-based dispute flow.** Resolution proposals follow UMA's
+  optimistic-oracle mechanics instead of ad-hoc operator decisions.
+- **Rules and source metadata at market level.** Each market carries
+  explicit rules and an optional resolution source URL visible in the
+  event rules panel.
+- **Pre-publish quality checks in admin flow.** The event-creation
+  workflow checks mandatory fields and validates resolution-source URL
+  format before launch.
+- **Dispute visibility in platform data.** Market payloads expose
+  dispute state fields (for example whether a resolution was disputed),
+  so operators can monitor resolution health.
 
 The point of all of this is to make resolution boring. A platform
 where resolution is the most exciting thing happening is a platform

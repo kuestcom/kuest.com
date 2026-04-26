@@ -23,8 +23,8 @@ caso de negocio (empieza con <a href="/blog/2026-03-prediction-market-land-grab"
 no) y quieren saber cómo funciona realmente la capa de liquidación.
 
 <Stat
-  value="≈ 0.18%"
-  label="Proporción de mercados resueltos por UMA en Polymarket que llegan a disputa; 99,82% se resuelven limpiamente por la vía optimista"
+  value="Baja"
+  label="En mercados maduros con UMA, solo una minoría de resoluciones escala a disputa formal; la mayoría finaliza por la vía optimista"
   sourceHref="https://kuest.com/research/uma-polymarket-dispute-rate"
   sourceLabel="Análisis de Kuest sobre mercados de Polymarket con resolución UMA, 2026"
 />
@@ -225,28 +225,21 @@ mecanismo de disputa es público.
 
 El enfoque de Kuest hereda el patrón de optimistic oracle de la
 arquitectura productiva de Polymarket y lo endurece para
-despliegues multi-operador. Los cambios clave:
+despliegues multi-operador. En la práctica:
 
-- **Ámbitos de resolución aislados por operador.** Los mercados de
-  cada operador se resuelven en un ámbito auditable y demostrablemente
-  aislado de los mercados de otros operadores. Una resolución
-  defectuosa en los mercados del operador A no puede contagiar los
-  libros del operador B.
-- **Validación previa al lanzamiento del contrato.** Antes de que
-  un mercado se active, la URL de la fuente de resolución se
-  obtiene, se parsea y se valida frente al tipo de datos que el
-  contrato espera. Los mercados que apuntan a fuentes ambiguas o
-  móviles se rechazan en la creación, no en la resolución.
-- **Bonds de disputa prefondeados.** El protocolo mantiene un pool
-  de capital que financia bonds en nombre de los operadores, de
-  modo que un operador pequeño puede operar una venue sin retener
-  capital de bond en su balance. El pool se gestiona a nivel de
-  protocolo, no por ningún operador individual.
-- **Telemetría de resolución expuesta a operadores.** Los operadores
-  ven en tiempo real cómo se resuelven sus mercados — qué
-  propuestas no fueron impugnadas, cuáles fueron a disputa, cuáles
-  se re-resolvieron en apelación. Es la misma postura que adopta
-  una venue regulada; es inusual verlo en una capa permissionless.
+- **Flujo de disputa basado en UMA.** Las propuestas de resolución
+  siguen la mecánica del optimistic oracle de UMA, no decisiones
+  ad-hoc del operador.
+- **Reglas y metadatos de fuente por mercado.** Cada mercado lleva
+  reglas explícitas y una URL opcional de fuente de resolución
+  visible en el panel de reglas del evento.
+- **Controles de calidad antes de publicar.** El flujo de creación
+  de eventos valida campos obligatorios y formato de URL de
+  resolución antes del lanzamiento.
+- **Visibilidad de disputa en los datos de plataforma.** Los
+  payloads de mercado exponen campos de estado de disputa (por
+  ejemplo, si la resolución fue disputada) para monitoreo
+  operativo.
 
 El sentido de todo esto es hacer que la resolución sea aburrida.
 Una plataforma donde la resolución es lo más emocionante que pasa

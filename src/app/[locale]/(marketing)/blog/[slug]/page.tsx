@@ -15,7 +15,7 @@ import { getPostCoverSrc } from '@/lib/blog/cover'
 import { CONTACT_HREF } from '@/lib/constants'
 import { resolveSiteUrl } from '@/lib/site-url'
 
-export const dynamicParams = false
+export const dynamicParams = true
 
 export async function generateStaticParams() {
   return listPostStaticParams()
