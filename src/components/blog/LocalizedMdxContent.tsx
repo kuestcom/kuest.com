@@ -9,6 +9,7 @@ type MdxContentComponent = (_props: { components?: MDXComponents }) => ReactNode
 
 function isInternalPageHref(href: string): boolean {
   return href.startsWith('/')
+    && !href.startsWith('//')
     && !href.startsWith('/api/')
     && !href.startsWith('/_next/')
     && !/\.[a-z0-9]+(?:[?#]|$)/i.test(href)

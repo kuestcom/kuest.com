@@ -39,7 +39,8 @@ function MdxAnchor({
     // get the Link treatment so /de posts linking to /blog/foo
     // resolve to /de/blog/foo.
     const isStaticOrApi
-      = href.startsWith('/api/')
+      = href.startsWith('//')
+        || href.startsWith('/api/')
         || href.startsWith('/_next/')
         || /\.[a-z0-9]+(?:[?#]|$)/i.test(href)
     if (isStaticOrApi) {

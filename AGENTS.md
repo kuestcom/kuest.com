@@ -10,7 +10,7 @@ Before any Next.js work, find and read the relevant doc in `node_modules/next/di
 
 - Stack: Next.js App Router, TypeScript, Tailwind, Supabase. Main code lives in `src/*`; static and data assets live in `public` and `content`.
 - Node: use Node.js 24.x from `.nvmrc`.
-- Commands: `npm run lint`, `npm run test`, `npm run test:unit`, `npm run test:e2e`, `npm run db:push`. Run `npm run build` and `npm run test` and `npm run lint` `npx vitest` or `npx tsc` only when the user explicitly asks.
+- Commands: Available scripts include `npm run lint`. Run `npm run build` and `npm run lint` or `npx tsc` only when the user explicitly asks.
 - Style: TypeScript, 2-space indentation, no semicolons, prefer named function declarations, match existing local patterns, and keep Tailwind class ordering consistent with nearby code.
 - Naming: components use `PascalCase`, hooks use `use*`.
 - Testing: cover user-visible behavior and important trading/data-flow regressions when relevant.
