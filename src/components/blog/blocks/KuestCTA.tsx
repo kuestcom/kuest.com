@@ -7,6 +7,14 @@ interface CtaLink {
   label: string
 }
 
+function isStaticOrApiPath(path: string): boolean {
+  return (
+    path.startsWith('/api/')
+    || path.startsWith('/_next/')
+    || /\.[a-z0-9]+(?:[?#]|$)/i.test(path)
+  )
+}
+
 function renderCtaLink(link: CtaLink, className: string, isPrimary: boolean) {
   const safeHref = toSafeHref(link.href)
   if (!safeHref) {
@@ -22,6 +30,14 @@ function renderCtaLink(link: CtaLink, className: string, isPrimary: boolean) {
   }
 
   if (safeHref.startsWith('/')) {
+    if (isStaticOrApiPath(safeHref)) {
+      return (
+        <a href={safeHref} className={className}>
+          <span className="cta-label">{link.label}</span>
+          <ChevronRightIcon />
+        </a>
+      )
+    }
     return (
       <Link href={safeHref as never} className={className}>
         <span className="cta-label">{link.label}</span>
