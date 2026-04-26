@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const blogFrontmatterSchema = z.object({
   title: z.string().min(1),
+  slug: z.string().min(1).optional(),
   description: z.string().min(1),
   publishedAt: z.coerce.date(),
   updatedAt: z.coerce.date().optional(),

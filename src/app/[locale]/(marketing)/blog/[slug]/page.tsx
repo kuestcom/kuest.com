@@ -34,13 +34,17 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/blog/[sl
   }
 
   const siteOrigin = resolveSiteUrl(process.env)
-  const canonical = new URL(getPathname({ href: `/blog/${slug}`, locale }), siteOrigin)
+  const canonicalPath = `/blog/${post.slug}`
+  const canonical = new URL(getPathname({ href: canonicalPath, locale }), siteOrigin)
   const ogImage = new URL(getPostCoverSrc(post), siteOrigin)
 
   const languages = Object.fromEntries(
     post.availableLocales.map(l => [
       l,
-      new URL(getPathname({ href: `/blog/${slug}`, locale: l }), siteOrigin).toString(),
+      new URL(
+        getPathname({ href: `/blog/${post.localizedSlugs[l] ?? post.slug}`, locale: l }),
+        siteOrigin,
+      ).toString(),
     ]),
   )
 
@@ -91,15 +95,18 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
   const siteOrigin = resolveSiteUrl(process.env)
   const coverSrc = getPostCoverSrc(post)
   const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
+  const localizedPathByLocale = Object.fromEntries(
+    post.availableLocales.map(l => [l, `/blog/${post.localizedSlugs[l] ?? post.slug}`]),
+  )
 
-  const { default: PostContent } = await import(`@content/blog/${locale}/${slug}.mdx`)
+  const { default: PostContent } = await import(`@content/blog/${locale}/${post.contentSlug}.mdx`)
 
   const related = listPosts(locale).filter(p => p.slug !== post.slug).slice(0, 2)
   const relatedDateLabels = Object.fromEntries(
     related.map(p => [p.slug, dateFormatter.format(p.frontmatter.publishedAt)]),
   )
 
-  const postUrl = new URL(getPathname({ href: `/blog/${slug}`, locale }), siteOrigin).toString()
+  const postUrl = new URL(getPathname({ href: `/blog/${post.slug}`, locale }), siteOrigin).toString()
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -144,7 +151,8 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
       <MarketingDockNav
         locale={locale}
         active="blog"
-        languagePath={`/blog/${slug}`}
+        languagePath={`/blog/${post.slug}`}
+        languagePathByLocale={localizedPathByLocale}
         availableLocales={post.availableLocales}
         languageFallbackPath="/blog"
         ctaHref={CONTACT_HREF}
