@@ -12,7 +12,3 @@ export const LANGUAGE_OPTIONS = [
   { code: 'fr', label: 'Français', flagSrc: '/assets/flags/fr.svg' },
   { code: 'zh', label: '中文', flagSrc: '/assets/flags/zh.svg' },
 ] as const satisfies ReadonlyArray<{ code: SupportedLocale, label: string, flagSrc: string }>
-
-export function isSupportedLocale(value: string): value is SupportedLocale {
-  return (SUPPORTED_LOCALES as readonly string[]).includes(value)
-}
