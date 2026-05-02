@@ -6,6 +6,7 @@ import {
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import { addProjectDomain, verifyProjectDomain } from '@/lib/vercel-api'
 
 export const runtime = 'nodejs'
@@ -105,6 +106,18 @@ export async function POST(request: Request) {
             projectIdOrName: projectRef,
             domain,
           })
+
+    try {
+      await registerDomainSnapshot({
+        url: response.name,
+      })
+    }
+    catch (error) {
+      console.warn(
+        '[domain-register] Failed to register Vercel domain.',
+        error instanceof Error ? error.message : error,
+      )
+    }
 
     return NextResponse.json({
       domain: response,

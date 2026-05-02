@@ -14,6 +14,7 @@ import {
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import { normalizeSiteUrl } from '@/lib/site-url'
 import {
   connectSupabaseViaVercelIntegration,
@@ -58,6 +59,24 @@ function withNormalizedSiteUrl(env: Record<string, string>): Record<string, stri
   return {
     ...env,
     SITE_URL: normalizeSiteUrl(env.SITE_URL),
+  }
+}
+
+async function registerLaunchDomainSnapshot(params: {
+  url: string
+  apiKey?: string
+}) {
+  try {
+    await registerDomainSnapshot({
+      url: params.url,
+      apiKey: params.apiKey,
+    })
+  }
+  catch (error) {
+    console.warn(
+      '[domain-register] Failed to register launch domain.',
+      error instanceof Error ? error.message : error,
+    )
   }
 }
 
@@ -197,6 +216,11 @@ export async function POST(request: Request) {
           || '',
         )
 
+      await registerLaunchDomainSnapshot({
+        url: projectUrl,
+        apiKey: payload.env.KUEST_API_KEY,
+      })
+
       const durationMs = Date.now() - startedAt
       return NextResponse.json<LaunchResponseBody>({
         ok: true,
@@ -214,6 +238,11 @@ export async function POST(request: Request) {
     }
 
     const durationMs = Date.now() - startedAt
+    await registerLaunchDomainSnapshot({
+      url: vercel.projectUrl ?? '',
+      apiKey: payload.env.KUEST_API_KEY,
+    })
+
     return NextResponse.json<LaunchResponseBody>({
       ok: true,
       databaseMode: payload.databaseMode,

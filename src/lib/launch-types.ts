@@ -21,6 +21,7 @@ export interface SupabaseLaunchInput {
 
 export interface LaunchRequestBody {
   brandName: string
+  contactEmail?: string
   projectName?: string
   gitRepo: string
   gitBranch: string

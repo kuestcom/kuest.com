@@ -1778,6 +1778,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       env.SITE_URL = normalizeSiteUrl(env.SITE_URL)
       const payload = {
         brandName: form.brandName,
+        contactEmail: form.contactEmail.trim() || undefined,
         projectName: resolvedProjectSlug,
         gitRepo: form.gitRepo,
         gitBranch: form.gitBranch,
@@ -1947,6 +1948,19 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 required
               />
             </label>
+            <label className="launch-field">
+              <span>{t('Email (optional)')}</span>
+              <input
+                type="email"
+                value={form.contactEmail}
+                placeholder={t('you@team.com')}
+                onChange={event =>
+                  setForm(previous => ({
+                    ...previous,
+                    contactEmail: event.target.value,
+                  }))}
+              />
+            </label>
           </div>
 
           <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 p-5">
@@ -2063,19 +2077,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
               {step1AdvancedOpen && (
                 <div className="launch-grid launch-step1-advanced-grid mt-4">
-                  <label className="launch-field">
-                    <span>{t('Email (optional)')}</span>
-                    <input
-                      type="email"
-                      value={form.contactEmail}
-                      placeholder={t('you@team.com')}
-                      onChange={event =>
-                        setForm(previous => ({
-                          ...previous,
-                          contactEmail: event.target.value,
-                        }))}
-                    />
-                  </label>
                   <label className="launch-field">
                     <span>{t('Nonce')}</span>
                     <input

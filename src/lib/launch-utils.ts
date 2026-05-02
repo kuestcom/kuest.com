@@ -122,6 +122,10 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
 
   return {
     brandName: raw.brandName,
+    contactEmail:
+      typeof raw.contactEmail === 'string' && raw.contactEmail.trim()
+        ? raw.contactEmail.trim()
+        : undefined,
     projectName:
       typeof raw.projectName === 'string' && raw.projectName.trim()
         ? raw.projectName.trim()
