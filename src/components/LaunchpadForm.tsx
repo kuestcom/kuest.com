@@ -1330,17 +1330,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   function mergeAdminWallets(previousValue: string, walletAddress: string) {
     const normalizedTarget = walletAddress.trim().toLowerCase()
-    if (!normalizedTarget) {
+    if (!/^0x[a-f0-9]{40}$/.test(normalizedTarget)) {
       return previousValue
     }
     const values = previousValue
       .split(',')
       .map(value => value.trim())
-      .filter(Boolean)
+      .filter(value => /^0x[a-fA-F0-9]{40}$/.test(value))
+      .map(value => value.toLowerCase())
     if (values.some(value => value.toLowerCase() === normalizedTarget)) {
       return values.join(',')
     }
-    return [...values, walletAddress].join(',')
+    return [...values, normalizedTarget].join(',')
   }
 
   function sanitizeNonce(nonce: string) {

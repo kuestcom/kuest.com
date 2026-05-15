@@ -60,6 +60,28 @@ export function generateSecureToken(size = 24) {
   return randomBytes(size).toString('base64url')
 }
 
+function normalizeWalletAddress(value: string, key: string) {
+  const normalized = value.trim().toLowerCase()
+  if (!/^0x[a-f0-9]{40}$/.test(normalized)) {
+    throw new LaunchError(`${key} must be a valid EVM 0x address.`, 'validation')
+  }
+  return normalized
+}
+
+function normalizeAdminWallets(value: string, primaryAddress: string) {
+  const wallets = value
+    .split(',')
+    .map(wallet => wallet.trim())
+    .filter(Boolean)
+    .map(wallet => normalizeWalletAddress(wallet, 'ADMIN_WALLETS'))
+
+  if (!wallets.some(wallet => wallet === primaryAddress)) {
+    wallets.unshift(primaryAddress)
+  }
+
+  return Array.from(new Set(wallets)).join(',')
+}
+
 export function parseLaunchRequest(input: unknown): LaunchRequestBody {
   if (!input || typeof input !== 'object') {
     throw new LaunchError('Invalid request body.', 'validation')
@@ -112,6 +134,9 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
       throw new LaunchError(`${key} is required.`, 'validation')
     }
   }
+
+  envObject.KUEST_ADDRESS = normalizeWalletAddress(envObject.KUEST_ADDRESS, 'KUEST_ADDRESS')
+  envObject.ADMIN_WALLETS = normalizeAdminWallets(envObject.ADMIN_WALLETS, envObject.KUEST_ADDRESS)
 
   if (!envObject.BETTER_AUTH_SECRET) {
     envObject.BETTER_AUTH_SECRET = generateSecureToken(24)
