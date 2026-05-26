@@ -32,6 +32,7 @@ import { useAppKit } from '@/hooks/useAppKit'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
 import {
+  DEFAULT_KUEST_KEY_NONCE,
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
   mintKuestKeysFromSignature,
@@ -51,7 +52,6 @@ interface FormState {
   vercelTeamId: string
   supabaseRegion: string
   supabaseResourceId: string
-  keyNonce: string
   contactEmail: string
   env: {
     KUEST_ADDRESS: string
@@ -201,7 +201,6 @@ const DEFAULT_FORM: FormState = {
   vercelTeamId: process.env.NEXT_PUBLIC_DEFAULT_VERCEL_TEAM_ID ?? '',
   supabaseRegion: process.env.NEXT_PUBLIC_DEFAULT_SUPABASE_REGION ?? 'us-east-1',
   supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-  keyNonce: '0',
   contactEmail: '',
   env: {
     KUEST_ADDRESS: '',
@@ -266,7 +265,6 @@ function toPersistableFormState(form: FormState, githubState: GitHubConnectState
     vercelTeamId: form.vercelTeamId,
     supabaseRegion: form.supabaseRegion,
     supabaseResourceId: form.supabaseResourceId,
-    keyNonce: form.keyNonce,
     contactEmail: form.contactEmail,
     env: {
       KUEST_ADDRESS: form.env.KUEST_ADDRESS,
@@ -629,7 +627,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   const [form, setForm] = useState<FormState>(DEFAULT_FORM)
   const [activeStep, setActiveStep] = useState<LaunchStep>(1)
-  const [step1AdvancedOpen, setStep1AdvancedOpen] = useState(false)
   const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false)
   const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false)
   const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(
@@ -787,7 +784,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             typeof parsed.supabaseResourceId === 'string'
               ? parsed.supabaseResourceId
               : previous.supabaseResourceId,
-        keyNonce: typeof parsed.keyNonce === 'string' ? parsed.keyNonce : previous.keyNonce,
         contactEmail:
             typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
         env: {
@@ -1344,11 +1340,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     return [...values, normalizedTarget].join(',')
   }
 
-  function sanitizeNonce(nonce: string) {
-    const normalized = nonce.replace(/\D+/g, '')
-    return normalized || '0'
-  }
-
   function applyGeneratedCredentials(input: {
     address: string
     apiKey: string
@@ -1430,7 +1421,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
     try {
       const generated = await generateKuestKeysViaWallet({
-        nonce: sanitizeNonce(form.keyNonce),
         onStatus: (message) => {
           if (!message) {
             setWalletInfo(null)
@@ -1539,8 +1529,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       throw new Error(t('Wallet connection is not ready.'))
     }
 
-    const nonce = sanitizeNonce(form.keyNonce)
-    const nonceBigInt = BigInt(nonce)
     const timestamp = Math.floor(Date.now() / 1000).toString()
 
     setWalletActionLoading(true)
@@ -1566,7 +1554,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         message: {
           address: account.address,
           timestamp,
-          nonce: nonceBigInt,
+          nonce: BigInt(DEFAULT_KUEST_KEY_NONCE),
           message: 'This message attests that I control the given wallet',
         },
       })
@@ -1576,7 +1564,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         address: account.address,
         signature,
         timestamp,
-        nonce,
+        nonce: DEFAULT_KUEST_KEY_NONCE,
       })
 
       const advancedToStep2 = applyGeneratedCredentials(generated)
@@ -2061,39 +2049,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             )}
             {walletInfo && <p className="launch-status-note text-sm text-primary">{walletInfo}</p>}
             {walletError && <p className="launch-status-note text-sm text-destructive">{walletError}</p>}
-            <div className="launch-step1-advanced mt-4 border-t border-border/60 pt-4">
-              <button
-                type="button"
-                className="
-                  launch-step1-advanced-toggle flex w-full items-center justify-between text-left text-sm font-medium
-                  text-foreground
-                "
-                onClick={() => setStep1AdvancedOpen(previous => !previous)}
-              >
-                <span>{t('Advanced options')}</span>
-                <ChevronDownIcon
-                  className={`size-4 transition-transform ${step1AdvancedOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              {step1AdvancedOpen && (
-                <div className="launch-grid launch-step1-advanced-grid mt-4">
-                  <label className="launch-field">
-                    <span>{t('Nonce')}</span>
-                    <input
-                      value={form.keyNonce}
-                      onChange={event =>
-                        setForm(previous => ({
-                          ...previous,
-                          keyNonce: event.target.value.replace(/\D+/g, '') || '0',
-                        }))}
-                      placeholder="0"
-                      inputMode="numeric"
-                    />
-                  </label>
-                </div>
-              )}
-            </div>
           </div>
 
           <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">

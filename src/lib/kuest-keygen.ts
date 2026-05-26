@@ -21,6 +21,10 @@ export interface GeneratedKuestBundle {
   passphrase: string
 }
 
+type KuestKeyCredential = Omit<GeneratedKuestBundle, 'address'>
+
+export const DEFAULT_KUEST_KEY_NONCE = '0'
+
 export const TARGET_CHAIN_MODE
   = process.env.NEXT_PUBLIC_KUEST_CHAIN_MODE === 'polygon' ? 'polygon' : 'amoy'
 
@@ -143,16 +147,24 @@ function normalizeKeyBundle(payload: unknown) {
   return { apiKey, apiSecret, passphrase }
 }
 
-async function requestKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
-  const url = new URL('/auth/api-key', baseUrl)
+async function requestKuestKey(
+  baseUrl: string,
+  input: CreateKuestKeyInput,
+  options: {
+    path: '/auth/api-key' | '/auth/derive-api-key'
+    method: 'POST' | 'GET'
+  } = { path: '/auth/api-key', method: 'POST' },
+) {
+  const url = new URL(options.path, baseUrl)
   const response = await fetch(url.toString(), {
-    method: 'POST',
+    method: options.method,
     headers: {
       KUEST_ADDRESS: input.address,
       KUEST_SIGNATURE: input.signature,
       KUEST_TIMESTAMP: input.timestamp,
       KUEST_NONCE: input.nonce,
     },
+    cache: 'no-store',
   })
 
   if (!response.ok) {
@@ -169,23 +181,51 @@ async function requestKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
   return normalizeKeyBundle(payload)
 }
 
+async function deriveKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
+  return requestKuestKey(baseUrl, input, {
+    path: '/auth/derive-api-key',
+    method: 'GET',
+  })
+}
+
+async function createOrDeriveKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
+  try {
+    return await requestKuestKey(baseUrl, input)
+  }
+  catch (createError) {
+    try {
+      return await deriveKuestKey(baseUrl, input)
+    }
+    catch {
+      throw createError
+    }
+  }
+}
+
+function assertMatchingKuestCredentials(credentials: KuestKeyCredential[]) {
+  const [first, ...rest] = credentials
+  if (!first) {
+    throw new Error('Failed to generate API key.')
+  }
+
+  const mismatch = rest.find(credential => (
+    credential.apiKey !== first.apiKey
+    || credential.apiSecret !== first.apiSecret
+    || credential.passphrase !== first.passphrase
+  ))
+  if (mismatch) {
+    throw new Error('Kuest services returned mismatched API credentials.')
+  }
+
+  return first
+}
+
 async function createKuestKey(input: CreateKuestKeyInput) {
   const targets = getKuestBaseUrls()
-  const results = await Promise.allSettled(targets.map(baseUrl => requestKuestKey(baseUrl, input)))
-  const fulfilled = results.find(
-    (
-      result,
-    ): result is PromiseFulfilledResult<{ apiKey: string, apiSecret: string, passphrase: string }> =>
-      result.status === 'fulfilled',
+  const credentials = await Promise.all(
+    targets.map(baseUrl => createOrDeriveKuestKey(baseUrl, input)),
   )
-  if (!fulfilled) {
-    const firstError = results.find(
-      (result): result is PromiseRejectedResult => result.status === 'rejected',
-    )
-    const reason = firstError?.reason
-    throw reason instanceof Error ? reason : new Error('Failed to generate API key.')
-  }
-  return fulfilled.value
+  return assertMatchingKuestCredentials(credentials)
 }
 
 export async function mintKuestKeysFromSignature(input: CreateKuestKeyInput) {
@@ -275,18 +315,12 @@ async function signTypedDataWithFallback(params: {
 }
 
 export async function generateKuestKeysViaWallet(options: {
-  nonce: string
   onStatus?: (_message: string | null) => void
 }) {
   const onStatus = options.onStatus ?? (() => {})
   const provider = getInjectedProvider()
   if (!provider) {
     throw new Error('No EVM wallet found. Install MetaMask (or compatible wallet).')
-  }
-
-  const nonce = options.nonce.trim() || '0'
-  if (!/^\d+$/.test(nonce)) {
-    throw new Error('Nonce must contain digits only.')
   }
 
   onStatus('Connecting wallet...')
@@ -324,7 +358,7 @@ export async function generateKuestKeysViaWallet(options: {
     message: {
       address,
       timestamp,
-      nonce,
+      nonce: DEFAULT_KUEST_KEY_NONCE,
       message: 'This message attests that I control the given wallet',
     },
   } as const
@@ -341,7 +375,7 @@ export async function generateKuestKeysViaWallet(options: {
     address,
     signature,
     timestamp,
-    nonce,
+    nonce: DEFAULT_KUEST_KEY_NONCE,
   })
 
   onStatus(null)
