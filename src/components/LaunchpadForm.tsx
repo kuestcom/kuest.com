@@ -123,6 +123,7 @@ const ALLOW_VERCEL_TOKEN_FALLBACK
 const FOOTER_BRAND_NAME = 'Kuest'
 const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
 const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
+const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -1820,7 +1821,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     = vercelAuthMethod === 'oauth'
       ? vercelOauthConnected && vercelConnectionReady
       : vercelConnectionReady
-  const step3VercelReady = step3VercelAuthReady
+  const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
   const step3ReownReady = reownConnectionReady
   const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady
@@ -1833,8 +1834,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
     : ''
   const showVercelGitHubButton
-    = step2GitHubReady && step3VercelAuthReady && vercelGitImportRequiredHint && !vercelGitImportReady
-  const showVercelGitHubStep = step2GitHubReady && step3VercelAuthReady && vercelGitImportRequiredHint
+    = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
+  const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -2346,6 +2347,15 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                         {t('Connect Vercel to GitHub')}
                       </button>
                       <p className="launch-helper-text text-xs text-muted-foreground">
+                        <a
+                          className="launch-link"
+                          href={VERCEL_AUTHENTICATION_SETTINGS_URL}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {t('Connect your Vercel account to GitHub')}
+                        </a>
+                        {' '}
                         {t('Allow the Vercel app to access {repo} on GitHub.', {
                           repo: form.gitRepo.trim(),
                         })}
