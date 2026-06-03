@@ -2767,7 +2767,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 <button
                   type="button"
                   className="launch-choice-button launch-choice-no"
-                  disabled={hasSuccessfulDeployment}
+                  disabled={hasSuccessfulDeployment || isLaunching}
                   onClick={() => setActiveStep(2)}
                 >
                   <ArrowLeftIcon className="size-3.5" />
