@@ -20,6 +20,7 @@ import {
   CircleIcon,
   InfoIcon,
   Loader2Icon,
+  RefreshCwIcon,
   RocketIcon,
   WalletIcon,
   XIcon,
@@ -642,6 +643,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
   const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
   const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
+  const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
   const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
   const [reownConnection, setReownConnection] = useState<ReownConnectionStatusResponse | null>(null)
   const [reownConnectionError, setReownConnectionError] = useState<string | null>(null)
@@ -890,12 +892,14 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
       if (requiresToken && !token) {
         setVercelConnection(null)
+        setVercelConnectionLoading(false)
         setVercelConnectionError(options?.silent ? null : t('Paste your Vercel Access Token first.'))
         return
       }
 
       if (requiresOAuth && !vercelOauthConnected) {
         setVercelConnection(null)
+        setVercelConnectionLoading(false)
         setVercelConnectionError(options?.silent ? null : t('Connect Vercel first.'))
         return
       }
@@ -903,6 +907,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       if (!options?.silent) {
         setVercelConnectionError(null)
       }
+
+      setVercelConnectionLoading(true)
 
       try {
         const response = await fetch('/api/vercel/connection', {
@@ -936,6 +942,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             ? error.message
             : t('We could not verify this Vercel connection. Check it and try again.'),
         )
+      }
+      finally {
+        setVercelConnectionLoading(false)
       }
     },
     [
@@ -1834,7 +1843,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
     : ''
   const showVercelGitHubButton
-    = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
+    = step2GitHubReady && step3VercelAuthReady && !vercelGitImportReady
   const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
   const hasSuccessfulDeployment = result?.ok === true
 
@@ -2345,6 +2354,28 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                         onClick={startVercelGitHubConnect}
                       >
                         {t('Connect Vercel to GitHub')}
+                      </button>
+                      <button
+                        type="button"
+                        className="launch-mini-button"
+                        onClick={() => {
+                          void refreshVercelConnection()
+                        }}
+                        disabled={vercelConnectionLoading}
+                      >
+                        {vercelConnectionLoading
+                          ? (
+                              <span className="inline-flex items-center gap-2">
+                                <Loader2Icon className="size-3.5 animate-spin" />
+                                {t('Refreshing...')}
+                              </span>
+                            )
+                          : (
+                              <span className="inline-flex items-center gap-2">
+                                <RefreshCwIcon className="size-3.5" />
+                                {t('Refresh')}
+                              </span>
+                            )}
                       </button>
                       <p className="launch-helper-text text-xs text-muted-foreground">
                         <a
