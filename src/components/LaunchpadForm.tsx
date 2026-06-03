@@ -122,6 +122,8 @@ const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = 'token'
 const ALLOW_VERCEL_TOKEN_FALLBACK
   = process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== 'false'
 const FOOTER_BRAND_NAME = 'Kuest'
+const VERCEL_GITHUB_CONNECT_LINK_THRESHOLD = 2
+const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3
 const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
 const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
@@ -644,6 +646,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
   const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
   const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
+  const [vercelGitHubConnectClicks, setVercelGitHubConnectClicks] = useState(0)
+  const [vercelGitHubRefreshClicks, setVercelGitHubRefreshClicks] = useState(0)
   const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
   const [reownConnection, setReownConnection] = useState<ReownConnectionStatusResponse | null>(null)
   const [reownConnectionError, setReownConnectionError] = useState<string | null>(null)
@@ -1187,8 +1191,14 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   }
 
   function startVercelGitHubConnect() {
+    setVercelGitHubConnectClicks(previous => previous + 1)
     setAwaitingVercelGitHubConnection(true)
     window.open(VERCEL_GITHUB_APP_URL, '_blank', 'noopener,noreferrer')
+  }
+
+  function refreshVercelGitHubConnection() {
+    setVercelGitHubRefreshClicks(previous => previous + 1)
+    void refreshVercelConnection()
   }
 
   function switchVercelAuthMethod(nextMethod: VercelAuthMethod) {
@@ -1845,6 +1855,9 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const showVercelGitHubButton
     = step2GitHubReady && step3VercelAuthReady && !vercelGitImportReady
   const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
+  const showVercelAuthenticationSettingsLink
+    = vercelGitHubConnectClicks >= VERCEL_GITHUB_CONNECT_LINK_THRESHOLD
+      || vercelGitHubRefreshClicks >= VERCEL_GITHUB_REFRESH_LINK_THRESHOLD
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -2358,9 +2371,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                       <button
                         type="button"
                         className="launch-mini-button"
-                        onClick={() => {
-                          void refreshVercelConnection()
-                        }}
+                        onClick={refreshVercelGitHubConnection}
                         disabled={vercelConnectionLoading}
                       >
                         {vercelConnectionLoading
@@ -2377,20 +2388,22 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                               </span>
                             )}
                       </button>
-                      <p className="launch-helper-text text-xs text-muted-foreground">
-                        <a
-                          className="launch-link"
-                          href={VERCEL_AUTHENTICATION_SETTINGS_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {t('Connect your Vercel account to GitHub')}
-                        </a>
-                        {' '}
-                        {t('Allow the Vercel app to access {repo} on GitHub.', {
-                          repo: form.gitRepo.trim(),
-                        })}
-                      </p>
+                      {showVercelAuthenticationSettingsLink && (
+                        <p className="launch-helper-text text-xs text-muted-foreground">
+                          <a
+                            className="launch-link"
+                            href={VERCEL_AUTHENTICATION_SETTINGS_URL}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {t('Connect your Vercel account to GitHub')}
+                          </a>
+                          {' '}
+                          {t('Allow the Vercel app to access {repo} on GitHub.', {
+                            repo: form.gitRepo.trim(),
+                          })}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
