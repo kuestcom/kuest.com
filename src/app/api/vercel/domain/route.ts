@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import {
@@ -6,7 +7,6 @@ import {
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
-import { registerDomainSnapshot } from '@/lib/domain-register'
 import { addProjectDomain, verifyProjectDomain } from '@/lib/vercel-api'
 
 export const runtime = 'nodejs'

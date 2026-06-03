@@ -75,7 +75,7 @@ function normalizeAdminWallets(value: string, primaryAddress: string) {
     .filter(Boolean)
     .map(wallet => normalizeWalletAddress(wallet, 'ADMIN_WALLETS'))
 
-  if (!wallets.some(wallet => wallet === primaryAddress)) {
+  if (!wallets.includes(primaryAddress)) {
     wallets.unshift(primaryAddress)
   }
 

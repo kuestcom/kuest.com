@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   buildRateLimitHeaders,
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
-import { registerDomainSnapshot } from '@/lib/domain-register'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'

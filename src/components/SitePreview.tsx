@@ -1,7 +1,26 @@
 'use client'
 
 import { MonitorSmartphone } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
+
+const MOBILE_PREVIEW_QUERY = '(max-width: 768px)'
+
+function subscribeToMobilePreview(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(MOBILE_PREVIEW_QUERY)
+  mediaQuery.addEventListener('change', onStoreChange)
+
+  return () => {
+    mediaQuery.removeEventListener('change', onStoreChange)
+  }
+}
+
+function getMobilePreviewSnapshot() {
+  return window.matchMedia(MOBILE_PREVIEW_QUERY).matches
+}
+
+function getServerMobilePreviewSnapshot() {
+  return false
+}
 
 export default function SitePreview({
   href,
@@ -20,23 +39,12 @@ export default function SitePreview({
   liveLabel: string
   className?: string
 }) {
-  const [forcedMobile, setForcedMobile] = useState(false)
+  const forcedMobile = useSyncExternalStore(
+    subscribeToMobilePreview,
+    getMobilePreviewSnapshot,
+    getServerMobilePreviewSnapshot,
+  )
   const [manualMobile, setManualMobile] = useState(false)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)')
-
-    function sync() {
-      return setForcedMobile(mediaQuery.matches)
-    }
-
-    sync()
-    mediaQuery.addEventListener('change', sync)
-
-    return () => {
-      mediaQuery.removeEventListener('change', sync)
-    }
-  }, [])
 
   const isMobile = forcedMobile || manualMobile
   const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel
@@ -90,7 +98,7 @@ export default function SitePreview({
           title="Kuest live site preview"
           loading="lazy"
           src={iframeSrc}
-          sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+          sandbox="allow-scripts allow-forms allow-popups"
           referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>

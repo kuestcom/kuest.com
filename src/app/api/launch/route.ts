@@ -1,5 +1,6 @@
 import type { LaunchResponseBody } from '@/lib/launch-types'
 import { NextResponse } from 'next/server'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   createLogger,
   ensureValidRepo,
@@ -14,7 +15,6 @@ import {
   checkRateLimit,
   getRateLimitConfig,
 } from '@/lib/rate-limit'
-import { registerDomainSnapshot } from '@/lib/domain-register'
 import { normalizeSiteUrl } from '@/lib/site-url'
 import {
   connectSupabaseViaVercelIntegration,

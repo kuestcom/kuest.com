@@ -527,7 +527,7 @@ export default async function EnterprisePage({ params }: PageProps<'/[locale]/en
                   </div>
                   <h1 className="
                     hero-title enterprise-hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold
-                    tracking-[-0.05em] text-white
+                    tracking-tighter text-white
                   "
                   >
                     <span className="hero-title-line">{t('A new financial instrument')}</span>

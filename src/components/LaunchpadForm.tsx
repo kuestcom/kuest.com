@@ -1820,7 +1820,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     = vercelAuthMethod === 'oauth'
       ? vercelOauthConnected && vercelConnectionReady
       : vercelConnectionReady
-  const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
+  const step3VercelReady = step3VercelAuthReady
   const step3ReownReady = reownConnectionReady
   const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady
@@ -1833,8 +1833,8 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
     : ''
   const showVercelGitHubButton
-    = step2GitHubReady && step3VercelAuthReady && (!vercelGitImportReady || vercelGitImportRequiredHint)
-  const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
+    = step2GitHubReady && step3VercelAuthReady && vercelGitImportRequiredHint && !vercelGitImportReady
+  const showVercelGitHubStep = step2GitHubReady && step3VercelAuthReady && vercelGitImportRequiredHint
   const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
@@ -2334,7 +2334,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                   <div className="launch-connection-step-header">
                     <span className="launch-connection-step-index">2</span>
                     <span className="launch-connection-step-label">{t('Connect Vercel to GitHub')}</span>
-                    {step3VercelReady && <CircleCheckIcon className="size-4 text-primary" />}
+                    {vercelGitImportReady && <CircleCheckIcon className="size-4 text-primary" />}
                   </div>
                   {showVercelGitHubButton && (
                     <div className="launch-stack space-y-2">
