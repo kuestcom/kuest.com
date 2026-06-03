@@ -98,7 +98,7 @@ export default function SitePreview({
           title="Kuest live site preview"
           loading="lazy"
           src={iframeSrc}
-          sandbox="allow-scripts allow-forms allow-popups"
+          sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
           referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
