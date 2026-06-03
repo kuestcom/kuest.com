@@ -535,6 +535,36 @@ function parseRepoParts(value?: string) {
   }
 }
 
+function normalizeLookupValue(value?: string | number) {
+  return String(value ?? '').trim().toLowerCase()
+}
+
+function namespaceMatchesRepoOwner(namespace: VercelGitNamespace, owner: string) {
+  const normalizedOwner = normalizeLookupValue(owner)
+  return (
+    normalizeLookupValue(namespace.slug) === normalizedOwner
+    || normalizeLookupValue(namespace.name) === normalizedOwner
+  )
+}
+
+function repoMatchesParts(
+  repo: NonNullable<VercelGitRepoSearchResponse['repos']>[number],
+  repoParts: NonNullable<ReturnType<typeof parseRepoParts>>,
+) {
+  const normalizedOwner = normalizeLookupValue(repoParts.owner)
+  const normalizedName = normalizeLookupValue(repoParts.name)
+  const normalizedUrl = normalizeLookupValue(repo.url).replace(/\.git$/, '')
+  const urlMatches = normalizedUrl.endsWith(`/${normalizedOwner}/${normalizedName}`)
+  const ownerMatches
+    = normalizeLookupValue(repo.namespace) === normalizedOwner
+      || normalizeLookupValue(repo.owner.name) === normalizedOwner
+  const nameMatches
+    = normalizeLookupValue(repo.slug) === normalizedName
+      || normalizeLookupValue(repo.name) === normalizedName
+
+  return urlMatches || (ownerMatches && nameMatches)
+}
+
 function extractErrorCode(details: unknown) {
   if (!details || typeof details !== 'object') {
     return ''
@@ -557,12 +587,6 @@ function extractErrorAction(details: unknown) {
   }
   const value = (details as { error?: { action?: string } }).error?.action
   return typeof value === 'string' ? value : ''
-}
-
-function isUnauthorizedResponse(error: LaunchError) {
-  const code = extractErrorCode(error.details).toLowerCase()
-  const message = extractErrorMessage(error.details).toLowerCase()
-  return code === 'unauthorized' || message.includes('unauthorized') || error.message.includes('(401)')
 }
 
 function isValidationError(error: LaunchError) {
@@ -798,14 +822,17 @@ export async function inspectVercelConnection(params: {
 
   let githubNamespaces: VercelGitNamespace[] = []
   try {
-    const namespacesPath = withQuery('/v1/integrations/git-namespaces', new URLSearchParams({
-      provider: 'github',
-    }))
+    const namespacesPath = withTeamId(
+      withQuery('/v1/integrations/git-namespaces', new URLSearchParams({
+        provider: 'github',
+      })),
+      params.teamId?.trim() || undefined,
+    )
     const namespaces = await vercelRequest<VercelGitNamespace[]>(params.token, namespacesPath)
     githubNamespaces = namespaces.filter(namespace => namespace.provider === 'github')
   }
   catch (error) {
-    if (error instanceof LaunchError && isUnauthorizedResponse(error)) {
+    if (error instanceof LaunchError) {
       return {
         identity,
         githubImportReady: false,
@@ -815,44 +842,56 @@ export async function inspectVercelConnection(params: {
   }
 
   const repoParts = parseRepoParts(params.gitRepo)
+  const readyGithubNamespaces = githubNamespaces.filter(namespace => !namespace.requireReauth)
 
   if (!repoParts) {
     return {
       identity,
-      githubImportReady: githubNamespaces.some(namespace => !namespace.requireReauth),
-      githubNamespace: githubNamespaces.find(namespace => !namespace.requireReauth)?.slug,
+      githubImportReady: readyGithubNamespaces.length > 0,
+      githubNamespace: readyGithubNamespaces[0]?.slug,
     }
   }
 
-  const matchingNamespace = githubNamespaces.find(namespace =>
-    namespace.slug.trim().toLowerCase() === repoParts.owner.toLowerCase(),
-  )
+  const matchingNamespace
+    = readyGithubNamespaces.find(namespace => namespaceMatchesRepoOwner(namespace, repoParts.owner))
+      ?? (readyGithubNamespaces.length === 1 ? readyGithubNamespaces[0] : undefined)
 
-  if (!matchingNamespace || matchingNamespace.requireReauth) {
+  if (!matchingNamespace) {
+    const reauthNamespace = githubNamespaces.find(namespace =>
+      namespaceMatchesRepoOwner(namespace, repoParts.owner),
+    )
     return {
       identity,
       githubImportReady: false,
-      githubNamespace: matchingNamespace?.slug,
+      githubNamespace: reauthNamespace?.slug,
     }
   }
 
-  const repoQuery = new URLSearchParams({
-    provider: 'github',
-    namespaceId: String(matchingNamespace.id),
-    query: repoParts.name,
-  })
-  if (params.teamId?.trim()) {
-    repoQuery.set('teamId', params.teamId.trim())
-  }
-  let searchResult: VercelGitRepoSearchResponse
+  let githubImportReady = false
   try {
-    searchResult = await vercelRequest<VercelGitRepoSearchResponse>(
-      params.token,
-      withQuery('/v1/integrations/search-repo', repoQuery),
-    )
+    const queries = Array.from(new Set([repoParts.name, `${repoParts.owner}/${repoParts.name}`]))
+    for (const query of queries) {
+      const repoQuery = new URLSearchParams({
+        provider: 'github',
+        namespaceId: String(matchingNamespace.id),
+        query,
+      })
+      if (params.teamId?.trim()) {
+        repoQuery.set('teamId', params.teamId.trim())
+      }
+
+      const searchResult = await vercelRequest<VercelGitRepoSearchResponse>(
+        params.token,
+        withQuery('/v1/integrations/search-repo', repoQuery),
+      )
+      if ((searchResult.repos ?? []).some(repo => repoMatchesParts(repo, repoParts))) {
+        githubImportReady = true
+        break
+      }
+    }
   }
   catch (error) {
-    if (error instanceof LaunchError && isUnauthorizedResponse(error)) {
+    if (error instanceof LaunchError) {
       return {
         identity,
         githubImportReady: false,
@@ -861,15 +900,10 @@ export async function inspectVercelConnection(params: {
     }
     throw error
   }
-  const matchingRepo = (searchResult.repos ?? []).find(repo =>
-    repo.namespace.trim().toLowerCase() === repoParts.owner.toLowerCase()
-    && (repo.slug.trim().toLowerCase() === repoParts.name.toLowerCase()
-      || repo.name.trim().toLowerCase() === repoParts.name.toLowerCase()),
-  )
 
   return {
     identity,
-    githubImportReady: Boolean(matchingRepo),
+    githubImportReady,
     githubNamespace: matchingNamespace.slug,
   }
 }

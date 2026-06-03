@@ -594,7 +594,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                     {t('The Shopify for Prediction Markets')}
                   </div>
                   <h1 className="
-                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-[-0.05em]
+                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter
                     text-white
                   "
                   >

@@ -393,7 +393,7 @@ export default async function ProtocolPage({ params }: PageProps<'/[locale]/prot
                   </div>
                   <div className="hero-kicker protocol-hero-kicker">{t('KUEST PROTOCOL · SEED ROUND OPEN')}</div>
                   <h1 className="
-                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-[-0.05em]
+                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter
                     text-white
                   "
                   >

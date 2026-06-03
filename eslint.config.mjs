@@ -1,27 +1,26 @@
 import antfu from '@antfu/eslint-config'
 import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss'
+import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect'
 
 export default antfu({
   react: true,
   nextjs: true,
-  ignores: ['AGENTS.md'],
 }, {
   plugins: {
     'better-tailwindcss': eslintPluginBetterTailwindcss,
+    'react-you-might-not-need-an-effect': reactYouMightNotNeedAnEffect,
   },
   rules: {
+    ...reactYouMightNotNeedAnEffect.configs.recommended.rules,
     ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
     'node/prefer-global/process': 'off',
     'no-console': 'off',
     'no-labels': 'off',
-    'e18e/prefer-static-regex': 'off',
+    'prefer-arrow-callback': ['error', { allowNamedFunctions: true }],
     'curly': ['error', 'all'],
-    'react-dom/no-unsafe-iframe-sandbox': 'off',
     'react/no-array-index-key': 'off',
-    'react-dom/no-dangerously-set-innerhtml': 'off',
+    'react/dom-no-dangerously-set-innerhtml': 'off',
     'react-refresh/only-export-components': 'off',
-    'react-hooks/set-state-in-effect': 'off',
-    'react-hooks-extra/no-direct-set-state-in-use-effect': 'off',
     'func-style': ['error', 'declaration', { allowArrowFunctions: false }],
     'better-tailwindcss/no-unknown-classes': 'off',
     'better-tailwindcss/enforce-consistent-line-wrapping': ['error', {
@@ -32,7 +31,7 @@ export default antfu({
   },
   settings: {
     'better-tailwindcss': {
-      tailwindConfig: './src/app/globals.css',
+      entryPoint: './src/app/globals.css',
     },
   },
 })
