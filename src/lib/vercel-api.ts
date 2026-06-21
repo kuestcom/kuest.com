@@ -631,6 +631,17 @@ function isProjectAlreadyExistsError(error: LaunchError) {
   return code === 'conflict' || message.includes('already exists')
 }
 
+function isProjectDomainAlreadyAssignedError(error: LaunchError) {
+  const code = extractErrorCode(error.details).toLowerCase()
+  const message = extractErrorMessage(error.details).toLowerCase()
+  return (
+    code === 'conflict'
+    || message.includes('already assigned')
+    || message.includes('already exists')
+    || message.includes('already has')
+  )
+}
+
 function isIntegrationConnectionConflict(error: LaunchError) {
   const code = extractErrorCode(error.details).toLowerCase()
   const message = extractErrorMessage(error.details).toLowerCase()
@@ -1617,49 +1628,66 @@ export async function verifyProjectDomain(params: {
   projectIdOrName: string
   domain: string
 }) {
-  const candidatePaths = [
-    withTeamId(
-      `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
-        params.domain,
-      )}/verify`,
-      params.teamId,
-    ),
-    withTeamId(
-      `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
-        params.domain,
-      )}/verify`,
-      params.teamId,
-    ),
-  ]
+  const existing = await fetchProjectDomainDetails(params)
+  if (existing?.verified) {
+    return await enrichDomainResponse(params, {
+      name: existing.name ?? params.domain,
+      verified: true,
+      verification: existing.verification ?? [],
+      nameservers: existing.nameservers,
+      configuredBy: existing.configuredBy,
+    })
+  }
 
-  let lastError: LaunchError | null = null
-  for (const path of candidatePaths) {
+  if (!existing) {
     try {
-      const payload = await vercelRequest<unknown>(params.token, path, {
-        method: 'POST',
-      })
-      const base = normalizeProjectDomainResponse(payload, params.domain)
-      return await enrichDomainResponse(params, base)
+      const added = await addProjectDomain(params)
+      if (added.verified) {
+        return added
+      }
     }
     catch (error) {
-      if (error instanceof LaunchError && isNotFoundError(error)) {
-        lastError = error
-        continue
+      if (!(error instanceof LaunchError) || !isProjectDomainAlreadyAssignedError(error)) {
+        throw error
       }
-      throw error
     }
   }
 
-  if (lastError) {
-    throw lastError
-  }
+  const path = withTeamId(
+    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
+      params.domain,
+    )}/verify`,
+    params.teamId,
+  )
 
-  return {
-    name: params.domain,
-    verified: false,
-    verification: [],
-    nameservers: [],
-  } satisfies VercelDomainResponse
+  try {
+    const payload = await vercelRequest<unknown>(params.token, path, {
+      method: 'POST',
+    })
+    const base = normalizeProjectDomainResponse(payload, params.domain)
+    return await enrichDomainResponse(params, base)
+  }
+  catch (error) {
+    if (error instanceof LaunchError && isNotFoundError(error)) {
+      const details = await fetchProjectDomainDetails(params)
+      if (details) {
+        return await enrichDomainResponse(params, {
+          name: details.name ?? params.domain,
+          verified: details.verified ?? false,
+          verification: details.verification ?? [],
+          nameservers: details.nameservers,
+          configuredBy: details.configuredBy,
+        })
+      }
+
+      throw new LaunchError(
+        'This domain is not assigned to the Vercel project yet. Add it first, then verify it again.',
+        'vercel',
+        error.details,
+      )
+    }
+    throw error
+  }
 }
 
 async function enrichDomainResponse(

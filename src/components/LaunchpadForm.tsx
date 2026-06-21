@@ -12,12 +12,15 @@ import type {
 } from '@/lib/launch-types'
 import { useWalletInfo } from '@reown/appkit/react'
 import {
+  AlertTriangleIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
+  CalendarDaysIcon,
   CheckIcon,
   ChevronDownIcon,
   CircleCheckIcon,
   CircleIcon,
+  ClockIcon,
   InfoIcon,
   Loader2Icon,
   RefreshCwIcon,
@@ -128,6 +131,7 @@ const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
 const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
 const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
+const VERCEL_DASHBOARD_URL = 'https://vercel.com/dashboard'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -1920,10 +1924,42 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             </div>
             <div className="launch-success-copy">
               <h2>{t('{siteName} configured successfully', { siteName: launchSiteName })}</h2>
-              <p>
-                {t('Vercel takes about 7 minutes to deploy your site. Markets can appear within 15 minutes.')}
-              </p>
             </div>
+
+            <ul className="launch-success-list">
+              <li>
+                <span className="launch-success-list-icon" aria-hidden="true">
+                  <ClockIcon className="size-4" />
+                </span>
+                <span>{t('Vercel takes about 7 minutes to deploy your site')}</span>
+              </li>
+              <li>
+                <span className="launch-success-list-icon" aria-hidden="true">
+                  <CalendarDaysIcon className="size-4" />
+                </span>
+                <span>{t('Markets can appear within 15 minutes.')}</span>
+              </li>
+              <li>
+                <span className="launch-success-list-icon is-attention" aria-hidden="true">
+                  <AlertTriangleIcon className="size-4" />
+                </span>
+                <span>
+                  {t.rich(
+                    'Meanwhile, add <site>{siteUrl}</site> to the domain allowlist in the Configuration tab of your Reown project at <link>dashboard.reown.com</link>.',
+                    {
+                      siteUrl: launchProjectUrl,
+                      site: chunks => <code className="launch-success-url">{chunks}</code>,
+                      link: chunks => (
+                        <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
+                          {chunks}
+                        </a>
+                      ),
+                    },
+                  )}
+                </span>
+              </li>
+            </ul>
+
             <a
               className="launch-cta launch-success-link"
               href={launchProjectUrl}
@@ -1933,22 +1969,6 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
               <ArrowRightIcon className="size-4" />
             </a>
-
-            <div className="launch-success-note">
-              <p>
-                {t.rich(
-                  'Add {siteUrl} to the domain allowlist in the Configuration tab of your Reown project at <link>dashboard.reown.com</link>.',
-                  {
-                    siteUrl: launchProjectUrl,
-                    link: chunks => (
-                      <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
-                        {chunks}
-                      </a>
-                    ),
-                  },
-                )}
-              </p>
-            </div>
 
             <div className="launch-subcard launch-success-domain rounded-xl border border-border/70 p-4!">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2003,7 +2023,18 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                 </button>
               </div>
               {domainActionError && (
-                <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
+                <div className="launch-domain-error mt-2">
+                  <p className="text-xs font-medium text-primary/90">{domainActionError}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t.rich('You can also add your domain in the <link>Vercel dashboard</link>.', {
+                      link: chunks => (
+                        <a className="launch-link" href={VERCEL_DASHBOARD_URL} target="_blank" rel="noreferrer">
+                          {chunks}
+                        </a>
+                      ),
+                    })}
+                  </p>
+                </div>
               )}
               {domainState?.verified && customDomainAllowlistUrl && (
                 <p className="launch-helper-text mt-3 text-xs text-muted-foreground">
