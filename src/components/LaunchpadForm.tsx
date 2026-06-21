@@ -127,6 +127,7 @@ const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3
 const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
 const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
+const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -1903,43 +1904,215 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     : ''
   const canContinueStep2 = showSignedWalletState && brandNameReady
   const canContinueStep3 = canContinueStep2 && step2ConnectionsReady
+  const launchSiteName = form.brandName.trim() || result?.projectName || resolvedProjectSlug
+  const launchProjectUrl = result?.projectUrl || computedSiteUrl
+  const customDomainAllowlistUrl = domainState?.name
+    ? `https://*.${normalizeCustomDomain(domainState.name)}`
+    : ''
 
   return (
     <form onSubmit={onSubmit} className="launch-shell">
-      <div className={`launch-stepper launch-stepper-active-${activeStep}`}>
-        {stepItems.map(step => (
-          <button
-            key={step.number}
-            type="button"
-            className={`launch-step ${step.active ? 'is-active' : ''} ${step.done ? 'is-done' : ''}`}
-            onClick={() => {
-              if (step.number === 1) {
-                setActiveStep(1)
-                return
-              }
-              if (step.number === 2 && canContinueStep2) {
-                setActiveStep(2)
-                return
-              }
-              if (step.number === 3 && canContinueStep3) {
-                setActiveStep(3)
-              }
-            }}
-            disabled={
-              step.number === 2
-                ? !canContinueStep2
-                : step.number === 3
-                  ? !canContinueStep3
-                  : false
-            }
-          >
-            <span className="launch-step-index">{step.number}</span>
-            <span className="launch-step-title">{step.title}</span>
-          </button>
-        ))}
-      </div>
+      {hasSuccessfulDeployment && result && (
+        <section className="launch-island launch-success-island">
+          <div className="launch-success-card">
+            <div className="launch-success-icon" aria-hidden="true">
+              <CircleCheckIcon className="size-20" strokeWidth={1.45} />
+            </div>
+            <div className="launch-success-copy">
+              <h2>{t('{siteName} configured successfully', { siteName: launchSiteName })}</h2>
+              <p>
+                {t('Vercel takes about 7 minutes to deploy your site. Markets can appear within 15 minutes.')}
+              </p>
+            </div>
+            <a
+              className="launch-cta launch-success-link"
+              href={launchProjectUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
+              <ArrowRightIcon className="size-4" />
+            </a>
 
-      {activeStep === 1 && (
+            <div className="launch-success-note">
+              <p>
+                {t.rich(
+                  'Add {siteUrl} to the domain allowlist in the Configuration tab of your Reown project at <link>dashboard.reown.com</link>.',
+                  {
+                    siteUrl: launchProjectUrl,
+                    link: chunks => (
+                      <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
+                        {chunks}
+                      </a>
+                    ),
+                  },
+                )}
+              </p>
+            </div>
+
+            <div className="launch-subcard launch-success-domain rounded-xl border border-border/70 p-4!">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-foreground">
+                    {t('Custom domain (optional)')}
+                  </h4>
+                  <InfoTip text={t('Use your own domain after deploy. Add it first, then verify DNS records.')} />
+                </div>
+                {domainState && (
+                  <span
+                    className={`text-xs font-semibold ${
+                      domainState.verified ? 'text-primary' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {domainState.verified
+                      ? t('Verified')
+                      : t('Pending verification')}
+                  </span>
+                )}
+              </div>
+              <div className="launch-field-inline mt-3">
+                <input
+                  className="launch-inline-control"
+                  value={customDomain}
+                  onChange={event => setCustomDomain(event.target.value)}
+                  placeholder="app.yourdomain.com"
+                />
+                <button
+                  type="button"
+                  className="launch-mini-button"
+                  onClick={() => {
+                    void handleDomainAction('add')
+                  }}
+                  disabled={domainActionLoading !== null}
+                >
+                  {domainActionLoading === 'add'
+                    ? t('Adding...')
+                    : t('Add domain')}
+                </button>
+                <button
+                  type="button"
+                  className="launch-mini-button"
+                  onClick={() => {
+                    void handleDomainAction('verify')
+                  }}
+                  disabled={domainActionLoading !== null || !customDomain.trim()}
+                >
+                  {domainActionLoading === 'verify'
+                    ? t('Verifying...')
+                    : t('Verify')}
+                </button>
+              </div>
+              {domainActionError && (
+                <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
+              )}
+              {domainState?.verified && customDomainAllowlistUrl && (
+                <p className="launch-helper-text mt-3 text-xs text-muted-foreground">
+                  {t.rich(
+                    'Add {domainUrl} to the Reown Configuration domain allowlist too: <link>dashboard.reown.com</link>.',
+                    {
+                      domainUrl: customDomainAllowlistUrl,
+                      link: chunks => (
+                        <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
+                          {chunks}
+                        </a>
+                      ),
+                    },
+                  )}
+                </p>
+              )}
+              {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
+                <div className="
+                  launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
+                "
+                >
+                  <p className="font-semibold text-foreground">
+                    {t('Nameservers to set at your registrar:')}
+                  </p>
+                  <div className="mt-1 space-y-1">
+                    {domainState.nameservers.map(nameServer => (
+                      <p key={nameServer} className="font-mono text-[11px]/4">
+                        {nameServer}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {domainState && !domainState.verified && domainState.verification.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {domainState.verification.map((record, index) => (
+                    <div
+                      key={`${record.type ?? 'record'}-${record.domain ?? 'domain'}-${index}`}
+                      className="
+                        launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
+                      "
+                    >
+                      <span className="font-semibold text-foreground">
+                        {record.type || 'DNS'}
+                        :
+                      </span>
+                      {' '}
+                      {record.domain || '@'}
+                      {' '}
+                      {'->'}
+                      {' '}
+                      {record.value || t('check Vercel DNS instructions')}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {result.logs.length > 0 && (
+              <details className="launch-logs-disclosure">
+                <summary>
+                  <span>{t('Logs')}</span>
+                  <ChevronDownIcon className="size-4" />
+                </summary>
+                <div className="launch-logs-section">
+                  <LogList locale={locale} logs={result.logs} />
+                </div>
+              </details>
+            )}
+          </div>
+        </section>
+      )}
+
+      {!hasSuccessfulDeployment && (
+        <div className={`launch-stepper launch-stepper-active-${activeStep}`}>
+          {stepItems.map(step => (
+            <button
+              key={step.number}
+              type="button"
+              className={`launch-step ${step.active ? 'is-active' : ''} ${step.done ? 'is-done' : ''}`}
+              onClick={() => {
+                if (step.number === 1) {
+                  setActiveStep(1)
+                  return
+                }
+                if (step.number === 2 && canContinueStep2) {
+                  setActiveStep(2)
+                  return
+                }
+                if (step.number === 3 && canContinueStep3) {
+                  setActiveStep(3)
+                }
+              }}
+              disabled={
+                step.number === 2
+                  ? !canContinueStep2
+                  : step.number === 3
+                    ? !canContinueStep3
+                    : false
+              }
+            >
+              <span className="launch-step-index">{step.number}</span>
+              <span className="launch-step-title">{step.title}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {!hasSuccessfulDeployment && activeStep === 1 && (
         <section className="launch-island launch-step1-island">
           <h2 className="sr-only">{t('Step 1. Site + Admin wallet')}</h2>
 
@@ -2097,7 +2270,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         </section>
       )}
 
-      {activeStep === 2 && (
+      {!hasSuccessfulDeployment && activeStep === 2 && (
         <section className="launch-island launch-step2-island">
           <h2 className="sr-only">{copy.step2Connections}</h2>
 
@@ -2736,7 +2909,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
         </section>
       )}
 
-      {activeStep === 3 && (
+      {!hasSuccessfulDeployment && activeStep === 3 && (
         <section className="launch-island launch-step3-island">
           <h2 className="sr-only">{copy.step3Deploy}</h2>
 
@@ -2822,195 +2995,16 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
             </div>
           )}
 
-          {result && (
-            <section className="launch-panel-card launch-step3-result mt-5 rounded-2xl border border-border/70 p-5">
-              <h3 className="text-base font-semibold text-foreground">{t('Result')}</h3>
-              <div className="launch-result-grid mt-3 space-y-2 text-sm text-muted-foreground">
-                <div>
-                  {t('Status')}
-                  :
-                  {' '}
-                  <strong className={result.ok ? 'text-primary' : 'text-destructive'}>
-                    {result.ok ? t('success') : t('failed')}
-                  </strong>
-                </div>
-                <div>
-                  {t('Project')}
-                  :
-                  {' '}
-                  <strong>{result.projectName ?? '-'}</strong>
-                </div>
-                <div>
-                  URL:
-                  {' '}
-                  {result.projectUrl
-                    ? (
-                        <a className="launch-link" href={result.projectUrl} target="_blank" rel="noreferrer">
-                          {result.projectUrl}
-                        </a>
-                      )
-                    : '-'}
-                </div>
-                <div>
-                  {t('Vercel dashboard')}
-                  :
-                  {' '}
-                  {result.vercelDashboardUrl
-                    ? (
-                        <a
-                          className="launch-link"
-                          href={result.vercelDashboardUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {result.vercelDashboardUrl}
-                        </a>
-                      )
-                    : '-'}
-                </div>
-                <div>
-                  {t('Supabase dashboard')}
-                  :
-                  {' '}
-                  {result.supabaseDashboardUrl
-                    ? (
-                        <a
-                          className="launch-link"
-                          href={result.supabaseDashboardUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {result.supabaseDashboardUrl}
-                        </a>
-                      )
-                    : '-'}
-                </div>
-                <div>
-                  {t('Duration')}
-                  :
-                  {' '}
-                  {Math.round(result.durationMs / 100) / 10}
-                  s
-                </div>
-              </div>
-
-              {result.ok && (
-                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4!">
-                  <div className="flex items-start gap-3">
-                    <CircleCheckIcon className="mt-0.5 size-4 text-primary" />
-                    <p className="text-sm text-muted-foreground">
-                      {t('Deployment completed successfully. Market events typically begin appearing on your site within 5 to 15 minutes.')}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {result.ok && result.projectName && (
-                <div className="launch-subcard mt-5 rounded-xl border border-border/70 p-4!">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-foreground">
-                        {t('Custom domain (optional)')}
-                      </h4>
-                      <InfoTip text={t('Use your own domain after deploy. Add it first, then verify DNS records.')} />
-                    </div>
-                    {domainState && (
-                      <span
-                        className={`text-xs font-semibold ${
-                          domainState.verified ? 'text-primary' : 'text-muted-foreground'
-                        }`}
-                      >
-                        {domainState.verified
-                          ? t('Verified')
-                          : t('Pending verification')}
-                      </span>
-                    )}
-                  </div>
-                  <div className="launch-field-inline mt-3">
-                    <input
-                      className="launch-inline-control"
-                      value={customDomain}
-                      onChange={event => setCustomDomain(event.target.value)}
-                      placeholder="app.yourdomain.com"
-                    />
-                    <button
-                      type="button"
-                      className="launch-mini-button"
-                      onClick={() => {
-                        void handleDomainAction('add')
-                      }}
-                      disabled={domainActionLoading !== null}
-                    >
-                      {domainActionLoading === 'add'
-                        ? t('Adding...')
-                        : t('Add domain')}
-                    </button>
-                    <button
-                      type="button"
-                      className="launch-mini-button"
-                      onClick={() => {
-                        void handleDomainAction('verify')
-                      }}
-                      disabled={domainActionLoading !== null || !customDomain.trim()}
-                    >
-                      {domainActionLoading === 'verify'
-                        ? t('Verifying...')
-                        : t('Verify')}
-                    </button>
-                  </div>
-                  {domainActionError && (
-                    <p className="mt-2 text-xs font-medium text-primary/90">{domainActionError}</p>
-                  )}
-                  {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
-                    <div className="
-                      launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
-                    "
-                    >
-                      <p className="font-semibold text-foreground">
-                        {t('Nameservers to set at your registrar:')}
-                      </p>
-                      <div className="mt-1 space-y-1">
-                        {domainState.nameservers.map(nameServer => (
-                          <p key={nameServer} className="font-mono text-[11px]/4">
-                            {nameServer}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {domainState && !domainState.verified && domainState.verification.length > 0 && (
-                    <div className="mt-3 space-y-2">
-                      {domainState.verification.map((record, index) => (
-                        <div
-                          key={`${record.type ?? 'record'}-${record.domain ?? 'domain'}-${index}`}
-                          className="
-                            launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
-                          "
-                        >
-                          <span className="font-semibold text-foreground">
-                            {record.type || 'DNS'}
-                            :
-                          </span>
-                          {' '}
-                          {record.domain || '@'}
-                          {' '}
-                          {'->'}
-                          {' '}
-                          {record.value || t('check Vercel DNS instructions')}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="launch-logs-section mt-5">
-                <h4 className="mb-2 text-sm font-bold tracking-wide text-muted-foreground uppercase">
-                  Logs
-                </h4>
+          {result && result.logs.length > 0 && (
+            <details className="launch-logs-disclosure launch-step3-logs">
+              <summary>
+                <span>{t('Logs')}</span>
+                <ChevronDownIcon className="size-4" />
+              </summary>
+              <div className="launch-logs-section">
                 <LogList locale={locale} logs={result.logs} />
               </div>
-            </section>
+            </details>
           )}
         </section>
       )}

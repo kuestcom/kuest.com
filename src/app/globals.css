@@ -1414,7 +1414,8 @@
 .launch-step2-advanced,
 .launch-step3-card,
 .launch-step3-error,
-.launch-step3-result {
+.launch-step3-result,
+.launch-success-card {
   width: 100%;
   min-width: 0;
 }
@@ -1555,7 +1556,8 @@
 .launch-step2-advanced,
 .launch-step3-card,
 .launch-step3-result,
-.launch-step3-error {
+.launch-step3-error,
+.launch-success-card {
   margin-top: 1.5rem;
 }
 
@@ -1665,19 +1667,22 @@
 .launch-step2-advanced > *,
 .launch-step2-advanced-body > *,
 .launch-step3-card > *,
-.launch-step3-result > * {
+.launch-step3-result > *,
+.launch-success-card > * {
   min-width: 0;
 }
 
 .launch-step2-card .launch-field-inline,
 .launch-step2-advanced-body .launch-field-inline,
-.launch-step3-result .launch-field-inline {
+.launch-step3-result .launch-field-inline,
+.launch-success-domain .launch-field-inline {
   align-items: flex-start;
 }
 
 .launch-step2-card .launch-helper-text,
 .launch-step2-advanced .launch-helper-text,
-.launch-step3-result .launch-helper-text {
+.launch-step3-result .launch-helper-text,
+.launch-success-card .launch-helper-text {
   line-height: 1.6;
 }
 
@@ -1975,6 +1980,7 @@
 .launch-step1-island .launch-mini-button,
 .launch-step2-island .launch-mini-button,
 .launch-step3-island .launch-mini-button,
+.launch-success-island .launch-mini-button,
 .launch-step2-island .launch-plain-button,
 .launch-step3-island .launch-plain-button {
   border-radius: 999px;
@@ -1983,11 +1989,12 @@
 
 .launch-step1-island .launch-cta,
 .launch-step2-island .launch-cta,
-.launch-step3-island .launch-cta {
+.launch-step3-island .launch-cta,
+.launch-success-island .launch-cta {
   border-radius: 999px;
   padding: 0.82rem 1.4rem;
   font-size: 0.95rem;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .launch-step1-island .launch-cta-compact,
@@ -2014,6 +2021,121 @@
   line-height: 1.6;
 }
 
+.launch-success-card {
+  padding: clamp(1.4rem, 4vw, 2.35rem);
+  display: grid;
+  gap: 1.3rem;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+}
+
+.launch-success-icon {
+  width: 6.25rem;
+  height: 6.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent-interaction-border);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--launch-brand-accent) 22%, transparent), transparent 68%),
+    var(--surface-overlay-muted);
+  color: var(--launch-brand-accent);
+  box-shadow: 0 0 34px color-mix(in srgb, var(--launch-brand-accent) 12%, transparent);
+}
+
+.launch-success-copy {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 42rem;
+}
+
+.launch-success-copy h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 0.98;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.launch-success-copy p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: clamp(1rem, 2.5vw, 1.18rem);
+  line-height: 1.55;
+}
+
+.launch-success-link {
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  overflow-wrap: anywhere;
+}
+
+.launch-success-note {
+  width: min(100%, 42rem);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  background: var(--surface-overlay-muted);
+}
+
+.launch-success-note p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.launch-success-domain {
+  width: min(100%, 42rem);
+  text-align: left;
+}
+
+.launch-logs-disclosure {
+  width: min(100%, 42rem);
+  border: 1px solid var(--border-medium);
+  border-radius: 18px;
+  background: var(--surface-overlay-muted);
+  text-align: left;
+}
+
+.launch-step3-logs {
+  margin-top: 1.5rem;
+  margin-inline: auto;
+}
+
+.launch-logs-disclosure summary {
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.launch-logs-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.launch-logs-disclosure summary svg {
+  color: var(--color-muted);
+  transition: transform 0.18s ease;
+}
+
+.launch-logs-disclosure[open] summary svg {
+  transform: rotate(180deg);
+}
+
 .launch-result-grid {
   display: grid;
   gap: 0.75rem;
@@ -2026,7 +2148,8 @@
 .launch-logs-section {
   display: grid;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 0;
+  padding: 0 1rem 1rem;
 }
 
 .launch-log-list {
