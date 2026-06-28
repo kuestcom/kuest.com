@@ -9,6 +9,7 @@ const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SupportedLocale, string> = {
   es: 'Gratis',
   pt: 'Grátis',
   fr: 'Gratuit',
+  ja: '無料',
   zh: '免费开始',
 }
 

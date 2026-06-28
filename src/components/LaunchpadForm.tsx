@@ -191,6 +191,15 @@ const LAUNCHPAD_COPY: Record<
     connectGitHub: 'Connecter GitHub',
     oauthSoon: 'OAuth (soon)',
   },
+  ja: {
+    connectionsStep: '接続',
+    step2Connections: 'ステップ 2. 接続',
+    step3Deploy: 'ステップ 3. デプロイ',
+    githubInfo: 'GitHub で Kuest を承認すると、Kuest の prediction market を複製したリポジトリをあなたの GitHub アカウントに作成できます。すでに自分のリポジトリがある場合は、詳細オプションで手動入力できます。',
+    redirecting: 'リダイレクト中...',
+    connectGitHub: 'GitHub を接続',
+    oauthSoon: 'OAuth (soon)',
+  },
   zh: {
     connectionsStep: '连接',
     step2Connections: '第 2 步：连接',
