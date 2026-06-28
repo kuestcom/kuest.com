@@ -3,9 +3,12 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
 import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import { routing } from '@/i18n/routing'
 import { geistMono, openSauceOne } from '@/lib/fonts'
+
+const GOOGLE_ANALYTICS_ID = 'G-S0S2K7EQE4'
 
 export async function generateViewport(): Promise<Viewport> {
   return {
@@ -61,6 +64,15 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GOOGLE_ANALYTICS_ID}');
+        `}
+      </Script>
     </html>
   )
 }
