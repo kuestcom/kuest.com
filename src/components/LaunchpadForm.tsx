@@ -132,6 +132,7 @@ const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
 const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
 const VERCEL_DASHBOARD_URL = 'https://vercel.com/dashboard'
+const DISCORD_URL = 'https://discord.gg/kuest'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -1910,6 +1911,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const canContinueStep3 = canContinueStep2 && step2ConnectionsReady
   const launchSiteName = form.brandName.trim() || result?.projectName || resolvedProjectSlug
   const launchProjectUrl = result?.projectUrl || computedSiteUrl
+  const discordSupportLabel = t('Join our Discord for support')
   const customDomainAllowlistUrl = domainState?.name
     ? `https://*.${normalizeCustomDomain(domainState.name)}`
     : ''
@@ -1960,15 +1962,28 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
               </li>
             </ul>
 
-            <a
-              className="launch-cta launch-success-link"
-              href={launchProjectUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
-              <ArrowRightIcon className="size-4" />
-            </a>
+            <div className="launch-success-actions">
+              <a
+                className="launch-discord-link"
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={discordSupportLabel}
+              >
+                <Image src="/assets/images/discord.svg" alt="" width={20} height={20} />
+                <span>{discordSupportLabel}</span>
+              </a>
+
+              <a
+                className="launch-cta launch-success-link"
+                href={launchProjectUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
+                <ArrowRightIcon className="size-4" />
+              </a>
+            </div>
 
             <div className="launch-subcard launch-success-domain rounded-xl border border-border/70 p-4!">
               <div className="flex flex-wrap items-center justify-between gap-3">
