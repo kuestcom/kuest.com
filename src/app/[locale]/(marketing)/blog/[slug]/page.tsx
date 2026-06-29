@@ -16,6 +16,7 @@ import { CONTACT_HREF } from '@/lib/constants'
 import { resolveSiteUrl } from '@/lib/site-url'
 
 export const dynamicParams = true
+export const revalidate = false
 
 export async function generateStaticParams() {
   return listPostStaticParams()
@@ -91,7 +92,7 @@ export default async function BlogPostPage({ params }: PageProps<'/[locale]/blog
     notFound()
   }
 
-  const t = await getExtracted()
+  const t = await getExtracted({ locale })
   const siteOrigin = resolveSiteUrl(process.env)
   const coverSrc = getPostCoverSrc(post)
   const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })

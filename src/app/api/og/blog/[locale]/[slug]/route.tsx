@@ -1,10 +1,9 @@
 import type { SupportedLocale } from '@/i18n/locales'
 import { ImageResponse } from 'next/og'
 import { SUPPORTED_LOCALES } from '@/i18n/locales'
-import { getPost, listPostStaticParams } from '@/lib/blog/content'
+import { getPost } from '@/lib/blog/content'
 
-export const dynamic = 'force-static'
-export const dynamicParams = false
+export const dynamic = 'force-dynamic'
 
 const WIDTH = 1200
 const HEIGHT = 630
@@ -12,10 +11,6 @@ const ACCENT = '#CDFF00'
 const BG = '#0e1117'
 const FG = '#e8eaf0'
 const MUTED = '#6b7585'
-
-export async function generateStaticParams() {
-  return listPostStaticParams()
-}
 
 function isSupportedLocale(value: string): value is SupportedLocale {
   return (SUPPORTED_LOCALES as readonly string[]).includes(value)

@@ -11,6 +11,7 @@ const LANDING_HERO_TITLE_ACCENT_BY_LOCALE: Record<SupportedLocale, string> = {
   fr: 'Gratuit',
   ja: '無料',
   zh: '免费开始',
+  ar: 'مجانا',
 }
 
 export function buildEmbedPreviewBootstrapScript() {

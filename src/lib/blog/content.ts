@@ -22,14 +22,19 @@ export interface BlogPost {
 
 export type BlogPostSummary = Omit<BlogPost, 'source'>
 
+const BLOG_RELATIVE_DIR = join('content', 'blog')
 const BLOG_DIR = join(process.cwd(), 'content', 'blog')
 const POST_FILE_PATTERN = /^(.+)\.mdx$/
+const COMMIT_DATE_PREFIX = '__COMMIT__'
 
 export const BLOG_POSTS_PER_PAGE = 12
+const SHOULD_CACHE_POSTS = process.env.NODE_ENV === 'production'
+let lastCommitDateCache: Map<string, Date> | undefined
 
 interface PostFileEntry {
   contentSlug: string
   locale: SupportedLocale
+  relativeFilePath: string
   filePath: string
 }
 
@@ -70,26 +75,63 @@ function listPostFiles(): PostFileEntry[] {
         continue
       }
       const contentSlug = match[1]
-      entries.push({ contentSlug, locale, filePath: join(localePath, fileDirent.name) })
+      entries.push({
+        contentSlug,
+        locale,
+        relativeFilePath: join(BLOG_RELATIVE_DIR, locale, fileDirent.name),
+        filePath: join(localePath, fileDirent.name),
+      })
     }
   }
   return entries
 }
 
-function readLastCommitDate(filePath: string): Date | undefined {
+function readLastCommitDates(): Map<string, Date> {
+  if (SHOULD_CACHE_POSTS && lastCommitDateCache) {
+    return lastCommitDateCache
+  }
+
+  const dates = new Map<string, Date>()
+
   try {
     const out = execFileSync(
       'git',
-      ['log', '-1', '--format=%cI', '--', filePath],
+      ['log', `--format=${COMMIT_DATE_PREFIX}%cI`, '--name-only', '--', BLOG_RELATIVE_DIR],
       { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-    ).trim()
-    if (out) {
-      return new Date(out)
+    )
+    let commitDate: Date | undefined
+    for (const line of out.split(/\r?\n/)) {
+      if (line.startsWith(COMMIT_DATE_PREFIX)) {
+        const date = new Date(line.slice(COMMIT_DATE_PREFIX.length))
+        commitDate = Number.isNaN(date.getTime()) ? undefined : date
+        continue
+      }
+
+      if (!line || !commitDate) {
+        continue
+      }
+
+      if (!dates.has(line)) {
+        dates.set(line, commitDate)
+      }
     }
   }
   catch {
-    // git unavailable or untracked file
+    // git unavailable
   }
+
+  if (SHOULD_CACHE_POSTS) {
+    lastCommitDateCache = dates
+  }
+  return dates
+}
+
+function readLastCommitDate(relativeFilePath: string, filePath: string): Date | undefined {
+  const commitDate = readLastCommitDates().get(relativeFilePath)
+  if (commitDate) {
+    return commitDate
+  }
+
   try {
     return statSync(filePath).mtime
   }
@@ -151,7 +193,7 @@ function loadPostFromEntry(entry: PostFileEntry): LoadedPost {
     frontmatter,
     source: content,
     readingTime: computeReadingTime(content),
-    lastModified: readLastCommitDate(entry.filePath),
+    lastModified: readLastCommitDate(entry.relativeFilePath, entry.filePath),
   }
 }
 
@@ -172,7 +214,9 @@ function resolveLocaleSlugCollisions(posts: LoadedPost[]): Array<LoadedPost & { 
   })
 }
 
-function loadAllPosts(): BlogPost[] {
+let allPostsCache: BlogPost[] | undefined
+
+function readAllPosts(): BlogPost[] {
   const rawPosts = resolveLocaleSlugCollisions(listPostFiles().map(loadPostFromEntry))
   const groupedByContentSlug = new Map<string, Array<LoadedPost & { slug: string }>>()
 
@@ -204,6 +248,15 @@ function loadAllPosts(): BlogPost[] {
       localizedSlugs,
     }
   })
+}
+
+function loadAllPosts(): BlogPost[] {
+  if (!SHOULD_CACHE_POSTS) {
+    return readAllPosts()
+  }
+
+  allPostsCache ??= readAllPosts()
+  return allPostsCache
 }
 
 function isPublished(post: { frontmatter: BlogFrontmatter }): boolean {
@@ -254,26 +307,9 @@ export function listPosts(locale: SupportedLocale): BlogPostSummary[] {
 }
 
 export function listPostStaticParams(): { locale: SupportedLocale, slug: string }[] {
-  const out: { locale: SupportedLocale, slug: string }[] = []
-  const seen = new Set<string>()
-
-  for (const post of loadAllPosts().filter(isPublished)) {
-    const localizedKey = `${post.locale}:${post.slug}`
-    if (!seen.has(localizedKey)) {
-      seen.add(localizedKey)
-      out.push({ locale: post.locale, slug: post.slug })
-    }
-
-    if (post.slug !== post.contentSlug) {
-      const legacyKey = `${post.locale}:${post.contentSlug}`
-      if (!seen.has(legacyKey)) {
-        seen.add(legacyKey)
-        out.push({ locale: post.locale, slug: post.contentSlug })
-      }
-    }
-  }
-
-  return out
+  return loadAllPosts()
+    .filter(isPublished)
+    .map(post => ({ locale: post.locale, slug: post.slug }))
 }
 
 export interface BlogPostSitemapEntry {
