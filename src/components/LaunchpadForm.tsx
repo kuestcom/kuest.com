@@ -209,6 +209,15 @@ const LAUNCHPAD_COPY: Record<
     connectGitHub: '连接 GitHub',
     oauthSoon: 'OAuth (soon)',
   },
+  ar: {
+    connectionsStep: 'الاتصالات',
+    step2Connections: 'الخطوة 2. الاتصالات',
+    step3Deploy: 'الخطوة 3. النشر',
+    githubInfo: 'خوّل Kuest على GitHub حتى نتمكن من إنشاء مستودع في حسابك على GitHub يحتوي على نسخة من سوق التوقعات من Kuest. إذا كان لديك مستودعك الخاص بالفعل، يمكنك إدخاله يدويا في الخيارات المتقدمة.',
+    redirecting: 'جار التحويل...',
+    connectGitHub: 'ربط GitHub',
+    oauthSoon: 'OAuth (قريبا)',
+  },
 }
 
 const DEFAULT_FORM: FormState = {

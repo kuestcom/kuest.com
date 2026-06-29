@@ -5,6 +5,7 @@ import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need
 export default antfu({
   react: true,
   nextjs: true,
+  ignores: ['AGENTS.md'],
 }, {
   plugins: {
     'better-tailwindcss': eslintPluginBetterTailwindcss,

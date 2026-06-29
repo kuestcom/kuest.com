@@ -6,7 +6,21 @@ Before any Next.js work, find and read the relevant doc in `node_modules/next/di
 
 <!-- END:nextjs-agent-rules -->
 
-## Before Writing useEffect
+# Repository Guidelines
+
+- Stack: Next.js App Router, TypeScript, Tailwind, Vitest, Playwright, Supabase. Main code lives in `src/*`; tests live in `tests/unit`; static and data assets live in `public` and blog content in `content`.
+- Node: use Node.js 24.x from `.nvmrc`.
+- Verification policy: the repo exposes `pnpm build`, `pnpm lint`, and `pnpm exec tsc --noEmit`, but you must NOT invoke any of them on your own — only run them when the user explicitly asks. For routine type/syntax confirmation while editing, rely on the editor and TypeScript server output.
+- Style: TypeScript, 2-space indentation, no semicolons, prefer named function declarations, match existing local patterns, and keep Tailwind class ordering consistent with nearby code.
+- Naming: components use `PascalCase`, hooks use `use*`, unit tests use `*.test.ts`, and e2e tests use `*.spec.ts`.
+- Testing: cover user-visible behavior and important trading/data-flow regressions when relevant.
+- Commits: use Conventional Commits such as `feat:`, `fix:`, and `refactor:`.
+- Config: copy `.env.example`; never commit secrets.
+- Reporting: omit routine success confirmations for commands such as `pnpm lint`
+  and tests. Report only failures, blockers, or outcomes that change the
+  recommendation.
+
+# Before Writing useEffect
 
 Every time you are about to write a useEffect, stop and answer:
 **Is this syncing with an external system?**
@@ -16,7 +30,7 @@ navigator.onLine), third-party libraries, DOM measurements, timers.
 
 NOT external systems: props, state, derived values, user events.
 
-### Check each case before writing the effect:
+## Check each case before writing the effect:
 
 1. **Transforming data?** → Compute inline, or useMemo if expensive
 2. **Responding to a user event?** → Put logic in the event handler
@@ -29,9 +43,11 @@ NOT external systems: props, state, derived values, user events.
 If none apply and the answer is genuinely "yes, external system,"
 then useEffect is correct.
 
-### Rules
+## Rules
 - NEVER write useEffect(() => setSomething(derived), [dep])
 - NEVER use useEffect for click/submit/change events
 - NEVER use useEffect to reset state without considering key prop
 - ALWAYS add cleanup when subscribing to external systems
 - ALWAYS name effect functions for readability
+
+

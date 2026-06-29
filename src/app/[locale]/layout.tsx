@@ -47,6 +47,7 @@ export default async function LocaleLayout({ params, children }: LayoutProps<'/[
   return (
     <html
       lang={locale}
+      dir={locale === 'ar' ? 'rtl' : 'ltr'}
       className={`${openSauceOne.variable} ${geistMono.variable}`}
       data-theme-mode="dark"
       suppressHydrationWarning
