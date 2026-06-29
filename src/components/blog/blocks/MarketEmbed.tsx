@@ -1,9 +1,8 @@
-import { getExtracted } from 'next-intl/server'
 import Image from 'next/image'
 
 interface MarketRow { label: string, pct: number }
 
-export default async function MarketEmbed({
+export default function MarketEmbed({
   title,
   cat,
   cover,
@@ -20,9 +19,6 @@ export default async function MarketEmbed({
 }) {
   const showRows = rows && rows.length > 0
   const showBinary = !showRows && pct !== undefined
-  const t = await getExtracted()
-  const yesLabel = t('Yes')
-  const noLabel = t('No')
 
   return (
     <figure className="blog-market">
@@ -60,13 +56,13 @@ export default async function MarketEmbed({
             ? (
                 <div className="blog-market-binary">
                   <div className="blog-market-binary-cell blog-market-binary-yes">
-                    {yesLabel}
+                    Yes
                     {' '}
                     {pct}
                     %
                   </div>
                   <div className="blog-market-binary-cell blog-market-binary-no">
-                    {noLabel}
+                    No
                     {' '}
                     {100 - pct!}
                     %

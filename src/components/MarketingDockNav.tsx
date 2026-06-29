@@ -39,7 +39,7 @@ export default async function MarketingDockNav({
   ctaHref,
   ctaLabel,
 }: MarketingDockNavProps) {
-  const t = await getExtracted()
+  const t = await getExtracted({ locale })
 
   return (
     <nav id="dockNav" className="dock-nav" aria-label={t('Site navigation')}>

@@ -34,12 +34,10 @@
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "reading-time": "1.5.0",
-    "rehype-pretty-code": "0.14.3",
     "rehype-slug": "6.0.0",
     "remark-frontmatter": "5.0.0",
     "remark-gfm": "4.0.1",
     "resend": "6.12.3",
-    "shiki": "4.0.2",
     "viem": "2.48.11",
     "wagmi": "2.19.5",
     "zod": "4.4.3"
