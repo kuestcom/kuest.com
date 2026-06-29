@@ -9,6 +9,8 @@ export default function MarketEmbed({
   pct,
   rows,
   vol,
+  yesLabel,
+  noLabel,
 }: {
   title: string
   cat: string
@@ -16,6 +18,8 @@ export default function MarketEmbed({
   pct?: number
   rows?: MarketRow[]
   vol?: string
+  yesLabel: string
+  noLabel: string
 }) {
   const showRows = rows && rows.length > 0
   const showBinary = !showRows && pct !== undefined
@@ -56,13 +60,13 @@ export default function MarketEmbed({
             ? (
                 <div className="blog-market-binary">
                   <div className="blog-market-binary-cell blog-market-binary-yes">
-                    Yes
+                    {yesLabel}
                     {' '}
                     {pct}
                     %
                   </div>
                   <div className="blog-market-binary-cell blog-market-binary-no">
-                    No
+                    {noLabel}
                     {' '}
                     {100 - pct!}
                     %

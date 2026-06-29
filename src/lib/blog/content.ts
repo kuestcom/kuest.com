@@ -87,7 +87,7 @@ function listPostFiles(): PostFileEntry[] {
 }
 
 function readLastCommitDates(): Map<string, Date> {
-  if (lastCommitDateCache) {
+  if (SHOULD_CACHE_POSTS && lastCommitDateCache) {
     return lastCommitDateCache
   }
 
@@ -120,7 +120,9 @@ function readLastCommitDates(): Map<string, Date> {
     // git unavailable
   }
 
-  lastCommitDateCache = dates
+  if (SHOULD_CACHE_POSTS) {
+    lastCommitDateCache = dates
+  }
   return dates
 }
 
