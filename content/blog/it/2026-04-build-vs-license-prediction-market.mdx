@@ -1,7 +1,7 @@
 ---
-title: "Costruire o licenziare un prediction market: analisi costi e tempi 2026"
+title: "Costruire o prendere in licenza un prediction market: analisi costi e tempi 2026"
 slug: "2026-04-build-vs-license-prediction-market"
-description: "Quanto costa davvero costruire un prediction market da zero, tra engineering, audit, oracoli, compliance e liquidita, rispetto a licenziare infrastruttura pronta."
+description: "Quanto costa davvero costruire un prediction market da zero, tra engineering, audit, oracoli, compliance e liquidità, rispetto a prendere in licenza infrastruttura pronta."
 publishedAt: 2026-04-08
 author:
   name: "Kuest"
@@ -10,9 +10,9 @@ cover: cover.jpg
 tags: ["operators", "cost", "infrastructure"]
 ---
 
-La domanda "lo costruiamo internamente?" sembra razionale finche non si elenca tutto cio che un prediction market richiede. Non e solo un frontend con domande e pulsanti buy/sell. E un sistema finanziario completo: contratti, matching, collateral, risoluzione, liquidita, wallet, monitoring, compliance e supporto.
+La domanda "lo costruiamo internamente?" sembra razionale finché non si elenca tutto ciò che un prediction market richiede. Non è solo un frontend con domande e pulsanti buy/sell. È un sistema finanziario completo: contratti, matching, collateral, risoluzione, liquidità, wallet, monitoring, compliance e supporto.
 
-Nel 2026, per la maggior parte degli operatori, la scelta non e tra build e license in astratto. E tra arrivare sul mercato ora o spendere mesi prima di validare la distribuzione.
+Nel 2026, per la maggior parte degli operatori, la scelta non è tra build e license in astratto. È tra arrivare sul mercato ora o spendere mesi prima di validare la distribuzione.
 
 ## Cosa significa costruire da zero
 
@@ -25,23 +25,23 @@ Un build interno richiede almeno:
 - sistema di settlement e dispute;
 - admin tooling per creare e monitorare mercati;
 - data pipeline, log, alerting e report;
-- liquidita iniziale o accordi con market maker;
+- liquidità iniziale o accordi con market maker;
 - frontend consumer e pannelli operativi;
 - revisione legale e controlli di compliance.
 
-Ognuno di questi blocchi puo sembrare gestibile separatamente. Il rischio nasce dalle interdipendenze. Un piccolo errore nella risoluzione puo danneggiare la fiducia. Un order book senza profondita fa sembrare il prodotto morto. Un'integrazione wallet fragile blocca l'onboarding.
+Ognuno di questi blocchi può sembrare gestibile separatamente. Il rischio nasce dalle interdipendenze. Un piccolo errore nella risoluzione può danneggiare la fiducia. Un order book senza profondità fa sembrare il prodotto morto. Un'integrazione wallet fragile blocca l'onboarding.
 
 ## Il costo reale e il tempo perso
 
-Un team tecnico forte puo arrivare a una demo. Arrivare a un prodotto live, auditato e operabile e diverso. Anche con un team esperto, il percorso puo richiedere mesi, budget a sei o sette cifre e attenzione continua dopo il lancio.
+Un team tecnico forte può arrivare a una demo. Arrivare a un prodotto live, auditato e operabile è diverso. Anche con un team esperto, il percorso può richiedere mesi, budget a sei o sette cifre e attenzione continua dopo il lancio.
 
-Il costo piu grande, pero, e spesso l'opportunita. Mentre il team costruisce infrastruttura, il mercato si educa altrove, gli utenti formano abitudini e i primi operatori catturano categorie.
+Il costo più grande, però, è spesso l'opportunità. Mentre il team costruisce infrastruttura, il mercato si educa altrove, gli utenti formano abitudini e i primi operatori catturano categorie.
 
-## Cosa significa licenziare
+## Cosa significa prendere in licenza
 
-Licenziare infrastruttura non significa rinunciare al controllo del brand. Nel modello Kuest, l'operatore mantiene dominio, identita, categorie, fee e rapporto con il pubblico. Lo stack sottostante viene gestito dal protocollo.
+Prendere in licenza l'infrastruttura non significa rinunciare al controllo del brand. Nel modello Kuest, l'operatore mantiene dominio, identità, categorie, fee e rapporto con il pubblico. Lo stack sottostante viene gestito dal protocollo.
 
-Questo sposta il lavoro dell'operatore su cio che crea vantaggio competitivo:
+Questo sposta il lavoro dell'operatore su ciò che crea vantaggio competitivo:
 
 - scegliere una nicchia;
 - formulare domande migliori;
@@ -52,11 +52,10 @@ Questo sposta il lavoro dell'operatore su cio che crea vantaggio competitivo:
 
 ## Quando ha senso costruire
 
-Costruire internamente puo avere senso se sei gia un'infrastruttura finanziaria con team blockchain, compliance, market operations, market maker e una roadmap pluriennale dedicata. In quel caso il build e una scelta strategica di controllo.
+Costruire internamente può avere senso se sei già un'infrastruttura finanziaria con team blockchain, compliance, market operations, market maker e una roadmap pluriennale dedicata. In quel caso il build è una scelta strategica di controllo.
 
-Per broker, media, creator, community e istituzioni che vogliono testare la categoria, licenziare riduce rischio e time-to-market.
+Per broker, media, creator, community e istituzioni che vogliono testare la categoria, prendere in licenza riduce rischio e time-to-market.
 
 ## La regola pratica
 
-Se la tua domanda principale e "i nostri utenti traderanno questi eventi?", non spendere il primo anno costruendo lo stack. Lancia, misura domanda, fee, retention e liquidita. Poi decidi quanto controllo infrastrutturale ti serve davvero.
-
+Se la tua domanda principale è "i nostri utenti traderanno questi eventi?", non spendere il primo anno costruendo lo stack. Lancia, misura domanda, fee, retention e liquidità. Poi decidi quanto controllo infrastrutturale ti serve davvero.

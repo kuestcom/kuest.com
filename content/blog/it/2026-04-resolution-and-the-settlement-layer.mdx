@@ -1,7 +1,7 @@
 ---
 title: "Come funziona davvero la risoluzione nei prediction market: UMA, oracoli e settlement"
 slug: "2026-04-resolution-and-the-settlement-layer"
-description: "Un'analisi tecnica di come i contratti di prediction market vengono risolti: oracolo ottimistico, dispute, escalation e perche il settlement decide quali piattaforme sopravvivono."
+description: "Un'analisi tecnica di come i contratti di prediction market vengono risolti: oracolo ottimistico, dispute, escalation e perché il settlement decide quali piattaforme sopravvivono."
 publishedAt: 2026-04-03
 author:
   name: "Kuest"
@@ -10,9 +10,9 @@ cover: cover.jpg
 tags: ["settlement", "oracles", "technical"]
 ---
 
-La risoluzione e il momento in cui un prediction market mantiene o perde la fiducia. Tutto puo sembrare perfetto durante il trading, ma alla scadenza il sistema deve rispondere a una domanda semplice: cosa e successo davvero?
+La risoluzione è il momento in cui un prediction market mantiene o perde la fiducia. Tutto può sembrare perfetto durante il trading, ma alla scadenza il sistema deve rispondere a una domanda semplice: cosa è successo davvero?
 
-## Perche il settlement e difficile
+## Perché il settlement è difficile
 
 Alcuni eventi sono facili: un prezzo ufficiale, un punteggio finale, una data pubblicata. Altri sono ambigui: una dichiarazione politica, un cessate il fuoco, una metrica rivista, una fonte che cambia metodologia.
 
@@ -20,22 +20,22 @@ Un buon mercato anticipa questi casi nella specifica del contratto.
 
 ## Modello centralizzato
 
-Un exchange regolamentato puo risolvere tramite un team interno e fonti pubblicate in anticipo. Questo e veloce e compatibile con molte strutture legali, ma richiede fiducia nell'operatore.
+Un exchange regolamentato può risolvere tramite un team interno e fonti pubblicate in anticipo. Questo è veloce e compatibile con molte strutture legali, ma richiede fiducia nell'operatore.
 
 ## Oracolo ottimistico
 
-Molti mercati on-chain usano un oracolo ottimistico come UMA. Il flusso e:
+Molti mercati on-chain usano un oracolo ottimistico come UMA. Il flusso è:
 
 1. qualcuno propone un esito;
 2. la proposta resta aperta per una finestra di challenge;
 3. se nessuno contesta, l'esito diventa finale;
 4. se qualcuno contesta, il processo escala a una votazione o meccanismo di arbitraggio.
 
-Il modello e "ottimistico" perche assume che la proposta sia corretta salvo contestazione incentivata.
+Il modello è "ottimistico" perché assume che la proposta sia corretta salvo contestazione incentivata.
 
 ## Feed deterministici
 
-Per eventi numerici, un feed dati puo essere sufficiente: prezzo di chiusura, punteggio sportivo, temperatura, indice economico. Anche qui serve una regola per downtime, revisioni e fonti multiple.
+Per eventi numerici, un feed dati può essere sufficiente: prezzo di chiusura, punteggio sportivo, temperatura, indice economico. Anche qui serve una regola per downtime, revisioni e fonti multiple.
 
 ## Cosa deve fare un operatore
 
@@ -51,7 +51,7 @@ L'operatore non deve improvvisare al momento del settlement. Deve pubblicare:
 
 La trasparenza riduce ticket di supporto e protegge la reputazione.
 
-## Perche Kuest integra il settlement
+## Perché Kuest integra il settlement
 
-Kuest tratta la risoluzione come infrastruttura core, non come dettaglio di UI. Senza un settlement affidabile, la liquidita non scala e i market maker non possono fidarsi del sistema. Con regole ripetibili, invece, una rete di operatori puo condividere mercati, liquidita e fiducia.
+Kuest tratta la risoluzione come infrastruttura core, non come dettaglio di UI. Senza un settlement affidabile, la liquidità non scala e i market maker non possono fidarsi del sistema. Con regole ripetibili, invece, una rete di operatori può condividere mercati, liquidità e fiducia.
 
