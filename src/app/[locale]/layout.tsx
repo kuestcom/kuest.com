@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { setRequestLocale } from 'next-intl/server'
+import { getExtracted, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
@@ -16,13 +16,22 @@ export async function generateViewport(): Promise<Viewport> {
   }
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Promise<Metadata> {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+  const t = await getExtracted({ locale })
+
   return {
     title: {
       template: `%s`,
-      default: `Kuest | Create Your Own Prediction Market`,
+      default: t('Kuest Create Prediction Market'),
     },
-    description: 'Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.',
+    description: t('Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.'),
     icons: {
       icon: '/images/kuest-logo.svg',
       apple: '/images/kuest-logo.svg',
