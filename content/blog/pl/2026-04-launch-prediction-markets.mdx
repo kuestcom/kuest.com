@@ -1,0 +1,56 @@
+---
+title: "Jak uruchomić własny prediction market w 15 minut (przewodnik 2026)"
+slug: "2026-04-launch-prediction-markets"
+description: "Przegląd stacku Kuest: audytowane smart kontrakty, współdzielona płynność, zarządzane rozstrzyganie i opłata operatora od każdej transakcji."
+publishedAt: 2026-04-01
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["launch", "product", "guide"]
+---
+
+Uruchomienie prediction market nie powinno wymagać zespołu blockchain, osobnego audytu i miesięcy DevOps. Kuest kompresuje proces do prowadzonego flow: wybierasz markę, łączysz portfel i infrastrukturę, wdrażasz stronę i startujesz z rynkami, które mają płynność.
+
+## Co przygotować
+
+Przed startem potrzebujesz kilku elementów:
+
+- nazwy strony;
+- domeny lub subdomeny;
+- portfela admina;
+- konta Vercel;
+- projektu Reown dla logowania portfelem;
+- preferencji brandu i kategorii.
+
+Nie musisz pisać smart kontraktów ani ręcznie konfigurować order booka.
+
+## Krok 1: marka i admin
+
+Nazwa strony staje się podstawą Twojej venue. Portfel admina podpisuje wiadomość, aby wygenerować poświadczenia potrzebne stackowi Kuest. Na tym etapie żadne środki nie są przenoszone.
+
+## Krok 2: połączenia
+
+Flow łączy GitHub, Vercel, Supabase i Reown. Te usługi obsługują wdrożenie, dane aplikacji i logowanie portfelem dla użytkowników końcowych. Kuest przygotowuje wymagane zmienne i konfigurację.
+
+## Krok 3: deployment
+
+Po uruchomieniu deploymentu Vercel publikuje frontend. Rynki mogą pojawić się w ciągu kilku minut, ze współdzieloną płynnością i gotowymi kategoriami startowymi.
+
+## Dlaczego to możliwe
+
+Szybkość wynika z tego, że stack już istnieje:
+
+- kontrakty wywodzące się z architektury Polymarket;
+- audyt i walidacja OpenZeppelin jako podstawa;
+- działający CLOB i relayer;
+- współdzielona płynność;
+- frontend white-label;
+- wbudowane i18n;
+- tooling deploymentu.
+
+Operator nie odbudowuje infrastruktury. Instancjonuje ją pod własną marką.
+
+## Co robić po launchu
+
+Najważniejsza praca zaczyna się, gdy strona jest live: przyprowadzić publiczność, wybierać rynki, wyjaśniać zasady, monitorować spready i wspierać użytkowników. Kuest przyspiesza start; dystrybucja pozostaje przewagą operatora.

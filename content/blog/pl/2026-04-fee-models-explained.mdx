@@ -1,0 +1,60 @@
+---
+title: "Opłaty transakcyjne wyjaśnione: jak ustawić je bez odstraszania traderów"
+slug: "2026-04-fee-models-explained"
+description: "Praktyczny przewodnik 2026 po opłatach w prediction market: co działa, co zabija wolumen i jak zmieniać stawkę wraz ze wzrostem."
+publishedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["fees", "operators", "monetization"]
+---
+
+Opłata jest najważniejszym parametrem ekonomicznym operatora. Zbyt niska nie monetyzuje ruchu. Zbyt wysoka niszczy wolumen, zwłaszcza u traderów, którzy handlują często i zwracają uwagę na spread.
+
+Dobra stawka nie jest abstrakcyjnie "uczciwa". Jest dopasowana do typu rynku, profilu użytkownika i etapu wzrostu.
+
+## Od czego pobierana jest opłata
+
+Najprostszy model to opłata od transakcji. Użytkownik płaci procent od wartości wykonania, a operator otrzymuje tę opłatę automatycznie.
+
+Ten model ma trzy zalety:
+
+- jest prosty do zrozumienia;
+- skaluje się z wolumenem;
+- nie wymaga bycia kontrahentem użytkownika.
+
+Operator zarabia, gdy rynek jest aktywny, a nie gdy użytkownik przegrywa.
+
+## Typowe widełki
+
+W praktyce rozsądny zakres dla nowych operatorów to 0,5%-3% za trade. Niższa część widełek działa lepiej dla płynnych, częstych rynków. Wyższa część może działać dla rynków rozrywkowych, creatorowych lub niszowych, gdzie użytkownicy handlują rzadziej.
+
+Nie ma jednej stawki dla wszystkich kategorii. Rynek na decyzję Fed i rynek społecznościowy o lokalnym wydarzeniu mają inne oczekiwania traderów.
+
+## Co zabija wolumen
+
+Najczęstsze błędy:
+
+- start z maksymalną opłatą zanim pojawi się płynność;
+- ta sama stawka dla każdej kategorii;
+- ignorowanie spreadu;
+- brak promocji dla pierwszych market makerów;
+- ukrywanie opłat w interfejsie.
+
+Traderzy nie muszą kochać opłat. Muszą rozumieć, kiedy i dlaczego je płacą.
+
+## Jak zmieniać stawkę
+
+Na początku celem jest zachowanie użytkownika: czy wracają, czy handlują ponownie, czy order book żyje. Opłata powinna być wystarczająco niska, aby nie blokować nauki.
+
+Gdy rynek ma powtarzalny wolumen, możesz:
+
+- różnicować opłatę po kategorii;
+- tworzyć niższe stawki dla market makerów;
+- testować promocje dla nowych użytkowników;
+- podnosić opłatę na rynkach o wysokim popycie i niskiej wrażliwości cenowej.
+
+## Kuest i opłaty operatora
+
+Kuest pozwala operatorowi ustawić własną opłatę transakcyjną. Opłata trafia do operatora, a Kuest pobiera małą warstwę protokołu. To utrzymuje prostą ekonomię: im bardziej aktywny rynek budujesz, tym więcej zarabiasz.
