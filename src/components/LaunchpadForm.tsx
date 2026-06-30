@@ -218,6 +218,15 @@ const LAUNCHPAD_COPY: Record<
     connectGitHub: 'ربط GitHub',
     oauthSoon: 'OAuth (قريبا)',
   },
+  ru: {
+    connectionsStep: 'Подключения',
+    step2Connections: 'Шаг 2. Подключения',
+    step3Deploy: 'Шаг 3. Развертывание',
+    githubInfo: 'Авторизуйте Kuest на GitHub, чтобы мы могли создать репозиторий в вашем аккаунте GitHub с клоном prediction market от Kuest. Если у вас уже есть собственный репозиторий, вы можете ввести его вручную в дополнительных настройках.',
+    redirecting: 'Перенаправление...',
+    connectGitHub: 'Подключить GitHub',
+    oauthSoon: 'OAuth (скоро)',
+  },
 }
 
 const DEFAULT_FORM: FormState = {
