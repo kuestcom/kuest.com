@@ -42,8 +42,8 @@ If OAuth is enabled, set:
 5. Run:
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Local URL: `http://localhost:3000`
