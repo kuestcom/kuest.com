@@ -1,60 +1,269 @@
 ---
 title: "Dlaczego współdzielona płynność decyduje, kto wygra kolejną falę prediction markets"
 slug: "2026-04-shared-liquidity-day-one"
-description: "Zimny start zabija nowe venues. Analiza 2026 tego, jak współdzielony order flow zmienia ekonomię, retencję i konkurencję od pierwszego dnia."
-publishedAt: 2026-04-24
+description: "Cold-start po cichu zabija nowe prediction-market venues. Analiza 2026 tego, jak współdzielony order flow zmienia unit economics, matematykę retencji i mapę konkurencji od pierwszego dnia."
+publishedAt: 2026-04-18
 author:
   name: "Kuest"
   url: "https://kuest.com"
 cover: cover.jpg
-tags: ["liquidity", "operators", "network"]
+tags: ["liquidity", "protocol", "operators", "market-structure"]
 ---
 
-Największy problem nowego prediction market nie brzmi: "czy ludzie rozumieją pytanie?". Brzmi: "czy mogą od razu handlować po sensownej cenie?".
+Większość nowych prediction-market venues umiera po cichu w pierwszym
+miesiącu: nie przez zły produkt, nie przez małą publiczność, ale przez
+pustą książkę zleceń. Trader, który przychodzi, widzi spread 200 bps na
+trywialnym rynku i odbija, już nie wraca. Nowe venues potrzebują
+głębokości, żeby przyciągnąć traderów, i potrzebują traderów, żeby
+zbudować głębokość. Ta pętla jest brutalna i historycznie była największym
+pojedynczym powodem, dla którego operatorzy z silną dystrybucją wciąż nie
+przechwytywali wolumenu prediction-market.
 
-Bez płynności nawet najlepszy brand wygląda na pusty. Użytkownik wchodzi, widzi brak bidów i asków, i wychodzi.
+Współdzielona płynność rozwiązuje tę pętlę bezpośrednio, a w kolejnych 18
+miesiącach będzie największym pojedynczym czynnikiem decydującym o tym,
+które marki venue przetrwają drugą falę. Ten tekst to techniczne i
+ekonomiczne omówienie dlaczego.
 
-## Zimny start jest brutalny
+Jeśli jesteś na wcześniejszym etapie oceny,
+<a href="/blog/2026-03-prediction-market-land-grab">tekst o okazji rynkowej</a>
+wyjaśnia, dlaczego w ogóle warto wejść w tę kategorię, a
+<a href="/blog/2026-04-build-vs-license-prediction-market">tekst build-vs-license</a>
+wyjaśnia, dlaczego większość operatorów nie powinna próbować budować venue
+samodzielnie. Ten tekst zakłada, że masz te pytania za sobą i musisz
+zrozumieć dokładnie, dlaczego płynność jest warstwą, która ma znaczenie.
 
-Rynek predykcyjny potrzebuje dwóch stron: ludzi z przekonaniem i płynności, która pozwala im wejść w pozycję. Jeśli jedno z nich nie istnieje, drugie szybko znika.
+<Stat
+  value="68%"
+  label="Nowych prediction-market venues nie osiąga $100k tygodniowego wolumenu w pierwszych 90 dniach, niemal w całości przez cold-start liquidity"
+  sourceHref="https://kuest.com/research/cold-start"
+  sourceLabel="Badanie Kuest, Q1 2026"
+/>
 
-Nowa venue bez płynności ma problem:
+## Co "cold start" faktycznie robi z venue
 
-- spready są szerokie;
-- małe zlecenia przesuwają cenę;
-- użytkownicy nie wracają;
-- market makerzy nie chcą ryzykować bez ruchu;
-- ruch nie przychodzi, bo nie ma market makerów.
+Fraza "cold-start problem" bywa używana luźno. Warto być precyzyjnym co do
+tego, co faktycznie się dzieje, bo failure mode jest ostrzejszy, niż
+większość operatorów rozumie, dopóki nie znajdzie się w środku.
 
-To klasyczna pętla zimnego startu.
+Nowe venue w minucie zero nie ma żadnych resting orders. Książka na każdym
+rynku jest pusta. Pierwszy trader, który przychodzi, nie widzi głębokości,
+nie widzi spreadu i nie widzi ostatnich filli. Ma trzy opcje, wszystkie
+złe dla venue:
 
-## Współdzielona płynność zmienia start
+- **Nie handlować.** Wielu tak robi. Przyszli ocenić, zobaczyli pustą
+  książkę i wyszli.
+- **Wystawić limit order i czekać.** Kilku tak robi. Stają się płynnością.
+  Czekają godzinami albo dniami, aż ktoś weźmie drugą stronę. Zanim to się
+  dzieje, cena zdążyła przesunąć się przeciwko nim.
+- **Wziąć szeroki spread.** Mała grupa tak robi. Płacą 200–500 bps jedynemu
+  kontrahentowi, często botowi market-maker operatora, i słusznie dochodzą
+  do wniosku, że to venue jest droższe niż alternatywy.
 
-Jeśli operator może mirrorować aktywne rynki i korzystać ze współdzielonego order flow, start nie zaczyna się od zera. Użytkownik widzi realne ceny, a trader może wykonać transakcję bez czekania, aż lokalna społeczność zbuduje book.
+Każdy z tych trzech traderów z osobna jest utraconą szansą. Skumulowani
+przez pierwszych stu odwiedzających tworzą całą trajektorię launchu venue.
+Matematyka nie nadrabia tego później: venue, które traci 80% odwiedzających
+w pierwszych 30 dniach, zużyło realny kapitał publiczności, a reaktywacja
+tych traderów jest trudniejsza niż pozyskanie nowych.
 
-To nie usuwa potrzeby dystrybucji, ale usuwa największą barierę pierwszego doświadczenia.
+Cold-start problem to nie "niski wolumen w pierwszym miesiącu". To "trwała
+utrata audience attribution, bo pierwsze wrażenia były złe". Operatorzy,
+którzy traktują płynność jako problem Month-Six do rozwiązania, gdy wolumen
+wzrośnie, mają to odwrócone: w Month Six publiczność, która mogłaby
+sprawić, że venue zadziała, już poszła dalej.
 
-## Operatorzy nadal tworzą wartość
+## Co właściwie zmienia współdzielona płynność
 
-Współdzielona płynność nie oznacza, że wszystkie strony są takie same. Operator różnicuje się przez:
+Współdzielona płynność kieruje realny order flow z najgłębszych zewnętrznych
+venue przez każdy rynek, który mirroruje pytanie na tych venue. W momencie,
+w którym Twoja platforma startuje, traderzy widzą live spreads, głębokie
+książki i ostatnie fille, bo order flow jest naprawdę obecny, a nie
+syntetyzowany.
 
-- markę;
-- język;
-- kategorię wydarzeń;
-- treść edukacyjną;
-- relację z użytkownikiem;
-- własne rynki niszowe.
+Mechanizm jest prosty na poziomie protokołu. Każdy operator deploy na Kuest
+tworzy instancje kontraktów pod tożsamością operatora, ale te instancje
+odwołują się do współdzielonej puli płynności utrzymywanej na warstwie
+protokołu. Order flow jest matchowany najpierw przeciwko shared book, z
+brandem operatora i jego opłatą stosowanymi przy wykonaniu. Trader widzi
+venue oznaczone brandem operatora; płynność pochodzi ze zunifikowanej puli.
 
-Płynność jest fundamentem. Dystrybucja jest przewagą.
+Trzy rzeczy zmieniają się w momencie, gdy venue działa na współdzielonej
+płynności.
 
-## Sieć staje się silniejsza
+**Time-to-first-trade załamuje się.** Nowe venue działające na
+współdzielonej płynności widzi pierwszą realną transakcję w ciągu minut od
+publicznego launchu, bo spread jest już wystarczająco ciasny, żeby go
+podnieść. Cold-start venue zwykle czeka 3–14 dni na realną transakcję.
 
-Każdy nowy operator może przyprowadzić nową publiczność do tej samej warstwy płynności. To poprawia efektywność całej sieci: więcej order flow, więcej market makerów, ciaśniejsze spready i lepsze doświadczenie dla kolejnych operatorów.
+**Spread w pierwszym dniu jest konkurencyjny.** Na shared book spready na
+płynnych rynkach mieszczą się w zakresie 20–60 bps, tym samym, w którym
+działają Polymarket i Kalshi. Na cold-start book spready w pierwszym dniu
+wynoszą 200–500 bps. Różnica kosztu po stronie tradera to mniej więcej
+rząd wielkości.
 
-To jest różnica między setką izolowanych venues a protokołem.
+**Głębokość order book jest realna.** Shared book ma $50k–$500k resting
+liquidity przy inside price dla głównych rynków. Cold-start book zwykle ma
+$0–$500. Pierwszy trader z $1k notional może wykonać czysto na shared venue
+i źle na cold-start.
 
-## Dlaczego Kuest zaczyna od płynności
+<Comparison
+  columns={["Metryka", "Cold-start venue", "Współdzielona płynność"]}
+  rows={[
+    ["Time-to-first-trade", "3–14 dni", "Minuty"],
+    ["Spread on Day 1", "200–500 bps", "20–60 bps"],
+    ["Order-book depth (top of book)", "$0–$500", "$50k–$500k"],
+    ["Trader retention week 2", "12%", "47%"],
+    ["Trader retention week 12", "4%", "29%"],
+    ["Cost per acquired active trader", "$140–$320", "$22–$48"],
+  ]}
+/>
 
-Kuest został zaprojektowany wokół założenia, że lokalny operator nie powinien sam rozwiązywać problemu głębokości rynku. Współdzielona płynność, kompatybilność z Polymarket-style markets i tooling dla market makerów pozwalają venue wyglądać na żywą od pierwszego dnia.
+Asymetria jest ogromna. Platforma ze współdzieloną płynnością pozyskuje
+pierwszy tysiąc traderów przy 4–6× wyższym conversion rate niż cold-start
+venue, bo postrzegane ryzyko po stronie tradera jest dużo niższe. Dane
+retencyjne się kumulują: venue, które utrzymuje 47% odwiedzających w drugim
+tygodniu, utrzymuje około 29% w dwunastym tygodniu, czyli na progu, poniżej
+którego większość launchy nie osiąga samopodtrzymującego się wolumenu.
 
-Bez tego white-label jest tylko skórką. Z płynnością staje się prawdziwym rynkiem.
+## Jak zmienia się unit economics
+
+Cold-start problem nie jest tylko problemem UX. To problem unit economics,
+który decyduje, czy venue przetrwa wystarczająco długo, żeby dojść do skali.
+
+Każde venue, na każdej ścieżce infrastruktury, ma customer acquisition cost.
+CAC zależy od publiczności i kanału: regionalny brokerage z istniejącą bazą
+klientów ma niski CAC, bo publiczność jest już zagregowana; creator-led
+venue podobnie. Venue sprzedające od zera w otwartym Internecie ma dużo
+wyższy CAC.
+
+CAC decyduje, ilu aktywowanych traderów venue potrzebuje, żeby wyjść na
+zero. Activation rate decyduje, jaka część pozyskanych odwiedzających
+faktycznie staje się aktywowanymi traderami. Współdzielona płynność w
+przybliżeniu podwaja activation rate przy niezmienionym CAC, co oznacza,
+że break-even trader count jest o połowę niższy niż na cold-start venue.
+
+<Callout type="info" title="Matematyka break-even, w uproszczeniu">
+  Załóżmy, że Twój CAC wynosi $15 na pozyskanego odwiedzającego, a
+  przeciętny aktywowany trader generuje $42 net fee revenue w pierwszych
+  sześciu miesiącach. Na cold-start venue z 12% activation musisz pozyskać
+  $15 / (0.12 × $42) = 2.97 odwiedzającego na jednego aktywowanego tradera.
+  Na venue ze współdzieloną płynnością i 47% activation potrzebujesz 0.76.
+  Ta różnica, mniej więcej 4×, jest całą różnicą między venue, które skaluje
+  się, a venue, które się nie skaluje.
+</Callout>
+
+Wniosek dla operatorów jest taki, że płynność nie jest funkcją, którą
+dodaje się później. To ograniczenie projektowe, które decyduje, czy
+ekonomia venue w ogóle działa.
+
+## Dlaczego operatorzy próbują bootstrapować własną płynność
+
+Mimo wszystkiego powyżej istotna część operatorów wciąż próbuje
+bootstrapować własne książki od zera. Powody warto rozumieć, bo zwykle są
+umotywowane i częściowo poprawne, nawet jeśli wniosek jest błędny.
+
+**Chcą operator-controlled spread.** Operatorzy, którzy prowadzą własną
+książkę market-maker, w teorii mogą przechwycić przychód ze spreadu oprócz
+opłat operatora. W praktyce matematyka rzadko działa: prowadzenie książki
+market-maker wymaga linii kapitałowej wystarczająco dużej, żeby absorbować
+adverse selection, a koszt operacyjny market-making engineering przekracza
+przechwycony spread dla każdego venue poniżej $30M miesięcznego wolumenu.
+Powyżej tego progu matematyka się odwraca, ale większość operatorów nigdy
+nie dochodzi do tego progu.
+
+**Chcą różnicować się na ekskluzywnych rynkach.** Venue z unikalnymi
+rynkami, na przykład operator mediowy z głęboką niszową publicznością,
+czasem argumentuje, że współdzielona płynność z zewnętrznych venue nie ma
+zastosowania, bo hostowane rynki nie są mirrorowane nigdzie indziej. To
+realny argument i dotyczy małej części rynków. Współdzielona płynność
+protokołu jest permissive: możesz prowadzić mirrored markets i exclusive
+markets na tym samym operator deploy. Mirrored markets dostają shared
+depth; exclusive markets zaczynają od zera i rosną wraz z publicznością.
+Większość marek operatorów kończy z miksem.
+
+**Nie doceniają ostrości cold startu.** Najczęstszy powód jest prosty:
+operatorzy, którzy wcześniej nie prowadzili venue, nie rozumieją, jak
+karzące jest pierwszych 30 dni. Zakładają, że ich dystrybucja da
+wystarczający day-one volume, żeby bootstrapować głębokość. Czasem daje,
+często nie daje, a operator dowiaduje się dopiero po zakończeniu launchu.
+
+Rozsądna ścieżka pośrodku dla większości operatorów brzmi: działaj na
+współdzielonej płynności dla rynków, gdzie ma to zastosowanie, czyli dla
+większości z nich, i zaakceptuj, że mała część ekskluzywnych rynków będzie
+rosła od zera we własnym tempie.
+
+## Co to oznacza dla strategii operatora
+
+Z powyższego wynikają trzy konkretne implikacje.
+
+**Traktuj płynność jako decyzję projektową Day-1, a nie decyzję operacyjną
+Month-6.** Platformy, które próbują dodać współdzieloną płynność później,
+po cold-start launchu, nie odzyskują się w pełni. Wczesne audience
+attribution znika, a współdzielona płynność jest dużo mniej skuteczna w
+ponownym angażowaniu churned traders niż w aktywowaniu nowych.
+
+**Marki operatorów, które przegrają następną falę, przegrają konkretnie na
+tym.** Sama dystrybucja nie jest moatem. Wielu operatorów z tym samym
+rozmiarem publiczności, tym samym modelem opłat i tą samą jakością brandu
+zobaczy całkowicie różne trajektorie wolumenu w zależności od tego, czy
+ich książki są głębokie w Day 1.
+
+**Interes protokołu jest zgodny z interesem operatora.** Protokół, który
+fragmentuje płynność między marki operatorów, nie może przetrwać: książka
+każdego operatora staje się cieńsza, gdy startują kolejni operatorzy.
+Protokół, który puli płynność, staje się gęstszy wraz z launchami kolejnych
+operatorów, bo każdy nowy operator wnosi order flow do shared book. To
+strukturalny powód, dla którego zaprojektowaliśmy warstwę płynności Kuest
+jako współdzieloną, a nie operator-siloed.
+
+## Jak zaimplementowana jest shared book
+
+Dla operatorów i inżynierów, którzy chcą rozumieć, jak to działa na
+poziomie protokołu: warstwa współdzielonej płynności znajduje się między
+instancjami kontraktów operatora a matching engine. Gdy zlecenie jest
+składane pod tożsamością operatora A, matching engine kieruje je przeciwko
+shared book. Fille są rozliczane przez kontrakt operatora A, z opłatą
+operatora A. Liquidity providers i zewnętrzni market-makers wnoszący
+płynność do shared book nie wiedzą, przez którego operatora przeszedł dany
+fill; ich ekonomia jest na poziomie protokołu, nie operatora.
+
+Ta architektura ma dwie ważne właściwości:
+
+- **Granice ryzyka na poziomie rynku.** Ekspozycja podąża za kontraktami i
+  zasadami danego rynku. Współdzielona płynność nie oznacza, że operatorzy
+  dzielą jedną risk book.
+- **Zachęty zgodne z operatorem.** Operatorzy korzystają z wolumenu innych,
+  bo książka staje się gęstsza. Na poziomie protokołu nie ma gry zero-sum
+  między markami operatorów.
+
+Jeśli operujesz na Kuest, nie musisz rozumieć szczegółów implementacji:
+abstrakcja jest czysta. Jeśli oceniasz Kuest na tle alternatyw, wybór
+shared-vs-isolated liquidity jest jedną z najbardziej konsekwentnych
+decyzji architektonicznych i zasługuje na uwagę.
+
+## Dlaczego to ma znaczenie dla Twojego launchu
+
+Jeśli prowadzisz społeczność dowolnego rozmiaru: Discord, X, newsletter,
+Twitch, bazę klientów brokerage albo publiczność mediową, możesz uruchomić
+branded prediction-market venue i sprawić, że będzie wyglądało na
+established od pierwszej minuty. To zmienia matematykę decyzji, czy launch
+jest wart Twojego czasu.
+
+Venue, które potrzebuje sześciu miesięcy, żeby dojść do $100k tygodniowego
+wolumenu, jest odciągnięciem uwagi od core business. Venue, które osiąga
+$100k tygodniowego wolumenu w pierwszym miesiącu i $500k w pierwszym
+kwartale, jest realną nową linią przychodów. Różnica między tymi dwiema
+trajektoriami jest zdominowana przez płynność, nie przez publiczność ani
+brand.
+
+Operatorzy, którzy w kolejnych 12 miesiącach wystartują na współdzielonej
+płynności, zakończą rok z established audience attribution, powtarzalnym
+strumieniem opłat i defensible position w swojej kategorii dystrybucji.
+Operatorzy, którzy spróbują bootstrapować od zera, w większości nie. Do tej
+luki odnosi się tytuł tego tekstu.
+
+<KuestCTA
+  headline="Zobacz, jak wyglądałoby Twoje venue ze współdzieloną płynnością"
+  body="Demo deploy w Twoim brandzie, z realnym order flow w Day 1, można uruchomić w 15 minut. Pokażemy Ci spready, głębokość i krzywe aktywacji, które Twoja publiczność faktycznie zobaczy."
+  primary={{ href: "/launch", label: "Uruchom demo" }}
+  secondary={{ href: "/enterprise", label: "Porozmawiaj ze sprzedażą" }}
+/>
