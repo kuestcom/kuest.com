@@ -1,0 +1,287 @@
+---
+title: "Opłaty transakcyjne wyjaśnione: jak ustawić je bez odstraszania traderów"
+slug: "2026-04-fee-models-explained"
+description: "Praktyczny przewodnik 2026 po wyborze stawki opłaty dla rynku predykcyjnego: co według nas działa, co zabija wolumen i jak rozwijać model wraz ze wzrostem."
+publishedAt: 2026-04-08
+updatedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
+---
+
+Opłata od każdej transakcji to najważniejsza pojedyncza liczba w Twoim
+prediction-market venue. Ustaw ją za wysoko, a traderzy po cichu
+przeniosą się tam, gdzie wykonanie jest tańsze; ustaw ją za nisko, a
+zostawisz istotny powtarzalny przychód na stole bez realnej korzyści. To
+operatorskie omówienie tego, co faktycznie widzimy jako działające w
+2026 roku, na podstawie venue działających na stacku Kuest oraz tego, co
+robi konkurencyjny krajobraz: Kalshi, Polymarket i nowa fala regionalnych
+white-labeli.
+
+Jeśli jesteś na wcześniejszym etapie oceny, zacznij od
+<a href="/blog/2026-03-prediction-market-land-grab">tekstu o okazji rynkowej</a>
+albo <a href="/blog/2026-04-build-vs-license-prediction-market">analizy build-vs-license</a>.
+Ten tekst zakłada, że masz te pytania za sobą i musisz zdecydować, gdzie
+ustawić opłatę operatora w pierwszym dniu.
+
+<Stat
+  value="≈ 0.9%"
+  label="Mediana opłaty operatora na white-label prediction-market venues uruchomionych w Q1 2026, ważona 30-dniowym wolumenem"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Badanie operatorów Kuest, Q1 2026"
+/>
+
+## Czym właściwie jest opłata na rynku predykcyjnym
+
+Zanim przejdziemy do stawek, warto jasno powiedzieć, czym ta opłata jest,
+a czym nie jest, bo operatorzy przychodzący ze świata brokerage czasem
+przyjmują błędne założenia domyślne.
+
+Opłata transakcyjna na rynku predykcyjnym to procent od wartości
+**notional** transakcji, czyli rozmiaru kontraktu pomnożonego przez cenę
+wykonania, pobierany przy każdym fillu. Nie jest to procent od zysku, nie
+jest to spread i nie jest to opłata za wypłatę. Trader, który kupuje 100
+kontraktów YES po $0.42, ma notional $42 i płaci opłatę równą $42 × Twoja
+stawka. Opłata jest pobierana przy wykonaniu przez matching engine i
+kierowana na adres rozliczeniowy operatora.
+
+Trzy istotne uwagi strukturalne:
+
+- **Opłaty są pobierane od obu stron każdej transakcji.** Kupujący i
+  sprzedający płacą opłatę operatora. Twój efektywny przychód z
+  transakcji to 2× stawka × notional. Operatorzy, którzy modelują tylko
+  jedną stronę, zaniżają przychód o połowę.
+- **Opłaty dotyczą filli, a nie zleceń.** Wystawienie zlecenia, które
+  nigdy się nie wykona, nic tradera nie kosztuje. Przychód z opłat
+  generuje tylko wykonany notional.
+- **Opłata nakłada się na implicit spread cost.** Trader, który podnosi
+  ofertę po $0.43 zamiast $0.42, już płaci 1 cent kosztu wykonania.
+  Opłata operatora jest ponad tym kosztem.
+
+Struktura jest taka sama jak taker fee na scentralizowanej giełdzie, z
+dwoma uproszczeniami: nie ma maker rebate, ponieważ protokół zapewnia
+płynność ze współdzielonej książki, a stawka jest symetryczna po obu
+stronach.
+
+## Jak wyglądają konkurencyjne stawki w 2026 roku
+
+Snapshot tego, gdzie znajduje się branża w Q1 2026, zbudowany z publicznie
+obserwowalnych danych wykonania oraz badania operatorów, które
+prowadzimy co kwartał:
+
+<Comparison
+  columns={["Typ venue", "Typowa opłata operatora", "Spread na płynnych rynkach", "Całkowity koszt round-trip"]}
+  rows={[
+    ["Kalshi (regulowane USA)", "0.0% (brak)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1.0% (split protocol)", "20–60 bps", "≈ 1.4–1.6%"],
+    ["Regionalne white-label brokerage dla retailu", "0.8–1.5%", "20–80 bps", "≈ 1.2–2.3%"],
+    ["Crypto-native exchange overlays", "0.3–0.7%", "20–60 bps", "≈ 0.7–1.4%"],
+    ["Creator / community venues", "1.5–2.5%", "30–100 bps", "≈ 2.0–3.5%"],
+  ]}
+/>
+
+Z tej tabeli warto wyciągnąć dwie rzeczy.
+
+Po pierwsze, headline rate Kalshi na poziomie 0% jest mylący, bo działają
+w zupełnie innym modelu biznesowym: są regulowaną amerykańską giełdą,
+która odzyskuje koszty przez spread, sprzedaż danych rynkowych i poziomy
+dostępu instytucjonalnego, a nie przez opłatę operatora od każdej
+transakcji. Nie powinieneś próbować dorównać ich headline. Powinieneś
+celować w zakres właściwy dla swojej kategorii porównawczej.
+
+Po drugie, różnica między venue z najniższą opłatą (crypto-native
+overlays na poziomie ~0.5%) a najwyższą (creator venues na poziomie ~2%)
+wynosi około 4×. Ta różnica odzwierciedla różnice między grupami
+odbiorców, a nie błędną wycenę. Różne grupy tolerują różne opłaty, a
+właściwa stawka to ta, którą Twoja konkretna publiczność toleruje bez
+migracji.
+
+## Co faktycznie wpływa na tolerancję odbiorców
+
+Trzy siły decydują o tym, jaką opłatę venue może pobierać, zanim
+volume-per-trader zacznie spadać. Zrozumienie, które z nich dotyczą
+Twojej publiczności, daje większość odpowiedzi.
+
+**Alternatywny koszt wykonania.** Trader na creator-led venue porównuje
+Twoją opłatę 2% z kosztem założenia konta na Polymarket, nauczenia się
+innego UX i samodzielnego custody środków. Dla tego tradera porównanie
+opłat nie brzmi 2% vs 1%, tylko 2% vs tarcie związane ze zmianą venue.
+Tarcie wygrywa z różnicą opłat za każdym razem, aż do istotnej luki.
+
+**Rozkład wielkości transakcji.** Retail trader zajmujący pozycje po $50
+prawie nie zauważa opłaty 1%, bo to $0.50. Profesjonalny desk robiący
+pozycje po $100k zauważa opłatę 1% bardzo bezpośrednio, bo to $1,000 za
+transakcję. Operatorzy z dużym professional flow muszą wyceniać ostrożniej
+niż operatorzy obsługujący retail tickets.
+
+**Implied edge w transakcji.** Trader, który uważa, że kontrakt YES jest
+źle wyceniony o 8%, chętnie zapłaci 1%, żeby zająć tę pozycję. Trader,
+który "eksploruje" rynek ze słabym przekonaniem (1–2% implied edge),
+odbija się od każdej opłaty powyżej ~0.5%. Twoja opłata implicitnie
+filtruje traderów o silniejszym przekonaniu, co czasem jest pożądane, a
+czasem nie.
+
+<Callout type="info" title="Filtr przekonania jest funkcją">
+  Wyższe opłaty dają wyższą rentowność na tradera i niższą velocity
+  transakcji. Niższe opłaty dają wyższą velocity transakcji i niższą
+  rentowność na tradera. Nie ma jednej uniwersalnie poprawnej odpowiedzi:
+  jest tylko odpowiedź właściwa dla odbiorców i struktury kosztów, które
+  masz. Operatorzy, którzy o tym nie myślą, kończą w oscylacji między
+  zmianami opłat i nigdy nie znajdują stabilnego punktu.
+</Callout>
+
+## Konkretna rekomendacja stawki według typu operatora
+
+Na podstawie tego, co widzimy przy launchach, poniższe punkty startowe są
+obronne i rzadko wymagają korekty w pierwszych sześciu miesiącach. Traktuj
+je jako pozycję startową do dopracowania, a nie jako ostateczną odpowiedź.
+
+**Retail brokerage (1k–100k klientów).** Zacznij od 0.85% i utrzymaj tę
+stawkę przez 90 dni przed zmianą. To środek Twojego konkurencyjnego pasma
+i poziom wyraźnie poniżej punktu, w którym pęka tolerancja odbiorców.
+Ryzyko churnu przy tej stawce jest praktycznie zerowe; pytanie brzmi, czy
+możesz pójść wyżej (0.95–1.10%) bez utraty wolumenu, a na to odpowiesz
+danymi po launchu.
+
+**Crypto-native overlay albo exchange add-on.** Zacznij od 0.5%. Twoi
+odbiorcy porównują Cię z taker fees na scentralizowanych giełdach w
+zakresie 0.10–0.30%, więc wszystko powyżej 1% tworzy natychmiastowe
+tarcie. Sweet spot, na którym osiada większość peers, to 0.50–0.65%.
+
+**Creator-led venue (newsletter, społeczność, niszowi odbiorcy).** Zacznij
+od 1.50%. Twoja publiczność toleruje wyższe opłaty, bo Ci ufa, venue jest
+nowe, a użytkownicy nie porównują aktywnie Twojego wykonania z Kalshi. Nie
+wchodź powyżej 2.0% w pierwszych 90 dniach, nawet jeśli publiczność to
+toleruje: optymalizujesz retencję, nie przychód z pierwszego kwartału.
+
+**Venue dla instytucji (deski, prop, market-makers).** Zacznij od
+0.10–0.20% ze strukturą tiered nagradzającą większy size. Twoi odbiorcy są
+wrażliwi na opłaty w basis points, a nie percentage points. Ekonomia
+działa, bo rozmiary notional są 100–1,000× większe niż w retailu.
+
+**Sports book albo consumer fintech overlay.** Zacznij od 1.0%. Twoi
+odbiorcy są zakotwiczeni w tradycyjnym sports-book vig (zwykle 4.5–10%
+wyrażonym jako juice na parlay leg), więc 1.0% na kontraktach predykcyjnych
+będzie wyglądało tanio w porównaniu.
+
+## Jak rozwijać stawkę po launchu
+
+Ustawienie opłaty w pierwszym dniu to połowa pracy. Druga połowa to
+wiedza, jak ją dostosowywać, gdy venue dojrzewa, i nie robienie tego zbyt
+wcześnie.
+
+Najczystsza reguła decyzyjna, jaką widzieliśmy u operatorów, to **90-day
+cohort test**: wybierz stawkę startową, utrzymaj ją bez zmian przez 90
+dni, spójrz na krzywą trade velocity i krzywą retencji traderów w 12.
+tygodniu, a potem wykonaj jedną korektę. Nie zmieniaj co tydzień, nie
+zmieniaj co miesiąc, nie zmieniaj na podstawie skarg pojedynczych
+traderów. Sygnał w danych fee-rate stabilizuje się po około 8 tygodniach,
+a operatorzy, którzy zmieniają szybciej, tylko wprowadzają szum.
+
+Trzy sygnały, które faktycznie uzasadniają zmianę opłaty:
+
+1. **Retencja w 12. tygodniu jest poniżej 35%.** To najsilniejszy
+   pojedynczy sygnał, że Twoja opłata bardziej szkodzi wolumenowi, niż
+   zarabia przychód. Obniż stawkę o 20–25 bps i testuj przez kolejne 90
+   dni.
+2. **Mediana wielkości transakcji spada w czasie.** Traderzy stają się
+   bardziej wrażliwi kosztowo; przycinają pozycje, żeby zmieścić się w
+   swoich wewnętrznych budżetach opłat. To wczesne ostrzeżenie. Umiarkowana
+   obniżka (10–15 bps) zwykle to zatrzymuje.
+3. **Wolumen szybko rośnie, a liczba traderów rośnie jeszcze szybciej.**
+   Masz pricing power. Możesz podnieść opłatę o 10–15 bps bez utraty
+   wolumenu; nowi traderzy, którzy przychodzą, nie są jeszcze zakotwiczeni
+   w niższej stawce.
+
+Nie powinieneś obniżać opłaty w reakcji na konkurenta startującego z
+niższą stawką. Konkurent kupuje uwagę odbiorców ceną, co jest dobre dla
+niego, ale złe dla Ciebie do kopiowania. Jeśli jego value proposition
+naprawdę podcina Twoje na opłatach, trwałą odpowiedzią jest różnicowanie
+czymś innym niż cena: głębokością, ekskluzywnymi rynkami albo dystrybucją,
+a nie wyścig opłat.
+
+## Jak opłaty łączą się ze współdzieloną płynnością
+
+Jeśli Twoje venue działa na współdzielonej płynności, co
+<a href="/blog/2026-04-shared-liquidity-day-one">mocno rekomendujemy</a>,
+matematyka opłat ma niuans, który warto rozumieć. Współdzielona książka
+zleceń daje głębokość przy spreadach na poziomie protokołu, co oznacza, że
+łączny koszt wykonania dla Twoich traderów to Twoja opłata plus ciasny
+(~30 bps) spread na poziomie protokołu. Taki całkowity koszt jest
+konkurencyjny nawet przy opłatach operatora 1.0–1.5%, bo komponent spreadu
+jest dużo ciaśniejszy niż w venue uruchamiającym własną książkę od zera.
+
+Operatorzy, którzy próbują zbudować własną płynność, kończą albo na
+kontraktowym opłacaniu market-makerów (co uderza w tego samego tradera
+szerszymi spreadami), albo na prowadzeniu cienkiej książki (co uderza w
+tradera gorszymi fillami). W obu przypadkach all-in cost dla tradera jest
+wyższy, niż sugeruje Twoja headline fee. Przewaga współdzielonej książki
+polega na tym, że headline fee jest bliżej effective fee, co pozwala
+prowadzić wyższą stawkę operatora bez silnego odczucia po stronie tradera.
+
+<Callout type="tip" title="Effective rate, nie headline rate">
+  Gdy porównujesz swoje venue z konkurentem, porównuj całkowity round-trip
+  cost tradera (opłata operatora × 2 + spread × 2), a nie headline
+  operator fee. Opłata operatora 1.0% na współdzielonej płynności często
+  jest tańsza dla tradera niż opłata operatora 0.5% na cienkiej własnej
+  książce.
+</Callout>
+
+## Częste błędy operatorów w pierwszym dniu
+
+Trzy wzorce, które widzimy regularnie i które prawie zawsze wymagają
+korekty w pierwszych sześciu miesiącach.
+
+**Kotwiczenie na spot fees z giełd krypto.** Operatorzy ze świata
+crypto-exchange czasem wyceniają kontrakty predykcyjne na 0.10% taker, tak
+jak wyceniliby handel BTC-USDT. To zaniża cenę za złożoność operacyjną
+prowadzenia prediction venue: resolution, obsługę sporów i tworzenie
+rynków, oraz zostawia operatora strukturalnie nierentownego. Prediction
+markets nie są spot crypto; struktura opłat nie powinna udawać, że są.
+
+**Zbyt agresywne tiering, zbyt wcześnie.** Nowe venue z $30k tygodniowego
+wolumenu nie potrzebuje pięciopoziomowej struktury VIP. Tiering przy
+launchu rozmywa sygnał w wczesnych danych i myli traderów. Zacznij flat,
+dojdź do $1M+ tygodniowego wolumenu, a potem wprowadź jedną granicę tieru
+na podstawie danych, które faktycznie zebrałeś.
+
+**Dyskontowanie przez promocję.** "Zero opłat przez pierwsze 30 dni"
+działa jako promocja launchowa w płatnościach i consumer fintech, bo koszt
+akwizycji przewyższa utracony przychód z opłat. Na rynku predykcyjnym
+traderzy, którzy przychodzą w oknie zero-fee, churnują dużo częściej, gdy
+stawka się normalizuje: przyszli po promocję, nie po venue. Nie
+rekomendujemy tego wzorca.
+
+## Referencyjny fee schedule, który konsekwentnie działa
+
+Dla operatora prowadzącego retail-facing prediction-market venue, który
+jeszcze nie wystartował, poniższy fee schedule działał niezawodnie w
+kohorcie operatorów, których onboardowaliśmy.
+
+<Comparison
+  columns={["Etap", "Opłata operatora", "Tiering", "Dlaczego"]}
+  rows={[
+    ["Pre-launch / private beta", "0.85%", "Flat", "Ustalenie baseline; zebranie danych kohortowych"],
+    ["Public launch → Month 6", "0.85%", "Flat", "Utrzymanie stawki, aby zebrać sygnał; opór przed wczesnymi korektami"],
+    ["Month 6 → Month 12", "0.95%", "Flat", "Umiarkowana podwyżka po potwierdzeniu retencji"],
+    ["Month 12+", "0.95% / 0.80% / 0.65%", "Trzy tiery według 30-dniowego wolumenu", "Utrzymanie whales bez utraty retailu"],
+    ["Year 2+", "Negocjowana dla institutional desks", "Custom", "Dołącza realny prop flow; potrzebuje wyceny w basis points"],
+  ]}
+/>
+
+Nie ma nic magicznego w tych konkretnych liczbach. Ważny jest wzorzec:
+utrzymaj stawkę wystarczająco długo, żeby nauczyć się z realnych danych,
+podnieś ją umiarkowanie, gdy retencja się potwierdzi, wprowadź tiering
+dopiero wtedy, gdy masz sensowny wolumen, wobec którego można tierować, i
+negocjuj jawnie z institutional flow, gdy się pojawi. Każdy krok jest
+uzasadniony realnym sygnałem z Twoich danych, a nie zgadywaniem, co rynek
+powinien wytrzymać.
+
+<KuestCTA
+  headline="Chcesz model opłat dopasowany do konkretnej publiczności?"
+  body="Przejdziemy przez profil Twoich odbiorców, docelową jurysdykcję i venue, z którymi Twoi traderzy najpewniej będą Cię porównywać, a potem damy Ci obronną stawkę startową w mniej niż godzinę."
+  primary={{ href: "/launch", label: "Uruchom launch wizard" }}
+  secondary={{ href: "/enterprise", label: "Umów rozmowę o strategii opłat" }}
+/>

@@ -1,0 +1,56 @@
+---
+title: "Jak naprawdę działa rozstrzyganie w prediction markets: UMA, oracle i settlement"
+slug: "2026-04-resolution-and-the-settlement-layer"
+description: "Techniczna analiza rozstrzygania kontraktów prediction market: oracle optymistyczny, spory, eskalacja i dlaczego settlement decyduje, które platformy przetrwają."
+publishedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["protocol", "settlement", "oracle", "technical"]
+---
+
+Najważniejszy moment w prediction market dzieje się po zakończeniu tradingu. Rynek musi odpowiedzieć na pytanie: co faktycznie się stało?
+
+Jeśli odpowiedź jest opóźniona, niejasna albo polityczna, użytkownicy tracą zaufanie. Jeśli settlement jest przewidywalny, venue może skalować tysiące kontraktów.
+
+## Dobre pytanie ułatwia settlement
+
+Rozstrzyganie zaczyna się przy tworzeniu rynku. Pytanie powinno mieć:
+
+- jednoznaczny warunek;
+- źródło danych;
+- datę lub okno rozstrzygnięcia;
+- strefę czasową;
+- reguły dla anulowania, opóźnień lub zmian formatu wydarzenia.
+
+Im mniej miejsca na interpretację, tym mniej sporów po zakończeniu.
+
+## Modele rozstrzygania
+
+W produkcji istnieje kilka podejść:
+
+- scentralizowany zespół market integrity, typowy dla regulowanych venues;
+- oracle optymistyczny, gdzie wynik jest proponowany i może być zakwestionowany;
+- deterministyczny feed danych dla wydarzeń liczbowych;
+- ręczny proces operatora dla niszowych lub niestandardowych rynków.
+
+Każdy model wybiera kompromis między szybkością, kosztem, decentralizacją i odpowiedzialnością.
+
+## UMA i oracle optymistyczny
+
+Model optymistyczny zakłada, że większość wyników nie będzie sporna. Ktoś proponuje wynik, a uczestnicy mają okno na zakwestionowanie. Jeśli nikt nie kwestionuje, wynik finalizuje się. Jeśli jest spór, proces eskaluje zgodnie z regułami oracle.
+
+To działa dobrze tam, gdzie większość pytań jest jasna, a koszt sporu powinien być ponoszony tylko wtedy, gdy naprawdę istnieje niezgoda.
+
+## Dlaczego settlement jest produktem
+
+Użytkownik nie musi znać szczegółów oracle, ale musi ufać, że platforma nie zmienia zasad po fakcie. Dlatego dobre venue pokazuje reguły rozstrzygnięcia przed tradingiem, nie dopiero po sporze.
+
+Settlement jest częścią doświadczenia użytkownika tak samo jak wykres czy order book.
+
+## Jak Kuest podchodzi do warstwy settlement
+
+Kuest używa infrastruktury rozstrzygania dopasowanej do kontraktów eventowych i współdzielonej płynności. Kontrakty wywodzą się z architektury Polymarket, a proces jest projektowany tak, aby operator nie musiał budować od zera własnej warstwy oracle.
+
+To jedna z najtrudniejszych części rynku. I właśnie dlatego powinna być infrastrukturą, a nie projektem każdego operatora osobno.

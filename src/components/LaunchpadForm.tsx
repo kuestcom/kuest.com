@@ -236,6 +236,15 @@ const LAUNCHPAD_COPY: Record<
     connectGitHub: 'Collega GitHub',
     oauthSoon: 'OAuth (presto)',
   },
+  pl: {
+    connectionsStep: 'Połączenia',
+    step2Connections: 'Krok 2. Połączenia',
+    step3Deploy: 'Krok 3. Wdrożenie',
+    githubInfo: 'Autoryzuj Kuest na GitHubie, abyśmy mogli utworzyć w Twoim koncie repozytorium ze sklonowanym prediction marketem Kuest. Jeśli masz już własne repozytorium, możesz wpisać je ręcznie w opcjach zaawansowanych.',
+    redirecting: 'Przekierowywanie...',
+    connectGitHub: 'Połącz GitHub',
+    oauthSoon: 'OAuth (wkrótce)',
+  },
 }
 
 const DEFAULT_FORM: FormState = {

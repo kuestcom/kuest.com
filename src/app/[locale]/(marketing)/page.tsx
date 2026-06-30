@@ -406,7 +406,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
   const featureCards = [
     {
       title: t('Your domain. Your brand. Any language.'),
-      copy: t('Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, Japanese, Chinese, Arabic, Russian, and Italian out of the box.'),
+      copy: t('Custom domain, logo, colors, and UI language. Available in English, Portuguese, Spanish, German, French, Japanese, Chinese, Arabic, Russian, Italian, and Polish out of the box.'),
     },
     {
       title: t('Shared liquidity from day one.'),
