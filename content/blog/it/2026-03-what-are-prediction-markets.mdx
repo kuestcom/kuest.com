@@ -1,0 +1,59 @@
+---
+title: "Prediction market nel 2026: come funzionano e perche contano"
+slug: "2026-03-what-are-prediction-markets"
+description: "Una guida ai prediction market: meccanica, piattaforme, regolamentazione e perche una classe di asset da $20B si sta formando piu rapidamente di quanto molte istituzioni si aspettino."
+publishedAt: 2026-03-04
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "fundamentals"]
+---
+
+Un prediction market e un mercato in cui il prezzo di un contratto rappresenta la probabilita di un evento. Se un contratto paga $1 quando la Federal Reserve taglia i tassi a luglio e viene scambiato a $0.42, il mercato sta dicendo che l'evento ha una probabilita implicita del 42%.
+
+Tutto il resto, order book, settlement, oracoli, interfacce, compliance e liquidita, serve a rendere affidabile quella semplice idea.
+
+## Il contratto
+
+La forma piu comune e binaria: YES paga $1 se l'evento accade, NO paga $1 se non accade. La somma economica di YES e NO tende a $1, quindi il rischio massimo e limitato e collateralizzabile.
+
+Un buon contratto deve avere:
+
+- una domanda precisa;
+- una data o finestra di risoluzione;
+- una fonte di verita chiara;
+- una regola per casi ambigui.
+
+"La Fed tagliera i tassi alla riunione di luglio?" e un contratto. "L'economia andra male?" non lo e, perche non e risolvibile in modo oggettivo.
+
+## L'order book
+
+I moderni prediction market usano spesso un CLOB, cioe un central limit order book. I trader pubblicano bid e ask, come su un exchange. Il prezzo corrente diventa la probabilita collettiva dell'evento.
+
+Se YES su un evento scambia a $0.65, il mercato assegna circa il 65% di probabilita. Chi pensa che sia troppo basso compra YES. Chi pensa che sia troppo alto vende YES o compra NO.
+
+La differenza rispetto al betting tradizionale e sostanziale: non c'e un banco che fissa le quote e prende l'altro lato. Il prezzo emerge dall'incontro tra domanda e offerta.
+
+## Il settlement
+
+Il settlement e la parte che determina se il mercato puo scalare. Un mercato puo avere un frontend eccellente, ma se la risoluzione e opaca perde fiducia.
+
+Le architetture principali sono:
+
+- exchange regolamentati con team interni di market integrity;
+- oracoli ottimistici come UMA, dove l'esito puo essere contestato entro una finestra;
+- feed dati deterministici per sport, prezzi, meteo o metriche numeriche.
+
+Ogni modello fa compromessi tra velocita, costo, decentralizzazione e responsabilita regolamentare.
+
+## Perche le istituzioni guardano ora
+
+La categoria e cambiata per tre motivi. Primo, i volumi sono diventati troppo grandi per essere ignorati. Secondo, i trader hanno familiarita con meccaniche derivate e on-chain. Terzo, regolatori e operatori stanno iniziando a distinguere tra betting, contratti evento e infrastruttura finanziaria.
+
+Per un'istituzione, un prediction market non e solo una nuova app. E un modo per trasformare attenzione, ricerca e opinioni in un mercato proprietario con fee, dati e relazione diretta con l'utente.
+
+## Perche Kuest esiste
+
+Costruire tutto da zero richiede contratti, audit, matching, liquidity bootstrapping, wallet, deployment, settlement e operazioni. Kuest impacchetta questo stack in un modello white-label, cosi un operatore puo concentrarsi su distribuzione e contenuto invece che su infrastruttura.
+

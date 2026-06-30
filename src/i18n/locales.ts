@@ -1,4 +1,4 @@
-export const SUPPORTED_LOCALES = ['en', 'de', 'es', 'pt', 'fr', 'ja', 'zh', 'ar', 'ru'] as const
+export const SUPPORTED_LOCALES = ['en', 'de', 'es', 'pt', 'fr', 'ja', 'zh', 'ar', 'ru', 'it'] as const
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 
@@ -14,4 +14,5 @@ export const LANGUAGE_OPTIONS = [
   { code: 'zh', label: '中文', flagSrc: '/assets/flags/zh.svg' },
   { code: 'ar', label: 'العربية', flagSrc: '/assets/flags/ar.svg' },
   { code: 'ru', label: 'Русский', flagSrc: '/assets/flags/ru.svg' },
+  { code: 'it', label: 'Italiano', flagSrc: '/assets/flags/it.svg' },
 ] as const satisfies ReadonlyArray<{ code: SupportedLocale, label: string, flagSrc: string }>
