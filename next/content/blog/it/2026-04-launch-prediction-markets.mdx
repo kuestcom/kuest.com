@@ -1,0 +1,56 @@
+---
+title: "Come lanciare il tuo prediction market in 15 minuti (guida 2026)"
+slug: "2026-04-launch-prediction-markets"
+description: "Una panoramica dello stack Kuest: smart contract auditati, liquidità condivisa, risoluzione gestita e commissione operatore su ogni trade. Dalla registrazione al live in un quarto d'ora."
+publishedAt: 2026-04-01
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["launch", "product", "guide"]
+---
+
+Il lancio di un prediction market non dovrebbe richiedere un team blockchain, un audit personalizzato e mesi di DevOps. Kuest comprime il processo in un flusso guidato: scegli brand, collega wallet e infrastruttura, distribuisci il sito e parti con mercati già liquidi.
+
+## Cosa preparare
+
+Prima di iniziare, ti servono pochi elementi:
+
+- nome del sito;
+- dominio o sottodominio desiderato;
+- wallet admin;
+- account Vercel;
+- progetto Reown per login wallet;
+- preferenze di brand e categorie.
+
+Non serve scrivere smart contract o configurare manualmente un order book.
+
+## Passaggio 1: brand e admin
+
+Il nome del sito diventa la base della tua venue. Il wallet admin firma per generare le credenziali necessarie allo stack Kuest. Nessun fondo viene spostato durante questa fase.
+
+## Passaggio 2: connessioni
+
+Il flusso collega GitHub, Vercel, Supabase e Reown. Questi servizi gestiscono deployment, dati applicativi e login wallet per gli utenti finali. Kuest prepara le variabili e la configurazione necessarie.
+
+## Passaggio 3: deploy
+
+Una volta avviato il deployment, Vercel pubblica il frontend. I mercati possono apparire entro pochi minuti, con liquidità condivisa e categorie iniziali pronte.
+
+## Perché è possibile
+
+La velocità deriva dal fatto che lo stack è già costruito:
+
+- contratti derivati dall'architettura Polymarket;
+- audit e validazione OpenZeppelin come base;
+- CLOB e relayer operativi;
+- liquidità condivisa;
+- frontend white-label;
+- i18n integrata;
+- tooling di deployment.
+
+L'operatore non ricostruisce l'infrastruttura. L'istanzia sotto il proprio brand.
+
+## Cosa fare dopo il lancio
+
+Il lavoro importante inizia quando il sito è live: portare audience, scegliere mercati, spiegare le regole, monitorare spread e supportare gli utenti. Kuest rende il lancio rapido; la distribuzione resta il vantaggio dell'operatore.

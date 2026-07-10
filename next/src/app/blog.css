@@ -1,0 +1,1321 @@
+/* ============================================================
+   Blog
+   ============================================================ */
+
+/* Disable the global `scroll-snap-type` on the html element when a blog page
+   is mounted. The marketing pages need it for their panel snapping; the blog
+   doesn't, and on Safari it can interfere with `position: sticky` inside the
+   article row. */
+html:has(.blog-page) {
+    scroll-snap-type: none;
+}
+
+.blog-page {
+    padding-block: 0;
+}
+
+.blog-section {
+    width: 100%;
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 24px;
+}
+
+@media (min-width: 640px) {
+    .blog-section {
+        padding-inline: 32px;
+    }
+}
+
+/* Section eyebrow uses the site-wide .slbl primitive. No blog-specific
+   eyebrow class — eyebrows render identically across marketing,
+   protocol, enterprise, and blog. */
+
+/* Tag pill — used in cards, hero, embeds */
+.blog-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
+    background: color-mix(in oklab, var(--color-accent) 8%, transparent);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    line-height: 1.4;
+}
+
+/* Index hero */
+.blog-index-hero {
+    display: grid;
+    gap: 28px;
+    padding-block: 96px 56px;
+    text-align: center;
+    justify-items: center;
+}
+
+@media (min-width: 640px) {
+    .blog-index-hero {
+        padding-block: 128px 72px;
+    }
+}
+
+.blog-index-title {
+    margin: 0;
+    max-width: 18ch;
+    font-family: var(--font-sans);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-index-sub {
+    margin: 0 auto;
+    max-width: 60ch;
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: 1.6;
+    color: var(--color-muted);
+}
+
+/* Empty state */
+.blog-empty {
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+    place-items: center;
+    max-width: 640px;
+    padding: 96px 32px;
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 55%, transparent);
+    text-align: center;
+}
+
+.blog-empty p {
+    margin: 0;
+    max-width: 44ch;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-muted);
+}
+
+/* Card grids */
+.blog-card-grid {
+    display: grid;
+    gap: 40px;
+    padding-bottom: 96px;
+    scroll-margin-top: 96px;
+}
+
+@media (min-width: 640px) {
+    .blog-card-grid {
+        padding-bottom: 128px;
+    }
+}
+
+/* Pagination — sits at the end of the card grid. Buttons reuse site
+   tokens (border, accent, mono font for numerals) so the chrome
+   matches every other interactive surface across the site. */
+.blog-pagination {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.blog-pagination-page,
+.blog-pagination-arrow,
+.blog-pagination-gap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+.blog-pagination-page,
+.blog-pagination-arrow {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--color-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.blog-pagination-page:hover,
+.blog-pagination-arrow:not(:disabled):hover {
+    border-color: color-mix(in oklab, var(--color-accent) 40%, var(--border));
+    background: color-mix(in oklab, var(--color-accent) 8%, transparent);
+    color: var(--color-text);
+    transform: translateY(-1px);
+}
+
+.blog-pagination-page.is-current {
+    border-color: color-mix(in oklab, var(--color-accent) 50%, transparent);
+    background: color-mix(in oklab, var(--color-accent) 14%, transparent);
+    color: var(--color-accent);
+    font-weight: 600;
+    cursor: default;
+}
+
+.blog-pagination-arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.blog-pagination-gap {
+    border: 0;
+    color: var(--color-faint);
+    cursor: default;
+}
+
+.blog-card-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 640px) {
+    .blog-card-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .blog-card-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Card — base */
+.blog-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 45%, transparent);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--color-accent) 30%, var(--border));
+    background: color-mix(in oklab, var(--color-bg1) 75%, transparent);
+    box-shadow: var(--shadow-soft);
+}
+
+.blog-card-cover {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-bg);
+}
+
+.blog-card-cover img {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-card-cover img {
+    transform: scale(1.03);
+}
+
+.blog-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    min-width: 0;
+}
+
+.blog-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.blog-card-meta time {
+    color: var(--color-muted);
+}
+
+.blog-card-meta-divider {
+    color: var(--color-faint);
+}
+
+.blog-card-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-card-excerpt {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-muted);
+}
+
+/* Card — featured (large hero card on index) */
+.blog-card-featured {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    border-radius: 28px;
+}
+
+@media (min-width: 768px) {
+    .blog-card-featured {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    }
+}
+
+.blog-card-featured .blog-card-cover {
+    aspect-ratio: 16 / 10;
+}
+
+@media (min-width: 768px) {
+    .blog-card-featured .blog-card-cover {
+        aspect-ratio: auto;
+        min-height: 360px;
+    }
+}
+
+.blog-card-featured .blog-card-body {
+    justify-content: center;
+    gap: 20px;
+    padding: 28px;
+}
+
+@media (min-width: 640px) {
+    .blog-card-featured .blog-card-body {
+        padding: 40px;
+    }
+}
+
+.blog-card-featured .blog-card-title {
+    font-size: clamp(28px, 3.6vw, 42px);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+}
+
+.blog-card-featured .blog-card-excerpt {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    max-width: 58ch;
+    font-size: 16px;
+}
+
+@media (min-width: 640px) {
+    .blog-card-featured .blog-card-excerpt {
+        font-size: 17px;
+    }
+}
+
+.blog-card-cta {
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    transition: transform 0.2s ease;
+}
+
+.blog-card:hover .blog-card-cta {
+    transform: translateX(4px);
+}
+
+/* Post page layout token.
+   One column for the entire post — hero, cover, article body, footer
+   all share the same width. This matches the modern blog standard
+   (Vercel, Linear, Stripe, Substack, Notion): a single reading-width
+   column with content centered in the viewport.
+   Gutter is applied once on the page and inherited; sections never
+   repeat horizontal padding. */
+.blog-post-page {
+    --blog-post-column: 45rem;        /* 720px reading column */
+    --blog-post-gutter: 1.5rem;       /* 24px on small viewports */
+    padding-inline: var(--blog-post-gutter);
+}
+
+@media (min-width: 640px) {
+    .blog-post-page {
+        --blog-post-gutter: 2rem;     /* 32px on larger viewports */
+    }
+}
+
+.blog-post-page > * {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--blog-post-column);
+    margin-inline: auto;
+}
+
+/* Hero — owns vertical rhythm and copy alignment only. Width comes
+   from the page-level column. */
+.blog-post-hero {
+    display: grid;
+    gap: 28px;
+    padding-block: 96px 56px;
+    text-align: center;
+    justify-items: center;
+}
+
+@media (min-width: 640px) {
+    .blog-post-hero {
+        padding-block: 128px 64px;
+    }
+}
+
+.blog-post-hero-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.blog-post-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.blog-post-back:hover {
+    color: var(--color-text);
+}
+
+.blog-post-title {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--font-sans);
+    font-size: clamp(36px, 5.6vw, 68px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-post-sub {
+    margin: 0 auto;
+    max-width: 64ch;
+    font-size: clamp(17px, 1.7vw, 20px);
+    line-height: 1.55;
+    text-wrap: balance;
+    color: var(--color-muted);
+}
+
+.blog-post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.blog-post-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blog-post-author-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    object-fit: cover;
+}
+
+.blog-post-author-initials {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 28%, transparent);
+    background: color-mix(in oklab, var(--color-accent) 10%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+    color: var(--color-accent);
+}
+
+.blog-post-author-name {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.blog-post-meta-divider {
+    color: var(--color-faint);
+}
+
+.blog-post-cover {
+    position: relative;
+    margin-top: 24px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid var(--border);
+    background: var(--color-bg1);
+    box-shadow: var(--shadow-card);
+}
+
+.blog-post-cover img {
+    object-fit: cover;
+}
+
+/* Article — owns vertical rhythm only. Width comes from the
+   page-level column. */
+.blog-post-article {
+    min-width: 0;
+    padding-block: 0 64px;
+}
+
+.blog-post-article > :first-child {
+    margin-top: 0;
+}
+
+.blog-post-article > :last-child {
+    margin-bottom: 0;
+}
+
+/* Prose — MDX body */
+.blog-prose h2 {
+    margin: 64px 0 20px;
+    scroll-margin-top: 112px;
+    font-family: var(--font-sans);
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-prose h3 {
+    margin: 48px 0 12px;
+    scroll-margin-top: 112px;
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 2.4vw, 24px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    color: var(--color-text);
+}
+
+.blog-prose h4 {
+    margin: 36px 0 8px;
+    scroll-margin-top: 112px;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: var(--font-weight-bold);
+    line-height: 1.3;
+    color: var(--color-text);
+}
+
+.blog-prose p {
+    margin: 20px 0;
+    font-size: 17px;
+    line-height: 1.75;
+    color: color-mix(in oklab, var(--color-text) 92%, transparent);
+}
+
+/* Inline prose links — scoped with :not(.btn-cta) so site CTA buttons
+   placed inside the article (e.g. via the KuestCTA block) keep their
+   own color/decoration from styles.css. */
+.blog-prose a:not(.btn-cta) {
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--color-accent) 60%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition:
+        color 0.15s ease,
+        text-decoration-color 0.15s ease;
+}
+
+.blog-prose a:not(.btn-cta):hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+}
+
+.blog-prose ul,
+.blog-prose ol {
+    margin: 20px 0;
+    padding-left: 24px;
+    display: grid;
+    gap: 8px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: color-mix(in oklab, var(--color-text) 92%, transparent);
+}
+
+.blog-prose ul {
+    list-style: disc;
+}
+
+.blog-prose ol {
+    list-style: decimal;
+}
+
+.blog-prose ul::marker,
+.blog-prose li::marker {
+    color: var(--color-accent);
+}
+
+.blog-prose ol li::marker {
+    font-family: var(--font-mono);
+    color: var(--color-muted);
+}
+
+.blog-prose li {
+    padding-left: 6px;
+}
+
+.blog-prose blockquote {
+    margin: 28px 0;
+    padding-left: 24px;
+    border-left: 2px solid var(--color-accent);
+    font-size: 18px;
+    line-height: 1.65;
+    font-style: italic;
+    color: color-mix(in oklab, var(--color-text) 88%, transparent);
+}
+
+.blog-prose blockquote > p {
+    margin: 0;
+}
+
+.blog-prose hr {
+    margin: 56px 0;
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--border-medium) 50%,
+        transparent 100%
+    );
+}
+
+.blog-prose code {
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-text);
+}
+
+.blog-prose pre {
+    margin: 28px 0;
+    padding: 20px;
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.65;
+}
+
+.blog-prose pre > code {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+}
+
+.blog-prose figure {
+    margin: 36px 0;
+}
+
+.blog-prose figure img {
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.blog-prose figcaption {
+    margin-top: 12px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.blog-prose-table-wrap {
+    margin: 28px 0;
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.blog-prose-table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14.5px;
+}
+
+.blog-prose-table-wrap th {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.blog-prose-table-wrap td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-hairline);
+    vertical-align: top;
+    color: color-mix(in oklab, var(--color-text) 92%, transparent);
+}
+
+.blog-prose-table-wrap tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Block — Callout */
+.blog-callout {
+    --blog-callout-accent: var(--accent);
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    margin: 28px 0;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid color-mix(in oklab, var(--blog-callout-accent) 32%, var(--border));
+    background: color-mix(in oklab, var(--blog-callout-accent) 5%, transparent);
+}
+
+@media (min-width: 640px) {
+    .blog-callout {
+        padding: 24px;
+    }
+}
+
+.blog-callout[data-type="info"] {
+    --blog-callout-accent: var(--accent);
+}
+
+.blog-callout[data-type="tip"] {
+    --blog-callout-accent: var(--color-accent);
+}
+
+.blog-callout[data-type="warning"] {
+    --blog-callout-accent: var(--gold);
+}
+
+.blog-callout[data-type="error"] {
+    --blog-callout-accent: var(--red);
+}
+
+.blog-callout-icon {
+    margin-top: 2px;
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--blog-callout-accent) 28%, transparent);
+    background: color-mix(in oklab, var(--blog-callout-accent) 14%, transparent);
+    color: var(--blog-callout-accent);
+}
+
+.blog-callout-body {
+    min-width: 0;
+}
+
+.blog-callout-title {
+    margin-bottom: 6px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.005em;
+    color: var(--color-text);
+}
+
+.blog-callout-content {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: color-mix(in oklab, var(--color-text) 92%, transparent);
+}
+
+.blog-callout-content > p:first-child {
+    margin-top: 0;
+}
+
+.blog-callout-content > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Block — Stat */
+.blog-stat {
+    margin: 36px 0;
+    padding: 28px;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--color-bg1) 70%, transparent) 0%,
+            color-mix(in oklab, var(--color-bg1) 30%, transparent) 100%
+        );
+}
+
+@media (min-width: 640px) {
+    .blog-stat {
+        padding: 36px;
+    }
+}
+
+.blog-stat-value {
+    font-family: var(--font-sans);
+    font-size: clamp(44px, 5.4vw, 72px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    color: var(--color-accent);
+}
+
+.blog-stat-label {
+    margin-top: 16px;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--color-muted);
+}
+
+.blog-stat-source {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.blog-stat-source:hover {
+    color: var(--color-text);
+}
+
+/* Block — MarketEmbed */
+.blog-market {
+    margin: 36px 0;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 70%, transparent);
+    box-shadow: var(--shadow-soft);
+}
+
+.blog-market-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .blog-market-grid {
+        grid-template-columns: 180px 1fr;
+    }
+}
+
+.blog-market-cover {
+    position: relative;
+    height: 176px;
+    background: var(--color-bg);
+}
+
+@media (min-width: 640px) {
+    .blog-market-cover {
+        height: 100%;
+        min-height: 180px;
+    }
+}
+
+.blog-market-cover img {
+    object-fit: cover;
+}
+
+.blog-market-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+    min-width: 0;
+}
+
+.blog-market-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.blog-market-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-market-rows {
+    margin-top: 4px;
+    display: grid;
+    gap: 8px;
+}
+
+.blog-market-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.blog-market-row-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: color-mix(in oklab, var(--color-text) 88%, transparent);
+}
+
+.blog-market-row-pct {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+}
+
+.blog-market-binary {
+    margin-top: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.blog-market-binary-cell {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+}
+
+.blog-market-binary-yes {
+    border-color: color-mix(in oklab, var(--yes) 50%, var(--border));
+    background: color-mix(in oklab, var(--yes) 14%, transparent);
+    color: color-mix(in oklab, var(--yes) 84%, white 16%);
+}
+
+.blog-market-binary-no {
+    border-color: color-mix(in oklab, var(--no) 50%, var(--border));
+    background: color-mix(in oklab, var(--no) 14%, transparent);
+    color: color-mix(in oklab, var(--no) 84%, white 16%);
+}
+
+/* Block — Comparison */
+.blog-comparison {
+    margin: 36px 0;
+    overflow-x: auto;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 45%, transparent);
+}
+
+.blog-comparison table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14.5px;
+}
+
+.blog-comparison th {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.blog-comparison th[data-col="0"] {
+    color: var(--color-muted);
+}
+
+.blog-comparison th:not([data-col="0"]) {
+    color: var(--color-accent);
+}
+
+.blog-comparison td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-hairline);
+    vertical-align: top;
+    color: color-mix(in oklab, var(--color-text) 88%, transparent);
+}
+
+.blog-comparison td[data-col="0"] {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+}
+
+.blog-comparison tr:last-child td {
+    border-bottom: 0;
+}
+
+/* In-article CTA (KuestCTA block).
+   Composes the site CTA primitives — typography uses the same gradient
+   token as the marketing CTA headlines (.cta-h), buttons reuse
+   .btn-cta-primary / -secondary, and the buttons row reuses the site's
+   .cta-btns class. A soft top-edge accent glow + an accent-tinted
+   border give the block visible energy and reinforce the brand colour
+   without inventing a parallel component system. */
+.blog-cta {
+    position: relative;
+    margin: 64px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 48px 32px;
+    border-radius: 24px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 22%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--color-accent) 5%, transparent) 0%,
+            color-mix(in oklab, var(--color-bg1) 70%, transparent) 100%
+        );
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+@media (min-width: 640px) {
+    .blog-cta {
+        padding: 64px 48px;
+        gap: 24px;
+    }
+}
+
+/* Accent glow anchored to the top edge of the card. */
+.blog-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 220px;
+    background: radial-gradient(
+        65% 100% at 50% 0%,
+        color-mix(in oklab, var(--color-accent) 22%, transparent) 0%,
+        transparent 75%
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Scoped to .blog-cta so prose typography rules (.blog-prose h3,
+   .blog-prose p) don't override the CTA's own scale. Specificity
+   (0,2,0) beats (0,1,1) from .blog-prose hN / .blog-prose p. */
+.blog-cta .blog-cta-headline {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--font-sans);
+    font-size: clamp(28px, 3.6vw, 40px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    text-wrap: balance;
+    background: var(--cta-heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    padding: 0.05em 0 0.08em;
+}
+
+.blog-cta .blog-cta-body {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-muted);
+}
+
+/* Block — Two column */
+.blog-two-col {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .blog-two-col {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+}
+
+.blog-two-col-cell {
+    min-width: 0;
+}
+
+.blog-two-col-cell > p:first-child {
+    margin-top: 0;
+}
+
+.blog-two-col-cell > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Footer — related-posts block. Width and side gutter come from the
+   column primitive on .blog-post-page; head and grid each cap to the
+   reading column so they align with the body text above. */
+.blog-footer {
+    display: grid;
+    gap: 28px;
+    padding-block: 64px 80px;
+}
+
+.blog-related-head {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.blog-related-back {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+    .blog-related-back {
+        display: inline-flex;
+    }
+}
+
+.blog-related-back:hover {
+    color: var(--color-text);
+}
+
+.blog-related-grid {
+    margin-block: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 640px) {
+    .blog-related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.blog-related-card {
+    display: grid;
+    gap: 10px;
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--color-bg1) 45%, transparent);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.blog-related-card:hover {
+    border-color: color-mix(in oklab, var(--color-accent) 28%, var(--border));
+    background: color-mix(in oklab, var(--color-bg1) 72%, transparent);
+}
+
+.blog-related-card-date {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.blog-related-card-title {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.25;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-related-card-arrow {
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-accent);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.blog-related-card:hover .blog-related-card-arrow {
+    opacity: 1;
+}
+
+/* Not-found */
+.blog-not-found {
+    display: grid;
+    place-items: center;
+    gap: 20px;
+    max-width: 640px;
+    padding: 128px 24px;
+    text-align: center;
+}
+
+.blog-not-found-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+    color: var(--color-text);
+}
+
+.blog-not-found-sub {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-muted);
+}
+
+.blog-not-found-back {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+        background-color 0.16s ease,
+        border-color 0.16s ease;
+}
+
+.blog-not-found-back:hover {
+    background: var(--surface-overlay-soft);
+    border-color: color-mix(in oklab, var(--color-accent) 30%, var(--border));
+}
+
+/* Language switcher — unavailable locale state (used on post pages) */
+.site-language-option.is-unavailable {
+    opacity: 0.5;
+}
+
+.site-language-option.is-unavailable:hover {
+    opacity: 0.75;
+}

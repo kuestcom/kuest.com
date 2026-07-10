@@ -1,0 +1,362 @@
+---
+title: "Vorhersagemärkte 2026: Wie sie funktionieren und warum sie wichtig sind"
+description: "Eine vollständige Einführung in Vorhersagemärkte – die Mechanik, die Plattformen, die Regulierung und warum eine 20-Milliarden-Dollar-Anlageklasse schneller entsteht, als die meisten Institutionen wahrnehmen."
+publishedAt: 2026-03-04
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["explainer", "research", "fundamentals"]
+---
+
+Ein Vorhersagemarkt ist ein Handelsplatz, auf dem der Preis eines
+Kontrakts der Wahrscheinlichkeit eines Ereignisses entspricht.
+Wenn ein Kontrakt, der 1 $ auszahlt, sofern die US-Notenbank im
+Juli die Zinsen senkt, bei 0,42 $ gehandelt wird, sagt der Markt:
+Die Wahrscheinlichkeit einer Zinssenkung liegt bei 42 %. Das ist
+die gesamte Idee. Alles andere – Orderbücher, Settlement-Verträge,
+regulatorische Rahmen, die Hunderte Millionen Dollar, die jede
+Woche durch diese Venues fließen – ist nur die Infrastruktur
+um eine sehr alte Erkenntnis: Menschenmengen, die Geld auf eine
+Frage setzen, sind tendenziell ehrlicher als Menschenmengen, die
+Meinungen abgeben.
+
+<Stat
+  value="$18,3 Mrd."
+  label="Kombiniertes monatliches Volumen auf Kalshi und Polymarket im Q1 2026, gegenüber unter 400 Mio. $ zwei Jahre zuvor"
+  sourceHref="https://www.theblock.co/post/392755"
+  sourceLabel="The Block, Q1 2026"
+/>
+
+Die meisten Menschen, die Finanzen verfolgen, können einen
+Vorhersagemarkt immer noch nicht in einem Satz definieren. Genau
+darin liegt die Chance. Die Anlageklasse hat sich in den letzten
+zwölf Monaten erneut verdoppelt, Regulierungsbehörden in drei
+Jurisdiktionen sind von einer feindseligen Haltung zu aktiven
+Rahmenwerken übergegangen, und zwei Plattformen haben Bewertungen
+erreicht, die ein Jahrzehnt akademischen Interesses nie
+hervorgebracht hat. Dies ist der Beitrag, den wir uns gewünscht
+hätten, als wir die darunterliegende Infrastruktur zu bauen
+begannen.
+
+## Was ein Vorhersagemarkt tatsächlich ist
+
+Ein Vorhersagemarkt ist ein Kontraktmarkt für den Ausgang eines
+realen Ereignisses. Die einfachste Form ist binär: Ein Kontrakt
+zahlt 1 $, wenn ein Ereignis eintritt, andernfalls 0 $. Trader
+kaufen und verkaufen diese Kontrakte während der Laufzeit, und
+der Preis zu jedem Zeitpunkt entspricht der vom Markt implizierten
+Eintrittswahrscheinlichkeit.
+
+Drei Grundbausteine bilden jeden Vorhersagemarkt:
+
+1. **Der Kontrakt.** Ein klar spezifiziertes Ereignis mit einem
+   klar spezifizierten Auflösungsdatum. „Wird der CPI im
+   Jahresvergleich beim September-Bericht 2026 über 3,0 % liegen?"
+   ist ein Kontrakt. „Bleibt die Inflation hoch?" nicht – zu
+   vage, um abzurechnen.
+2. **Das Orderbuch.** Ein lebender, zweiseitiger Markt, auf dem
+   Trader Geldkurse („Ich zahle 0,42 $ für YES") und Briefkurse
+   („Ich verkaufe YES zu 0,45 $") platzieren. Der Mittelwert ist
+   die implizite Wahrscheinlichkeit. Der Spread ist der Preis
+   für sofortige Ausführung.
+3. **Die Auflösungsregel.** Ein vorab vereinbarter Mechanismus,
+   der am Auflösungsdatum bestimmt, was tatsächlich passiert ist –
+   und 1 $ an die eine Seite und 0 $ an die andere auszahlt.
+
+Das sauberste mentale Modell ist, dass ein Vorhersagemarkt ein
+kleines Stück derivateähnlicher Infrastruktur mit einem klar
+begrenzten Auszahlungsprofil ist. Sie „wetten" nicht im
+Casino-Sinne, bei dem das Haus einen Vorteil hat. Sie kaufen einen
+Kontrakt, dessen Endwert durch eine externe Tatsache bestimmt
+wird, von einem anderen Trader, der mit Ihnen über die
+Wahrscheinlichkeit anderer Meinung ist.
+
+## Wie Orderbuch und Preisbildung funktionieren
+
+Fast jeder moderne Vorhersagemarkt nutzt ein zentrales
+Limit-Orderbuch (CLOB). Es funktioniert genauso wie das Orderbuch
+einer Aktienbörse, mit einigen Besonderheiten für
+Vorhersagekontrakte.
+
+Angenommen, ein Kontrakt auf „Fed senkt Zinsen im Juli" wird
+gehandelt. Einige Orders liegen im Buch:
+
+- BID: 0,41 $ für 200 Kontrakte
+- BID: 0,40 $ für 1.000 Kontrakte
+- ASK: 0,43 $ für 500 Kontrakte
+- ASK: 0,45 $ für 2.000 Kontrakte
+
+Wenn ein neuer Trader glaubt, die Senkung sei nahezu sicher,
+nimmt er den Brief bei 0,43 $ ab und zahlt 200 × 0,43 $ = 86 $,
+um 200 YES-Kontrakte zu erhalten. Hat er recht, erhält er bei
+Auflösung 200 × 1 $ = 200 $ – eine Rendite von 132 % auf das
+eingesetzte Kapital. Hat er unrecht, werden die Kontrakte mit
+0 $ abgerechnet, und er verliert die 86 $.
+
+Die Gegenseite, der Verkäufer dieser YES-Kontrakte, ist short auf
+das Ereignis. Ihre Sicht: Die Senkung ist unwahrscheinlicher als
+43 %. Sie nimmt 86 $ vorab ein und ist mit 200 $ in der Pflicht,
+falls die Senkung kommt. Entweder hält sie bis zur Auflösung oder
+kauft die Position später zu einem anderen Preis zurück.
+
+Zwei wichtige Details unterscheiden Vorhersagemärkte vom
+klassischen Derivatebuch:
+
+- **Begrenzte Sicherheitsleistung.** Da YES- und NO-Kontrakte
+  konstruktionsbedingt zusammen immer 1 $ ergeben, ist der
+  maximale Verlust für beide Seiten begrenzt. Das System
+  funktioniert ohne Margin Calls – der Worst Case ist bei
+  Ordereingabe vollständig besichert.
+- **Keine Funding Rate, kein Perpetual-Rollover.** Jeder Markt
+  hat ein hartes Auflösungsdatum. Die implizite Wahrscheinlichkeit
+  ist keine fortlaufende Schätzung der Zukunft; sie konvergiert
+  zu einem bekannten Zeitpunkt gegen 0 oder 1.
+
+Aus diesem Grund fühlt sich die Liquidität auf Vorhersagemärkten
+anders an als auf Krypto-Spot-Märkten. Das Buch ist um die
+implizite Wahrscheinlichkeit dichter, Spreads ziehen sich bei
+Annäherung an die Auflösung zusammen, und die gesamte Struktur
+verhält sich eher wie eine kurzlaufende Option als ein Perpetual
+Swap.
+
+## Wie Ergebnisse aufgelöst werden
+
+Der wichtigste Teil eines jeden Vorhersagemarkts ist der Teil,
+der nur einmal passiert: die Bestimmung, was tatsächlich
+geschehen ist. Wenn die Auflösung undurchsichtig oder politisch
+ist, verliert der gesamte Markt an Glaubwürdigkeit. Wenn die
+Auflösung robust ist, kann die Plattform Tausende von Märkten
+hosten, ohne dass der Betreiber zu einem einzelnen
+Vertrauenspunkt wird.
+
+Drei Auflösungsmodelle sind heute produktiv im Einsatz:
+
+- **Zentralisiert (regulierte Börse).** Kalshi, der CFTC-regulierte
+  US-Marktplatz, löst Kontrakte über das interne
+  Marktintegritäts-Team unter Verwendung vorab veröffentlichter
+  Datenquellen auf. So lösen die meisten traditionellen
+  Derivatemärkte auf.
+- **Optimistic Oracle (UMA).** Polymarket und die meisten
+  On-Chain-Märkte verwenden den Optimistic Oracle von UMA. Ein
+  Vorschlagender reicht das Ergebnis mit einer Sicherheitsleistung
+  ein. Wird innerhalb des Anfechtungsfensters kein Einspruch
+  erhoben, ist das Ergebnis endgültig. Bei Einspruch (ebenfalls
+  besichert) stimmen UMA-Token-Inhaber über die Wahrheit ab.
+- **Aggregierte Datenfeeds (Chainlink, Custom).** Für Märkte, die
+  über numerische Daten abrechnen – Sportergebnisse, Kurse,
+  Wetter – nutzen viele Venues einen deterministischen Feed plus
+  ein Anfechtungsfenster.
+
+Jedes Modell wägt Geschwindigkeit, Kosten und Dezentralisierung
+unterschiedlich ab. Wir haben dazu eine ausführliche Analyse
+geschrieben – siehe <a href="/blog/2026-04-resolution-and-the-settlement-layer">wie Auflösung tatsächlich unter der Haube funktioniert</a>
+für die vollständige Mechanik.
+
+<Callout type="info" title="Die Settlement-Ebene ist das, was skaliert">
+  Betreiber neigen dazu, das Frontend zu überbewerten und das
+  Settlement zu unterschätzen. Aber Settlement ist der Teil, der
+  über Tausende von Märkten und über Jahre des Betriebs hinweg
+  funktionieren muss. Der Ruf einer Plattform wächst – oder
+  bricht zusammen – mit der Sauberkeit der Auflösung.
+</Callout>
+
+## Eine kurze Geschichte: von Iowa bis Polymarket
+
+Vorhersagemärkte sind nicht neu. Sie sind eine alte Idee, die
+endlich das richtige Substrat gefunden hat.
+
+- **1988 – Iowa Electronic Markets.** Ein Forschungsprojekt der
+  University of Iowa, bei dem Akademiker und einige Hundert
+  Trader kleine Beträge auf US-Wahlen setzen konnten. Die IEM
+  übertrafen Umfragen über zwei Jahrzehnte hinweg konstant. Es
+  war der operationelle Beweis, dass Märkte Information
+  aggregieren.
+- **2003–2013 – InTrade.** Der erste populäre Konsumenten-
+  Vorhersagemarkt mit Sitz in Irland. Er erreichte jährliche
+  Volumina im dreistelligen Millionenbereich, bevor die CFTC
+  einschritt. InTrade schloss 2013, offiziell wegen einer
+  internen Buchhaltungsfrage, tatsächlich aber, weil das
+  US-Regulierungsumfeld Offshore-Venues nicht tolerierte.
+- **2016 – Augur.** Der erste On-Chain-Vorhersagemarkt, gebaut
+  auf Ethereum. Augur zeigte, dass das Auflösungsproblem
+  dezentral gelöst werden kann. Er zeigte auch, dass die UX noch
+  nicht reif war: Märkte rechneten Wochen verspätet ab, Gas
+  fraß den Edge auf, und die meisten Nutzer hatten Mühe mit
+  On-Chain-Wallets.
+- **2020 – Polymarket.** Der erste massentaugliche
+  On-Chain-Marktplatz. Polymarket setzte auf USDC-Settlement
+  auf Polygon und passte den UMA Optimistic Oracle für die
+  Auflösung an. Der US-Wahlzyklus 2024 brachte ihn über 9 Mrd. $
+  kumuliertes Volumen.
+- **2021 – Kalshi.** Die erste CFTC-regulierte
+  Event-Contract-Börse in den USA. Kalshis regulierter Status
+  ist es, der institutionellen Flow erschloss – und damit die
+  Kategorie kombiniert über 18 Mrd. $/Monat brachte.
+
+Das Muster wiederholt sich in jeder vorherigen Welle: Die
+Technologie ist solide, die Nutzernachfrage ist real, und der
+Engpass ist immer die Infrastruktur plus die Regulierung. Beides
+ist nun gelöst.
+
+## Der aktuelle Zustand des Marktes
+
+Was sich in den letzten 24 Monaten geändert hat, ist nicht die
+Idee. Es ist, dass nun zwei stabile Venues existieren (eine
+reguliert, eine dezentral), die nachgewiesen haben, Milliarden
+an monatlichem Volumen ohne Bruch zu tragen, und dass eine
+Generation von Tradern, die mit Krypto-Perpetuals aufgewachsen
+ist, die Mechanik von Vorhersagemärkten intuitiv versteht.
+
+<Comparison
+  columns={["Kennzahl", "Ende 2023", "Ende 2024", "Q1 2026"]}
+  rows={[
+    ["Kombiniertes monatliches Volumen", "340 Mio. $", "3,1 Mrd. $", "18,3 Mrd. $"],
+    ["Polymarket monatliche Besuche", "1,8 Mio.", "12 Mio.", "32 Mio."],
+    ["Kalshi annualisierter Run-Rate", "—", "420 Mio. $", "1,4 Mrd. $"],
+    ["Aktive Märkte / Woche", "≈ 600", "≈ 2.400", "≈ 9.800"],
+    ["Anteil institutionellen Volumens", "<3 %", "≈ 14 %", "≈ 31 %"],
+  ]}
+/>
+
+Der institutionelle Anteil ist die wichtigste Zeile in dieser
+Tabelle. Die gesamte Form einer Anlageklasse verändert sich,
+wenn professionelle Desks beginnen zu quotieren. Spreads ziehen
+sich zusammen, Positionsgrößen skalieren, und die Kosten für die
+Ausführung einer 5 Mio. $ Sicht verschieben sich von „unmöglich"
+zu „Routine".
+
+Die Kategorie hat die Schwelle überschritten, an der sie nicht
+mehr als Nische abgetan werden kann. Drei der größten
+Broker-Dealer, mit denen wir sprechen, haben eine
+Vorhersagemarkt-Initiative auf ihrer 2026-Roadmap.
+
+## Warum 95 % der Welt noch keinen Zugang haben
+
+Trotz dieses Wachstums sind Vorhersagemärkte für die meisten
+Menschen, die sie handeln würden, faktisch nicht zugänglich.
+Die Lücke ist eine Kombination aus Geografie und Marke.
+
+**Geografie.** Polymarket ist in den USA geo-blockiert
+(regulatorisch). Kalshi ist außerhalb der USA nicht verfügbar
+(ebenfalls regulatorisch, gespiegelt). Zusammen bedeutet das,
+dass ein Trader in São Paulo, London oder Singapur, der eine
+Sicht auf die US-Geldpolitik einnehmen will, entweder über eine
+Krypto-native Oberfläche routen muss, die nicht für ihn gebaut
+wurde, oder den Trade ausfallen lässt. Etwa zwei Drittel des
+Polymarket-Traffics kommt bereits aus außerhalb der USA, auf
+einer Plattform, die sich dort nicht vermarktet.
+
+**Marke.** Ein Privatkunde in Brasilien vertraut bereits einem
+lokalen Broker mit seinen Ersparnissen. Er vertraut keiner
+fremdsprachigen Webseite ohne reguliertes Pendant in seiner
+Jurisdiktion. Der lokale Broker hat die Beziehung; er hat nur
+nicht die Infrastruktur, um das Produkt zu hosten.
+
+Genau diese Lücke schließt Kuest. Die Protokoll-These ist
+einfach: Der lokale Broker sollte keine Vorhersagemarkt-
+Infrastruktur bauen müssen, um Vorhersagemärkte anzubieten. Er
+sollte sie lizenzieren, white-labeln und an jedem Trade
+verdienen können – genau wie Händler auf Shopify laufen, ohne
+Zahlungsabwicklungs-Code zu schreiben.
+
+<Callout type="tip" title="Der Präzedenzfall XP × Kalshi">
+  Im März 2026 kündigte Kalshi eine strategische Distributions-
+  Partnerschaft mit XP Investimentos an, einem der größten
+  Broker Brasiliens. XP übernimmt die lokale Distribution;
+  Kalshi liefert die Handelstechnologie. Das ist das
+  Operator-plus-Infrastructure-Modell – nur dass Kalshi diesen
+  Spielzug einen Land und einen institutionellen Partner nach
+  dem anderen ausführen kann. Eine Protokoll-Schicht kann ihn
+  in jeder Jurisdiktion gleichzeitig im großen Maßstab spielen.
+</Callout>
+
+## Wie Trader Vorhersagemärkte tatsächlich nutzen
+
+Die Lehrbuchantwort ist, dass Trader Sichten auf
+Ereigniswahrscheinlichkeiten ausdrücken. Die tatsächliche
+Antwort ist interessanter und gibt ein besseres Gespür dafür,
+warum das Volumen weiter wächst.
+
+Drei Trader-Profile dominieren die Orderbücher heute.
+
+**Der Makro-Hedger.** Das ist der professionelle Desk, den wir
+vorhin erwähnt haben. Ein Fonds mit einer Duration-Sicht hält
+einen CPI-Kontrakt nicht als Sicht auf Inflation an sich,
+sondern als Hedge gegen ein bestimmtes Szenario in seinem
+Hauptbuch. Ein 0,30-Kontrakt auf „CPI druckt über 3,2 %" wird
+zu einem 300.000 $-notional Hedge gegen eine 20 Mio. $
+Treasury-Position. Die Asymmetrie macht ihn nützlich – im
+Worst Case verfällt der Hedge wertlos, der Desk nimmt aber
+keinen Margin-Schaden.
+
+**Der Narrative-Trader.** Das ist das Retail-Volumen, das früher
+in Krypto-Perpetuals lebte und nun zu Vorhersagemärkten migriert,
+weil die Unit Economics besser sind. Eine Sicht auf „Die Fed
+senkt im Juli" lässt sich in einem Perp über
+SOFR-Kurven-Approximationen ausdrücken, aber man trägt Funding,
+Übernacht-Rolls und Ausführungsrisiko. Ein binärer Kontrakt
+beseitigt all das. Man zahlt 0,42 $, hält bis zur Auflösung,
+bekommt 1 $ oder 0 $. Das Produkt ist auf eine Weise ehrlich,
+wie Perps es nicht sind.
+
+**Der Arbitrageur.** Das ist das untererwähnte Profil. Es gibt
+einen ständigen Strom an Arbitrage zwischen Polymarket, Kalshi
+und den impliziten Wahrscheinlichkeiten, die in traditionellen
+Derivaten eingebettet sind. Wenn die SOFR-Optionen-implizite
+Wahrscheinlichkeit einer Fed-Senkung 47 % beträgt und Kalshi
+bei 41 % handelt, zieht jemand das in Linie. Mit zunehmender
+Reife der Anlageklasse verengen sich die Arbitrage-Korridore
+und die kreuzweise Korrelation der Venues zieht sich zusammen.
+Das ist es, was die Anlageklasse zunehmend wie ein
+Mainstream-Derivat verhalten lässt.
+
+Was man bisher nicht in nennenswertem Umfang sieht, ist der
+institutionelle Allokator, der Vorhersagemärkte für portfolio-
+weite Risikoausdrücke nutzt. Das ist die nächste Stufe der
+Kurve. Wenn ein 40-Mrd.-$-Multi-Strategy-Fonds eine
+50-Mio.-$-Sleeve in Makro-Vorhersagemarkt-Exposure als
+direktionalen View bucht, muss die Venue-Infrastruktur in der
+Lage sein, Größen dieser Skala zu absorbieren. Die
+Plattformen, die diesen Flow absorbieren werden, werden
+gerade jetzt gebaut.
+
+## Was als Nächstes kommt
+
+Drei Kräfte konvergieren bis 2026 und 2027, von denen wir
+erwarten, dass sie die Kategorie über 50 Mrd. $ monatlichem
+Volumen hinausschieben:
+
+1. **Regulatorische Klarheit in der EU und Brasilien.** Die
+   No-Action-Haltung der CFTC gegenüber Kalshi wird durch
+   ESMA-Diskussionsentwürfe und durch Konsultationen des
+   brasilianischen Finanzministeriums gespiegelt. Sobald
+   inländische regulierte Event-Contract-Börsen in diesen
+   Jurisdiktionen möglich werden, hebt sich die geografische
+   Decke.
+2. **Institutioneller Flow wird zur Mehrheit.** Sobald
+   professionelle Desks > 50 % des Volumens auf Kalshi und
+   Polymarket ausmachen, formt sich ein Quote-Stack, der
+   deutlich größere Orders absorbiert. Die Kategorie beginnt,
+   sich wie eine echte Anlageklasse zu verhalten – Optionsstil-
+   Risikosleeves im großen Maßstab.
+3. **Die Infrastruktur-Schicht reift.** White-Label-Deploys,
+   geteilte Liquidität und Managed-Resolution-Rails verkürzen
+   die Zeit von „Betreiber entscheidet sich zu starten" zu
+   „Plattform live mit echtem Volumen" von Quartalen auf Tage.
+   Das verändert, wer Betreiber sein kann. Heute ist es ein
+   Venue-Builder. Bald ist es jeder Broker, jede Medienfirma
+   oder jeder Creator mit Publikum.
+
+Wer diese Kategorie als potenzieller Betreiber, Distributor
+oder institutioneller Allokator beforscht: Die nächsten 18
+Monate sind das Fenster, in dem die Architektur gesetzt wird.
+Die Plattformen, die die Perpetual-Welle gewonnen haben, waren
+die, die früh committed haben; das Gleiche wird hier gelten.
+
+<KuestCTA
+  headline="Skizzieren Sie bereits eine Venue? Sprechen Sie früh mit uns."
+  body="Wir arbeiten mit Brokern, Medienbetreibern und institutionellen Desks an White-Label-Vorhersagemarkt-Deployments. Geprüfte Verträge, geteilte Liquidität, Ihre Gebühr bei jedem Trade."
+  primary={{ href: "/launch", label: "Markt starten" }}
+  secondary={{ href: "/enterprise", label: "Vertrieb kontaktieren" }}
+/>

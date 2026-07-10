@@ -1,0 +1,44 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import BlogIndexIsland from '@/components/blog/BlogIndexIsland'
+import MarketingDockNav from '@/components/MarketingDockNav'
+import MarketingPageRuntime from '@/components/MarketingPageRuntime'
+import SiteFooter from '@/components/SiteFooter'
+import { createTranslator } from '@/i18n'
+import { BLOG_POSTS_PER_PAGE, listPosts } from '@/lib/blog/content'
+import { getPostCoverSrc } from '@/lib/blog/cover'
+import { CONTACT_HREF } from '@/lib/constants'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+const { locale } = Astro.props as { locale: SupportedLocale }
+const t = createTranslator(locale)
+const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
+const cards = listPosts(locale).map(post => ({
+  post,
+  coverSrc: getPostCoverSrc(post),
+  dateLabel: dateFormatter.format(post.frontmatter.publishedAt),
+  readingTimeLabel: t('{minutes} min read', { minutes: String(post.readingTime) }),
+}))
+---
+
+<BaseLayout locale={locale} title={t('Kuest Blog')} description={t('Insights, protocol updates, and operator playbooks from the Kuest team.')} canonicalPath="/blog">
+  <MarketingDockNav client:load locale={locale} active="blog" languagePath="/blog" ctaHref={CONTACT_HREF} ctaLabel={t('Contact us')} />
+  <main id="page-top" class="page blog-page">
+    <header class="blog-section blog-index-hero">
+      <div class="slbl">{t('Blog')}</div>
+      <h1 class="blog-index-title">{t('Insights from the protocol')}</h1>
+      <p class="blog-index-sub">{t('Field notes on prediction markets, protocol launches, and what we learn building white-label infrastructure for institutions.')}</p>
+    </header>
+    <section class="blog-section">
+      {cards.length === 0 ? (
+        <div class="blog-empty"><div class="slbl">{t('Coming soon')}</div><p>{t('No posts in this language yet. Check back soon, or read our latest in English.')}</p></div>
+      ) : (
+        <BlogIndexIsland client:load locale={locale} cards={cards} perPage={BLOG_POSTS_PER_PAGE} readArticleLabel={t('Read article')} prevLabel={t('Previous')} nextLabel={t('Next')} paginationLabel={t('Pagination')} />
+      )}
+    </section>
+  </main>
+  <div id="blog-final">
+    <SiteFooter note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')} docsLabel={t('Docs')} contactLabel={t('Contact')} xLabel="X" discordLabel="Discord" />
+  </div>
+  <MarketingPageRuntime client:load nextSectionId="page-top" finalSectionId="blog-final" />
+</BaseLayout>

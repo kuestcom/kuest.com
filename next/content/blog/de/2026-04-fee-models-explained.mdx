@@ -1,0 +1,277 @@
+---
+title: "Trading-Gebühren erklärt: Wie Sie Ihre Tarife setzen, ohne Trader zu vertreiben"
+description: "Ein praktischer 2026-Leitfaden zur Wahl des Gebührensatzes für Ihren Vorhersagemarkt – was funktioniert, was Volumen tötet, und wie Sie ihn mit dem Wachstum weiterentwickeln."
+publishedAt: 2026-04-08
+updatedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
+---
+
+Die Gebühr auf jedem Trade ist die wichtigste Zahl in Ihrer
+Vorhersagemarkt-Venue. Setzen Sie sie zu hoch, wandern Ihre
+Trader leise zu einer Venue mit engerer Ausführung ab; setzen
+Sie sie zu niedrig, lassen Sie wesentliche wiederkehrende
+Einnahmen ohne wirklichen Nutzen liegen. Dieser Beitrag ist die
+Betreiberseiten-Aufschlüsselung dessen, was wir 2026 tatsächlich
+funktionieren sehen, basierend auf den Venues auf dem Kuest-
+Stack und dem, was die Wettbewerbslandschaft (Kalshi,
+Polymarket, die neue Welle regionaler White-Labels) tut.
+
+Wenn Sie früher in Ihrer Bewertung sind, beginnen Sie mit dem
+<a href="/blog/2026-03-prediction-market-land-grab">Marktchancen-Beitrag</a>
+oder der
+<a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs-License-Analyse</a>.
+Dieser Beitrag setzt voraus, dass Sie diese Fragen hinter sich
+haben und entscheiden müssen, wo Sie die Betreibergebühr am
+ersten Tag setzen.
+
+<Stat
+  value="≈ 0,9 %"
+  label="Mediane Betreibergebühr auf White-Label-Vorhersagemarkt-Venues, die im Q1 2026 gestartet sind, gewichtet nach 30-Tage-Volumen"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Kuest-Betreiberumfrage, Q1 2026"
+/>
+
+## Was eine Vorhersagemarkt-Gebühr tatsächlich ist
+
+Bevor wir über Tarife sprechen, lohnt es sich, explizit zu sein,
+was die Gebühr ist und was nicht, weil Betreiber mit Broker-
+Hintergrund manchmal das falsche Default annehmen.
+
+Eine Vorhersagemarkt-Trading-Gebühr ist ein Prozentsatz des
+**Notionalwerts** eines Trades — d.h. Kontraktgröße mal
+Ausführungspreis — und wird auf jeden Fill erhoben. Es handelt
+sich nicht um einen Prozentsatz vom Gewinn, nicht um einen
+Spread, nicht um eine Auszahlungsgebühr. Ein Trader, der 100
+YES-Kontrakte zu 0,42 $ kauft, hat ein Notional von 42 $ und
+zahlt eine Gebühr von 42 $ × Ihrem Tarif. Die Gebühr wird bei
+Ausführung von der Matching-Engine eingezogen und an die
+Settlement-Adresse des Betreibers geleitet.
+
+Drei strukturelle Hinweise, die zählen:
+
+- **Gebühren werden auf beiden Seiten jedes Trades erhoben.**
+  Käufer und Verkäufer zahlen beide die Betreibergebühr. Ihr
+  effektiver Umsatz pro Trade ist 2× Tarif × Notional.
+  Betreiber, die nur eine Seite modellieren, unterschätzen den
+  Umsatz um die Hälfte.
+- **Gebühren gelten für Fills, nicht für Orders.** Eine Order
+  zu platzieren, die nie gefüllt wird, kostet den Trader
+  nichts. Nur ausgeführter Notional erzeugt Gebührenumsatz.
+- **Die Gebühr liegt über den impliziten Spread-Kosten.** Ein
+  Trader, der ein Angebot bei 0,43 $ statt 0,42 $ nimmt, zahlt
+  bereits 1 Cent Ausführungskosten. Ihre Betreibergebühr kommt
+  obendrauf.
+
+Die Struktur ist dieselbe wie die Taker-Gebühr einer
+zentralisierten Börse, mit zwei Vereinfachungen: Es gibt kein
+Maker-Rebate (weil das Protokoll Liquidität aus einem geteilten
+Buch liefert), und der Tarif ist symmetrisch über beide Seiten.
+
+## Wie wettbewerbsfähige Tarife 2026 aussehen
+
+Eine Momentaufnahme der Branche im Q1 2026, gezogen aus
+öffentlich beobachtbaren Ausführungsdaten und unserer
+quartalsweisen Betreiberumfrage:
+
+<Comparison
+  columns={["Venue-Typ", "Typische Betreibergebühr", "Spread auf liquiden Märkten", "Gesamt-Round-Trip-Kosten"]}
+  rows={[
+    ["Kalshi (US-reguliert)", "0,0 % (keine)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1,0 % (geteilt Protokoll)", "20–60 bps", "≈ 1,4–1,6 %"],
+    ["Regionale Retail-Broker White-Labels", "0,8–1,5 %", "20–80 bps", "≈ 1,2–2,3 %"],
+    ["Krypto-native Exchange-Overlays", "0,3–0,7 %", "20–60 bps", "≈ 0,7–1,4 %"],
+    ["Creator- / Community-Venues", "1,5–2,5 %", "30–100 bps", "≈ 2,0–3,5 %"],
+  ]}
+/>
+
+Zwei Dinge daraus zu lesen.
+
+Erstens, Kalshis 0 %-Headline-Tarif ist irreführend, weil sie
+ein völlig anderes Geschäftsmodell betreiben — sie sind eine
+regulierte US-Börse, die Kosten über den Spread, Marktdaten-
+Verkäufe und institutionelle Zugangsstufen einnimmt, nicht über
+eine Per-Trade-Betreibergebühr. Sie sollten nicht versuchen,
+ihre Headline zu treffen. Sie sollten den Bereich Ihrer Peer-
+Kategorie anpeilen.
+
+Zweitens, der Spread zwischen der niedrigsten Gebühr (Krypto-
+native Overlays bei ≈ 0,5 %) und der höchsten (Creator-Venues
+bei ≈ 2 %) ist etwa 4×. Dieser Spread spiegelt
+Publikumsunterschiede wider, kein Mispricing. Verschiedene
+Publikummengen tolerieren verschiedene Gebühren, und der
+richtige Tarif ist der, den Ihr spezifisches Publikum toleriert,
+ohne abzuwandern.
+
+## Was Publikumstoleranz tatsächlich bestimmt
+
+Drei Kräfte bestimmen, wie viel Gebühr eine Venue erheben kann,
+bevor das Volumen pro Trader zurückgeht. Zu wissen, welche
+Kräfte auf Ihr Publikum zutreffen, ist der größte Teil der
+Antwort.
+
+**Die Alternativkosten der Ausführung.** Ein Trader auf einer
+Creator-geführten Venue vergleicht Ihre 2 %-Gebühr mit den
+Kosten, ein Polymarket-Konto zu eröffnen, eine andere UX zu
+lernen und Gelder selbst zu verwahren. Für diesen Trader ist
+der Vergleich nicht 2 % vs 1 % — sondern 2 % vs Friction beim
+Wechseln der Venue. Friction schlägt Gebührendifferenz jedes
+Mal, bis zu einer bedeutsamen Lücke.
+
+**Die Verteilung der Trade-Größen.** Ein Retail-Trader mit
+50 $-Positionen merkt eine 1 %-Gebühr kaum — das sind 0,50 $.
+Ein professioneller Desk mit 100k $-Positionen merkt eine
+1 %-Gebühr sehr direkt — das sind 1.000 $ pro Trade. Betreiber
+mit hohem Profi-Flow müssen vorsichtiger preisen als Betreiber
+mit Retail-Tickets.
+
+**Der implizite Edge im Trade.** Ein Trader, der den YES-
+Kontrakt um 8 % falsch bepreist sieht, zahlt gerne 1 %, um
+diese Sicht zu nehmen. Ein Trader, der einen Markt mit schwacher
+Conviction (1–2 % impliziter Edge) „erkundet", springt bei jeder
+Gebühr über ≈ 0,5 % ab. Ihre Gebühr filtert implizit für Trader
+mit stärkerer Conviction, was manchmal wünschenswert ist und
+manchmal nicht.
+
+<Callout type="info" title="Der Conviction-Filter ist ein Feature">
+  Höhere Gebühren liefern höhere Profitabilität pro Trader und
+  niedrigere Trade-Velocity. Niedrigere Gebühren liefern höhere
+  Trade-Velocity und niedrigere Profitabilität pro Trader. Es
+  gibt keine universell richtige Antwort — nur eine richtige
+  Antwort für das Publikum und die Kostenstruktur, die Sie
+  haben.
+</Callout>
+
+## Konkrete Tarif-Empfehlung nach Betreibertyp
+
+Basierend auf dem, was wir über Launches sehen, sind folgende
+Startpunkte vertretbar und erfordern in den ersten sechs Monaten
+selten Korrekturen.
+
+**Retail-Broker (1k–100k Klienten).** Starten Sie bei 0,85 % und
+halten Sie 90 Tage, bevor Sie anpassen. Das liegt in der Mitte
+Ihres Wettbewerbsbereichs und deutlich unter der Toleranzgrenze
+des Publikums.
+
+**Krypto-natives Overlay oder Exchange-Add-on.** Starten Sie
+bei 0,5 %. Ihr Publikum vergleicht Sie mit Taker-Gebühren
+zentralisierter Börsen im Bereich 0,10–0,30 %. Der Sweet Spot,
+den die meisten Peers wählen, ist 0,50–0,65 %.
+
+**Creator-geführte Venue (Newsletter, Community,
+Nischenpublikum).** Starten Sie bei 1,50 %. Ihr Publikum
+toleriert höhere Gebühren, weil sie Ihnen vertrauen, die Venue
+neuartig ist, und sie Ihre Ausführung nicht aktiv mit Kalshi
+vergleichen.
+
+**Institutionsorientierte Venue (Desks, Prop, Market-Maker).**
+Starten Sie bei 0,10–0,20 % mit einer gestuften Struktur, die
+höhere Größen belohnt. Ihr Publikum ist gebührensensibel in
+Basispunkten, nicht in Prozentpunkten.
+
+**Sportwetten- oder Consumer-Fintech-Overlay.** Starten Sie bei
+1,0 %. Ihr Publikum ist an traditionelle Sportwetten-Vig
+verankert (typischerweise 4,5–10 % als Juice auf einem Parlay-
+Leg), also fühlt sich 1,0 % auf Vorhersagekontrakte im Vergleich
+billig an.
+
+## Wie der Tarif nach dem Launch entwickelt wird
+
+Die Gebühr am ersten Tag zu setzen ist die halbe Arbeit. Die
+andere Hälfte ist zu wissen, wie sie mit der Reife der Venue
+angepasst wird, und es nicht voreilig zu tun.
+
+Die sauberste Entscheidungsregel, die wir Betreiber nutzen
+sehen, ist der **90-Tage-Kohorten-Test**: Wählen Sie einen
+Starttarif, halten Sie ihn 90 Tage unangetastet, schauen Sie auf
+die Trade-Velocity-Kurve und die Trader-Retention-Kurve in
+Woche 12, und nehmen Sie eine einzige Anpassung vor.
+
+Drei Signale, die tatsächlich eine Gebührenänderung
+rechtfertigen:
+
+1. **Woche-12-Retention unter 35 %.** Das ist das stärkste
+   Signal, dass Ihre Gebühr Volumen mehr schadet als sie Umsatz
+   bringt. Senken Sie den Tarif um 20–25 bps und testen Sie
+   weitere 90 Tage.
+2. **Median-Trade-Größe sinkt im Zeitverlauf.** Trader werden
+   kostensensibler. Eine moderate Senkung (10–15 bps) bremst
+   das meist.
+3. **Volumen wächst schnell und Trader-Anzahl wächst
+   schneller.** Sie haben Preissetzungsmacht. Sie können die
+   Gebühr 10–15 bps erhöhen, ohne Volumen zu verlieren.
+
+Was Sie nicht tun sollten, ist die Gebühr als Reaktion auf einen
+Wettbewerber zu senken, der mit einem niedrigeren Tarif startet.
+
+## Wie Gebühren mit geteilter Liquidität interagieren
+
+Wenn Ihre Venue auf geteilter Liquidität läuft (was wir
+<a href="/blog/2026-04-shared-liquidity-day-one">stark empfehlen</a>),
+hat die Gebührenmathematik eine Wendung, die zu verstehen sich
+lohnt. Das geteilte Orderbuch liefert Tiefe zu Spreads auf
+Protokoll-Niveau, was bedeutet, dass die All-In-Ausführungs-
+kosten Ihrer Trader Ihre Gebühr plus ein enger (~30 bps)
+Spread auf Protokoll-Niveau sind.
+
+Betreiber, die versuchen, eigene Liquidität zu bootstrappen,
+zahlen Market-Maker entweder vertraglich (was denselben Trader
+durch breitere Spreads trifft) oder fahren ein dünnes Buch (was
+den Trader durch schlechtere Fills trifft).
+
+<Callout type="tip" title="Effektiver Tarif, nicht Headline-Tarif">
+  Wenn Sie Ihre Venue mit einem Wettbewerber vergleichen,
+  vergleichen Sie die Gesamt-Round-Trip-Kosten des Traders
+  (Betreibergebühr × 2 + Spread × 2), nicht die Headline-
+  Betreibergebühr.
+</Callout>
+
+## Häufige Fehler am ersten Tag
+
+Drei Muster, die wir wiederholt sehen und fast immer in den
+ersten sechs Monaten korrigiert werden müssen.
+
+**Verankerung an Krypto-Exchange-Spot-Gebühren.** Betreiber mit
+Krypto-Exchange-Hintergrund preisen Vorhersagekontrakte
+manchmal bei 0,10 % Taker, wie sie einen BTC-USDT-Trade
+preisen würden. Das unterpreist die operative Komplexität.
+
+**Zu aggressives Tiering, zu früh.** Eine neue Venue mit 30k $
+Wochenvolumen braucht keine fünfstufige VIP-Struktur.
+
+**Discounting durch Promotion.** „Null Gebühren in den ersten
+30 Tagen" funktioniert in Payments und Consumer-Fintech, aber
+Trader, die in einem Null-Gebühr-Fenster ankommen, haben höhere
+Churn-Raten, wenn der Tarif sich normalisiert.
+
+## Ein Referenz-Gebührenplan, der konstant funktioniert
+
+Für einen Betreiber, der eine retailorientierte
+Vorhersagemarkt-Venue betreibt und noch nicht gestartet ist:
+
+<Comparison
+  columns={["Phase", "Betreibergebühr", "Tiering", "Warum"]}
+  rows={[
+    ["Pre-Launch / Private Beta", "0,85 %", "Flach", "Baseline; Kohortendaten sammeln"],
+    ["Public Launch → Monat 6", "0,85 %", "Flach", "Halten, um Signal zu sammeln"],
+    ["Monat 6 → Monat 12", "0,95 %", "Flach", "Moderate Erhöhung nach bewiesener Retention"],
+    ["Monat 12+", "0,95 % / 0,80 % / 0,65 %", "Drei Stufen nach 30-Tage-Volumen", "Wale halten, ohne Retail zu verlieren"],
+    ["Jahr 2+", "Verhandelt für institutionelle Desks", "Custom", "Echter Prop-Flow tritt bei"],
+  ]}
+/>
+
+Das Muster, das zählt: Halten Sie Ihren Tarif lange genug, um
+aus echten Daten zu lernen, erhöhen Sie moderat, sobald sich
+die Retention bewährt hat, führen Sie Tiering erst ein, wenn
+Sie nennenswertes Volumen haben, und verhandeln Sie explizit
+mit institutionellem Flow, sobald er ankommt.
+
+<KuestCTA
+  headline="Möchten Sie ein Gebührenmodell, das auf Ihr Publikum abgestimmt ist?"
+  body="Wir gehen Ihr Publikumsprofil, Ihre Zieljurisdiktion und die Venues, mit denen Ihre Trader Sie vergleichen werden, durch — und geben Ihnen innerhalb einer Stunde einen vertretbaren Starttarif."
+  primary={{ href: "/launch", label: "Launch-Wizard öffnen" }}
+  secondary={{ href: "/enterprise", label: "Gebührenstrategie-Call buchen" }}
+/>

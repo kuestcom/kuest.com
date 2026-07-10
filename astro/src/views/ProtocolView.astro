@@ -1,0 +1,11 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import ProtocolPage from '@/components/pages/ProtocolPage'
+import { createTranslator } from '@/i18n'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+const { locale } = Astro.props as { locale: SupportedLocale }
+const t = createTranslator(locale)
+---
+<BaseLayout locale={locale} title={t('Kuest Protocol - Prediction Market Infrastructure')} description={t('Kuest is a white-label prediction market protocol that lets institutions, media companies, and creators launch branded markets with shared liquidity and protocol-level infrastructure.')} canonicalPath="/protocol">
+  <ProtocolPage client:load locale={locale} />
+</BaseLayout>

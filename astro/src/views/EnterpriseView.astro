@@ -1,0 +1,11 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import EnterprisePage from '@/components/pages/EnterprisePage'
+import { createTranslator } from '@/i18n'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+const { locale } = Astro.props as { locale: SupportedLocale }
+const t = createTranslator(locale)
+---
+<BaseLayout locale={locale} title={t('Kuest Enterprise')} description={t('White-label prediction market infrastructure for financial institutions, media platforms, and enterprise operators.')} canonicalPath="/enterprise">
+  <EnterprisePage client:load locale={locale} />
+</BaseLayout>

@@ -1,0 +1,230 @@
+---
+title: "Frais de Trading Expliqués : Comment Fixer les Vôtres Sans Faire Fuir les Traders"
+description: "Un guide pratique 2026 pour choisir le tarif de votre marché de prédiction — ce qui marche, ce qui tue le volume, et comment l'évoluer en grandissant."
+publishedAt: 2026-04-08
+updatedAt: 2026-04-22
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "fees", "monetisation"]
+---
+
+Les frais sur chaque trade sont le chiffre le plus important de
+votre venue de marché de prédiction. Trop hauts, vos traders
+migrent silencieusement vers une venue à l'exécution plus
+serrée ; trop bas, vous laissez des revenus récurrents
+matériels sur la table sans bénéfice réel. Cet article est la
+décomposition côté opérateur de ce que nous voyons réellement
+fonctionner en 2026, tirée des venues actives sur le stack
+Kuest et de ce que fait le paysage concurrentiel (Kalshi,
+Polymarket, la nouvelle vague de white-labels régionaux).
+
+Si vous êtes plus tôt dans votre évaluation, commencez par le
+<a href="/blog/2026-03-prediction-market-land-grab">post sur l'opportunité de marché</a>
+ou l'<a href="/blog/2026-04-build-vs-license-prediction-market">analyse construire-vs-licencier</a>.
+Ce post suppose que vous avez dépassé ces questions et devez
+décider où placer la commission opérateur le jour un.
+
+<Stat
+  value="≈ 0,9 %"
+  label="Commission médiane d'opérateur sur les venues white-label de marchés de prédiction lancées au T1 2026, pondérée par le volume sur 30 jours"
+  sourceHref="https://kuest.com/research/fee-survey"
+  sourceLabel="Enquête opérateurs Kuest, T1 2026"
+/>
+
+## Ce qu'est réellement une commission de marché de prédiction
+
+Avant de discuter des taux, il vaut la peine d'être explicite
+sur ce que la commission est et n'est pas, parce que les
+opérateurs venant du courtage supposent parfois la mauvaise
+valeur par défaut.
+
+Une commission de trading sur marché de prédiction est un
+pourcentage de la valeur **notionnelle** d'un trade — c'est-à-
+dire la taille du contrat fois le prix exécuté — perçu sur
+chaque exécution. Ce n'est pas un pourcentage du profit, ce
+n'est pas un spread, et ce ne sont pas des frais de retrait. Un
+trader qui achète 100 contrats OUI à 0,42 $ a un notionnel de
+42 $ et paie une commission de 42 $ × votre taux.
+
+Trois notes structurelles qui comptent :
+
+- **Les commissions sont prélevées des deux côtés de chaque
+  trade.** Acheteur et vendeur paient tous deux la commission
+  opérateur. Votre revenu effectif par trade est de 2 × taux ×
+  notionnel.
+- **Les commissions s'appliquent aux exécutions, pas aux
+  ordres.** Poster un ordre qui ne s'exécute jamais ne coûte
+  rien au trader.
+- **La commission s'ajoute au coût implicite du spread.** Un
+  trader qui prend une offre à 0,43 $ au lieu de 0,42 $ paie
+  déjà 1 cent de coût d'exécution. Votre commission opérateur
+  vient par-dessus.
+
+La structure est la même que la commission taker d'une bourse
+centralisée, avec deux simplifications : pas de rebate maker
+(parce que le protocole fournit la liquidité depuis un livre
+partagé), et le taux est symétrique des deux côtés.
+
+## À quoi ressemblent les taux compétitifs en 2026
+
+Un instantané de l'industrie au T1 2026 :
+
+<Comparison
+  columns={["Type de venue", "Commission opérateur typique", "Spread sur marchés liquides", "Coût total aller-retour"]}
+  rows={[
+    ["Kalshi (régulé US)", "0,0 % (aucune)", "10–40 bps", "≈ 20–80 bps"],
+    ["Polymarket (on-chain)", "≈ 1,0 % (partagée avec protocole)", "20–60 bps", "≈ 1,4–1,6 %"],
+    ["White-labels de courtiers retail régionaux", "0,8–1,5 %", "20–80 bps", "≈ 1,2–2,3 %"],
+    ["Overlays d'exchanges crypto-natifs", "0,3–0,7 %", "20–60 bps", "≈ 0,7–1,4 %"],
+    ["Venues créateur / communauté", "1,5–2,5 %", "30–100 bps", "≈ 2,0–3,5 %"],
+  ]}
+/>
+
+Deux choses à lire de ce tableau.
+
+D'abord, le taux affiché de 0 % de Kalshi est trompeur parce
+qu'ils opèrent un modèle économique entièrement différent —
+ils sont une bourse régulée US qui récupère ses coûts via le
+spread, les ventes de données de marché et les niveaux d'accès
+institutionnel, pas via une commission par trade. Vous ne
+devriez pas essayer d'égaler leur affichage.
+
+Ensuite, l'écart entre le venue avec la commission la plus
+basse (overlays crypto-natifs à ~0,5 %) et le plus haut (venues
+créateur à ~2 %) est d'environ 4×. Cet écart reflète des
+différences d'audience, pas un mispricing.
+
+## Ce qui détermine vraiment la tolérance de l'audience
+
+Trois forces déterminent combien de commission une venue peut
+prélever avant que le volume par trader ne commence à décliner.
+
+**Le coût alternatif d'exécution.** Un trader sur une venue
+créateur compare votre 2 % au coût d'ouvrir un compte
+Polymarket, d'apprendre une autre UX et d'auto-custodier des
+fonds. Pour ce trader, la comparaison n'est pas 2 % vs 1 % —
+c'est 2 % vs friction de changer de venue. La friction bat le
+différentiel de commission à chaque fois, jusqu'à un écart
+significatif.
+
+**La distribution des tailles de trade.** Un trader retail
+posant des positions à 50 $ remarque à peine une commission de
+1 % — c'est 0,50 $. Un desk professionnel à 100 k$ par position
+remarque très directement une commission de 1 % — c'est
+1 000 $ par trade.
+
+**Le edge implicite dans le trade.** Un trader qui pense que le
+contrat OUI est mal coté de 8 % est heureux de payer 1 % pour
+prendre cette vue. Un trader « explorant » un marché avec une
+faible conviction (1–2 % d'edge implicite) rebondit sur toute
+commission au-dessus de ~0,5 %.
+
+<Callout type="info" title="Le filtre de conviction est une feature">
+  Les commissions plus élevées livrent une plus grande
+  rentabilité par trader et une plus faible vélocité de trades.
+  Les commissions plus basses livrent une plus grande vélocité
+  et une plus faible rentabilité par trader. Il n'y a pas de
+  réponse universellement bonne — seulement une bonne réponse
+  pour l'audience et la structure de coûts que vous avez.
+</Callout>
+
+## Recommandation concrète de taux par type d'opérateur
+
+**Courtier retail (1k–100k clients).** Commencez à 0,85 % et
+maintenez 90 jours avant d'ajuster.
+
+**Overlay crypto-natif ou add-on d'exchange.** Commencez à
+0,5 %. Votre audience vous compare à des taux taker de 0,10 à
+0,30 %.
+
+**Venue dirigée par un créateur.** Commencez à 1,50 %. Votre
+audience tolère des frais plus élevés car elle vous fait
+confiance.
+
+**Venue institutionnelle.** Commencez à 0,10–0,20 % avec une
+structure par paliers récompensant la taille.
+
+**Sportsbook ou overlay fintech consumer.** Commencez à 1,0 %.
+Votre audience est ancrée au vig traditionnel des sportsbooks
+(typiquement 4,5–10 %).
+
+## Comment faire évoluer le taux après le lancement
+
+Fixer la commission au jour un est la moitié du travail.
+L'autre moitié est de savoir l'ajuster à mesure que la venue
+mûrit, et de ne pas le faire prématurément.
+
+La règle la plus propre que nous voyons utiliser est le **test
+de cohorte de 90 jours** : choisissez un taux de départ, gardez-
+le 90 jours intact, regardez la courbe de vélocité et la courbe
+de rétention à la semaine 12, puis faites un seul ajustement.
+
+Trois signaux qui justifient un changement :
+
+1. **Rétention semaine 12 sous 35 %.** Le taux nuit au volume
+   plus qu'il ne génère de revenus. Baissez de 20–25 bps et
+   retestez 90 jours.
+2. **Taille médiane de trade en baisse au fil du temps.** Les
+   traders deviennent plus sensibles aux coûts. Une baisse
+   modeste (10–15 bps) suffit généralement.
+3. **Volume croissant rapidement et nombre de traders
+   croissant plus vite.** Vous avez du pouvoir de pricing. Vous
+   pouvez monter de 10–15 bps sans perdre de volume.
+
+## Comment les frais interagissent avec la liquidité partagée
+
+Si votre venue tourne sur liquidité partagée (ce que nous
+<a href="/blog/2026-04-shared-liquidity-day-one">recommandons fortement</a>),
+le calcul a une nuance qui vaut la peine d'être comprise. Le
+carnet partagé fournit de la profondeur à des spreads de
+niveau-protocole, ce qui signifie que le coût total d'exécution
+de vos traders est votre commission plus un spread serré
+(~30 bps) au niveau du protocole.
+
+<Callout type="tip" title="Taux effectif, pas taux affiché">
+  Lorsque vous comparez votre venue à un concurrent, comparez
+  le coût total aller-retour du trader (commission × 2 + spread
+  × 2), pas le taux affiché.
+</Callout>
+
+## Erreurs courantes au jour un
+
+Trois schémas que nous voyons à répétition :
+
+**S'ancrer aux frais spot d'exchange crypto.** Les opérateurs
+venant d'un background d'exchange crypto tarifent parfois les
+contrats de prédiction à 0,10 % taker, comme ils tariferaient
+un trade BTC-USDT. Cela sous-tarife la complexité opérationnelle.
+
+**Tiering trop agressif, trop tôt.** Une nouvelle venue avec
+30 k$ de volume hebdomadaire n'a pas besoin d'une structure VIP
+à cinq paliers.
+
+**Discount par promotion.** « Zéro commission pendant 30
+jours » fonctionne en paiements et consumer-fintech parce que
+le coût d'acquisition excède les revenus perdus. Sur un marché
+de prédiction, les traders arrivés pendant une fenêtre zéro
+commission churnent à des taux beaucoup plus élevés à la
+normalisation.
+
+## Un calendrier de référence qui fonctionne
+
+<Comparison
+  columns={["Étape", "Commission opérateur", "Tiering", "Pourquoi"]}
+  rows={[
+    ["Pré-lancement / beta privée", "0,85 %", "Plat", "Établir une baseline ; collecter des données de cohorte"],
+    ["Lancement public → mois 6", "0,85 %", "Plat", "Maintenir pour collecter du signal"],
+    ["Mois 6 → mois 12", "0,95 %", "Plat", "Hausse modeste après rétention prouvée"],
+    ["Mois 12+", "0,95 % / 0,80 % / 0,65 %", "Trois paliers par volume 30 jours", "Retenir les whales sans perdre le retail"],
+    ["Année 2+", "Négocié pour desks institutionnels", "Sur mesure", "Vrai flux prop arrive"],
+  ]}
+/>
+
+<KuestCTA
+  headline="Vous voulez un modèle de frais ajusté à votre audience spécifique ?"
+  body="Nous parcourons votre profil d'audience, votre juridiction cible et les venues auxquelles vos traders sont susceptibles de vous comparer — et nous vous donnons un taux de départ défendable en une heure."
+  primary={{ href: "/launch", label: "Lancer le wizard" }}
+  secondary={{ href: "/enterprise", label: "Réserver un appel stratégie" }}
+/>

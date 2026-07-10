@@ -1,0 +1,82 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import { SUPPORTED_LOCALES } from '@/i18n/locales'
+import { getPathname } from '@/i18n/navigation'
+import '@/styles/globals.css'
+import '@/styles/landing-marketing.css'
+
+interface Props {
+  locale: SupportedLocale
+  title: string
+  description: string
+  canonicalPath: string
+  ogImage?: string
+  alternates?: Partial<Record<SupportedLocale, string>>
+  article?: { publishedTime: string; modifiedTime?: string; tags?: string[] }
+}
+
+const {
+  locale,
+  title,
+  description,
+  canonicalPath,
+  ogImage = '/assets/images/your-predictoin-market-500mi-vol.png',
+  alternates = Object.fromEntries(
+    SUPPORTED_LOCALES.map(code => [code, getPathname({ href: canonicalPath, locale: code })]),
+  ),
+  article,
+} = Astro.props
+const site = Astro.site ?? new URL('https://kuest.com')
+const canonical = new URL(getPathname({ href: canonicalPath, locale }), site)
+const absoluteOgImage = new URL(ogImage, site)
+const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, locale: 'en' })
+---
+
+<!doctype html>
+<html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} data-theme-mode="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#CDFF00" />
+    <link rel="icon" type="image/svg+xml" href="/images/kuest-logo.svg" />
+    <link rel="apple-touch-icon" href="/images/kuest-logo.svg" />
+    <link rel="canonical" href={canonical} />
+    {Object.entries(alternates).map(([code, path]) => (
+      <link rel="alternate" hreflang={code} href={new URL(path, site)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(defaultAlternate, site)} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content="Kuest" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:locale" content={locale} />
+    {article && <meta property="article:published_time" content={article.publishedTime} />}
+    {article?.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+    {article?.tags?.map(tag => <meta property="article:tag" content={tag} />)}
+    <meta name="twitter:card" content={article ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+    <script is:inline>
+      try {
+        const mode = localStorage.getItem('kuest-theme-mode') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.themeMode = mode;
+      } catch {}
+    </script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-S0S2K7EQE4"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-S0S2K7EQE4');
+    </script>
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-screen flex-col font-sans">
+    <slot />
+  </body>
+</html>

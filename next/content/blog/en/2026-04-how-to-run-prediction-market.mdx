@@ -1,0 +1,628 @@
+---
+title: "How to Run Your Own Prediction Market Venue: The Complete 2026 Operator's Manual"
+description: "A comprehensive operator's manual for the first 365 days of a prediction-market venue — KPIs, market creation cadence, fee evolution, retention, support, resolution operations, regulatory posture, audience growth, and the year-1 to year-2 transition."
+publishedAt: 2026-04-24
+author:
+  name: "Kuest"
+  url: "https://kuest.com"
+cover: cover.jpg
+tags: ["operators", "playbook", "operations", "scaling", "infrastructure"]
+---
+
+Launching a prediction-market venue is one project. Running it
+is a different one. The launch playbook ends at day 30; this
+manual starts at day 31 and runs through the year-1 to year-2
+transition. Most of the operator value created across this
+category in 2026 will be created by operators who run their
+venues well after launch — far more than will be created by
+operators who simply launched first.
+
+This is the operator's manual for that running. It assumes
+you've already shipped (the
+<a href="/blog/2026-04-how-to-open-prediction-market">launch playbook</a>
+covers the shipping; the
+<a href="/blog/2026-04-launch-prediction-markets">15-minute walkthrough</a>
+covers the technical deploy). It assumes you have an audience,
+real volume, and a small team capable of executing on operator
+decisions. From there, here's how to run the venue through
+the first year and into the second.
+
+<Stat
+  value="≈ 4×"
+  label="Median 12-month volume multiple for prediction-market operators who execute the running playbook below, vs operators who launch and then under-invest in operations"
+  sourceHref="https://kuest.com/research/operator-cohort-2025"
+  sourceLabel="Kuest operator cohort study, 2025"
+/>
+
+The 4× figure is the gap between operators who run the venue
+attentively and operators who run it as a launched product
+they don't actively manage. The infrastructure is the same;
+the operator decisions are not.
+
+## The three KPIs that actually matter
+
+A running venue generates dozens of metrics, but three of them
+explain almost everything about the venue's trajectory.
+
+**Weekly active traders (WAT).** The count of unique traders
+who placed at least one trade in the past seven days. This is
+the single most important number for predicting where the
+venue is in twelve months. WAT growth, sustained, compounds
+into volume; WAT decline is the leading indicator of
+operational problems that will manifest in volume metrics
+within a month.
+
+**Median trade size.** The median (not mean) notional per
+trade across the venue. The median is more honest than the
+mean because a few large institutional trades distort the
+mean without affecting the audience's typical experience.
+Median trade size growing over time signals that the audience
+is gaining conviction and sizing in; flat or declining median
+size signals that the audience is hedging or losing
+confidence.
+
+**Resolution dispute rate.** The fraction of resolved markets
+that went to dispute rather than the optimistic-oracle
+clean path (we covered the mechanics in
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution post</a>).
+On a healthy venue this number is below 0.3%. Above 0.5%, it
+indicates contract specification problems that will erode
+trader trust over weeks. The metric is leading; trust
+collapse is lagging.
+
+These three KPIs should be visible at all times to the
+operator. Weekly review of just these three numbers, with the
+discipline to act on what they reveal, is the foundation of
+running a venue well. Other metrics matter, but they're
+mostly diagnostic of these three.
+
+<Comparison
+  columns={["KPI", "Healthy", "Watch", "Bad"]}
+  rows={[
+    ["Weekly active traders growth (m/m)", ">15%", "5–15%", "<5% or negative"],
+    ["Median trade size growth (m/m)", ">5%", "0–5%", "Negative"],
+    ["Resolution dispute rate", "<0.3%", "0.3–0.5%", ">0.5%"],
+  ]}
+/>
+
+## Market creation cadence
+
+The single highest-leverage operational lever is the cadence
+and quality of new markets. Audiences trade what's available.
+The pipeline of new markets is what keeps existing traders
+returning and what attracts new audiences from adjacent
+segments.
+
+The cadence question is "how many new markets per week?" The
+answer depends on audience size and vertical, but the patterns
+that work are narrower than most operators expect.
+
+For a venue with 1,000 weekly active traders in a focused
+vertical (e.g., macro contracts), the right cadence is
+roughly 8–15 new markets per week. Below 5 per week, returning
+traders find nothing new and churn. Above 25 per week, the
+quality drops because thoughtful contract specification at
+that volume requires more operator capacity than is sensible.
+
+For a venue with 10,000 weekly active traders across multiple
+verticals, the cadence is roughly 30–50 per week, distributed
+across the active verticals. Beyond that, market creation has
+to be partially automated through templated pipelines.
+
+The discipline is harder than the cadence number suggests.
+Each new market is a contract specification decision (which
+data source, which resolution rule, which edge cases), a
+liquidity decision (is this market mainstream enough to share
+liquidity, or does it need seeding), and an operational
+decision (when does it close, what's the support exposure if
+it goes to dispute). A venue that ships 10 markets per week
+needs a process for making those decisions consistently.
+
+The pattern that consistently works: a market-creation team of
+1–2 people, each with a defined vertical they're responsible
+for, working from a backlog of audience-suggested and
+event-calendar-driven candidate markets. Output is reviewed
+weekly against the dispute rate; if disputes spike on a
+specific creator's markets, the spec discipline gets tightened.
+
+## Listing decisions: the signal-vs-noise problem
+
+A natural temptation as the venue grows is to list more
+markets, more variety, more verticals. The data consistently
+shows this is a mistake. The venues that out-perform are
+the ones that list disciplined.
+
+The framework for listing decisions has three filters every
+candidate market must pass:
+
+1. **Resolution clarity.** Can the resolution rule be written
+   in two sentences without ambiguity? If not, the market
+   isn't ready to list. Almost all dispute-rate problems
+   trace back to listings that failed this test at creation.
+2. **Audience interest.** Will at least 15 traders take a
+   position on this market in the first week? This is hard
+   to predict perfectly, but if the operator can't make a
+   defensible argument for why this market matters to the
+   audience, it probably doesn't.
+3. **Liquidity feasibility.** Can the market trade with a
+   spread under 100 bps in the first 24 hours? If the answer
+   is "no, but we can market-make it," the operator is
+   adding cost. If the answer is "no, and shared liquidity
+   doesn't cover this category," the market won't trade
+   well and shouldn't ship.
+
+A market that fails any of the three should not list. Most
+operators that struggle with retention struggle because
+they're listing markets that fail filter 1 (resolution
+clarity) or filter 3 (liquidity), and the audience experiences
+those failures as venue-level problems even though they're
+listing-level problems.
+
+<Callout type="warning" title="The 'someone might trade this' trap">
+  The single most common bad listing decision is "let's list
+  it because someone might want to trade it." On a venue with
+  thousands of markets, the cost of listing a market that
+  doesn't trade is small. On a venue with a focused vertical
+  and a small audience, every listed market that doesn't
+  trade dilutes attention from the markets that should. The
+  filter is "will this market produce real activity?", not
+  "could this market produce real activity?"
+</Callout>
+
+## Fee evolution over time
+
+The fee schedule we recommended for launch (covered in the
+<a href="/blog/2026-04-fee-models-explained">fee models post</a>)
+is a starting position, not a permanent setting. The
+operator's job through the first year is to evolve the fee
+based on what the data reveals about audience tolerance.
+
+The three signals that warrant a fee change:
+
+1. **Week-12 retention below 35%.** The fee is hurting volume
+   more than it's earning revenue. Drop the rate by 20–25
+   bps and re-test for another 90 days.
+2. **Median trade size declining over multiple months.**
+   Traders are getting cost-sensitive. Drop the rate by 10–15
+   bps and watch whether median trade size recovers.
+3. **WAT growing faster than volume per trader.** Pricing
+   power exists. The fee can rise 10–15 bps without losing
+   audience.
+
+The cadence of fee changes is also operational discipline.
+Aggressive operators want to change fees monthly. The data
+doesn't support monthly changes; the signal in fee-rate
+behaviour takes 8–10 weeks to stabilise, and faster
+adjustments inject noise without producing better
+understanding.
+
+The discipline that consistently works: hold the launch fee
+for the first 90 days, run one well-considered adjustment at
+day 90 based on retention data, hold that for 90 more days,
+and consider tiered fees only after the venue has 6+ months
+of consistent operation and meaningful institutional flow.
+
+## Trader retention strategies that actually work
+
+Retention is the leading indicator of every other metric.
+Acquired traders who don't return cost almost as much as
+acquired traders who never trade at all. The retention
+strategies that consistently produce results are
+operationally simple, but they have to be done deliberately.
+
+**Resolution communication.** When a market resolves, the
+trader should get a notification within minutes (not hours)
+showing the outcome, their position, and the credited
+amount. This sounds trivial; many operators get it
+slightly wrong (delayed notifications, unclear position
+summaries) and lose 5–8 percentage points of retention as a
+result.
+
+**New-market relevance.** The new markets shipped each week
+should be relevant to the existing audience. A macro-focused
+audience doesn't get sports markets dropped on them; a
+sports-focused audience doesn't get political markets. The
+weekly digest of new markets should feel like the venue
+"gets" what the trader cares about.
+
+**Position-management UX.** Traders should be able to see
+all open positions in one place, close positions in one
+click, and see their realized and unrealized P&L without
+navigation. Fragmented position UX is the #1 reason
+traders churn after their first few weeks; they can't tell
+how they're doing, so they stop trading.
+
+**Educational content for the second tier.** The traders
+who sign up but only place one or two trades in their
+first month are the ones who need education to convert into
+real activity. Content (newsletters, tutorial videos,
+explainer threads) that goes specifically to this cohort
+roughly doubles their conversion to active traders compared
+to leaving them alone.
+
+The pattern across all four is that retention is operational
+quality, not strategic genius. Operators that out-perform on
+retention are the ones with disciplined operational
+attention to these specific touchpoints. The strategy is
+simple; the execution is what differentiates.
+
+## Customer support as a retention lever
+
+Support is usually treated as a cost center. On a
+prediction-market venue, support is one of the most
+effective retention mechanisms available, and operators who
+get it right see meaningful retention compounding from it.
+
+The pattern that works:
+
+- **First-response within an hour.** The first reply doesn't
+  have to resolve the issue; it has to acknowledge it and
+  set expectations. Traders who feel heard within an hour
+  retain at meaningfully higher rates than traders who wait
+  six hours, even if both end up resolved equally.
+- **Real names from real humans.** Support replies signed by
+  named people, not "the support team," produce dramatically
+  better trader trust. The cost of having actual names on
+  replies is tiny; the retention impact is meaningful.
+- **Issue categorisation that drives product fixes.** Every
+  support ticket should be tagged by category (deposit
+  issue, market clarity, position confusion, withdrawal
+  delay, technical bug). Weekly review of the category mix
+  identifies the product gaps that produce support load.
+  Closing those gaps is permanent retention improvement.
+
+Support volume itself is a metric. Healthy: under 5 tickets
+per 100 weekly active traders. Watch: 5–15. Bad: above 15.
+A spike in support volume is a leading indicator of either a
+specific incident (which the on-call rotation handles) or a
+specific UX gap that the product team should address.
+
+## Resolution operations as ongoing work
+
+Resolution is sometimes treated as automated infrastructure
+that doesn't need operator attention. That's wrong. A
+running venue with hundreds of markets per month has dozens
+of edge cases per week — markets where the underlying data
+is ambiguous, where the source moves, where a major event
+reframes the resolution question. Each one needs operator
+judgement.
+
+The operator's resolution operations playbook:
+
+- **A defined "resolution-ops" person or rotation.** One named
+  person per week is responsible for actively monitoring
+  resolutions, fielding edge cases, and signing off on
+  resolutions that flagged for review.
+- **A pre-published resolution policy.** A document that
+  states how ambiguous cases are handled. Traders should be
+  able to read it before disputes happen, not after. The
+  policy itself doesn't have to be long; it has to be
+  clear.
+- **Public documentation when an edge case is handled.**
+  When the operator makes a non-trivial resolution decision,
+  publishing the reasoning publicly (not just to the
+  affected traders) builds long-term trust. The operators
+  with the strongest resolution reputations are the ones
+  who've been transparent about their reasoning, not the
+  ones who never had edge cases.
+- **A relationship with the protocol's resolution support.**
+  Some edge cases require protocol-level escalation
+  (especially anything involving the optimistic-oracle
+  dispute path). Operators should have a documented
+  escalation path with the protocol provider and use it
+  proactively rather than reactively.
+
+A clean resolution-ops practice is what separates venues
+with 0.2% dispute rates from venues with 0.6% dispute
+rates. The protocol-level mechanics are the same; the
+operator-level discipline is what differs.
+
+## Communication during incidents
+
+Every running venue has incidents — payment provider
+outages, market resolution delays, scheduled maintenance,
+occasional bugs. The operator's communication during
+incidents is what determines whether they damage trust or
+not.
+
+The communication patterns that consistently work:
+
+- **Proactive disclosure.** Tell the audience about the
+  incident before they ask. A 10-minute Twitter post
+  acknowledging "we're seeing slower resolution on
+  market X, investigating" builds trust. A 24-hour silence
+  followed by "we have an update" destroys it.
+- **Specific timelines.** "We expect resolution in the next
+  hour" is better than "we'll update soon." If the timeline
+  slips, update. The discipline is in being specific even
+  when uncertain.
+- **Post-incident write-ups.** After any non-trivial
+  incident, write a public post-mortem that explains what
+  happened, what was affected, and what's being changed to
+  prevent recurrence. Operators who do this consistently
+  build long-term credibility that survives incidents.
+- **Personal acknowledgement to affected traders.** Direct
+  outreach to traders whose positions were specifically
+  affected. Not auto-emails — actual human messages. This
+  is expensive in operator time and worth the cost.
+
+The pattern across all four is that incidents are
+opportunities to strengthen trust if handled well, and
+opportunities to lose it if handled poorly. Operators who
+treat incidents as PR risks rather than trust events
+underperform.
+
+## Regulatory relationship management
+
+Through the first year of operation, the regulatory
+relationship in the operator's primary jurisdiction has to
+mature from "we launched compliantly" to "the regulator
+knows us, sees our reporting, and is comfortable with our
+posture." This is harder than most operators anticipate
+because regulators move slowly and require continuity.
+
+The minimum operator-side regulatory practice:
+
+- **Quarterly written submissions.** Even when not required,
+  voluntary quarterly reports to the relevant regulator
+  showing volume, trader count, dispute rate, and
+  compliance metrics build a relationship that becomes
+  invaluable when something goes wrong.
+- **Pre-emptive disclosure of changes.** If the operator
+  changes the fee model, the market scope, the audience
+  targeting, or any compliance-relevant parameter, the
+  regulator hears about it before the public does.
+  Surprise is the single thing regulators dislike most.
+- **A named regulatory liaison on the operator team.** Not
+  a part-time legal counsel — a named full-time person
+  who owns the regulator relationship. By the time the
+  relationship matters, the operator wishes they'd hired
+  this person earlier.
+- **A clean separation between operational decisions and
+  regulator-facing decisions.** Operations move fast;
+  regulator-facing changes move slowly. The operator's
+  process should make this explicit so operational
+  improvements don't accidentally violate compliance
+  posture.
+
+Regulatory tightening cycles will happen. The operators who
+survive them are the ones who built the relationship
+through the calm period. Operators who skipped relationship
+management get cut off when the cycle tightens.
+
+## Audience growth: the second-year question
+
+The first 6 months of a venue's life are about activation
+and retention. The second 6 months are about audience
+growth. The shift is harder than most operators anticipate
+because the playbook is different.
+
+For audience growth in months 7–12, three channels reliably
+produce returns:
+
+**Referral mechanics inside the existing audience.** A
+trader who's been active for 60+ days is meaningfully more
+likely to refer another trader than a trader in their
+first month. Referral programs work better at the second
+half of the year than at the first. Build the referral
+mechanic at month 6, not at launch.
+
+**Content-driven SEO and audience expansion.** By month 6,
+the venue has enough operational data to write authoritative
+content about its niche — market analysis, audience
+behaviour, resolution patterns. That content compounds in
+search rankings over 12+ months and is a primary acquisition
+channel by month 18.
+
+**Vertical expansion to adjacent audiences.** A
+macro-focused venue at month 8 can responsibly add a sports
+or political vertical without diluting the macro audience.
+The expansion brings in audiences from the new vertical;
+some of them stay on the macro side too.
+
+The pattern that doesn't work at this stage: spending
+heavily on cold paid acquisition. The unit economics for
+prediction markets in 2026 don't support paid CAC above
+~$30 per active trader, which is roughly 3× cheaper than
+typical fintech CAC. Operators who try to "grow faster
+through paid" end up burning capital on traders that
+don't activate.
+
+## Tier introduction: when and how
+
+By month 9–12, most operators have enough volume
+distribution to introduce tiered fees. The tier structure
+that consistently works is a three-tier system based on
+30-day volume, with tier breaks at meaningful volume
+thresholds.
+
+Common pattern:
+
+- **Standard tier (default).** Whatever the launch fee
+  ended up at, e.g., 0.95%.
+- **Mid tier (>$10k 30-day volume).** A small discount,
+  e.g., 0.80%.
+- **Top tier (>$100k 30-day volume).** A meaningful
+  discount, e.g., 0.65%.
+
+The thresholds and the discount sizes should be tuned to
+the specific venue's distribution. The discipline is to
+introduce tiers only after the venue has stable operations,
+to communicate the tier structure clearly, and to grandfather
+existing traders into appropriate tiers based on their
+historical activity.
+
+Tiering pre-month-9 is consistently a mistake. The data
+isn't stable enough; the discounts confuse the audience;
+the operational complexity outweighs the revenue
+optimization.
+
+## Reporting and analytics
+
+By month 6, the operator should have a reporting setup
+that surfaces the three core KPIs (WAT, median trade size,
+dispute rate) plus a structured set of secondary metrics
+(activation rate by acquisition channel, retention by
+cohort, support volume by category, resolution time by
+market type).
+
+The reporting cadence that works:
+
+- **Daily.** WAT, trades, volume, deposits, withdrawals,
+  support tickets. Operator dashboard.
+- **Weekly.** Cohort retention, market-by-market volume,
+  dispute summary, fee revenue. Operator team review.
+- **Monthly.** Strategic review covering all KPIs, content
+  performance, audience growth, regulatory submissions.
+  Stakeholder review.
+- **Quarterly.** Full strategic review including
+  competitive positioning, vertical expansion decisions,
+  fee evolution decisions, and regulatory relationship
+  status. Board / executive level review.
+
+Operators that don't have this reporting cadence by month
+6 spend the second half of the year guessing at metrics
+they should know precisely. The reporting setup pays for
+itself many times over.
+
+## The year-1 to year-2 transition
+
+By month 11, the operator should be planning the year-2
+strategy. The transition from year 1 (launch + activate +
+retain) to year 2 (expand + monetize + scale) is a real
+shift and worth being deliberate about.
+
+The year-2 priorities that consistently emerge:
+
+1. **Vertical expansion.** Add a second or third vertical
+   with the operational discipline that month 6+ proved
+   works. Start narrow inside the new vertical and expand
+   from there.
+2. **Cross-jurisdictional expansion.** Add a second
+   jurisdiction with a compliance overlay specific to that
+   region. This is a 6–8 week project per jurisdiction, not
+   a one-week project, and shouldn't be rushed.
+3. **Institutional flow.** By year 2, the venue has enough
+   volume to attract institutional desks. Build the
+   institutional onboarding (block trade rails, custom
+   reporting, dedicated relationship management). The
+   institutional share of volume should grow from
+   under-5% in year 1 to 20–35% by end of year 2.
+4. **Product depth.** Year 1 ships a working venue. Year 2
+   ships a sophisticated one — advanced order types, better
+   analytics for traders, improved position management,
+   educational depth.
+5. **Brand authority.** By year 2, the venue should be
+   producing thought leadership content (research notes,
+   audience studies, market behaviour analysis) that
+   positions the operator as an authority in their
+   vertical. This compounds over years.
+
+The year-2 transition is what determines whether the
+venue plateaus at year-1 scale or compounds into a
+durable position. Operators who plan it deliberately
+out-perform operators who treat year 2 as "more of year 1."
+
+## Common mistakes after launch
+
+Five patterns that consistently underperform across the
+first year. Each is fixable if the operator sees them
+coming.
+
+**Under-investing in operations after launch.** Treating
+the venue as a launched product rather than an operating
+business. The 4× multiplier mentioned at the top of this
+post is the gap between operators who actively run their
+venues and operators who don't.
+
+**Listing too many markets too fast.** Driven by the
+intuition that more markets means more revenue. The
+opposite is true; listing discipline produces the venues
+that scale.
+
+**Aggressive fee changes.** Adjusting the fee monthly or
+based on individual trader complaints. The signal isn't
+strong enough; the noise overwhelms the signal.
+
+**Ignoring resolution operations.** Treating resolution as
+an automated background process that doesn't need
+attention. Most reputation damage in this category comes
+from resolution failures that operator attention would
+have prevented.
+
+**Not building the regulator relationship.** Waiting
+until the regulator approaches to start engaging. The
+relationship has to be built during the calm period;
+when the cycle tightens, it's too late to start.
+
+## Team and hiring patterns through the first year
+
+The team needed to run a venue well evolves across the year,
+and operators who under-staff at the wrong moments accumulate
+quiet operational debt that becomes visible only after it's
+hurt the venue.
+
+**Months 0–3 (post-launch).** Minimum viable team is one
+operator-side product person and one part-time market-
+creation person. Customer support can be outsourced to a
+generalist provider initially. The protocol provider absorbs
+infrastructure operations.
+
+**Months 4–6.** Add a dedicated full-time market-creation
+person and bring customer support in-house (or to a
+specialised vendor with prediction-market experience). The
+support volume by month 4 is enough to justify a named
+person; outsourcing past this point produces noticeable
+trader-experience degradation.
+
+**Months 7–9.** Add a dedicated resolution-operations person
+or rotation. By month 7 the volume of edge cases per week
+exceeds what the market-creation person can handle while
+also creating new markets. The resolution-ops role sits
+adjacent to support but with deeper authority on specific
+contract decisions.
+
+**Months 10–12.** Add a regulatory liaison and a content /
+communications lead. These are the year-2 critical hires
+made before year 2 starts. Operators that wait until year 2
+to hire these roles spend the first quarter of year 2
+playing catch-up on relationships that should have already
+been in place.
+
+The total team for a venue running well at month 12 is
+typically 5–7 people on the operator side, plus the protocol
+provider's infrastructure team that the operator inherits
+without managing. That's a meaningfully smaller team than the
+30–50 person team a from-scratch venue would require, which
+is part of why the licensed-protocol model has the
+operational economics it does.
+
+## What "running well" actually looks like
+
+A specific definition: at month 12, a venue is running
+well if it has sustained 15%+ month-over-month WAT growth
+through the second half of the year, a resolution dispute
+rate consistently below 0.3%, support volume under 5
+tickets per 100 active traders, and the operator team has
+a documented year-2 plan that the broader business is
+aligned on.
+
+If you hit those numbers, the venue is on the path to a
+durable, growing position in its category. If you don't,
+the diagnostic is which of the running disciplines wasn't
+operating at the level it needed to be — and the
+operational improvements at month 12 are the ones that
+compound through year 2.
+
+The operators who turn into the dominant brands in this
+category over the next 5 years are the ones who run their
+venues with this kind of operational discipline from day
+31 onward. The launch is necessary but not sufficient. The
+running is what compounds.
+
+<KuestCTA
+  headline="Want a custom run-the-venue review of your operations?"
+  body="We'll walk through your KPIs, your market-creation cadence, your retention curves, and your year-2 plan — and give you a specific list of operational improvements ranked by expected impact."
+  primary={{ href: "/launch", label: "Open the operator dashboard" }}
+  secondary={{ href: "/enterprise", label: "Book an operations review" }}
+/>

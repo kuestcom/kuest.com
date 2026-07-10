@@ -1,0 +1,11 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import LaunchPage from '@/components/pages/LaunchPage'
+import { createTranslator } from '@/i18n'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+const { locale } = Astro.props as { locale: SupportedLocale }
+const t = createTranslator(locale)
+---
+<BaseLayout locale={locale} title={t('Kuest Create Prediction Market')} description={t('Guided Kuest launch flow with wallet, Vercel, and Supabase integration.')} canonicalPath="/launch">
+  <LaunchPage client:only="react" locale={locale} />
+</BaseLayout>

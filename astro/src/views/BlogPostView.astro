@@ -1,0 +1,55 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import BlogPostFooterIsland from '@/components/blog/BlogPostFooterIsland'
+import BlogPostHeroIsland from '@/components/blog/BlogPostHeroIsland'
+import MarketingDockNav from '@/components/MarketingDockNav'
+import MarketingPageRuntime from '@/components/MarketingPageRuntime'
+import SiteFooter from '@/components/SiteFooter'
+import { createTranslator } from '@/i18n'
+import { getPathname } from '@/i18n/navigation'
+import { getPost, listPosts } from '@/lib/blog/content'
+import { getPostCoverSrc } from '@/lib/blog/cover'
+import { getPostContent } from '@/lib/blog/mdx'
+import { CONTACT_HREF } from '@/lib/constants'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { createMdxComponents } from '@/mdx-components'
+
+const { locale, slug } = Astro.props as { locale: SupportedLocale; slug: string }
+const post = getPost(slug, locale)
+if (!post) throw new Error(`Unknown blog post: ${locale}/${slug}`)
+const Content = getPostContent(locale, post.contentSlug)
+if (!Content) throw new Error(`Missing MDX module: ${locale}/${post.contentSlug}`)
+const t = createTranslator(locale)
+const site = Astro.site ?? new URL('https://kuest.com')
+const coverSrc = getPostCoverSrc(post)
+const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
+const localizedPathByLocale = Object.fromEntries(post.availableLocales.map(code => [code, `/blog/${post.localizedSlugs[code] ?? post.slug}`]))
+const alternates = Object.fromEntries(post.availableLocales.map(code => [code, getPathname({ href: localizedPathByLocale[code], locale: code })]))
+const related = listPosts(locale).filter(item => item.slug !== post.slug).slice(0, 2)
+const relatedDateLabels = Object.fromEntries(related.map(item => [item.slug, dateFormatter.format(item.frontmatter.publishedAt)]))
+const postUrl = new URL(getPathname({ href: `/blog/${post.slug}`, locale }), site).toString()
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.frontmatter.title,
+  description: post.frontmatter.description, image: new URL(coverSrc, site).toString(),
+  datePublished: post.frontmatter.publishedAt.toISOString(), dateModified: (post.frontmatter.updatedAt ?? post.frontmatter.publishedAt).toISOString(),
+  inLanguage: locale, author: { '@type': 'Person', name: post.frontmatter.author.name, ...(post.frontmatter.author.url ? { url: post.frontmatter.author.url } : {}) },
+  publisher: { '@type': 'Organization', name: 'Kuest', url: site.toString() }, mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+  keywords: post.frontmatter.tags.join(', '), isAccessibleForFree: true,
+}
+---
+
+<BaseLayout locale={locale} title={`${post.frontmatter.title} | Kuest`} description={post.frontmatter.description} canonicalPath={`/blog/${post.slug}`} ogImage={coverSrc} alternates={alternates} article={{ publishedTime: post.frontmatter.publishedAt.toISOString(), modifiedTime: post.frontmatter.updatedAt?.toISOString(), tags: post.frontmatter.tags }}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />
+  <MarketingDockNav client:load locale={locale} active="blog" languagePath={`/blog/${post.slug}`} languagePathByLocale={localizedPathByLocale} availableLocales={post.availableLocales} languageFallbackPath="/blog" ctaHref={CONTACT_HREF} ctaLabel={t('Contact us')} />
+  <main id="page-top" class="page blog-page blog-post-page">
+    <BlogPostHeroIsland locale={locale} post={post} coverSrc={coverSrc} dateLabel={dateFormatter.format(post.frontmatter.publishedAt)} readingTimeLabel={t('{minutes} min read', { minutes: String(post.readingTime) })} backLabel={t('Back to blog')} />
+    <article class="blog-prose blog-post-article">
+      <Content components={createMdxComponents(locale)} />
+    </article>
+    <BlogPostFooterIsland locale={locale} related={related} backLabel={t('Back to blog')} relatedLabel={t('More from the blog')} relatedDateLabels={relatedDateLabels} />
+  </main>
+  <div id="blog-final">
+    <SiteFooter note={t('Built on Polymarket-derived contracts, audited by OpenZeppelin')} docsLabel={t('Docs')} contactLabel={t('Contact')} xLabel="X" discordLabel="Discord" />
+  </div>
+  <MarketingPageRuntime client:load nextSectionId="page-top" finalSectionId="blog-final" />
+</BaseLayout>

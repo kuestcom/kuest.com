@@ -1,0 +1,12 @@
+minimumReleaseAge: 0
+allowBuilds:
+  '@reown/appkit': false
+  bufferutil: false
+  esbuild: true
+  keccak: false
+  sharp: true
+  utf-8-validate: false
+  workerd: false
+overrides:
+  '@wagmi/connectors': 6.2.0
+  '@wagmi/core': 2.22.1

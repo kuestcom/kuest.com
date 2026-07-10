@@ -1,0 +1,11 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import LandingPage from '@/components/pages/LandingPage'
+import { createTranslator } from '@/i18n'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+const { locale } = Astro.props as { locale: SupportedLocale }
+const t = createTranslator(locale)
+---
+<BaseLayout locale={locale} title="Kuest — Create Your Own Prediction Market" description={t('Create your own white-label prediction market in 15 minutes. Launch under your brand, set your fees, use your domain, and start with shared liquidity from day one.')} canonicalPath="/">
+  <LandingPage client:load locale={locale} />
+</BaseLayout>
