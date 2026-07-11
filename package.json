@@ -1,66 +1,53 @@
 {
-  "name": "launch",
+  "name": "kuest",
   "private": true,
-  "packageManager": "pnpm@11.9.0",
   "description": "Launch Your Own Decentralized Prediction Market in Minutes.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kuestcom/kuest.com.git"
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro",
+    "prepare": "vp config"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "14.1.2",
+    "@astrojs/mdx": "7.0.2",
+    "@astrojs/react": "6.0.1",
+    "@mdx-js/react": "3.1.1",
+    "@reown/appkit": "1.8.22",
+    "@reown/appkit-adapter-wagmi": "1.8.22",
+    "@supabase/supabase-js": "2.110.2",
+    "@tanstack/react-query": "5.101.2",
+    "@wagmi/connectors": "6.2.0",
+    "@wagmi/core": "2.22.1",
+    "astro": "7.0.7",
+    "lucide-react": "1.24.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "reading-time": "1.5.0",
+    "resend": "6.17.2",
+    "tailwindcss": "4.3.2",
+    "viem": "2.55.0",
+    "wagmi": "2.19.5",
+    "yaml": "2.9.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "@tailwindcss/vite": "4.3.2",
+    "@types/mdx": "2.0.14",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "typescript": "6.0.3",
+    "vite-plus": "catalog:",
+    "wrangler": "4.110.0"
   },
   "engines": {
     "node": "24.x"
   },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint . --fix",
-    "prepare": "husky"
-  },
-  "dependencies": {
-    "@mdx-js/loader": "3.1.1",
-    "@mdx-js/react": "3.1.1",
-    "@next/mdx": "16.2.9",
-    "@reown/appkit": "1.8.21",
-    "@reown/appkit-adapter-wagmi": "1.8.21",
-    "@supabase/supabase-js": "2.108.2",
-    "@tanstack/react-query": "5.101.2",
-    "dotted-map": "3.1.0",
-    "gray-matter": "4.0.3",
-    "lucide-react": "1.22.0",
-    "next": "16.2.9",
-    "next-intl": "4.13.0",
-    "next-themes": "0.4.6",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "reading-time": "1.5.0",
-    "rehype-slug": "6.0.0",
-    "remark-frontmatter": "5.0.0",
-    "remark-gfm": "4.0.1",
-    "resend": "6.16.0",
-    "viem": "2.53.1",
-    "wagmi": "2.19.5",
-    "zod": "4.4.3"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "9.1.0",
-    "@eslint-react/eslint-plugin": "5.10.0",
-    "@next/eslint-plugin-next": "16.2.9",
-    "@tailwindcss/postcss": "4.3.2",
-    "@types/mdx": "2.0.14",
-    "@types/node": "26.0.1",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
-    "eslint": "10.6.0",
-    "eslint-plugin-better-tailwindcss": "4.6.0",
-    "eslint-plugin-react-refresh": "0.5.3",
-    "eslint-plugin-react-you-might-not-need-an-effect": "1.0.1",
-    "husky": "9.1.7",
-    "lint-staged": "17.0.8",
-    "tailwindcss": "4.3.2",
-    "typescript": "6.0.3"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
-  }
+  "packageManager": "pnpm@11.9.0"
 }

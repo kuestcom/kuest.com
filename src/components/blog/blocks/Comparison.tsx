@@ -2,8 +2,8 @@ export default function Comparison({
   columns,
   rows,
 }: {
-  columns: string[]
-  rows: (string | number)[][]
+  columns: string[];
+  rows: (string | number)[][];
 }) {
   return (
     <div className="blog-comparison">
@@ -11,7 +11,9 @@ export default function Comparison({
         <thead>
           <tr>
             {columns.map((header, i) => (
-              <th key={`${header}-${i}`} data-col={i}>{header}</th>
+              <th key={`${header}-${i}`} data-col={i}>
+                {header}
+              </th>
             ))}
           </tr>
         </thead>
@@ -19,12 +21,14 @@ export default function Comparison({
           {rows.map((row, ri) => (
             <tr key={ri}>
               {row.map((cell, ci) => (
-                <td key={ci} data-col={ci}>{cell}</td>
+                <td key={ci} data-col={ci}>
+                  {cell}
+                </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
+  );
 }

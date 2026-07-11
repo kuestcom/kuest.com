@@ -21,12 +21,12 @@ Stack und dem, was die Wettbewerbslandschaft (Kalshi,
 Polymarket, die neue Welle regionaler White-Labels) tut.
 
 Wenn Sie früher in Ihrer Bewertung sind, beginnen Sie mit dem
+
 <a href="/blog/2026-03-prediction-market-land-grab">Marktchancen-Beitrag</a>
 oder der
-<a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs-License-Analyse</a>.
-Dieser Beitrag setzt voraus, dass Sie diese Fragen hinter sich
-haben und entscheiden müssen, wo Sie die Betreibergebühr am
-ersten Tag setzen.
+<a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs-License-Analyse</a>. Dieser
+Beitrag setzt voraus, dass Sie diese Fragen hinter sich haben und entscheiden müssen, wo Sie die
+Betreibergebühr am ersten Tag setzen.
 
 <Stat
   value="≈ 0,9 %"
@@ -78,7 +78,12 @@ Eine Momentaufnahme der Branche im Q1 2026, gezogen aus
 quartalsweisen Betreiberumfrage:
 
 <Comparison
-  columns={["Venue-Typ", "Typische Betreibergebühr", "Spread auf liquiden Märkten", "Gesamt-Round-Trip-Kosten"]}
+  columns={[
+    "Venue-Typ",
+    "Typische Betreibergebühr",
+    "Spread auf liquiden Märkten",
+    "Gesamt-Round-Trip-Kosten",
+  ]}
   rows={[
     ["Kalshi (US-reguliert)", "0,0 % (keine)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1,0 % (geteilt Protokoll)", "20–60 bps", "≈ 1,4–1,6 %"],
@@ -137,12 +142,10 @@ mit stärkerer Conviction, was manchmal wünschenswert ist und
 manchmal nicht.
 
 <Callout type="info" title="Der Conviction-Filter ist ein Feature">
-  Höhere Gebühren liefern höhere Profitabilität pro Trader und
-  niedrigere Trade-Velocity. Niedrigere Gebühren liefern höhere
-  Trade-Velocity und niedrigere Profitabilität pro Trader. Es
-  gibt keine universell richtige Antwort — nur eine richtige
-  Antwort für das Publikum und die Kostenstruktur, die Sie
-  haben.
+  Höhere Gebühren liefern höhere Profitabilität pro Trader und niedrigere Trade-Velocity. Niedrigere
+  Gebühren liefern höhere Trade-Velocity und niedrigere Profitabilität pro Trader. Es gibt keine
+  universell richtige Antwort — nur eine richtige Antwort für das Publikum und die Kostenstruktur,
+  die Sie haben.
 </Callout>
 
 ## Konkrete Tarif-Empfehlung nach Betreibertyp
@@ -210,12 +213,11 @@ Wettbewerber zu senken, der mit einem niedrigeren Tarif startet.
 ## Wie Gebühren mit geteilter Liquidität interagieren
 
 Wenn Ihre Venue auf geteilter Liquidität läuft (was wir
-<a href="/blog/2026-04-shared-liquidity-day-one">stark empfehlen</a>),
-hat die Gebührenmathematik eine Wendung, die zu verstehen sich
-lohnt. Das geteilte Orderbuch liefert Tiefe zu Spreads auf
-Protokoll-Niveau, was bedeutet, dass die All-In-Ausführungs-
-kosten Ihrer Trader Ihre Gebühr plus ein enger (~30 bps)
-Spread auf Protokoll-Niveau sind.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">stark empfehlen</a>), hat die Gebührenmathematik
+eine Wendung, die zu verstehen sich lohnt. Das geteilte Orderbuch liefert Tiefe zu Spreads auf
+Protokoll-Niveau, was bedeutet, dass die All-In-Ausführungs- kosten Ihrer Trader Ihre Gebühr plus
+ein enger (~30 bps) Spread auf Protokoll-Niveau sind.
 
 Betreiber, die versuchen, eigene Liquidität zu bootstrappen,
 zahlen Market-Maker entweder vertraglich (was denselben Trader
@@ -223,9 +225,8 @@ durch breitere Spreads trifft) oder fahren ein dünnes Buch (was
 den Trader durch schlechtere Fills trifft).
 
 <Callout type="tip" title="Effektiver Tarif, nicht Headline-Tarif">
-  Wenn Sie Ihre Venue mit einem Wettbewerber vergleichen,
-  vergleichen Sie die Gesamt-Round-Trip-Kosten des Traders
-  (Betreibergebühr × 2 + Spread × 2), nicht die Headline-
+  Wenn Sie Ihre Venue mit einem Wettbewerber vergleichen, vergleichen Sie die
+  Gesamt-Round-Trip-Kosten des Traders (Betreibergebühr × 2 + Spread × 2), nicht die Headline-
   Betreibergebühr.
 </Callout>
 
@@ -258,7 +259,12 @@ Vorhersagemarkt-Venue betreibt und noch nicht gestartet ist:
     ["Pre-Launch / Private Beta", "0,85 %", "Flach", "Baseline; Kohortendaten sammeln"],
     ["Public Launch → Monat 6", "0,85 %", "Flach", "Halten, um Signal zu sammeln"],
     ["Monat 6 → Monat 12", "0,95 %", "Flach", "Moderate Erhöhung nach bewiesener Retention"],
-    ["Monat 12+", "0,95 % / 0,80 % / 0,65 %", "Drei Stufen nach 30-Tage-Volumen", "Wale halten, ohne Retail zu verlieren"],
+    [
+      "Monat 12+",
+      "0,95 % / 0,80 % / 0,65 %",
+      "Drei Stufen nach 30-Tage-Volumen",
+      "Wale halten, ohne Retail zu verlieren",
+    ],
     ["Jahr 2+", "Verhandelt für institutionelle Desks", "Custom", "Echter Prop-Flow tritt bei"],
   ]}
 />

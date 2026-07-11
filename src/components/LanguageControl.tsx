@@ -1,8 +1,8 @@
-import type { SupportedLocale } from '@/i18n/locales'
-import { ChevronDown } from 'lucide-react'
-import Image from 'next/image'
-import { LANGUAGE_OPTIONS } from '@/i18n/locales'
-import { getPathname } from '@/i18n/navigation'
+import type { SupportedLocale } from "@/i18n/locales";
+import { ChevronDown } from "lucide-react";
+import Image from "@/compat/Image";
+import { LANGUAGE_OPTIONS } from "@/i18n/locales";
+import { getPathname } from "@/i18n/navigation";
 
 export default function LanguageControl({
   locale,
@@ -17,20 +17,21 @@ export default function LanguageControl({
   labelId,
   ariaLabel,
 }: {
-  locale: SupportedLocale
-  path: string
-  pathByLocale?: Partial<Record<SupportedLocale, string>>
-  availableLocales?: SupportedLocale[]
-  fallbackPath?: string
-  controlId: string
-  buttonId: string
-  menuId: string
-  flagId: string
-  labelId: string
-  ariaLabel: string
+  locale: SupportedLocale;
+  path: string;
+  pathByLocale?: Partial<Record<SupportedLocale, string>>;
+  availableLocales?: SupportedLocale[];
+  fallbackPath?: string;
+  controlId: string;
+  buttonId: string;
+  menuId: string;
+  flagId: string;
+  labelId: string;
+  ariaLabel: string;
 }) {
-  const currentLanguage = LANGUAGE_OPTIONS.find(option => option.code === locale) ?? LANGUAGE_OPTIONS[0]
-  const limitToAvailable = Array.isArray(availableLocales) && availableLocales.length > 0
+  const currentLanguage =
+    LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
+  const limitToAvailable = Array.isArray(availableLocales) && availableLocales.length > 0;
 
   return (
     <div className="site-language-control" id={controlId}>
@@ -61,21 +62,19 @@ export default function LanguageControl({
       </button>
       <div id={menuId} className="site-language-menu" role="listbox" aria-label={ariaLabel}>
         {LANGUAGE_OPTIONS.map((option) => {
-          const isAvailable = !limitToAvailable || availableLocales!.includes(option.code)
-          const localizedPath = pathByLocale?.[option.code]
-          const targetPath = isAvailable
-            ? (localizedPath ?? path)
-            : (fallbackPath ?? path)
+          const isAvailable = !limitToAvailable || availableLocales!.includes(option.code);
+          const localizedPath = pathByLocale?.[option.code];
+          const targetPath = isAvailable ? (localizedPath ?? path) : (fallbackPath ?? path);
           return (
             <a
               key={option.code}
               href={getPathname({ href: targetPath, locale: option.code })}
-              className={`site-language-option ${option.code === locale ? 'is-selected' : ''} ${isAvailable
-                ? ''
-                : `is-unavailable`}`}
+              className={`site-language-option ${option.code === locale ? "is-selected" : ""} ${
+                isAvailable ? "" : `is-unavailable`
+              }`}
               role="option"
               aria-selected={option.code === locale}
-              data-available={isAvailable ? 'true' : 'false'}
+              data-available={isAvailable ? "true" : "false"}
             >
               <span className="site-language-option-row">
                 <Image
@@ -88,9 +87,9 @@ export default function LanguageControl({
                 <span>{option.label}</span>
               </span>
             </a>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

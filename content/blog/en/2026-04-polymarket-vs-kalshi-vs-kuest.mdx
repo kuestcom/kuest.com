@@ -26,6 +26,7 @@ like, where their regulatory positions sit, and how an operator should
 think about using them in combination rather than choosing among them.
 
 If you're earlier in your evaluation, the
+
 <a href="/blog/2026-03-what-are-prediction-markets">prediction-market primer</a>
 covers the basics, the
 <a href="/blog/2026-03-prediction-market-land-grab">market opportunity post</a>
@@ -211,11 +212,26 @@ they're playing different positions in the stack.
 <Comparison
   columns={["Dimension", "Polymarket", "Kalshi", "Kuest (operator deploys)"]}
   rows={[
-    ["Headline trader fee", "≈ 1.0% per side (split protocol/operator)", "0.0% (no per-trade fee)", "Operator-set, typically 0.5–1.5%"],
-    ["Hidden costs", "Spread (~30–60 bps)", "Spread + market-data tier", "Spread (~20–60 bps on shared book)"],
+    [
+      "Headline trader fee",
+      "≈ 1.0% per side (split protocol/operator)",
+      "0.0% (no per-trade fee)",
+      "Operator-set, typically 0.5–1.5%",
+    ],
+    [
+      "Hidden costs",
+      "Spread (~30–60 bps)",
+      "Spread + market-data tier",
+      "Spread (~20–60 bps on shared book)",
+    ],
     ["Maker rebate", "No", "No", "No (shared book design)"],
     ["Operator share", "Not applicable (single venue)", "Not applicable", "100% of operator fee"],
-    ["Protocol take", "Polymarket retains its venue margin", "Recovered through ecosystem revenue", "Small protocol fee underneath operator fee"],
+    [
+      "Protocol take",
+      "Polymarket retains its venue margin",
+      "Recovered through ecosystem revenue",
+      "Small protocol fee underneath operator fee",
+    ],
     ["Per-jurisdiction overrides", "No", "No", "Yes"],
   ]}
 />
@@ -238,15 +254,50 @@ care about:
 <Comparison
   columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
-    ["Settlement asset", "USDC on-chain", "USD bank custody", "USDC on-chain (operator may layer fiat)"],
-    ["Resolution model", "UMA Optimistic Oracle", "Centralised market-integrity team", "UMA-based with explicit rules and public dispute process"],
+    [
+      "Settlement asset",
+      "USDC on-chain",
+      "USD bank custody",
+      "USDC on-chain (operator may layer fiat)",
+    ],
+    [
+      "Resolution model",
+      "UMA Optimistic Oracle",
+      "Centralised market-integrity team",
+      "UMA-based with explicit rules and public dispute process",
+    ],
     ["Geographic availability", "Global except US", "US only", "Configurable per operator"],
-    ["KYC requirement", "None (wallet-only)", "Full US-regulated KYC", "Operator-defined (wallet-only or external KYC layer)"],
-    ["Market creation", "Permissionless (admin curation)", "Pre-approved by exchange", "Operator-managed within protocol limits"],
-    ["Custody model", "Self-custody", "Regulated banking partner", "Configurable: self or regulated"],
-    ["Order-book depth on launch", "Existing (mature venue)", "Existing (mature venue)", "Shared (Day-1 deep for new operators)"],
+    [
+      "KYC requirement",
+      "None (wallet-only)",
+      "Full US-regulated KYC",
+      "Operator-defined (wallet-only or external KYC layer)",
+    ],
+    [
+      "Market creation",
+      "Permissionless (admin curation)",
+      "Pre-approved by exchange",
+      "Operator-managed within protocol limits",
+    ],
+    [
+      "Custody model",
+      "Self-custody",
+      "Regulated banking partner",
+      "Configurable: self or regulated",
+    ],
+    [
+      "Order-book depth on launch",
+      "Existing (mature venue)",
+      "Existing (mature venue)",
+      "Shared (Day-1 deep for new operators)",
+    ],
     ["Operator branding", "Polymarket only", "Kalshi only", "Per operator deploy"],
-    ["Ecosystem fit", "On-chain native", "Regulated US institutional", "Operator-side (any jurisdiction, any audience)"],
+    [
+      "Ecosystem fit",
+      "On-chain native",
+      "Regulated US institutional",
+      "Operator-side (any jurisdiction, any audience)",
+    ],
   ]}
 />
 
@@ -324,13 +375,12 @@ distribution), then Kuest is the path because Polymarket and
 Kalshi are not in the operator-infrastructure business.
 
 <Callout type="info" title="Why this distinction matters strategically">
-  Operators who treat the comparison as "Kuest vs Polymarket" end up
-  trying to optimize for a competition that doesn't exist. The right
-  comparison is "Kuest vs build it yourself," which is the
-  comparison we covered in <a href="/blog/2026-04-build-vs-license-prediction-market">the build-vs-license post</a>.
-  Polymarket is the venue your traders might compare execution
-  against; Kuest is the infrastructure that lets you compete on
-  audience instead of on infrastructure.
+  Operators who treat the comparison as "Kuest vs Polymarket" end up trying to optimize for a
+  competition that doesn't exist. The right comparison is "Kuest vs build it yourself," which is the
+  comparison we covered in{" "}
+  <a href="/blog/2026-04-build-vs-license-prediction-market">the build-vs-license post</a>.
+  Polymarket is the venue your traders might compare execution against; Kuest is the infrastructure
+  that lets you compete on audience instead of on infrastructure.
 </Callout>
 
 ## Use cases that fit each combination
@@ -407,18 +457,18 @@ they're not personally maintaining.
 A short framework for getting to the right answer:
 
 1. **Are you a trader?** Use Polymarket if you're outside the US,
-  Kalshi if you're inside the US. Kuest is not your platform — you
-  trade on operator venues built on Kuest.
+   Kalshi if you're inside the US. Kuest is not your platform — you
+   trade on operator venues built on Kuest.
 2. **Are you a US-headquartered institution wanting regulated
-  exposure?** Kalshi, possibly with a Kuest deploy for non-US
-  audiences alongside.
+   exposure?** Kalshi, possibly with a Kuest deploy for non-US
+   audiences alongside.
 3. **Are you any other operator with distribution?** Brokerage,
-  crypto-native exchange, media, creator, sports book, fintech.
-  Kuest, almost certainly.
+   crypto-native exchange, media, creator, sports book, fintech.
+   Kuest, almost certainly.
 4. **Are you trying to be the next Polymarket or Kalshi?** Build
-  your own venue infrastructure. The protocol path won't help you;
-  you need to own every layer because your moat is the venue
-  itself.
+   your own venue infrastructure. The protocol path won't help you;
+   you need to own every layer because your moat is the venue
+   itself.
 
 For the overwhelming majority of operators we work with, the answer
 is option 3: they have distribution, they don't want to be a

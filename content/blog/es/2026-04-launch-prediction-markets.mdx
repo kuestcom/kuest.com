@@ -27,11 +27,13 @@ desde el registro hasta su primer trade en vivo en quince
 minutos.
 
 Si estás más temprano en tu evaluación, la
-<a href="/blog/2026-03-what-are-prediction-markets">guía introductoria a los mercados de predicción</a>
+
+<a href="/blog/2026-03-what-are-prediction-markets">
+  guía introductoria a los mercados de predicción
+</a>
 cubre lo básico, y el
 <a href="/blog/2026-04-build-vs-license-prediction-market">análisis construir-vs-licenciar</a>
-explica por qué la mayoría de operadores no debería construir el
-stack ellos mismos.
+explica por qué la mayoría de operadores no debería construir el stack ellos mismos.
 
 <Stat
   value="$18,3 mil M"
@@ -56,7 +58,7 @@ trabajo pesado ya está hecho. Los contratos están auditados. El
 matching engine está en producción. La liquidez compartida ya
 está ahí. Los rails de resolución ya están conectados. Lo que
 configuras al momento del deploy no es infraestructura — son
-los parámetros que hacen que el venue sea *tuyo*: marca,
+los parámetros que hacen que el venue sea _tuyo_: marca,
 comisiones, alcance del mercado, jurisdicciones objetivo,
 audiencia.
 
@@ -94,7 +96,11 @@ Kuest.
 mercados se resuelven a través del oráculo optimista de UMA, con
 reglas explícitas por mercado, metadatos de fuente y una vía
 pública de disputa. Cubrimos la mecánica completa en el
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre la capa de resolución y liquidación</a>.
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  post sobre la capa de resolución y liquidación
+</a>
+.
 
 **Liquidez compartida a escala de protocolo.** El order flow en
 cualquier marca de operador contribuye a y se nutre de un libro
@@ -104,14 +110,11 @@ desde el momento en que lanzan. Hemos escrito por separado
 sobre <a href="/blog/2026-04-shared-liquidity-day-one">por qué la liquidez compartida decide quién gana la próxima ola</a>.
 
 <Callout type="info" title="No se necesita un equipo de blockchain interno">
-  Los contratos inteligentes, el motor CLOB, el relayer, la
-  liquidación, el gas y la provisión de liquidez se gestionan
-  totalmente del lado de Kuest. Tu equipo proporciona los
-  activos de marca y el alcance del evento. Nosotros nos
-  encargamos del resto. Si tu organización de ingeniería está
-  ocupada en su producto principal, está bien — no necesitas
-  staff de infraestructura blockchain para enviar un venue de
-  mercados de predicción.
+  Los contratos inteligentes, el motor CLOB, el relayer, la liquidación, el gas y la provisión de
+  liquidez se gestionan totalmente del lado de Kuest. Tu equipo proporciona los activos de marca y
+  el alcance del evento. Nosotros nos encargamos del resto. Si tu organización de ingeniería está
+  ocupada en su producto principal, está bien — no necesitas staff de infraestructura blockchain
+  para enviar un venue de mercados de predicción.
 </Callout>
 
 ## Cómo funciona un deploy institucional típico
@@ -120,17 +123,19 @@ El proceso de deploy comprime lo que solía ser una construcción
 de un año en tres pasos explícitos de configuración. Lo hemos
 ejecutado tanto con operadores cripto-nativos (sin overlay de
 cumplimiento) como con brokers retail regulados (KYC completo
-+ reglas jurisdiccionales). El flujo es el mismo; solo difieren
-las densidades de configuración.
+
+- reglas jurisdiccionales). El flujo es el mismo; solo difieren
+  las densidades de configuración.
 
 ### 1. Define el alcance del mercado y el modelo de comisiones
 
 Elige las categorías de eventos que importan a tu audiencia —
 macro, tasas, política, cripto, deportes, geopolítica. Establece
 tu comisión de trading (el
+
 <a href="/blog/2026-04-fee-models-explained">post de modelos de comisiones</a>
-recorre la selección de tarifa en detalle). Configura la
-superficie de marca: logo, color de acento, copy.
+recorre la selección de tarifa en detalle). Configura la superficie de marca: logo, color de acento,
+copy.
 
 Aquí ocurre la mayor parte de tu pensamiento estratégico. Los
 mercados específicos que elijas hospedar dan forma a cada pieza
@@ -180,6 +185,7 @@ La economía de comisiones es limpia y el overhead del protocolo
 es lo suficientemente pequeño como para que los operadores
 puedan correr tarifas headline competitivas sin sacrificar
 margen. El
+
 <a href="/blog/2026-04-fee-models-explained">post de comisiones</a>
 cubre la selección de tarifa con mucha más profundidad.
 

@@ -1,18 +1,20 @@
-'use client'
-import { Moon, Sun } from 'lucide-react'
-import { useTheme } from 'next-themes'
+"use client";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
-type ThemeMode = 'light' | 'dark'
+type ThemeMode = "light" | "dark";
 
 function updateThemeColor(mode: ThemeMode) {
-  const themeMeta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null
+  const themeMeta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
   if (!themeMeta) {
-    return
+    return;
   }
 
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim()
-  const fallback = mode === 'dark' ? '#CDFF00' : '#0e1117'
-  themeMeta.setAttribute('content', accent || fallback)
+  const accent = getComputedStyle(document.documentElement)
+    .getPropertyValue("--color-accent")
+    .trim();
+  const fallback = mode === "dark" ? "#CDFF00" : "#0e1117";
+  themeMeta.setAttribute("content", accent || fallback);
 }
 
 export default function ThemeToggle({
@@ -21,20 +23,28 @@ export default function ThemeToggle({
   labelToDark,
   labelToLight,
 }: {
-  id: string
-  className: string
-  labelToDark: string
-  labelToLight: string
+  id: string;
+  className: string;
+  labelToDark: string;
+  labelToLight: string;
 }) {
-  const { setTheme, resolvedTheme } = useTheme()
-  const mode: ThemeMode = resolvedTheme === 'dark' ? 'dark' : 'light'
+  const [mode, setMode] = useState<ThemeMode>("dark");
 
-  const label = mode === 'dark' ? labelToLight : labelToDark
+  useEffect(() => {
+    const stored = localStorage.getItem("kuest-theme-mode");
+    const initialMode: ThemeMode = stored === "light" ? "light" : "dark";
+    setMode(initialMode);
+    document.documentElement.dataset.themeMode = initialMode;
+  }, []);
+
+  const label = mode === "dark" ? labelToLight : labelToDark;
 
   function handleClick() {
-    const nextMode: ThemeMode = mode === 'dark' ? 'light' : 'dark'
-    setTheme(nextMode)
-    window.requestAnimationFrame(() => updateThemeColor(nextMode))
+    const nextMode: ThemeMode = mode === "dark" ? "light" : "dark";
+    setMode(nextMode);
+    localStorage.setItem("kuest-theme-mode", nextMode);
+    document.documentElement.dataset.themeMode = nextMode;
+    window.requestAnimationFrame(() => updateThemeColor(nextMode));
   }
 
   return (
@@ -46,7 +56,7 @@ export default function ThemeToggle({
       data-label-to-dark={labelToDark}
       data-label-to-light={labelToLight}
       aria-label={label}
-      aria-pressed={mode === 'dark'}
+      aria-pressed={mode === "dark"}
       title={label}
       onClick={handleClick}
     >
@@ -59,5 +69,5 @@ export default function ThemeToggle({
         </span>
       </span>
     </button>
-  )
+  );
 }

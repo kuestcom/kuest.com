@@ -135,14 +135,12 @@ par la voie optimiste. La voie de contestation existe principalement
 comme menace crédible qui maintient la voie optimiste honnête.
 
 <Callout type="info" title="Pourquoi c'est plus sûr qu'il n'y paraît">
-  Le coût d'une attaque contre l'optimistic oracle est le coût pour
-  submerger le mécanisme de contestation — c'est-à-dire soit
-  acquérir assez d'UMA pour faire basculer un vote, soit coordonner
-  assez de contestations pour épuiser le capital des contestataires
-  honnêtes. Les deux attaques sont publiquement observables et ont
-  des planchers de coût bien définis qui s'échelonnent avec la
-  valeur en jeu. C'est la même famille de design que l'économie du
-  slashing d'Ethereum : peu cher d'être honnête, cher de se tromper.
+  Le coût d'une attaque contre l'optimistic oracle est le coût pour submerger le mécanisme de
+  contestation — c'est-à-dire soit acquérir assez d'UMA pour faire basculer un vote, soit coordonner
+  assez de contestations pour épuiser le capital des contestataires honnêtes. Les deux attaques sont
+  publiquement observables et ont des planchers de coût bien définis qui s'échelonnent avec la
+  valeur en jeu. C'est la même famille de design que l'économie du slashing d'Ethereum : peu cher
+  d'être honnête, cher de se tromper.
 </Callout>
 
 ## Comment les contestations escaladent réellement
@@ -213,10 +211,18 @@ création du marché, et le mécanisme de contestation est public.
 <Comparison
   columns={["Mode d'échec", "Résolveur centralisé", "Optimistic oracle"]}
   rows={[
-    ["Contrat vague", "Forte exposition", "Contestations ; identifie correctement la mauvaise spec"],
+    [
+      "Contrat vague",
+      "Forte exposition",
+      "Contestations ; identifie correctement la mauvaise spec",
+    ],
     ["Source de données qui bouge", "Rapprochement manuel", "Replay via contestation"],
     ["Conflit d'intérêts opérateur", "Existentiel", "Structurellement séparé"],
-    ["Coût d'une résolution malveillante", "Effondrement de la confiance", "Caution + réécriture par vote"],
+    [
+      "Coût d'une résolution malveillante",
+      "Effondrement de la confiance",
+      "Caution + réécriture par vote",
+    ],
     ["Vitesse sur marchés triviaux", "Plus rapide", "Identique (pas de voie de contestation)"],
   ]}
 />

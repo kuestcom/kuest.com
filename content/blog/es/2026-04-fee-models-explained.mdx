@@ -22,10 +22,11 @@ competitivo (Kalshi, Polymarket, la nueva ola de white-labels
 regionales) está haciendo.
 
 Si estás más temprano en tu evaluación, comienza con el
-<a href="/blog/2026-03-prediction-market-land-grab">post de oportunidad de mercado</a>
-o el <a href="/blog/2026-04-build-vs-license-prediction-market">análisis construir-vs-licenciar</a>.
-Este post asume que ya pasaste esas preguntas y que necesitas
-decidir dónde fijar la comisión de operador en el día uno.
+
+<a href="/blog/2026-03-prediction-market-land-grab">post de oportunidad de mercado</a>o el
+<a href="/blog/2026-04-build-vs-license-prediction-market">análisis construir-vs-licenciar</a>. Este
+post asume que ya pasaste esas preguntas y que necesitas decidir dónde fijar la comisión de operador
+en el día uno.
 
 <Stat
   value="≈ 0,9 %"
@@ -77,7 +78,12 @@ de datos de ejecución públicamente observables más la encuesta
 trimestral a operadores que corremos:
 
 <Comparison
-  columns={["Tipo de venue", "Comisión típica de operador", "Spread en mercados líquidos", "Costo total ida y vuelta"]}
+  columns={[
+    "Tipo de venue",
+    "Comisión típica de operador",
+    "Spread en mercados líquidos",
+    "Costo total ida y vuelta",
+  ]}
   rows={[
     ["Kalshi (regulado EE. UU.)", "0,0 % (ninguna)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1,0 % (compartida con protocolo)", "20–60 bps", "≈ 1,4–1,6 %"],
@@ -127,11 +133,10 @@ con convicción débil (1–2 % de edge implícito) rebota ante
 cualquier comisión por encima de ~0,5 %.
 
 <Callout type="info" title="El filtro de convicción es una característica">
-  Comisiones más altas entregan mayor rentabilidad por trader y
-  menor velocidad de operaciones. Comisiones más bajas entregan
-  mayor velocidad y menor rentabilidad por trader. No hay
-  respuesta universalmente correcta — solo una respuesta
-  correcta para la audiencia y estructura de costos que tienes.
+  Comisiones más altas entregan mayor rentabilidad por trader y menor velocidad de operaciones.
+  Comisiones más bajas entregan mayor velocidad y menor rentabilidad por trader. No hay respuesta
+  universalmente correcta — solo una respuesta correcta para la audiencia y estructura de costos que
+  tienes.
 </Callout>
 
 ## Recomendación concreta de tarifa por tipo de operador
@@ -185,20 +190,18 @@ competidor que lanza con tarifa más baja.
 ## Cómo interactúan las comisiones con la liquidez compartida
 
 Si tu venue corre sobre liquidez compartida (lo cual
-<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fuertemente</a>),
-las matemáticas tienen un giro que vale la pena entender. El
-libro de órdenes compartido provee profundidad a spreads de
-nivel-protocolo, lo que significa que el costo total de
-ejecución de tus traders es tu comisión más un spread ajustado
-(~30 bps) a nivel-protocolo. Ese total es competitivo incluso
-con comisiones de operador de 1,0–1,5 %.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fuertemente</a>), las matemáticas
+tienen un giro que vale la pena entender. El libro de órdenes compartido provee profundidad a
+spreads de nivel-protocolo, lo que significa que el costo total de ejecución de tus traders es tu
+comisión más un spread ajustado (~30 bps) a nivel-protocolo. Ese total es competitivo incluso con
+comisiones de operador de 1,0–1,5 %.
 
 <Callout type="tip" title="Tarifa efectiva, no tarifa headline">
-  Cuando compares tu venue con un competidor, compara el costo
-  total de ida y vuelta del trader (comisión × 2 + spread × 2),
-  no la comisión headline. Una comisión de 1,0 % sobre liquidez
-  compartida suele ser más barata para el trader que una
-  comisión de 0,5 % sobre un libro propietario delgado.
+  Cuando compares tu venue con un competidor, compara el costo total de ida y vuelta del trader
+  (comisión × 2 + spread × 2), no la comisión headline. Una comisión de 1,0 % sobre liquidez
+  compartida suele ser más barata para el trader que una comisión de 0,5 % sobre un libro
+  propietario delgado.
 </Callout>
 
 ## Errores comunes en el día uno
@@ -226,10 +229,20 @@ tarifa se normaliza.
 <Comparison
   columns={["Etapa", "Comisión de operador", "Tiering", "Por qué"]}
   rows={[
-    ["Pre-lanzamiento / beta privada", "0,85 %", "Plana", "Establecer baseline; recoger datos de cohorte"],
+    [
+      "Pre-lanzamiento / beta privada",
+      "0,85 %",
+      "Plana",
+      "Establecer baseline; recoger datos de cohorte",
+    ],
     ["Lanzamiento público → mes 6", "0,85 %", "Plana", "Sostener para reunir señal"],
     ["Mes 6 → mes 12", "0,95 %", "Plana", "Subida modesta tras retención probada"],
-    ["Mes 12+", "0,95 % / 0,80 % / 0,65 %", "Tres niveles por volumen 30 días", "Retener ballenas sin perder retail"],
+    [
+      "Mes 12+",
+      "0,95 % / 0,80 % / 0,65 %",
+      "Tres niveles por volumen 30 días",
+      "Retener ballenas sin perder retail",
+    ],
     ["Año 2+", "Negociado para desks institucionales", "Custom", "Flujo prop real entrando"],
   ]}
 />

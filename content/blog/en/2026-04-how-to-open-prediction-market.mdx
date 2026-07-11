@@ -26,14 +26,14 @@ consistently produces a venue with real volume in the first
 month and meaningful audience attribution in the first quarter.
 
 If you're earlier in your evaluation, the
+
 <a href="/blog/2026-03-prediction-market-land-grab">market opportunity post</a>
 covers why the category is worth entering, the
 <a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>
 covers the structural decision underneath this playbook, and the
 <a href="/blog/2026-04-launch-prediction-markets">15-minute launch walkthrough</a>
-covers the technical deploy. This post is the longer-form
-end-to-end version: every decision you'll make, in the order
-you'll make it, with the trade-offs explicit.
+covers the technical deploy. This post is the longer-form end-to-end version: every decision you'll
+make, in the order you'll make it, with the trade-offs explicit.
 
 <Stat
   value="≈ 4 weeks"
@@ -140,19 +140,22 @@ A good spec has three properties:
    market resolves to NA and all positions return capital."
 
 We covered the resolution mechanics in detail in
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution and settlement layer post</a>.
-The discipline of contract specification is what determines
-whether your venue's resolution rate stays above 99.5% (which
-is acceptable) or drops to 98% (which is the threshold below
-which trader trust starts collapsing).
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  the resolution and settlement layer post
+</a>
+. The discipline of contract specification is what determines whether your venue's resolution rate
+stays above 99.5% (which is acceptable) or drops to 98% (which is the threshold below which trader
+trust starts collapsing).
 
 ## Phase 3: The operator fee decision
 
 The fee is the lever that determines venue revenue and
 audience tolerance. We covered the rate-selection question in
 depth in the
-<a href="/blog/2026-04-fee-models-explained">fee models post</a>
-— here's the launch-specific summary.
+
+<a href="/blog/2026-04-fee-models-explained">fee models post</a>— here's the launch-specific
+summary.
 
 Pick a starting rate based on your audience profile:
 
@@ -257,8 +260,9 @@ region.
 Liquidity is the make-or-break property of a launch, and the
 protocol's shared-liquidity model handles most of it. We
 covered the technical and economic case in
-<a href="/blog/2026-04-shared-liquidity-day-one">the shared-liquidity post</a>.
-For launch purposes, the operator decisions are:
+
+<a href="/blog/2026-04-shared-liquidity-day-one">the shared-liquidity post</a>. For launch purposes,
+the operator decisions are:
 
 - **Confirm shared-liquidity coverage of your initial
   markets.** The shared book has deep coverage of mainstream

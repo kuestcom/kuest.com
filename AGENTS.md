@@ -1,53 +1,39 @@
-<!-- BEGIN:nextjs-agent-rules -->
+## Development
 
-# Next.js: ALWAYS read docs before coding
+When starting the dev server, use background mode:
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`. Your training data is outdated — the docs are the source of truth.
+```
+astro dev --background
+```
 
-<!-- END:nextjs-agent-rules -->
+Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
-# Repository Guidelines
+## Documentation
 
-- Stack: Next.js App Router, TypeScript, Tailwind, Vitest, Playwright, Supabase. Main code lives in `src/*`; tests live in `tests/unit`; static and data assets live in `public` and blog content in `content`.
-- Node: use Node.js 24.x from `.nvmrc`.
-- Verification policy: the repo exposes `pnpm build`, `pnpm lint`, and `pnpm exec tsc --noEmit`, but you must NOT invoke any of them on your own — only run them when the user explicitly asks. For routine type/syntax confirmation while editing, rely on the editor and TypeScript server output.
-- Style: TypeScript, 2-space indentation, no semicolons, prefer named function declarations, match existing local patterns, and keep Tailwind class ordering consistent with nearby code.
-- Naming: components use `PascalCase`, hooks use `use*`, unit tests use `*.test.ts`, and e2e tests use `*.spec.ts`.
-- Testing: cover user-visible behavior and important trading/data-flow regressions when relevant.
-- Commits: use Conventional Commits such as `feat:`, `fix:`, and `refactor:`.
-- Config: copy `.env.example`; never commit secrets.
-- Reporting: omit routine success confirmations for commands such as `pnpm lint`
-  and tests. Report only failures, blockers, or outcomes that change the
-  recommendation.
+Full documentation: https://docs.astro.build
 
-# Before Writing useEffect
+Consult these guides before working on related tasks:
 
-Every time you are about to write a useEffect, stop and answer:
-**Is this syncing with an external system?**
+- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
+- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
+- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
+- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
+- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
+- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
 
-External systems: WebSocket, browser APIs (IntersectionObserver,
-navigator.onLine), third-party libraries, DOM measurements, timers.
+<!--VITE PLUS START-->
 
-NOT external systems: props, state, derived values, user events.
+# Using Vite+, the Unified Toolchain for the Web
 
-## Check each case before writing the effect:
+This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
 
-1. **Transforming data?** → Compute inline, or useMemo if expensive
-2. **Responding to a user event?** → Put logic in the event handler
-3. **Resetting state on prop change?** → Use the key prop
-4. **Fetching data?** → Use TanStack Query; if useEffect, add cleanup
-5. **Notifying a parent?** → Call callback in the event handler
-6. **Chaining effects?** → Move cascade into one event handler
-7. **Subscribing to external store?** → useSyncExternalStore
+Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
 
-If none apply and the answer is genuinely "yes, external system,"
-then useEffect is correct.
+## Review Checklist
 
-## Rules
-- NEVER write useEffect(() => setSomething(derived), [dep])
-- NEVER use useEffect for click/submit/change events
-- NEVER use useEffect to reset state without considering key prop
-- ALWAYS add cleanup when subscribing to external systems
-- ALWAYS name effect functions for readability
+- [ ] Run `vp install` after pulling remote changes and before getting started.
+- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
+- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
-
+<!--VITE PLUS END-->

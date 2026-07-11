@@ -28,6 +28,7 @@ regulatorias y cómo un operador debería pensar en utilizarlas en
 combinación en lugar de elegir entre ellas.
 
 Si está en una etapa más temprana de su evaluación, el
+
 <a href="/blog/2026-03-what-are-prediction-markets">primer sobre mercados de predicción</a>
 cubre los conceptos básicos, el
 <a href="/blog/2026-03-prediction-market-land-grab">artículo sobre la oportunidad de mercado</a>
@@ -96,7 +97,10 @@ Lo que funciona extremadamente bien en Polymarket:
   resolución limpia del 99,8 % o superior. La vía de disputa está
   bien definida y ha sido probada en combate por volumen
   adversarial. Cubrimos toda la mecánica en
-  <a href="/blog/2026-04-resolution-and-the-settlement-layer">nuestro análisis a fondo de la resolución</a>.
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">
+    nuestro análisis a fondo de la resolución
+  </a>
+  .
 - **Acceso permissionless.** Cualquiera con una wallet y USDC puede
   operar en Polymarket. La plataforma no restringe el acceso por
   jurisdicción mediante KYC; opera fuera del perímetro regulado de
@@ -232,11 +236,31 @@ distintos porque están jugando posiciones diferentes en el stack.
 <Comparison
   columns={["Dimensión", "Polymarket", "Kalshi", "Kuest (despliegues de operador)"]}
   rows={[
-    ["Comisión principal del trader", "≈ 1,0 % por lado (reparto protocolo/operador)", "0,0 % (sin comisión por operación)", "Definida por el operador, típicamente 0,5–1,5 %"],
-    ["Costes ocultos", "Spread (~30–60 pb)", "Spread + nivel de datos de mercado", "Spread (~20–60 pb sobre el libro compartido)"],
+    [
+      "Comisión principal del trader",
+      "≈ 1,0 % por lado (reparto protocolo/operador)",
+      "0,0 % (sin comisión por operación)",
+      "Definida por el operador, típicamente 0,5–1,5 %",
+    ],
+    [
+      "Costes ocultos",
+      "Spread (~30–60 pb)",
+      "Spread + nivel de datos de mercado",
+      "Spread (~20–60 pb sobre el libro compartido)",
+    ],
     ["Rebate al maker", "No", "No", "No (diseño del libro compartido)"],
-    ["Cuota del operador", "No aplica (venue única)", "No aplica", "100 % de la comisión del operador"],
-    ["Toma del protocolo", "Polymarket retiene su margen de venue", "Recuperada vía ingresos del ecosistema", "Pequeña comisión de protocolo bajo la comisión del operador"],
+    [
+      "Cuota del operador",
+      "No aplica (venue única)",
+      "No aplica",
+      "100 % de la comisión del operador",
+    ],
+    [
+      "Toma del protocolo",
+      "Polymarket retiene su margen de venue",
+      "Recuperada vía ingresos del ecosistema",
+      "Pequeña comisión de protocolo bajo la comisión del operador",
+    ],
     ["Overrides por jurisdicción", "No", "No", "Sí"],
   ]}
 />
@@ -251,6 +275,7 @@ alineado con el operador en lugar de competir con él.
 
 Para un desglose más profundo de cómo establecer la comisión de
 operador en un despliegue de Kuest, vea el
+
 <a href="/blog/2026-04-fee-models-explained">artículo sobre modelos de comisiones</a>.
 
 ## Lado a lado: matriz de funcionalidades
@@ -261,15 +286,55 @@ preocupar a los operadores:
 <Comparison
   columns={["Función", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
-    ["Activo de liquidación", "USDC on-chain", "Custodia bancaria en USD", "USDC on-chain (el operador puede superponer fiat)"],
-    ["Modelo de resolución", "UMA Optimistic Oracle", "Equipo centralizado de integridad de mercado", "Basado en UMA, con reglas explícitas y proceso público de disputa"],
-    ["Disponibilidad geográfica", "Global excepto EE. UU.", "Solo EE. UU.", "Configurable por operador"],
-    ["Requisito de KYC", "Ninguno (solo wallet)", "KYC completo regulado en EE. UU.", "Definido por el operador (wallet-only o capa externa de KYC)"],
-    ["Creación de mercados", "Permissionless (curación de admin)", "Pre-aprobada por el exchange", "Gestionada por el operador dentro de los límites del protocolo"],
-    ["Modelo de custodia", "Autocustodia", "Socio bancario regulado", "Configurable: propia o regulada"],
-    ["Profundidad del libro de órdenes en el lanzamiento", "Existente (venue madura)", "Existente (venue madura)", "Compartida (Día 1 profundo para nuevos operadores)"],
+    [
+      "Activo de liquidación",
+      "USDC on-chain",
+      "Custodia bancaria en USD",
+      "USDC on-chain (el operador puede superponer fiat)",
+    ],
+    [
+      "Modelo de resolución",
+      "UMA Optimistic Oracle",
+      "Equipo centralizado de integridad de mercado",
+      "Basado en UMA, con reglas explícitas y proceso público de disputa",
+    ],
+    [
+      "Disponibilidad geográfica",
+      "Global excepto EE. UU.",
+      "Solo EE. UU.",
+      "Configurable por operador",
+    ],
+    [
+      "Requisito de KYC",
+      "Ninguno (solo wallet)",
+      "KYC completo regulado en EE. UU.",
+      "Definido por el operador (wallet-only o capa externa de KYC)",
+    ],
+    [
+      "Creación de mercados",
+      "Permissionless (curación de admin)",
+      "Pre-aprobada por el exchange",
+      "Gestionada por el operador dentro de los límites del protocolo",
+    ],
+    [
+      "Modelo de custodia",
+      "Autocustodia",
+      "Socio bancario regulado",
+      "Configurable: propia o regulada",
+    ],
+    [
+      "Profundidad del libro de órdenes en el lanzamiento",
+      "Existente (venue madura)",
+      "Existente (venue madura)",
+      "Compartida (Día 1 profundo para nuevos operadores)",
+    ],
     ["Marca del operador", "Solo Polymarket", "Solo Kalshi", "Por despliegue de operador"],
-    ["Encaje en el ecosistema", "Nativo on-chain", "Institucional regulado en EE. UU.", "Lado del operador (cualquier jurisdicción, cualquier audiencia)"],
+    [
+      "Encaje en el ecosistema",
+      "Nativo on-chain",
+      "Institucional regulado en EE. UU.",
+      "Lado del operador (cualquier jurisdicción, cualquier audiencia)",
+    ],
   ]}
 />
 
@@ -356,14 +421,14 @@ con distribución), entonces Kuest es el camino, porque Polymarket y
 Kalshi no están en el negocio de la infraestructura para operadores.
 
 <Callout type="info" title="Por qué esta distinción importa estratégicamente">
-  Los operadores que tratan la comparación como "Kuest vs Polymarket"
-  acaban intentando optimizar para una competencia que no existe. La
-  comparación correcta es "Kuest vs construirlo uno mismo", que es
-  la que cubrimos en
-  <a href="/blog/2026-04-build-vs-license-prediction-market">el artículo de construir vs licenciar</a>.
-  Polymarket es la venue contra cuya ejecución sus traders podrían
-  comparar; Kuest es la infraestructura que le permite competir en
-  audiencia en lugar de en infraestructura.
+  Los operadores que tratan la comparación como "Kuest vs Polymarket" acaban intentando optimizar
+  para una competencia que no existe. La comparación correcta es "Kuest vs construirlo uno mismo",
+  que es la que cubrimos en
+  <a href="/blog/2026-04-build-vs-license-prediction-market">
+    el artículo de construir vs licenciar
+  </a>
+  . Polymarket es la venue contra cuya ejecución sus traders podrían comparar; Kuest es la
+  infraestructura que le permite competir en audiencia en lugar de en infraestructura.
 </Callout>
 
 ## Casos de uso que encajan con cada combinación
@@ -452,18 +517,18 @@ personalmente.
 Un marco breve para llegar a la respuesta correcta:
 
 1. **¿Es usted un trader?** Use Polymarket si está fuera de EE. UU.,
-  Kalshi si está dentro de EE. UU. Kuest no es su plataforma:
-  usted opera en venues de operadores construidas sobre Kuest.
+   Kalshi si está dentro de EE. UU. Kuest no es su plataforma:
+   usted opera en venues de operadores construidas sobre Kuest.
 2. **¿Es una institución con sede en EE. UU. que busca exposición
-  regulada?** Kalshi, posiblemente con un despliegue de Kuest para
-  audiencias fuera de EE. UU. en paralelo.
+   regulada?** Kalshi, posiblemente con un despliegue de Kuest para
+   audiencias fuera de EE. UU. en paralelo.
 3. **¿Es cualquier otro operador con distribución?** Brokerage,
-  exchange cripto-nativo, medios, creador, casa de apuestas
-  deportivas, fintech. Kuest, casi con seguridad.
+   exchange cripto-nativo, medios, creador, casa de apuestas
+   deportivas, fintech. Kuest, casi con seguridad.
 4. **¿Está intentando ser el próximo Polymarket o Kalshi?**
-  Construya su propia infraestructura de venue. El camino del
-  protocolo no le ayudará; necesita ser dueño de cada capa porque
-  su moat es la propia venue.
+   Construya su propia infraestructura de venue. El camino del
+   protocolo no le ayudará; necesita ser dueño de cada capa porque
+   su moat es la propia venue.
 
 Para la abrumadora mayoría de operadores con los que trabajamos, la
 respuesta es la opción 3: tienen distribución, no quieren ser un

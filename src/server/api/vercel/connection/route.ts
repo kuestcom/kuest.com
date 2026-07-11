@@ -1,0 +1,84 @@
+import { RATE_LIMIT_VERCEL_CONNECTION_MAX, RATE_LIMIT_WINDOW_MS } from "astro:env/server";
+import { LaunchError } from "@/lib/launch-utils";
+import { getValidVercelSession } from "@/lib/oauth-session";
+import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
+import { inspectVercelConnection } from "@/lib/vercel-api";
+
+interface RequestBody {
+  token?: string;
+  gitRepo?: string;
+  teamId?: string;
+}
+
+export async function POST(request: Request) {
+  const rateLimit = checkRateLimit(
+    request,
+    getRateLimitConfig({
+      route: "api:vercel-connection",
+      max: RATE_LIMIT_VERCEL_CONNECTION_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
+    }),
+  );
+  if (!rateLimit.allowed) {
+    return Response.json(
+      {
+        connected: false,
+        error: "Too many checks. Please retry shortly.",
+      },
+      {
+        status: 429,
+        headers: buildRateLimitHeaders(rateLimit),
+      },
+    );
+  }
+
+  try {
+    const body = (await request.json()) as RequestBody;
+    const rawToken = typeof body.token === "string" ? body.token.trim() : "";
+    const gitRepo = typeof body.gitRepo === "string" ? body.gitRepo.trim() : "";
+    const teamId = typeof body.teamId === "string" ? body.teamId.trim() : "";
+    const session = rawToken ? null : await getValidVercelSession();
+    const token = rawToken || session?.accessToken || "";
+
+    if (!token) {
+      return Response.json(
+        {
+          connected: false,
+          error: "Missing Vercel authentication.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const connection = await inspectVercelConnection({
+      token,
+      gitRepo: gitRepo || undefined,
+      teamId: teamId || undefined,
+    });
+
+    return Response.json({
+      connected: true,
+      identity: connection.identity,
+      githubImportReady: connection.githubImportReady,
+      githubNamespace: connection.githubNamespace,
+    });
+  } catch (error) {
+    if (error instanceof LaunchError) {
+      return Response.json(
+        {
+          connected: false,
+          error: "We could not verify this Vercel connection. Check it and try again.",
+        },
+        { status: 400 },
+      );
+    }
+
+    return Response.json(
+      {
+        connected: false,
+        error: error instanceof Error ? error.message : "Unexpected error.",
+      },
+      { status: 500 },
+    );
+  }
+}

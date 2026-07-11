@@ -113,10 +113,20 @@ vollständig besichert.
 <Comparison
   columns={["Dimension", "Aktien", "Futures", "Vorhersagemärkte"]}
   rows={[
-    ["Kapitalbedarf für 1-Mio.-$-Direktsicht", "250k–500k $", "50k–80k $", "Nur Prämie (z. B. 420k $)"],
+    [
+      "Kapitalbedarf für 1-Mio.-$-Direktsicht",
+      "250k–500k $",
+      "50k–80k $",
+      "Nur Prämie (z. B. 420k $)",
+    ],
     ["Margin-Call-Risiko vor Verfall", "Begrenzt (Reg T)", "Hoch", "Keines"],
     ["Maximaler Verlust", "Positionsgröße", "Unbegrenzt (perpetual contracts)", "Gezahlte Prämie"],
-    ["Zeitwertverfall-Risiko", "Keines", "Meist keines (Cost of Carry)", "Niedrig (binär am Verfall)"],
+    [
+      "Zeitwertverfall-Risiko",
+      "Keines",
+      "Meist keines (Cost of Carry)",
+      "Niedrig (binär am Verfall)",
+    ],
     ["Carry-Kosten", "Leihe bei Short", "Lagerung, Finanzierung", "Keine"],
   ]}
 />
@@ -173,10 +183,13 @@ warum Vorhersagemarkt-Trader im Durchschnitt disziplinierter sind
 als Aktien- oder Futures-Trader.
 
 Wir haben die Auflösungsmechaniken im Detail im
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">Beitrag zur Auflösung und Settlement-Schicht</a>
-behandelt. Für den Vergleichskontext hier ist nur wichtig, dass die
-Terminal-Payoff-Struktur grundlegend anders ist als die Roll-Struktur
-von Futures oder die Halt-auf-unbestimmte-Zeit-Struktur von Aktien.
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  Beitrag zur Auflösung und Settlement-Schicht
+</a>
+behandelt. Für den Vergleichskontext hier ist nur wichtig, dass die Terminal-Payoff-Struktur
+grundlegend anders ist als die Roll-Struktur von Futures oder die Halt-auf-unbestimmte-Zeit-Struktur
+von Aktien.
 
 ## Liquiditätsdynamik: wo die Bücher divergieren
 
@@ -267,13 +280,11 @@ sind, aber nicht natürlich durch traditionelle Instrumente gehedgt
 werden.
 
 <Callout type="info" title="Warum dies die am meisten unterschätzte Eigenschaft ist">
-  Aktien aggregieren Informationen über Unternehmen. Futures
-  aggregieren Informationen über Rohstoffe. Vorhersagemärkte
-  aggregieren Informationen über alles andere — und "alles andere"
-  ist der Großteil der tatsächlich folgenreichen Fragen in Politik,
-  Wirtschaft und Finanzen. Deshalb erwarten wir, dass diese
-  Kategorie über das nächste Jahrzehnt schneller expandiert als
-  jede der beiden anderen.
+  Aktien aggregieren Informationen über Unternehmen. Futures aggregieren Informationen über
+  Rohstoffe. Vorhersagemärkte aggregieren Informationen über alles andere — und "alles andere" ist
+  der Großteil der tatsächlich folgenreichen Fragen in Politik, Wirtschaft und Finanzen. Deshalb
+  erwarten wir, dass diese Kategorie über das nächste Jahrzehnt schneller expandiert als jede der
+  beiden anderen.
 </Callout>
 
 ## Risikoprofil: begrenzt vs. unbegrenzt

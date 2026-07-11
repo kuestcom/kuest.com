@@ -1,25 +1,25 @@
-import type { ReactNode } from 'react'
-import { AlertTriangleIcon, InfoIcon, LightbulbIcon, XCircleIcon } from 'lucide-react'
+import type { ReactNode } from "react";
+import { AlertTriangleIcon, InfoIcon, LightbulbIcon, XCircleIcon } from "lucide-react";
 
-type CalloutType = 'info' | 'tip' | 'warning' | 'error'
+type CalloutType = "info" | "tip" | "warning" | "error";
 
 const ICONS: Record<CalloutType, typeof InfoIcon> = {
   info: InfoIcon,
   tip: LightbulbIcon,
   warning: AlertTriangleIcon,
   error: XCircleIcon,
-}
+};
 
 export default function Callout({
-  type = 'info',
+  type = "info",
   title,
   children,
 }: {
-  type?: CalloutType
-  title?: string
-  children: ReactNode
+  type?: CalloutType;
+  title?: string;
+  children: ReactNode;
 }) {
-  const Icon = ICONS[type]
+  const Icon = ICONS[type];
   return (
     <aside className="blog-callout" data-type={type}>
       <span className="blog-callout-icon" aria-hidden="true">
@@ -30,5 +30,5 @@ export default function Callout({
         <div className="blog-callout-content">{children}</div>
       </div>
     </aside>
-  )
+  );
 }

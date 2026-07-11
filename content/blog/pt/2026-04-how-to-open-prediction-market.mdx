@@ -28,14 +28,14 @@ consistentemente uma venue com volume real no primeiro mês e
 atribuição de audiência significativa no primeiro trimestre.
 
 Se você está mais cedo na sua avaliação, o
+
 <a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
 cobre por que vale a pena entrar na categoria, a
 <a href="/blog/2026-04-build-vs-license-prediction-market">análise de construir-vs-licenciar</a>
 cobre a decisão estrutural por trás deste playbook, e o
 <a href="/blog/2026-04-launch-prediction-markets">walkthrough de lançamento de 15 minutos</a>
-cobre o deploy técnico. Este post é a versão mais longa de
-ponta a ponta: cada decisão que você tomará, na ordem em que a
-tomará, com os trade-offs explícitos.
+cobre o deploy técnico. Este post é a versão mais longa de ponta a ponta: cada decisão que você
+tomará, na ordem em que a tomará, com os trade-offs explícitos.
 
 <Stat
   value="≈ 4 semanas"
@@ -154,19 +154,22 @@ Uma boa especificação tem três propriedades:
    posições retornam o capital".
 
 Cobrimos a mecânica de resolução em detalhe no
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre a camada de resolução e settlement</a>.
-A disciplina da especificação de contrato é o que determina
-se a taxa de resolução de sua venue permanece acima de 99,5%
-(o que é aceitável) ou cai para 98% (que é o limiar abaixo do
-qual a confiança do trader começa a colapsar).
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  post sobre a camada de resolução e settlement
+</a>
+. A disciplina da especificação de contrato é o que determina se a taxa de resolução de sua venue
+permanece acima de 99,5% (o que é aceitável) ou cai para 98% (que é o limiar abaixo do qual a
+confiança do trader começa a colapsar).
 
 ## Fase 3: A decisão sobre a taxa do operador
 
 A taxa é a alavanca que determina a receita da venue e a
 tolerância da audiência. Cobrimos a questão da seleção de
 alíquota em profundidade no
-<a href="/blog/2026-04-fee-models-explained">post sobre modelos de taxas</a>
-— aqui está o resumo específico do lançamento.
+
+<a href="/blog/2026-04-fee-models-explained">post sobre modelos de taxas</a>— aqui está o resumo
+específico do lançamento.
 
 Escolha uma alíquota inicial baseada em seu perfil de
 audiência:
@@ -277,8 +280,9 @@ cuidadosa por região.
 A liquidez é a propriedade make-or-break de um lançamento, e o
 modelo de liquidez compartilhada do protocolo lida com a
 maioria disso. Cobrimos o caso técnico e econômico no
-<a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartilhada</a>.
-Para fins de lançamento, as decisões do operador são:
+
+<a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartilhada</a>. Para fins de
+lançamento, as decisões do operador são:
 
 - **Confirme a cobertura de liquidez compartilhada de seus
   mercados iniciais.** O livro compartilhado tem cobertura

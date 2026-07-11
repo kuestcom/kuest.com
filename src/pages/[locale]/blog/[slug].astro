@@ -1,0 +1,9 @@
+---
+import type { SupportedLocale } from '@/i18n/locales'
+import { listPostStaticParams } from '@/lib/blog/content'
+import BlogPostView from '@/views/BlogPostView.astro'
+export function getStaticPaths() {
+  return listPostStaticParams().filter(item => item.locale !== 'en').map(item => ({ params: { locale: item.locale, slug: item.slug } }))
+}
+---
+<BlogPostView locale={Astro.params.locale as SupportedLocale} slug={Astro.params.slug!} />

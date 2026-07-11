@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import { MonitorSmartphone } from 'lucide-react'
-import { useState, useSyncExternalStore } from 'react'
+import { MonitorSmartphone } from "lucide-react";
+import { useState, useSyncExternalStore } from "react";
 
-const MOBILE_PREVIEW_QUERY = '(max-width: 768px)'
+const MOBILE_PREVIEW_QUERY = "(max-width: 768px)";
 
 function subscribeToMobilePreview(onStoreChange: () => void) {
-  const mediaQuery = window.matchMedia(MOBILE_PREVIEW_QUERY)
-  mediaQuery.addEventListener('change', onStoreChange)
+  const mediaQuery = window.matchMedia(MOBILE_PREVIEW_QUERY);
+  mediaQuery.addEventListener("change", onStoreChange);
 
   return () => {
-    mediaQuery.removeEventListener('change', onStoreChange)
-  }
+    mediaQuery.removeEventListener("change", onStoreChange);
+  };
 }
 
 function getMobilePreviewSnapshot() {
-  return window.matchMedia(MOBILE_PREVIEW_QUERY).matches
+  return window.matchMedia(MOBILE_PREVIEW_QUERY).matches;
 }
 
 function getServerMobilePreviewSnapshot() {
-  return false
+  return false;
 }
 
 export default function SitePreview({
@@ -31,32 +31,32 @@ export default function SitePreview({
   liveLabel,
   className,
 }: {
-  href: string
-  label: string
-  iframeSrc: string
-  switchToDesktopLabel: string
-  switchToMobileLabel: string
-  liveLabel: string
-  className?: string
+  href: string;
+  label: string;
+  iframeSrc: string;
+  switchToDesktopLabel: string;
+  switchToMobileLabel: string;
+  liveLabel: string;
+  className?: string;
 }) {
   const forcedMobile = useSyncExternalStore(
     subscribeToMobilePreview,
     getMobilePreviewSnapshot,
     getServerMobilePreviewSnapshot,
-  )
-  const [manualMobile, setManualMobile] = useState(false)
+  );
+  const [manualMobile, setManualMobile] = useState(false);
 
-  const isMobile = forcedMobile || manualMobile
-  const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel
+  const isMobile = forcedMobile || manualMobile;
+  const toggleLabel = isMobile ? switchToDesktopLabel : switchToMobileLabel;
   const previewClassName = [
-    'site-preview',
-    'scroll-mt-24',
-    isMobile ? 'is-mobile' : '',
-    forcedMobile ? 'is-forced-mobile' : '',
-    className ?? '',
+    "site-preview",
+    "scroll-mt-24",
+    isMobile ? "is-mobile" : "",
+    forcedMobile ? "is-forced-mobile" : "",
+    className ?? "",
   ]
     .filter(Boolean)
-    .join(' ')
+    .join(" ");
 
   return (
     <div className={previewClassName} id="sitePreview">
@@ -84,7 +84,7 @@ export default function SitePreview({
           aria-hidden={forcedMobile}
           onClick={() => {
             if (!forcedMobile) {
-              setManualMobile(current => !current)
+              setManualMobile((current) => !current);
             }
           }}
         >
@@ -103,5 +103,5 @@ export default function SitePreview({
         />
       </div>
     </div>
-  )
+  );
 }

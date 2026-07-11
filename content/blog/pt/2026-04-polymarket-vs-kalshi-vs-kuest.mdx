@@ -28,6 +28,7 @@ regulatórias e como um operador deveria pensar em usá-las em
 combinação em vez de escolher entre elas.
 
 Se você está mais cedo na sua avaliação, o
+
 <a href="/blog/2026-03-what-are-prediction-markets">primer sobre mercados de previsão</a>
 cobre o básico, o
 <a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
@@ -95,7 +96,10 @@ O que funciona extremamente bem na Polymarket:
   limpa de 99,8 % ou mais. O caminho de disputa é bem definido e
   foi testado em campo por volume adversarial. Cobrimos toda a
   mecânica em
-  <a href="/blog/2026-04-resolution-and-the-settlement-layer">nossa análise aprofundada da resolução</a>.
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">
+    nossa análise aprofundada da resolução
+  </a>
+  .
 - **Acesso permissionless.** Qualquer pessoa com uma carteira e USDC
   pode operar na Polymarket. A plataforma não restringe o acesso por
   jurisdição via KYC; opera fora do perímetro regulado dos EUA e se
@@ -226,11 +230,31 @@ porque estão jogando posições diferentes na pilha.
 <Comparison
   columns={["Dimensão", "Polymarket", "Kalshi", "Kuest (deploys de operador)"]}
   rows={[
-    ["Taxa principal do trader", "≈ 1,0 % por lado (rateio protocolo/operador)", "0,0 % (sem taxa por operação)", "Definida pelo operador, tipicamente 0,5–1,5 %"],
-    ["Custos ocultos", "Spread (~30–60 bps)", "Spread + nível de dados de mercado", "Spread (~20–60 bps no livro compartilhado)"],
+    [
+      "Taxa principal do trader",
+      "≈ 1,0 % por lado (rateio protocolo/operador)",
+      "0,0 % (sem taxa por operação)",
+      "Definida pelo operador, tipicamente 0,5–1,5 %",
+    ],
+    [
+      "Custos ocultos",
+      "Spread (~30–60 bps)",
+      "Spread + nível de dados de mercado",
+      "Spread (~20–60 bps no livro compartilhado)",
+    ],
     ["Rebate ao maker", "Não", "Não", "Não (design de livro compartilhado)"],
-    ["Participação do operador", "Não se aplica (venue única)", "Não se aplica", "100 % da taxa do operador"],
-    ["Receita do protocolo", "A Polymarket retém sua margem de venue", "Recuperada via receita do ecossistema", "Pequena taxa de protocolo abaixo da taxa do operador"],
+    [
+      "Participação do operador",
+      "Não se aplica (venue única)",
+      "Não se aplica",
+      "100 % da taxa do operador",
+    ],
+    [
+      "Receita do protocolo",
+      "A Polymarket retém sua margem de venue",
+      "Recuperada via receita do ecossistema",
+      "Pequena taxa de protocolo abaixo da taxa do operador",
+    ],
     ["Overrides por jurisdição", "Não", "Não", "Sim"],
   ]}
 />
@@ -245,6 +269,7 @@ operadores.
 
 Para um detalhamento mais profundo de como definir a taxa do
 operador num deploy Kuest, veja o
+
 <a href="/blog/2026-04-fee-models-explained">post sobre modelos de taxa</a>.
 
 ## Lado a lado: matriz de funcionalidades
@@ -255,15 +280,50 @@ costumam se importar:
 <Comparison
   columns={["Funcionalidade", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
-    ["Ativo de liquidação", "USDC on-chain", "Custódia bancária em USD", "USDC on-chain (operador pode sobrepor fiat)"],
-    ["Modelo de resolução", "UMA Optimistic Oracle", "Equipe centralizada de integridade de mercado", "Baseado em UMA, com regras explícitas e processo público de disputa"],
+    [
+      "Ativo de liquidação",
+      "USDC on-chain",
+      "Custódia bancária em USD",
+      "USDC on-chain (operador pode sobrepor fiat)",
+    ],
+    [
+      "Modelo de resolução",
+      "UMA Optimistic Oracle",
+      "Equipe centralizada de integridade de mercado",
+      "Baseado em UMA, com regras explícitas e processo público de disputa",
+    ],
     ["Disponibilidade geográfica", "Global, exceto EUA", "Apenas EUA", "Configurável por operador"],
-    ["Exigência de KYC", "Nenhuma (apenas carteira)", "KYC completo regulado nos EUA", "Definida pelo operador (wallet-only ou camada externa de KYC)"],
-    ["Criação de mercados", "Permissionless (curadoria de admin)", "Pré-aprovada pela exchange", "Gerenciada pelo operador dentro dos limites do protocolo"],
-    ["Modelo de custódia", "Auto-custódia", "Parceiro bancário regulado", "Configurável: própria ou regulada"],
-    ["Profundidade do livro de ordens no lançamento", "Existente (venue madura)", "Existente (venue madura)", "Compartilhada (Dia 1 profundo para novos operadores)"],
+    [
+      "Exigência de KYC",
+      "Nenhuma (apenas carteira)",
+      "KYC completo regulado nos EUA",
+      "Definida pelo operador (wallet-only ou camada externa de KYC)",
+    ],
+    [
+      "Criação de mercados",
+      "Permissionless (curadoria de admin)",
+      "Pré-aprovada pela exchange",
+      "Gerenciada pelo operador dentro dos limites do protocolo",
+    ],
+    [
+      "Modelo de custódia",
+      "Auto-custódia",
+      "Parceiro bancário regulado",
+      "Configurável: própria ou regulada",
+    ],
+    [
+      "Profundidade do livro de ordens no lançamento",
+      "Existente (venue madura)",
+      "Existente (venue madura)",
+      "Compartilhada (Dia 1 profundo para novos operadores)",
+    ],
     ["Branding do operador", "Apenas Polymarket", "Apenas Kalshi", "Por deploy de operador"],
-    ["Encaixe no ecossistema", "Nativo on-chain", "Institucional regulado nos EUA", "Lado do operador (qualquer jurisdição, qualquer público)"],
+    [
+      "Encaixe no ecossistema",
+      "Nativo on-chain",
+      "Institucional regulado nos EUA",
+      "Lado do operador (qualquer jurisdição, qualquer público)",
+    ],
   ]}
 />
 
@@ -349,14 +409,12 @@ então a Kuest é o caminho, porque a Polymarket e a Kalshi não estão
 no negócio de infraestrutura para operadores.
 
 <Callout type="info" title="Por que essa distinção é estrategicamente importante">
-  Operadores que tratam a comparação como "Kuest vs Polymarket"
-  acabam tentando otimizar para uma competição que não existe. A
-  comparação correta é "Kuest vs construir você mesmo", que é a que
+  Operadores que tratam a comparação como "Kuest vs Polymarket" acabam tentando otimizar para uma
+  competição que não existe. A comparação correta é "Kuest vs construir você mesmo", que é a que
   cobrimos no
-  <a href="/blog/2026-04-build-vs-license-prediction-market">post de build vs licenciar</a>.
-  A Polymarket é a venue contra cuja execução seus traders podem
-  comparar; a Kuest é a infraestrutura que permite que você compita
-  em público em vez de competir em infraestrutura.
+  <a href="/blog/2026-04-build-vs-license-prediction-market">post de build vs licenciar</a>. A
+  Polymarket é a venue contra cuja execução seus traders podem comparar; a Kuest é a infraestrutura
+  que permite que você compita em público em vez de competir em infraestrutura.
 </Callout>
 
 ## Casos de uso que se encaixam em cada combinação
@@ -441,19 +499,19 @@ em evolução que eles não mantêm pessoalmente.
 Um arcabouço curto para chegar à resposta certa:
 
 1. **Você é um trader?** Use a Polymarket se estiver fora dos EUA,
-  a Kalshi se estiver dentro dos EUA. A Kuest não é a sua
-  plataforma — você opera em venues de operadores construídas sobre
-  a Kuest.
+   a Kalshi se estiver dentro dos EUA. A Kuest não é a sua
+   plataforma — você opera em venues de operadores construídas sobre
+   a Kuest.
 2. **Você é uma instituição sediada nos EUA buscando exposição
-  regulada?** Kalshi, possivelmente com um deploy Kuest para
-  públicos fora dos EUA em paralelo.
+   regulada?** Kalshi, possivelmente com um deploy Kuest para
+   públicos fora dos EUA em paralelo.
 3. **Você é qualquer outro operador com distribuição?** Corretora,
-  exchange cripto-nativa, mídia, criador, casa de apostas
-  esportivas, fintech. Kuest, com quase certeza.
+   exchange cripto-nativa, mídia, criador, casa de apostas
+   esportivas, fintech. Kuest, com quase certeza.
 4. **Você está tentando ser a próxima Polymarket ou Kalshi?**
-  Construa sua própria infraestrutura de venue. O caminho do
-  protocolo não vai te ajudar; você precisa ser dono de cada camada
-  porque o seu moat é a própria venue.
+   Construa sua própria infraestrutura de venue. O caminho do
+   protocolo não vai te ajudar; você precisa ser dono de cada camada
+   porque o seu moat é a própria venue.
 
 Para a esmagadora maioria dos operadores com quem trabalhamos, a
 resposta é a opção 3: eles têm distribuição, não querem ser um

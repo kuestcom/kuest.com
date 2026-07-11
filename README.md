@@ -2,9 +2,10 @@
 
 Open-source launch flow for Kuest white-label prediction markets.
 
-- Public demo path: `https://demo.kuest.com`
+- Landing: `https://kuest.com`
 - Launch: `https://kuest.com/launch`
 - The Protocol: `https://kuest.com/protocol`
+- Demo: `https://demo.kuest.com`
 
 Main goal of this repo:
 
@@ -12,59 +13,71 @@ Main goal of this repo:
 - Keep a guided path for non-developers when needed
 - Support OAuth-first auth with token fallback
 
-## User flow
+## Local development
 
-1. Set market site name and connect wallet
-2. Connect GitHub, Vercel, Reown, and Supabase
-3. Deploy and track timeline logs
+Requires Node 24+ and pnpm.
 
-## Vercel auth modes
-
-- `OAuth` is the default UX
-- `Access Token` is available as fallback
-
-Configure in `.env.local`:
-
-- `NEXT_PUBLIC_VERCEL_AUTH_MODE=oauth` or `token`
-- `NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK=true|false`
-
-If OAuth is enabled, set:
-
-- `VERCEL_OAUTH_CLIENT_ID`
-- `VERCEL_OAUTH_CLIENT_SECRET`
-
-## Local setup
-
-1. Copy `.env.example` to `.env.local`
-2. Fill `NEXT_PUBLIC_REOWN_APPKIT_PROJECT_ID`
-3. If using OAuth mode, fill Vercel OAuth client id/secret
-4. Set `NEXT_PUBLIC_GITHUB_APP_URL` to the companion GitHub app origin
-5. Run:
-
-```bash
+```sh
 pnpm install
-pnpm dev
+cp .env.example .dev.vars
+pnpm astro dev --background
 ```
 
-Local URL: `http://localhost:3000`
+Use `pnpm astro dev status`, `pnpm astro dev logs`, and `pnpm astro dev stop` to manage the background server.
 
-## Production notes
+Environment variables are declared and validated in `astro.config.mjs`. Browser-safe values are imported from `astro:env/client`; server settings and secrets are imported from `astro:env/server`. The names in `.env.example` are the complete application-facing names and do not require a framework-specific prefix.
 
-- Set `NEXT_PUBLIC_APP_URL` to your deployed app URL (for example `https://kuest.com/launch`)
-- OAuth callbacks are generated from request origin:
-  - `/api/oauth/vercel/callback`
-  - `/api/oauth/supabase/callback`
-- For Vercel project/deploy automation, Access Token mode is the stable path until broader OAuth API permissions are available
+## Verification
 
-## What the API launch does
+```sh
+pnpm check
+pnpm build
+pnpm preview
+```
 
-- Validates Supabase integration availability in Vercel
-- Reuses existing Vercel project when slug already exists
-- Imports repository/branch into Vercel
-- Attaches existing Supabase or creates a new one via Vercel integration
-- Sets environment variables and triggers deployment
-- Returns deployment URL and timeline logs
+`pnpm preview` runs the built application through Cloudflare's local `workerd` runtime.
 
-## Main route
+## Cloudflare deployment
 
-- `POST /api/launch`
+1. Under Settings → Build → Variables and Secrets, add browser/public and build-time
+   configuration such as:
+   - SITE_URL
+   - GITHUB_APP_URL
+   - REOWN_APPKIT_PROJECT_ID
+   - SUPABASE_URL
+   - SUPABASE_ANON_KEY
+   - OAuth client IDs
+   - rate-limit settings
+
+2. Under Settings → Variables and Secrets, add runtime secrets as type Secret:
+   - VERCEL_OAUTH_CLIENT_SECRET
+   - SUPABASE_OAUTH_CLIENT_SECRET
+   - SUPABASE_SERVICE_ROLE_KEY
+   - RESEND_API_KEY
+
+The Worker configuration is in `wrangler.jsonc`. Client settings must be available to the build. Runtime server settings can be added under `vars`, while secrets should be uploaded without committing them:
+
+```sh
+pnpm wrangler secret put RESEND_API_KEY
+pnpm wrangler secret put VERCEL_OAUTH_CLIENT_SECRET
+pnpm wrangler secret put SUPABASE_OAUTH_CLIENT_SECRET
+pnpm wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+pnpm deploy
+```
+
+For Cloudflare Workers Builds, use:
+
+- Root directory: `astro`
+- Build command: `pnpm build`
+- Deploy command: `pnpm wrangler deploy`
+
+OAuth callback URLs must be configured as `https://<domain>/api/oauth/vercel/callback` and `https://<domain>/api/oauth/supabase/callback`.
+
+## Source layout
+
+- `src/pages/` — Astro pages and live API endpoints
+- `src/views/` — shared localized page compositions
+- `src/components/` — migrated React UI and MDX blocks
+- `content/blog/<locale>/` — localized MDX posts
+- `src/i18n/messages/` — existing translated message catalogs
+- `public/` — fonts, images, flags, and blog covers

@@ -19,13 +19,13 @@ operators who simply launched first.
 
 This is the operator's manual for that running. It assumes
 you've already shipped (the
+
 <a href="/blog/2026-04-how-to-open-prediction-market">launch playbook</a>
 covers the shipping; the
 <a href="/blog/2026-04-launch-prediction-markets">15-minute walkthrough</a>
-covers the technical deploy). It assumes you have an audience,
-real volume, and a small team capable of executing on operator
-decisions. From there, here's how to run the venue through
-the first year and into the second.
+covers the technical deploy). It assumes you have an audience, real volume, and a small team capable
+of executing on operator decisions. From there, here's how to run the venue through the first year
+and into the second.
 
 <Stat
   value="≈ 4×"
@@ -64,11 +64,10 @@ confidence.
 **Resolution dispute rate.** The fraction of resolved markets
 that went to dispute rather than the optimistic-oracle
 clean path (we covered the mechanics in
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution post</a>).
-On a healthy venue this number is below 0.3%. Above 0.5%, it
-indicates contract specification problems that will erode
-trader trust over weeks. The metric is leading; trust
-collapse is lagging.
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">the resolution post</a>). On a healthy
+venue this number is below 0.3%. Above 0.5%, it indicates contract specification problems that will
+erode trader trust over weeks. The metric is leading; trust collapse is lagging.
 
 These three KPIs should be visible at all times to the
 operator. Weekly review of just these three numbers, with the
@@ -159,23 +158,20 @@ those failures as venue-level problems even though they're
 listing-level problems.
 
 <Callout type="warning" title="The 'someone might trade this' trap">
-  The single most common bad listing decision is "let's list
-  it because someone might want to trade it." On a venue with
-  thousands of markets, the cost of listing a market that
-  doesn't trade is small. On a venue with a focused vertical
-  and a small audience, every listed market that doesn't
-  trade dilutes attention from the markets that should. The
-  filter is "will this market produce real activity?", not
-  "could this market produce real activity?"
+  The single most common bad listing decision is "let's list it because someone might want to trade
+  it." On a venue with thousands of markets, the cost of listing a market that doesn't trade is
+  small. On a venue with a focused vertical and a small audience, every listed market that doesn't
+  trade dilutes attention from the markets that should. The filter is "will this market produce real
+  activity?", not "could this market produce real activity?"
 </Callout>
 
 ## Fee evolution over time
 
 The fee schedule we recommended for launch (covered in the
-<a href="/blog/2026-04-fee-models-explained">fee models post</a>)
-is a starting position, not a permanent setting. The
-operator's job through the first year is to evolve the fee
-based on what the data reveals about audience tolerance.
+
+<a href="/blog/2026-04-fee-models-explained">fee models post</a>) is a starting position, not a
+permanent setting. The operator's job through the first year is to evolve the fee based on what the
+data reveals about audience tolerance.
 
 The three signals that warrant a fee change:
 

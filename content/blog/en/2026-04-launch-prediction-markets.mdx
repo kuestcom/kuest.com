@@ -24,6 +24,7 @@ page, you'll have a concrete picture of how to take a venue from
 sign-up to its first live trade in fifteen minutes.
 
 If you're earlier in your journey, the
+
 <a href="/blog/2026-03-what-are-prediction-markets">prediction-market primer</a>
 covers the basics, and the
 <a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>
@@ -50,7 +51,7 @@ has already been done. The contracts are audited. The matching
 engine is in production. The shared liquidity is already there. The
 resolution rails are already wired. What you're configuring at
 deploy time is not infrastructure — it's the parameters that make
-the venue *yours*: brand, fees, market scope, target jurisdictions,
+the venue _yours_: brand, fees, market scope, target jurisdictions,
 audience.
 
 The jump from "fifteen months" to "fifteen minutes" is not a
@@ -84,26 +85,29 @@ operators.
 **Resolution rails that don't depend on the operator.** Markets
 resolve through UMA's optimistic oracle with explicit market rules,
 source metadata, and a public dispute path. We covered the full mechanics in
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">the post on resolution and the settlement layer</a> —
-the short version is that operators inherit a battle-tested
-settlement model rather than building one.
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  the post on resolution and the settlement layer
+</a>
+— the short version is that operators inherit a battle-tested settlement model rather than building
+one.
 
 **Shared liquidity at protocol scale.** Order flow on any operator
 brand contributes to and draws from a unified book that mirrors the
 deepest external venues. New operators see live spreads and
 realistic depth from the moment they launch. We've written
 separately on
-<a href="/blog/2026-04-shared-liquidity-day-one">why shared liquidity decides who wins the next prediction-market wave</a>
-— for now, the relevant fact is that a Day-1 launch on Kuest does
-not begin from a cold book.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">
+  why shared liquidity decides who wins the next prediction-market wave
+</a>
+— for now, the relevant fact is that a Day-1 launch on Kuest does not begin from a cold book.
 
 <Callout type="info" title="No internal blockchain team needed">
-  Smart contracts, CLOB engine, relayer, settlement, gas, and
-  liquidity provision are fully managed on the Kuest side. Your
-  team provides brand assets and the event scope. We handle the
-  rest. If your engineering org is busy on its core product, that
-  is fine — you do not need to staff blockchain infrastructure to
-  ship a prediction-market venue.
+  Smart contracts, CLOB engine, relayer, settlement, gas, and liquidity provision are fully managed
+  on the Kuest side. Your team provides brand assets and the event scope. We handle the rest. If
+  your engineering org is busy on its core product, that is fine — you do not need to staff
+  blockchain infrastructure to ship a prediction-market venue.
 </Callout>
 
 ## How a typical institutional deploy works
@@ -119,9 +123,9 @@ only the configuration densities differ.
 Pick the event categories that matter to your audience — macro,
 rates, politics, crypto, sports, geopolitical events. Set your
 trading fee (the
+
 <a href="/blog/2026-04-fee-models-explained">fee-models post</a>
-walks through the rate selection in detail). Configure the brand
-surface: logo, accent colour, copy.
+walks through the rate selection in detail). Configure the brand surface: logo, accent colour, copy.
 
 This is the step where most of your strategic thinking happens. The
 specific markets you choose to host shape every downstream piece —
@@ -165,6 +169,7 @@ withdraw on whatever cadence makes sense for your accounting.
 The fee economics are clean and the protocol's overhead is small
 enough that operators can run aggressively competitive headline
 rates without sacrificing margin. The
+
 <a href="/blog/2026-04-fee-models-explained">fee post</a>
 covers the rate-selection question in much more depth.
 
@@ -210,8 +215,9 @@ changes, not new deploys.
 ## How Kuest compares to building from scratch
 
 We covered the build-vs-license maths in detail in
-<a href="/blog/2026-04-build-vs-license-prediction-market">a separate post</a>,
-but the headline numbers are worth restating here.
+
+<a href="/blog/2026-04-build-vs-license-prediction-market">a separate post</a>, but the headline
+numbers are worth restating here.
 
 <Comparison
   columns={["Capability", "Kuest", "Build in-house"]}
