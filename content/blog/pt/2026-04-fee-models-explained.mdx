@@ -21,10 +21,11 @@ no que o cenário competitivo (Kalshi, Polymarket, a nova onda
 de white-labels regionais) está fazendo.
 
 Se você está mais cedo na sua avaliação, comece com o
+
 <a href="/blog/2026-03-prediction-market-land-grab">post de oportunidade de mercado</a>
 ou a <a href="/blog/2026-04-build-vs-license-prediction-market">análise construir-vs-licenciar</a>.
-Este post assume que você já passou dessas perguntas e precisa
-decidir onde colocar a taxa de operador no dia um.
+Este post assume que você já passou dessas perguntas e precisa decidir onde colocar a taxa de
+operador no dia um.
 
 <Stat
   value="≈ 0,9 %"
@@ -67,7 +68,12 @@ e o percentual é simétrico nos dois lados.
 ## Como são os percentuais competitivos em 2026
 
 <Comparison
-  columns={["Tipo de venue", "Taxa típica de operador", "Spread em mercados líquidos", "Custo total ida-e-volta"]}
+  columns={[
+    "Tipo de venue",
+    "Taxa típica de operador",
+    "Spread em mercados líquidos",
+    "Custo total ida-e-volta",
+  ]}
   rows={[
     ["Kalshi (regulado EUA)", "0,0 % (nenhuma)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1,0 % (compartilhada com protocolo)", "20–60 bps", "≈ 1,4–1,6 %"],
@@ -110,11 +116,9 @@ contrato SIM está mal precificado em 8 % está feliz em pagar
 com convicção fraca rebate em qualquer taxa acima de ~0,5 %.
 
 <Callout type="info" title="O filtro de convicção é uma feature">
-  Taxas mais altas entregam maior lucratividade por trader e
-  menor velocidade de trade. Taxas mais baixas entregam maior
-  velocidade e menor lucratividade. Não há resposta
-  universalmente certa — só uma resposta certa para a audiência
-  e estrutura de custos que você tem.
+  Taxas mais altas entregam maior lucratividade por trader e menor velocidade de trade. Taxas mais
+  baixas entregam maior velocidade e menor lucratividade. Não há resposta universalmente certa — só
+  uma resposta certa para a audiência e estrutura de custos que você tem.
 </Callout>
 
 ## Recomendação concreta de taxa por tipo de operador
@@ -150,17 +154,15 @@ Três sinais que justificam mudança:
 ## Como taxas interagem com liquidez compartilhada
 
 Se sua venue roda em liquidez compartilhada (o que
-<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fortemente</a>),
-a matemática tem uma nuance que vale a pena entender. O livro
-de ordens compartilhado fornece profundidade a spreads de
-nível-protocolo, o que significa que o custo total de execução
-dos seus traders é sua taxa mais um spread apertado (~30 bps)
-de nível-protocolo.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">recomendamos fortemente</a>), a matemática tem uma
+nuance que vale a pena entender. O livro de ordens compartilhado fornece profundidade a spreads de
+nível-protocolo, o que significa que o custo total de execução dos seus traders é sua taxa mais um
+spread apertado (~30 bps) de nível-protocolo.
 
 <Callout type="tip" title="Percentual efetivo, não headline">
-  Quando comparar sua venue com um concorrente, compare o custo
-  total ida-e-volta do trader (taxa × 2 + spread × 2), não a
-  taxa headline.
+  Quando comparar sua venue com um concorrente, compare o custo total ida-e-volta do trader (taxa ×
+  2 + spread × 2), não a taxa headline.
 </Callout>
 
 ## Erros comuns no dia um
@@ -183,10 +185,20 @@ com taxas muito mais altas quando a taxa normaliza.
 <Comparison
   columns={["Estágio", "Taxa de operador", "Tiering", "Por quê"]}
   rows={[
-    ["Pré-lançamento / beta privada", "0,85 %", "Plana", "Estabelecer baseline; coletar dados de coorte"],
+    [
+      "Pré-lançamento / beta privada",
+      "0,85 %",
+      "Plana",
+      "Estabelecer baseline; coletar dados de coorte",
+    ],
     ["Lançamento público → mês 6", "0,85 %", "Plana", "Sustentar para coletar sinal"],
     ["Mês 6 → mês 12", "0,95 %", "Plana", "Subida modesta após retenção provada"],
-    ["Mês 12+", "0,95 % / 0,80 % / 0,65 %", "Três tiers por volume 30 dias", "Reter whales sem perder retail"],
+    [
+      "Mês 12+",
+      "0,95 % / 0,80 % / 0,65 %",
+      "Três tiers por volume 30 dias",
+      "Reter whales sem perder retail",
+    ],
     ["Ano 2+", "Negociada para desks institucionais", "Custom", "Fluxo prop real entrando"],
   ]}
 />

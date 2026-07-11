@@ -27,11 +27,11 @@ konkretes Bild davon, wie eine Venue von der Anmeldung bis zum
 ersten Live-Trade in fünfzehn Minuten gebracht wird.
 
 Wenn Sie früher in Ihrer Reise stehen, behandelt das
+
 <a href="/blog/2026-03-what-are-prediction-markets">Vorhersagemarkt-Grundlagen-Tutorial</a>
 die Basics, und die
 <a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs-License-Analyse</a>
-behandelt, warum die meisten Betreiber den Stack nicht selbst
-bauen sollten.
+behandelt, warum die meisten Betreiber den Stack nicht selbst bauen sollten.
 
 <Stat
   value="$18,3 Mrd."
@@ -56,7 +56,7 @@ schwere Arbeit bereits erledigt ist. Die Verträge sind geprüft.
 Die Matching-Engine ist in Produktion. Die geteilte Liquidität
 ist bereits da. Die Resolution-Rails sind bereits verdrahtet.
 Was Sie zur Deploy-Zeit konfigurieren, ist keine
-Infrastruktur – es sind die Parameter, die die Venue zu *Ihrer*
+Infrastruktur – es sind die Parameter, die die Venue zu _Ihrer_
 machen: Marke, Gebühren, Marktumfang, Zieljurisdiktionen,
 Publikum.
 
@@ -94,7 +94,10 @@ sind.
 werden über UMAs Optimistic Oracle aufgelöst, mit expliziten
 Marktregeln, Source-Metadaten und einem öffentlichen
 Dispute-Pfad. Die volle Mechanik haben wir im
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">Beitrag zur Resolution- und Settlement-Schicht</a>
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  Beitrag zur Resolution- und Settlement-Schicht
+</a>
 behandelt.
 
 **Geteilte Liquidität auf Protokoll-Ebene.** Order-Flow auf jeder
@@ -105,13 +108,11 @@ Spreads und realistische Tiefe. Wir haben separat darüber
 geschrieben, <a href="/blog/2026-04-shared-liquidity-day-one">warum geteilte Liquidität entscheidet, wer die nächste Vorhersagemarkt-Welle gewinnt</a>.
 
 <Callout type="info" title="Kein internes Blockchain-Team nötig">
-  Smart Contracts, CLOB-Engine, Relayer, Settlement, Gas und
-  Liquiditätsbereitstellung werden vollständig auf Kuest-Seite
-  gemanagt. Ihr Team liefert Markenassets und den Event-Umfang.
-  Den Rest übernehmen wir. Wenn Ihre Engineering-Organisation
-  mit Ihrem Kernprodukt beschäftigt ist, ist das in Ordnung –
-  Sie müssen kein Blockchain-Infrastrukturteam aufbauen, um eine
-  Vorhersagemarkt-Venue auszuliefern.
+  Smart Contracts, CLOB-Engine, Relayer, Settlement, Gas und Liquiditätsbereitstellung werden
+  vollständig auf Kuest-Seite gemanagt. Ihr Team liefert Markenassets und den Event-Umfang. Den Rest
+  übernehmen wir. Wenn Ihre Engineering-Organisation mit Ihrem Kernprodukt beschäftigt ist, ist das
+  in Ordnung – Sie müssen kein Blockchain-Infrastrukturteam aufbauen, um eine Vorhersagemarkt-Venue
+  auszuliefern.
 </Callout>
 
 ## Wie ein typischer institutioneller Deploy abläuft
@@ -128,9 +129,10 @@ Konfigurations-Dichte unterscheidet sich.
 Wählen Sie die Event-Kategorien, die für Ihr Publikum relevant
 sind – Makro, Zinsen, Politik, Krypto, Sport, geopolitische
 Events. Setzen Sie Ihre Trading-Gebühr (der
+
 <a href="/blog/2026-04-fee-models-explained">Beitrag zu Gebührenmodellen</a>
-geht ausführlich auf die Tarifwahl ein). Konfigurieren Sie die
-Markenfläche: Logo, Akzentfarbe, Texte.
+geht ausführlich auf die Tarifwahl ein). Konfigurieren Sie die Markenfläche: Logo, Akzentfarbe,
+Texte.
 
 Hier passiert der Großteil Ihres strategischen Denkens. Die
 spezifischen Märkte, die Sie zu hosten wählen, prägen jedes
@@ -178,6 +180,7 @@ Rhythmus, der für Ihr Accounting Sinn ergibt.
 Die Gebührenökonomie ist sauber, und der Protokoll-Overhead ist
 klein genug, dass Betreiber aggressive wettbewerbsfähige Tarife
 fahren können, ohne Marge zu opfern. Der
+
 <a href="/blog/2026-04-fee-models-explained">Gebühren-Beitrag</a>
 behandelt die Tarifwahl deutlich tiefer.
 
@@ -225,9 +228,9 @@ Jurisdiktionen Konfigurationsänderungen, keine neuen Deploys.
 ## Wie Kuest mit dem Selbstbau abschneidet
 
 Wir haben die Build-vs-License-Mathematik im Detail in einem
+
 <a href="/blog/2026-04-build-vs-license-prediction-market">separaten Beitrag</a>
-behandelt, aber die Headline-Zahlen sind hier eine Wiederholung
-wert.
+behandelt, aber die Headline-Zahlen sind hier eine Wiederholung wert.
 
 <Comparison
   columns={["Fähigkeit", "Kuest", "Inhouse-Build"]}

@@ -40,20 +40,20 @@ pnpm preview
 ## Cloudflare deployment
 
 1. Under Settings → Build → Variables and Secrets, add browser/public and build-time
-    configuration such as:
-    - SITE_URL
-    - GITHUB_APP_URL
-    - REOWN_APPKIT_PROJECT_ID
-    - SUPABASE_URL
-    - SUPABASE_ANON_KEY
-    - OAuth client IDs
-    - rate-limit settings
+   configuration such as:
+   - SITE_URL
+   - GITHUB_APP_URL
+   - REOWN_APPKIT_PROJECT_ID
+   - SUPABASE_URL
+   - SUPABASE_ANON_KEY
+   - OAuth client IDs
+   - rate-limit settings
 
 2. Under Settings → Variables and Secrets, add runtime secrets as type Secret:
-    - VERCEL_OAUTH_CLIENT_SECRET
-    - SUPABASE_OAUTH_CLIENT_SECRET
-    - SUPABASE_SERVICE_ROLE_KEY
-    - RESEND_API_KEY
+   - VERCEL_OAUTH_CLIENT_SECRET
+   - SUPABASE_OAUTH_CLIENT_SECRET
+   - SUPABASE_SERVICE_ROLE_KEY
+   - RESEND_API_KEY
 
 The Worker configuration is in `wrangler.jsonc`. Client settings must be available to the build. Runtime server settings can be added under `vars`, while secrets should be uploaded without committing them:
 

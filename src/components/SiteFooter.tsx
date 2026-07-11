@@ -1,5 +1,5 @@
-import Image from '@/compat/Image'
-import KuestMark from '@/components/KuestMark'
+import Image from "@/compat/Image";
+import KuestMark from "@/components/KuestMark";
 
 export default function SiteFooter({
   note,
@@ -8,11 +8,11 @@ export default function SiteFooter({
   xLabel,
   discordLabel,
 }: {
-  note: string
-  docsLabel: string
-  contactLabel: string
-  xLabel: string
-  discordLabel: string
+  note: string;
+  docsLabel: string;
+  contactLabel: string;
+  xLabel: string;
+  discordLabel: string;
 }) {
   return (
     <footer>
@@ -68,5 +68,5 @@ export default function SiteFooter({
         </a>
       </div>
     </footer>
-  )
+  );
 }

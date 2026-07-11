@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const blogFrontmatterSchema = z.object({
   title: z.string().trim().min(1),
@@ -14,15 +14,15 @@ export const blogFrontmatterSchema = z.object({
   cover: z.string().trim().min(1).optional(),
   tags: z.array(z.string().trim().min(1)).default([]),
   draft: z.boolean().default(false),
-})
+});
 
-export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>
+export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>;
 
 export function parseFrontmatter(slug: string, locale: string, raw: unknown): BlogFrontmatter {
-  const result = blogFrontmatterSchema.safeParse(raw)
+  const result = blogFrontmatterSchema.safeParse(raw);
   if (!result.success) {
-    const issues = result.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join('; ')
-    throw new Error(`Invalid frontmatter in content/blog/${locale}/${slug}.mdx — ${issues}`)
+    const issues = result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ");
+    throw new Error(`Invalid frontmatter in content/blog/${locale}/${slug}.mdx — ${issues}`);
   }
-  return result.data
+  return result.data;
 }

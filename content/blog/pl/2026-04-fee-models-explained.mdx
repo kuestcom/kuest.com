@@ -21,10 +21,11 @@ robi konkurencyjny krajobraz: Kalshi, Polymarket i nowa fala regionalnych
 white-labeli.
 
 Jeśli jesteś na wcześniejszym etapie oceny, zacznij od
+
 <a href="/blog/2026-03-prediction-market-land-grab">tekstu o okazji rynkowej</a>
-albo <a href="/blog/2026-04-build-vs-license-prediction-market">analizy build-vs-license</a>.
-Ten tekst zakłada, że masz te pytania za sobą i musisz zdecydować, gdzie
-ustawić opłatę operatora w pierwszym dniu.
+albo <a href="/blog/2026-04-build-vs-license-prediction-market">analizy build-vs-license</a>. Ten
+tekst zakłada, że masz te pytania za sobą i musisz zdecydować, gdzie ustawić opłatę operatora w
+pierwszym dniu.
 
 <Stat
   value="≈ 0.9%"
@@ -72,7 +73,12 @@ obserwowalnych danych wykonania oraz badania operatorów, które
 prowadzimy co kwartał:
 
 <Comparison
-  columns={["Typ venue", "Typowa opłata operatora", "Spread na płynnych rynkach", "Całkowity koszt round-trip"]}
+  columns={[
+    "Typ venue",
+    "Typowa opłata operatora",
+    "Spread na płynnych rynkach",
+    "Całkowity koszt round-trip",
+  ]}
   rows={[
     ["Kalshi (regulowane USA)", "0.0% (brak)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1.0% (split protocol)", "20–60 bps", "≈ 1.4–1.6%"],
@@ -124,12 +130,11 @@ filtruje traderów o silniejszym przekonaniu, co czasem jest pożądane, a
 czasem nie.
 
 <Callout type="info" title="Filtr przekonania jest funkcją">
-  Wyższe opłaty dają wyższą rentowność na tradera i niższą velocity
-  transakcji. Niższe opłaty dają wyższą velocity transakcji i niższą
-  rentowność na tradera. Nie ma jednej uniwersalnie poprawnej odpowiedzi:
-  jest tylko odpowiedź właściwa dla odbiorców i struktury kosztów, które
-  masz. Operatorzy, którzy o tym nie myślą, kończą w oscylacji między
-  zmianami opłat i nigdy nie znajdują stabilnego punktu.
+  Wyższe opłaty dają wyższą rentowność na tradera i niższą velocity transakcji. Niższe opłaty dają
+  wyższą velocity transakcji i niższą rentowność na tradera. Nie ma jednej uniwersalnie poprawnej
+  odpowiedzi: jest tylko odpowiedź właściwa dla odbiorców i struktury kosztów, które masz.
+  Operatorzy, którzy o tym nie myślą, kończą w oscylacji między zmianami opłat i nigdy nie znajdują
+  stabilnego punktu.
 </Callout>
 
 ## Konkretna rekomendacja stawki według typu operatora
@@ -205,13 +210,13 @@ a nie wyścig opłat.
 ## Jak opłaty łączą się ze współdzieloną płynnością
 
 Jeśli Twoje venue działa na współdzielonej płynności, co
-<a href="/blog/2026-04-shared-liquidity-day-one">mocno rekomendujemy</a>,
-matematyka opłat ma niuans, który warto rozumieć. Współdzielona książka
-zleceń daje głębokość przy spreadach na poziomie protokołu, co oznacza, że
-łączny koszt wykonania dla Twoich traderów to Twoja opłata plus ciasny
-(~30 bps) spread na poziomie protokołu. Taki całkowity koszt jest
-konkurencyjny nawet przy opłatach operatora 1.0–1.5%, bo komponent spreadu
-jest dużo ciaśniejszy niż w venue uruchamiającym własną książkę od zera.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">mocno rekomendujemy</a>, matematyka opłat ma
+niuans, który warto rozumieć. Współdzielona książka zleceń daje głębokość przy spreadach na poziomie
+protokołu, co oznacza, że łączny koszt wykonania dla Twoich traderów to Twoja opłata plus ciasny
+(~30 bps) spread na poziomie protokołu. Taki całkowity koszt jest konkurencyjny nawet przy opłatach
+operatora 1.0–1.5%, bo komponent spreadu jest dużo ciaśniejszy niż w venue uruchamiającym własną
+książkę od zera.
 
 Operatorzy, którzy próbują zbudować własną płynność, kończą albo na
 kontraktowym opłacaniu market-makerów (co uderza w tego samego tradera
@@ -222,11 +227,9 @@ polega na tym, że headline fee jest bliżej effective fee, co pozwala
 prowadzić wyższą stawkę operatora bez silnego odczucia po stronie tradera.
 
 <Callout type="tip" title="Effective rate, nie headline rate">
-  Gdy porównujesz swoje venue z konkurentem, porównuj całkowity round-trip
-  cost tradera (opłata operatora × 2 + spread × 2), a nie headline
-  operator fee. Opłata operatora 1.0% na współdzielonej płynności często
-  jest tańsza dla tradera niż opłata operatora 0.5% na cienkiej własnej
-  książce.
+  Gdy porównujesz swoje venue z konkurentem, porównuj całkowity round-trip cost tradera (opłata
+  operatora × 2 + spread × 2), a nie headline operator fee. Opłata operatora 1.0% na współdzielonej
+  płynności często jest tańsza dla tradera niż opłata operatora 0.5% na cienkiej własnej książce.
 </Callout>
 
 ## Częste błędy operatorów w pierwszym dniu
@@ -263,11 +266,31 @@ kohorcie operatorów, których onboardowaliśmy.
 <Comparison
   columns={["Etap", "Opłata operatora", "Tiering", "Dlaczego"]}
   rows={[
-    ["Pre-launch / private beta", "0.85%", "Flat", "Ustalenie baseline; zebranie danych kohortowych"],
-    ["Public launch → Month 6", "0.85%", "Flat", "Utrzymanie stawki, aby zebrać sygnał; opór przed wczesnymi korektami"],
+    [
+      "Pre-launch / private beta",
+      "0.85%",
+      "Flat",
+      "Ustalenie baseline; zebranie danych kohortowych",
+    ],
+    [
+      "Public launch → Month 6",
+      "0.85%",
+      "Flat",
+      "Utrzymanie stawki, aby zebrać sygnał; opór przed wczesnymi korektami",
+    ],
     ["Month 6 → Month 12", "0.95%", "Flat", "Umiarkowana podwyżka po potwierdzeniu retencji"],
-    ["Month 12+", "0.95% / 0.80% / 0.65%", "Trzy tiery według 30-dniowego wolumenu", "Utrzymanie whales bez utraty retailu"],
-    ["Year 2+", "Negocjowana dla institutional desks", "Custom", "Dołącza realny prop flow; potrzebuje wyceny w basis points"],
+    [
+      "Month 12+",
+      "0.95% / 0.80% / 0.65%",
+      "Trzy tiery według 30-dniowego wolumenu",
+      "Utrzymanie whales bez utraty retailu",
+    ],
+    [
+      "Year 2+",
+      "Negocjowana dla institutional desks",
+      "Custom",
+      "Dołącza realny prop flow; potrzebuje wyceny w basis points",
+    ],
   ]}
 />
 

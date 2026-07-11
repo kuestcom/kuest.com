@@ -29,14 +29,14 @@ un venue con volumen real en el primer mes y atribución de
 audiencia significativa en el primer trimestre.
 
 Si estás más temprano en tu evaluación, el
+
 <a href="/blog/2026-03-prediction-market-land-grab">post sobre la oportunidad de mercado</a>
 cubre por qué vale la pena entrar en la categoría, el
 <a href="/blog/2026-04-build-vs-license-prediction-market">análisis de construir-vs-licenciar</a>
 cubre la decisión estructural debajo de este playbook, y el
 <a href="/blog/2026-04-launch-prediction-markets">walkthrough de lanzamiento de 15 minutos</a>
-cubre el deploy técnico. Este post es la versión integral más
-larga: cada decisión que tomarás, en el orden en que la
-tomarás, con los trade-offs explícitos.
+cubre el deploy técnico. Este post es la versión integral más larga: cada decisión que tomarás, en
+el orden en que la tomarás, con los trade-offs explícitos.
 
 <Stat
   value="≈ 4 semanas"
@@ -156,20 +156,22 @@ Una buena especificación tiene tres propiedades:
    posiciones devuelven el capital".
 
 Cubrimos la mecánica de resolución en detalle en el
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">post sobre la capa de resolución y settlement</a>.
-La disciplina de la especificación de contrato es lo que
-determina si la tasa de resolución de tu venue se mantiene
-por encima del 99,5% (lo cual es aceptable) o cae al 98% (que
-es el umbral por debajo del cual la confianza del trader
-comienza a colapsar).
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">
+  post sobre la capa de resolución y settlement
+</a>
+. La disciplina de la especificación de contrato es lo que determina si la tasa de resolución de tu
+venue se mantiene por encima del 99,5% (lo cual es aceptable) o cae al 98% (que es el umbral por
+debajo del cual la confianza del trader comienza a colapsar).
 
 ## Fase 3: La decisión sobre la comisión del operador
 
 La comisión es la palanca que determina los ingresos del venue
 y la tolerancia de la audiencia. Cubrimos la pregunta de
 selección de tasa en profundidad en el
-<a href="/blog/2026-04-fee-models-explained">post sobre modelos de comisiones</a>:
-aquí está el resumen específico del lanzamiento.
+
+<a href="/blog/2026-04-fee-models-explained">post sobre modelos de comisiones</a>: aquí está el
+resumen específico del lanzamiento.
 
 Elige una tasa de inicio basada en tu perfil de audiencia:
 
@@ -283,8 +285,9 @@ La liquidez es la propiedad de éxito o fracaso de un
 lanzamiento, y el modelo de liquidez compartida del protocolo
 maneja la mayor parte de ello. Cubrimos el caso técnico y
 económico en el
-<a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartida</a>.
-Para fines de lanzamiento, las decisiones del operador son:
+
+<a href="/blog/2026-04-shared-liquidity-day-one">post sobre liquidez compartida</a>. Para fines de
+lanzamiento, las decisiones del operador son:
 
 - **Confirma la cobertura de liquidez compartida de tus
   mercados iniciales.** El libro compartido tiene cobertura
@@ -513,7 +516,12 @@ Las métricas a observar, en orden de prioridad:
   columns={["Métrica", "Saludable", "Observar", "Malo"]}
   rows={[
     ["Retención de traders activos del Día 7", ">35%", "25–35%", "<25%"],
-    ["Crecimiento del tamaño mediano de trade", "Tendencia al alza", "Plano", "Tendencia a la baja"],
+    [
+      "Crecimiento del tamaño mediano de trade",
+      "Tendencia al alza",
+      "Plano",
+      "Tendencia a la baja",
+    ],
     ["Tiempo hasta el primer trade (nuevos usuarios)", "<15 min", "15–60 min", ">60 min"],
     ["Tickets de soporte / 100 traders activos", "<5", "5–15", ">15"],
     ["Tasa de disputa de resolución", "<0,2%", "0,2–0,5%", ">0,5%"],

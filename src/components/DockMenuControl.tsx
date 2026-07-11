@@ -1,4 +1,4 @@
-import { Link } from '@/i18n/navigation'
+import { Link } from "@/i18n/navigation";
 
 export default function DockMenuControl({
   homeHref,
@@ -15,19 +15,19 @@ export default function DockMenuControl({
   protocolLabel,
   blogLabel,
 }: {
-  homeHref: string
-  enterpriseHref: string
-  protocolHref: string
-  blogHref?: string
-  demoHref?: string
-  demoLabel?: string
-  active: 'home' | 'enterprise' | 'protocol' | 'blog'
-  openLabel: string
-  menuAriaLabel: string
-  homeLabel: string
-  enterpriseLabel: string
-  protocolLabel: string
-  blogLabel?: string
+  homeHref: string;
+  enterpriseHref: string;
+  protocolHref: string;
+  blogHref?: string;
+  demoHref?: string;
+  demoLabel?: string;
+  active: "home" | "enterprise" | "protocol" | "blog";
+  openLabel: string;
+  menuAriaLabel: string;
+  homeLabel: string;
+  enterpriseLabel: string;
+  protocolLabel: string;
+  blogLabel?: string;
 }) {
   return (
     <div className="site-language-control site-nav-control" id="dockSiteNavControl">
@@ -51,85 +51,79 @@ export default function DockMenuControl({
         role="menu"
         aria-label={menuAriaLabel}
       >
-        {active === 'home'
-          ? (
-              <span
-                className="site-language-option site-nav-option is-disabled"
-                role="menuitem"
-                aria-disabled="true"
-              >
-                {homeLabel}
-              </span>
-            )
-          : (
-              <Link href={homeHref} className="site-language-option site-nav-option" role="menuitem">
-                {homeLabel}
-              </Link>
-            )}
-        {active === 'home' && demoHref && demoLabel
-          ? (
-              <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
-                {demoLabel}
-              </a>
-            )
-          : null}
-        {active === 'enterprise'
-          ? (
-              <span
-                className="site-language-option site-nav-option is-disabled"
-                role="menuitem"
-                aria-disabled="true"
-              >
-                {enterpriseLabel}
-              </span>
-            )
-          : (
-              <Link href={enterpriseHref} className="site-language-option site-nav-option" role="menuitem">
-                {enterpriseLabel}
-              </Link>
-            )}
-        {active === 'enterprise' && demoHref && demoLabel
-          ? (
-              <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
-                {demoLabel}
-              </a>
-            )
-          : null}
-        {active === 'protocol'
-          ? (
-              <span
-                className="site-language-option site-nav-option is-disabled"
-                role="menuitem"
-                aria-disabled="true"
-              >
-                {protocolLabel}
-              </span>
-            )
-          : (
-              <Link href={protocolHref} className="site-language-option site-nav-option" role="menuitem">
-                {protocolLabel}
-              </Link>
-            )}
-        {blogHref && blogLabel
-          ? (
-              active === 'blog'
-                ? (
-                    <span
-                      className="site-language-option site-nav-option is-disabled"
-                      role="menuitem"
-                      aria-disabled="true"
-                    >
-                      {blogLabel}
-                    </span>
-                  )
-                : (
-                    <Link href={blogHref} className="site-language-option site-nav-option" role="menuitem">
-                      {blogLabel}
-                    </Link>
-                  )
-            )
-          : null}
+        {active === "home" ? (
+          <span
+            className="site-language-option site-nav-option is-disabled"
+            role="menuitem"
+            aria-disabled="true"
+          >
+            {homeLabel}
+          </span>
+        ) : (
+          <Link href={homeHref} className="site-language-option site-nav-option" role="menuitem">
+            {homeLabel}
+          </Link>
+        )}
+        {active === "home" && demoHref && demoLabel ? (
+          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+            {demoLabel}
+          </a>
+        ) : null}
+        {active === "enterprise" ? (
+          <span
+            className="site-language-option site-nav-option is-disabled"
+            role="menuitem"
+            aria-disabled="true"
+          >
+            {enterpriseLabel}
+          </span>
+        ) : (
+          <Link
+            href={enterpriseHref}
+            className="site-language-option site-nav-option"
+            role="menuitem"
+          >
+            {enterpriseLabel}
+          </Link>
+        )}
+        {active === "enterprise" && demoHref && demoLabel ? (
+          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+            {demoLabel}
+          </a>
+        ) : null}
+        {active === "protocol" ? (
+          <span
+            className="site-language-option site-nav-option is-disabled"
+            role="menuitem"
+            aria-disabled="true"
+          >
+            {protocolLabel}
+          </span>
+        ) : (
+          <Link
+            href={protocolHref}
+            className="site-language-option site-nav-option"
+            role="menuitem"
+          >
+            {protocolLabel}
+          </Link>
+        )}
+        {blogHref && blogLabel ? (
+          active === "blog" ? (
+            <span
+              className="site-language-option site-nav-option is-disabled"
+              role="menuitem"
+              aria-disabled="true"
+            >
+              {blogLabel}
+            </span>
+          ) : (
+            <Link href={blogHref} className="site-language-option site-nav-option" role="menuitem">
+              {blogLabel}
+            </Link>
+          )
+        ) : null}
       </div>
     </div>
-  )
+  );
 }

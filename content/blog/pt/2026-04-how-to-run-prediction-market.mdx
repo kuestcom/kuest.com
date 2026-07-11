@@ -19,13 +19,12 @@ criado por operadores que simplesmente lançaram primeiro.
 
 Este é o manual do operador para essa operação. Ele assume
 que você já entregou (o
+
 <a href="/blog/2026-04-how-to-open-prediction-market">playbook de lançamento</a>
-cobre a entrega; o
-<a href="/blog/2026-04-launch-prediction-markets">tutorial de 15 minutos</a>
-cobre o deploy técnico). Ele assume que você tem uma audiência,
-volume real e uma equipe pequena capaz de executar decisões do
-operador. A partir daí, eis como operar o venue ao longo do
-primeiro ano e até o segundo.
+cobre a entrega; o<a href="/blog/2026-04-launch-prediction-markets">tutorial de 15 minutos</a>
+cobre o deploy técnico). Ele assume que você tem uma audiência, volume real e uma equipe pequena
+capaz de executar decisões do operador. A partir daí, eis como operar o venue ao longo do primeiro
+ano e até o segundo.
 
 <Stat
   value="≈ 4×"
@@ -65,11 +64,11 @@ perdendo confiança.
 **Taxa de disputa de resolução.** A fração de mercados
 resolvidos que foram para disputa em vez do caminho limpo do
 optimistic-oracle (cobrimos a mecânica no
-<a href="/blog/2026-04-resolution-and-the-settlement-layer">post de resolução</a>).
-Em um venue saudável, este número está abaixo de 0,3%. Acima
-de 0,5%, indica problemas de especificação de contrato que
-erodirão a confiança do trader ao longo de semanas. A métrica
-é antecipada; o colapso da confiança é atrasado.
+
+<a href="/blog/2026-04-resolution-and-the-settlement-layer">post de resolução</a>). Em um venue
+saudável, este número está abaixo de 0,3%. Acima de 0,5%, indica problemas de especificação de
+contrato que erodirão a confiança do trader ao longo de semanas. A métrica é antecipada; o colapso
+da confiança é atrasado.
 
 Esses três KPIs devem estar visíveis o tempo todo para o
 operador. A revisão semanal apenas desses três números, com a
@@ -167,24 +166,21 @@ experimenta essas falhas como problemas no nível do venue
 mesmo sendo problemas no nível da listagem.
 
 <Callout type="warning" title="A armadilha do 'alguém poderia operar isso'">
-  A decisão de listagem ruim mais comum é "vamos listar porque
-  alguém pode querer operar isso". Em um venue com milhares de
-  mercados, o custo de listar um mercado que não opera é
-  pequeno. Em um venue com uma vertical focada e uma audiência
-  pequena, cada mercado listado que não opera dilui a atenção
-  dos mercados que deveriam. O filtro é "esse mercado vai
-  produzir atividade real?", não "esse mercado poderia produzir
-  atividade real?"
+  A decisão de listagem ruim mais comum é "vamos listar porque alguém pode querer operar isso". Em
+  um venue com milhares de mercados, o custo de listar um mercado que não opera é pequeno. Em um
+  venue com uma vertical focada e uma audiência pequena, cada mercado listado que não opera dilui a
+  atenção dos mercados que deveriam. O filtro é "esse mercado vai produzir atividade real?", não
+  "esse mercado poderia produzir atividade real?"
 </Callout>
 
 ## Evolução de taxas ao longo do tempo
 
 O cronograma de taxas que recomendamos para o lançamento
 (coberto no
-<a href="/blog/2026-04-fee-models-explained">post de modelos de taxas</a>)
-é uma posição inicial, não uma configuração permanente. O
-trabalho do operador no primeiro ano é evoluir a taxa com base
-no que os dados revelam sobre a tolerância da audiência.
+
+<a href="/blog/2026-04-fee-models-explained">post de modelos de taxas</a>) é uma posição inicial,
+não uma configuração permanente. O trabalho do operador no primeiro ano é evoluir a taxa com base no
+que os dados revelam sobre a tolerância da audiência.
 
 Os três sinais que justificam uma mudança de taxa:
 

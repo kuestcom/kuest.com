@@ -1,19 +1,16 @@
 {
   "name": "kuest",
-  "type": "module",
   "private": true,
-  "packageManager": "pnpm@11.9.0",
   "description": "Launch Your Own Decentralized Prediction Market in Minutes.",
-  "engines": {
-    "node": "24.x"
-  },
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "deploy": "astro build && wrangler deploy",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "vp config"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.1.2",
@@ -46,6 +43,11 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "typescript": "6.0.3",
+    "vite-plus": "catalog:",
     "wrangler": "4.110.0"
-  }
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "pnpm@11.9.0"
 }

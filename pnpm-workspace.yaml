@@ -1,11 +1,16 @@
 minimumReleaseAge: 1440
 peerDependencyRules:
   allowedVersions:
-    'abitype@1.0.8>zod': '4'
-    typescript: '6'
-    'use-sync-external-store@1.2.0>react': '19'
+    "abitype@1.0.8>zod": "4"
+    typescript: "6"
+    "use-sync-external-store@1.2.0>react": "19"
+    vite: "*"
+    vitest: "*"
+  allowAny:
+    - vite
+    - vitest
 allowBuilds:
-  '@reown/appkit': false
+  "@reown/appkit": false
   bufferutil: false
   esbuild: true
   keccak: false
@@ -13,5 +18,20 @@ allowBuilds:
   utf-8-validate: false
   workerd: false
 overrides:
-  '@wagmi/connectors': 6.2.0
-  '@wagmi/core': 2.22.1
+  "@wagmi/connectors": 6.2.0
+  "@wagmi/core": 2.22.1
+  vite: "catalog:"
+  vitest: "catalog:"
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite-plus: latest
+minimumReleaseAgeExclude:
+  - vite-plus
+  - "@voidzero-dev/*"
+  - oxlint
+  - "@oxlint/*"
+  - oxlint-tsgolint
+  - "@oxlint-tsgolint/*"
+  - oxfmt
+  - "@oxfmt/*"

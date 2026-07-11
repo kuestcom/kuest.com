@@ -28,13 +28,13 @@ Position liegt und wie ein Betreiber darüber nachdenken sollte, sie in
 Kombination zu nutzen, statt zwischen ihnen zu wählen.
 
 Wer noch früher in seiner Bewertung steht, dem bietet das
+
 <a href="/blog/2026-03-what-are-prediction-markets">Vorhersagemarkt-Primer</a>
 die Grundlagen, der
 <a href="/blog/2026-03-prediction-market-land-grab">Beitrag zur Marktchance</a>
-beschreibt, warum es sich lohnt, in diese Kategorie einzusteigen, und
-die <a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs.-Lizenz-Analyse</a>
-behandelt die zentrale Entscheidung, die diesem ganzen Vergleich
-zugrunde liegt.
+beschreibt, warum es sich lohnt, in diese Kategorie einzusteigen, und die
+<a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs.-Lizenz-Analyse</a>
+behandelt die zentrale Entscheidung, die diesem ganzen Vergleich zugrunde liegt.
 
 <Stat
   value="$18.3B"
@@ -98,7 +98,8 @@ Was auf Polymarket extrem gut funktioniert:
   sauberer Auflösung abgewickelt. Der Streitweg ist klar definiert
   und wurde durch adversariales Volumen kampferprobt. Wir haben die
   vollständige Mechanik in
-  <a href="/blog/2026-04-resolution-and-the-settlement-layer">unserer Auflösungs-Tiefenanalyse</a> behandelt.
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">unserer Auflösungs-Tiefenanalyse</a>
+  behandelt.
 - **Permissionless Zugang.** Jeder mit einem Wallet und USDC kann auf
   Polymarket handeln. Die Plattform beschränkt den Zugang nicht per
   KYC nach Jurisdiktion; sie operiert außerhalb des regulierten
@@ -229,11 +230,31 @@ bespielen.
 <Comparison
   columns={["Dimension", "Polymarket", "Kalshi", "Kuest (Betreiber-Deploys)"]}
   rows={[
-    ["Trader-Hauptgebühr", "≈ 1,0 % pro Seite (Aufteilung Protokoll/Betreiber)", "0,0 % (keine Gebühr pro Trade)", "Vom Betreiber festgelegt, typischerweise 0,5–1,5 %"],
-    ["Versteckte Kosten", "Spread (~30–60 bps)", "Spread + Marktdaten-Tier", "Spread (~20–60 bps im geteilten Buch)"],
+    [
+      "Trader-Hauptgebühr",
+      "≈ 1,0 % pro Seite (Aufteilung Protokoll/Betreiber)",
+      "0,0 % (keine Gebühr pro Trade)",
+      "Vom Betreiber festgelegt, typischerweise 0,5–1,5 %",
+    ],
+    [
+      "Versteckte Kosten",
+      "Spread (~30–60 bps)",
+      "Spread + Marktdaten-Tier",
+      "Spread (~20–60 bps im geteilten Buch)",
+    ],
     ["Maker-Rabatt", "Nein", "Nein", "Nein (Design des geteilten Buchs)"],
-    ["Betreiberanteil", "Nicht zutreffend (einzelne Venue)", "Nicht zutreffend", "100 % der Betreibergebühr"],
-    ["Protokollanteil", "Polymarket behält seine Venue-Marge", "Wird über Ökosystemumsätze ausgeglichen", "Kleine Protokollgebühr unterhalb der Betreibergebühr"],
+    [
+      "Betreiberanteil",
+      "Nicht zutreffend (einzelne Venue)",
+      "Nicht zutreffend",
+      "100 % der Betreibergebühr",
+    ],
+    [
+      "Protokollanteil",
+      "Polymarket behält seine Venue-Marge",
+      "Wird über Ökosystemumsätze ausgeglichen",
+      "Kleine Protokollgebühr unterhalb der Betreibergebühr",
+    ],
     ["Overrides pro Jurisdiktion", "Nein", "Nein", "Ja"],
   ]}
 />
@@ -247,6 +268,7 @@ Kuests Modell betreiberorientiert statt konkurrierend mit Betreibern.
 
 Für eine ausführlichere Aufschlüsselung, wie man die Betreibergebühr
 auf einem Kuest-Deploy festlegt, siehe den
+
 <a href="/blog/2026-04-fee-models-explained">Beitrag zu den Gebührenmodellen</a>.
 
 ## Direktvergleich: Feature-Matrix
@@ -257,15 +279,50 @@ Ein granularerer Vergleich über die Dimensionen, die Betreibern
 <Comparison
   columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
-    ["Settlement-Asset", "USDC On-Chain", "USD Bankenverwahrung", "USDC On-Chain (Betreiber kann Fiat überlagern)"],
-    ["Auflösungsmodell", "UMA Optimistic Oracle", "Zentralisiertes Marktintegritätsteam", "UMA-basiert, mit expliziten Regeln und öffentlichem Dispute-Prozess"],
+    [
+      "Settlement-Asset",
+      "USDC On-Chain",
+      "USD Bankenverwahrung",
+      "USDC On-Chain (Betreiber kann Fiat überlagern)",
+    ],
+    [
+      "Auflösungsmodell",
+      "UMA Optimistic Oracle",
+      "Zentralisiertes Marktintegritätsteam",
+      "UMA-basiert, mit expliziten Regeln und öffentlichem Dispute-Prozess",
+    ],
     ["Geografische Verfügbarkeit", "Global außer USA", "Nur USA", "Pro Betreiber konfigurierbar"],
-    ["KYC-Anforderung", "Keine (nur Wallet)", "Vollständiges US-reguliertes KYC", "Vom Betreiber definiert (wallet-only oder externe KYC-Schicht)"],
-    ["Markterstellung", "Permissionless (Admin-Kuration)", "Vorab durch Börse genehmigt", "Vom Betreiber innerhalb der Protokollgrenzen verwaltet"],
-    ["Verwahrungsmodell", "Self-Custody", "Regulierter Bankpartner", "Konfigurierbar: selbst oder reguliert"],
-    ["Orderbuch-Tiefe beim Start", "Bestehend (etablierte Venue)", "Bestehend (etablierte Venue)", "Geteilt (Day-1-Tiefe für neue Betreiber)"],
+    [
+      "KYC-Anforderung",
+      "Keine (nur Wallet)",
+      "Vollständiges US-reguliertes KYC",
+      "Vom Betreiber definiert (wallet-only oder externe KYC-Schicht)",
+    ],
+    [
+      "Markterstellung",
+      "Permissionless (Admin-Kuration)",
+      "Vorab durch Börse genehmigt",
+      "Vom Betreiber innerhalb der Protokollgrenzen verwaltet",
+    ],
+    [
+      "Verwahrungsmodell",
+      "Self-Custody",
+      "Regulierter Bankpartner",
+      "Konfigurierbar: selbst oder reguliert",
+    ],
+    [
+      "Orderbuch-Tiefe beim Start",
+      "Bestehend (etablierte Venue)",
+      "Bestehend (etablierte Venue)",
+      "Geteilt (Day-1-Tiefe für neue Betreiber)",
+    ],
     ["Betreiber-Branding", "Nur Polymarket", "Nur Kalshi", "Pro Betreiber-Deploy"],
-    ["Ökosystem-Passung", "On-Chain-nativ", "Reguliert, US-institutionell", "Betreiberseitig (jede Jurisdiktion, jedes Publikum)"],
+    [
+      "Ökosystem-Passung",
+      "On-Chain-nativ",
+      "Reguliert, US-institutionell",
+      "Betreiberseitig (jede Jurisdiktion, jedes Publikum)",
+    ],
   ]}
 />
 
@@ -347,14 +404,12 @@ Distribution der Fall ist), dann ist Kuest der Weg, weil Polymarket
 und Kalshi nicht im Geschäft mit Betreiber-Infrastruktur sind.
 
 <Callout type="info" title="Warum diese Unterscheidung strategisch wichtig ist">
-  Betreiber, die den Vergleich als „Kuest vs. Polymarket" behandeln,
-  versuchen am Ende, für einen Wettbewerb zu optimieren, den es nicht
-  gibt. Der richtige Vergleich lautet „Kuest vs. Selbstbau" und ist
-  der, den wir im
+  Betreiber, die den Vergleich als „Kuest vs. Polymarket" behandeln, versuchen am Ende, für einen
+  Wettbewerb zu optimieren, den es nicht gibt. Der richtige Vergleich lautet „Kuest vs. Selbstbau"
+  und ist der, den wir im
   <a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs.-Lizenz-Beitrag</a>
-  behandelt haben. Polymarket ist die Venue, mit deren Ausführung Ihre
-  Trader vergleichen könnten; Kuest ist die Infrastruktur, die es
-  Ihnen erlaubt, über Publikum statt über Infrastruktur zu
+  behandelt haben. Polymarket ist die Venue, mit deren Ausführung Ihre Trader vergleichen könnten;
+  Kuest ist die Infrastruktur, die es Ihnen erlaubt, über Publikum statt über Infrastruktur zu
   konkurrieren.
 </Callout>
 
@@ -441,19 +496,19 @@ nicht selbst pflegen müssen.
 Ein kurzer Rahmen, um zur richtigen Antwort zu gelangen:
 
 1. **Sind Sie Trader?** Nutzen Sie Polymarket, wenn Sie außerhalb
-  der USA sind, und Kalshi, wenn Sie in den USA sind. Kuest ist
-  nicht Ihre Plattform — Sie handeln auf Betreiber-Venues, die auf
-  Kuest aufgebaut sind.
+   der USA sind, und Kalshi, wenn Sie in den USA sind. Kuest ist
+   nicht Ihre Plattform — Sie handeln auf Betreiber-Venues, die auf
+   Kuest aufgebaut sind.
 2. **Sind Sie eine in den USA ansässige Institution, die regulierte
-  Exposure möchte?** Kalshi, möglicherweise mit einem Kuest-Deploy
-  für Nicht-US-Publikum daneben.
+   Exposure möchte?** Kalshi, möglicherweise mit einem Kuest-Deploy
+   für Nicht-US-Publikum daneben.
 3. **Sind Sie irgendein anderer Betreiber mit Distribution?**
-  Broker, Krypto-native Börse, Medien, Creator,
-  Sportwettenanbieter, Fintech. Kuest, mit ziemlicher Sicherheit.
+   Broker, Krypto-native Börse, Medien, Creator,
+   Sportwettenanbieter, Fintech. Kuest, mit ziemlicher Sicherheit.
 4. **Versuchen Sie, das nächste Polymarket oder Kalshi zu werden?**
-  Bauen Sie Ihre eigene Venue-Infrastruktur. Der Protokollpfad hilft
-  Ihnen nicht; Sie müssen jede Schicht besitzen, weil Ihr Burggraben
-  die Venue selbst ist.
+   Bauen Sie Ihre eigene Venue-Infrastruktur. Der Protokollpfad hilft
+   Ihnen nicht; Sie müssen jede Schicht besitzen, weil Ihr Burggraben
+   die Venue selbst ist.
 
 Für die überwältigende Mehrheit der Betreiber, mit denen wir
 arbeiten, lautet die Antwort Option 3: Sie haben Distribution, sie

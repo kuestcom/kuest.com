@@ -28,11 +28,12 @@ réglementaires et comment un opérateur devrait envisager de les
 utiliser en combinaison plutôt que de choisir entre elles.
 
 Si vous êtes plus tôt dans votre évaluation, le
+
 <a href="/blog/2026-03-what-are-prediction-markets">primer sur les marchés de prédiction</a>
 couvre les bases, le
 <a href="/blog/2026-03-prediction-market-land-grab">billet sur l'opportunité de marché</a>
-explique pourquoi cela vaut la peine d'entrer dans cette catégorie, et
-l'<a href="/blog/2026-04-build-vs-license-prediction-market">analyse build vs licence</a>
+explique pourquoi cela vaut la peine d'entrer dans cette catégorie, et l'
+<a href="/blog/2026-04-build-vs-license-prediction-market">analyse build vs licence</a>
 traite de la décision centrale qui sous-tend toute cette comparaison.
 
 <Stat
@@ -99,7 +100,10 @@ Ce qui fonctionne extrêmement bien sur Polymarket :
   résolution propre de 99,8 % et plus. Le chemin de contestation est
   bien défini et a été éprouvé au combat par du volume adversarial.
   Nous avons couvert toute la mécanique dans
-  <a href="/blog/2026-04-resolution-and-the-settlement-layer">notre analyse approfondie de la résolution</a>.
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">
+    notre analyse approfondie de la résolution
+  </a>
+  .
 - **Accès permissionless.** Toute personne disposant d'un wallet et
   d'USDC peut trader sur Polymarket. La plateforme ne filtre pas
   l'accès par juridiction via KYC ; elle opère en dehors du
@@ -239,11 +243,31 @@ stack.
 <Comparison
   columns={["Dimension", "Polymarket", "Kalshi", "Kuest (déploiements opérateur)"]}
   rows={[
-    ["Frais principaux pour le trader", "≈ 1,0 % par côté (partage protocole/opérateur)", "0,0 % (pas de frais par transaction)", "Fixés par l'opérateur, typiquement 0,5–1,5 %"],
-    ["Coûts cachés", "Écart (~30–60 pb)", "Écart + niveau de données de marché", "Écart (~20–60 pb sur le carnet partagé)"],
+    [
+      "Frais principaux pour le trader",
+      "≈ 1,0 % par côté (partage protocole/opérateur)",
+      "0,0 % (pas de frais par transaction)",
+      "Fixés par l'opérateur, typiquement 0,5–1,5 %",
+    ],
+    [
+      "Coûts cachés",
+      "Écart (~30–60 pb)",
+      "Écart + niveau de données de marché",
+      "Écart (~20–60 pb sur le carnet partagé)",
+    ],
     ["Rabais maker", "Non", "Non", "Non (design du carnet partagé)"],
-    ["Part de l'opérateur", "Non applicable (venue unique)", "Non applicable", "100 % des frais opérateur"],
-    ["Prélèvement protocole", "Polymarket conserve sa marge de venue", "Récupéré via les revenus de l'écosystème", "Petits frais protocole sous les frais opérateur"],
+    [
+      "Part de l'opérateur",
+      "Non applicable (venue unique)",
+      "Non applicable",
+      "100 % des frais opérateur",
+    ],
+    [
+      "Prélèvement protocole",
+      "Polymarket conserve sa marge de venue",
+      "Récupéré via les revenus de l'écosystème",
+      "Petits frais protocole sous les frais opérateur",
+    ],
     ["Overrides par juridiction", "Non", "Non", "Oui"],
   ]}
 />
@@ -258,6 +282,7 @@ sur l'opérateur plutôt que concurrent des opérateurs.
 
 Pour une décomposition plus approfondie de la manière de fixer les
 frais opérateur sur un déploiement Kuest, voir le
+
 <a href="/blog/2026-04-fee-models-explained">billet sur les modèles de frais</a>.
 
 ## Côte à côte : matrice de fonctionnalités
@@ -268,15 +293,60 @@ opérateurs accordent généralement de l'importance :
 <Comparison
   columns={["Fonctionnalité", "Polymarket", "Kalshi", "Kuest"]}
   rows={[
-    ["Actif de règlement", "USDC on-chain", "Custody bancaire en USD", "USDC on-chain (l'opérateur peut superposer du fiat)"],
-    ["Modèle de résolution", "UMA Optimistic Oracle", "Équipe centralisée d'intégrité du marché", "Basé sur UMA, avec règles explicites et processus public de contestation"],
-    ["Disponibilité géographique", "Mondiale sauf États-Unis", "États-Unis uniquement", "Configurable par opérateur"],
-    ["Exigence KYC", "Aucune (wallet uniquement)", "KYC complet régulé américain", "Défini par l'opérateur (wallet-only ou couche KYC externe)"],
-    ["Création de marchés", "Permissionless (curation admin)", "Pré-approuvée par l'exchange", "Gérée par l'opérateur dans les limites du protocole"],
-    ["Modèle de custody", "Auto-custody", "Partenaire bancaire régulé", "Configurable : propre ou régulé"],
-    ["Profondeur du carnet d'ordres au lancement", "Existante (venue mature)", "Existante (venue mature)", "Partagée (Jour 1 profond pour les nouveaux opérateurs)"],
-    ["Branding opérateur", "Polymarket uniquement", "Kalshi uniquement", "Par déploiement d'opérateur"],
-    ["Adéquation à l'écosystème", "Natif on-chain", "Institutionnel régulé américain", "Côté opérateur (toute juridiction, toute audience)"],
+    [
+      "Actif de règlement",
+      "USDC on-chain",
+      "Custody bancaire en USD",
+      "USDC on-chain (l'opérateur peut superposer du fiat)",
+    ],
+    [
+      "Modèle de résolution",
+      "UMA Optimistic Oracle",
+      "Équipe centralisée d'intégrité du marché",
+      "Basé sur UMA, avec règles explicites et processus public de contestation",
+    ],
+    [
+      "Disponibilité géographique",
+      "Mondiale sauf États-Unis",
+      "États-Unis uniquement",
+      "Configurable par opérateur",
+    ],
+    [
+      "Exigence KYC",
+      "Aucune (wallet uniquement)",
+      "KYC complet régulé américain",
+      "Défini par l'opérateur (wallet-only ou couche KYC externe)",
+    ],
+    [
+      "Création de marchés",
+      "Permissionless (curation admin)",
+      "Pré-approuvée par l'exchange",
+      "Gérée par l'opérateur dans les limites du protocole",
+    ],
+    [
+      "Modèle de custody",
+      "Auto-custody",
+      "Partenaire bancaire régulé",
+      "Configurable : propre ou régulé",
+    ],
+    [
+      "Profondeur du carnet d'ordres au lancement",
+      "Existante (venue mature)",
+      "Existante (venue mature)",
+      "Partagée (Jour 1 profond pour les nouveaux opérateurs)",
+    ],
+    [
+      "Branding opérateur",
+      "Polymarket uniquement",
+      "Kalshi uniquement",
+      "Par déploiement d'opérateur",
+    ],
+    [
+      "Adéquation à l'écosystème",
+      "Natif on-chain",
+      "Institutionnel régulé américain",
+      "Côté opérateur (toute juridiction, toute audience)",
+    ],
   ]}
 />
 
@@ -364,14 +434,12 @@ Kuest est la voie, parce que Polymarket et Kalshi ne sont pas dans
 le métier de l'infrastructure pour opérateurs.
 
 <Callout type="info" title="Pourquoi cette distinction est stratégiquement importante">
-  Les opérateurs qui traitent la comparaison comme « Kuest vs
-  Polymarket » finissent par tenter d'optimiser pour une concurrence
-  qui n'existe pas. La bonne comparaison est « Kuest vs construire
+  Les opérateurs qui traitent la comparaison comme « Kuest vs Polymarket » finissent par tenter
+  d'optimiser pour une concurrence qui n'existe pas. La bonne comparaison est « Kuest vs construire
   soi-même », celle que nous avons couverte dans
   <a href="/blog/2026-04-build-vs-license-prediction-market">le billet build vs licence</a>.
-  Polymarket est la venue contre laquelle vos traders pourraient
-  comparer l'exécution ; Kuest est l'infrastructure qui vous permet
-  de concourir sur l'audience plutôt que sur l'infrastructure.
+  Polymarket est la venue contre laquelle vos traders pourraient comparer l'exécution ; Kuest est
+  l'infrastructure qui vous permet de concourir sur l'audience plutôt que sur l'infrastructure.
 </Callout>
 
 ## Cas d'usage qui correspondent à chaque combinaison
@@ -458,19 +526,19 @@ devant une stack en évolution qu'ils ne maintiennent pas eux-mêmes.
 Un cadre court pour arriver à la bonne réponse :
 
 1. **Êtes-vous un trader ?** Utilisez Polymarket si vous êtes hors
-  des États-Unis, Kalshi si vous êtes aux États-Unis. Kuest n'est
-  pas votre plateforme — vous tradez sur des venues d'opérateurs
-  construites sur Kuest.
+   des États-Unis, Kalshi si vous êtes aux États-Unis. Kuest n'est
+   pas votre plateforme — vous tradez sur des venues d'opérateurs
+   construites sur Kuest.
 2. **Êtes-vous une institution basée aux États-Unis qui souhaite
-  une exposition régulée ?** Kalshi, éventuellement avec un
-  déploiement Kuest pour des audiences hors États-Unis en parallèle.
+   une exposition régulée ?** Kalshi, éventuellement avec un
+   déploiement Kuest pour des audiences hors États-Unis en parallèle.
 3. **Êtes-vous tout autre opérateur disposant de distribution ?**
-  Brokerage, exchange crypto-natif, médias, créateur, sportsbook,
-  fintech. Kuest, presque certainement.
+   Brokerage, exchange crypto-natif, médias, créateur, sportsbook,
+   fintech. Kuest, presque certainement.
 4. **Essayez-vous d'être le prochain Polymarket ou Kalshi ?**
-  Construisez votre propre infrastructure de venue. La voie du
-  protocole ne vous aidera pas ; vous devez posséder chaque couche
-  parce que votre moat est la venue elle-même.
+   Construisez votre propre infrastructure de venue. La voie du
+   protocole ne vous aidera pas ; vous devez posséder chaque couche
+   parce que votre moat est la venue elle-même.
 
 Pour la grande majorité des opérateurs avec lesquels nous
 travaillons, la réponse est l'option 3 : ils ont de la distribution,

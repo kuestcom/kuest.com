@@ -3,10 +3,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "types": ["node"],
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@content/*": ["content/*"]
+      "@/*": ["./src/*"],
+      "@content/*": ["./content/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

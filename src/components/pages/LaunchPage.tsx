@@ -1,12 +1,12 @@
-import type { SupportedLocale } from '@/i18n/locales'
-import { createTranslator, I18nProvider } from '@/i18n'
-import KuestMark from '@/components/KuestMark'
-import LaunchpadForm from '@/components/LaunchpadForm'
-import { AppProviders } from '@/providers/AppProviders'
-import { Link } from '@/i18n/navigation'
+import type { SupportedLocale } from "@/i18n/locales";
+import { createTranslator, I18nProvider } from "@/i18n";
+import KuestMark from "@/components/KuestMark";
+import LaunchpadForm from "@/components/LaunchpadForm";
+import { AppProviders } from "@/providers/AppProviders";
+import { Link } from "@/i18n/navigation";
 
 function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
-  const t = createTranslator(locale)
+  const t = createTranslator(locale);
 
   return (
     <main className="page launch-page">
@@ -21,15 +21,13 @@ function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
 
           <div className="launch-hero-copy">
             <div className="hero-kicker mb-5! animate-none! gap-3! opacity-100!">
-              {t('The Shopify for Prediction Markets')}
+              {t("The Shopify for Prediction Markets")}
             </div>
 
-            <h1 className="hero-title launch-hero-title">
-              {t('Launch your Prediction Market')}
-            </h1>
+            <h1 className="hero-title launch-hero-title">{t("Launch your Prediction Market")}</h1>
 
             <p className="hero-copy-sub launch-hero-subtitle text-muted">
-              {t('From zero to live in under 15 minutes')}
+              {t("From zero to live in under 15 minutes")}
             </p>
           </div>
 
@@ -39,7 +37,7 @@ function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
         </section>
       </div>
     </main>
-  )
+  );
 }
 
 export default function LaunchPage({ locale }: { locale: SupportedLocale }) {
@@ -48,12 +46,12 @@ export default function LaunchPage({ locale }: { locale: SupportedLocale }) {
       <div
         data-theme-mode="dark"
         className="min-h-screen bg-background text-foreground"
-        style={{ colorScheme: 'dark' }}
+        style={{ colorScheme: "dark" }}
       >
         <AppProviders>
           <LaunchPageContent locale={locale} />
         </AppProviders>
       </div>
     </I18nProvider>
-  )
+  );
 }

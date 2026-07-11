@@ -21,10 +21,11 @@ Kuest et de ce que fait le paysage concurrentiel (Kalshi,
 Polymarket, la nouvelle vague de white-labels régionaux).
 
 Si vous êtes plus tôt dans votre évaluation, commencez par le
+
 <a href="/blog/2026-03-prediction-market-land-grab">post sur l'opportunité de marché</a>
 ou l'<a href="/blog/2026-04-build-vs-license-prediction-market">analyse construire-vs-licencier</a>.
-Ce post suppose que vous avez dépassé ces questions et devez
-décider où placer la commission opérateur le jour un.
+Ce post suppose que vous avez dépassé ces questions et devez décider où placer la commission
+opérateur le jour un.
 
 <Stat
   value="≈ 0,9 %"
@@ -72,7 +73,12 @@ partagé), et le taux est symétrique des deux côtés.
 Un instantané de l'industrie au T1 2026 :
 
 <Comparison
-  columns={["Type de venue", "Commission opérateur typique", "Spread sur marchés liquides", "Coût total aller-retour"]}
+  columns={[
+    "Type de venue",
+    "Commission opérateur typique",
+    "Spread sur marchés liquides",
+    "Coût total aller-retour",
+  ]}
   rows={[
     ["Kalshi (régulé US)", "0,0 % (aucune)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1,0 % (partagée avec protocole)", "20–60 bps", "≈ 1,4–1,6 %"],
@@ -122,12 +128,10 @@ faible conviction (1–2 % d'edge implicite) rebondit sur toute
 commission au-dessus de ~0,5 %.
 
 <Callout type="info" title="Le filtre de conviction est une feature">
-  Les commissions plus élevées livrent une plus grande
-  rentabilité par trader et une plus faible vélocité de trades.
-  Les commissions plus basses livrent une plus grande vélocité
-  et une plus faible rentabilité par trader. Il n'y a pas de
-  réponse universellement bonne — seulement une bonne réponse
-  pour l'audience et la structure de coûts que vous avez.
+  Les commissions plus élevées livrent une plus grande rentabilité par trader et une plus faible
+  vélocité de trades. Les commissions plus basses livrent une plus grande vélocité et une plus
+  faible rentabilité par trader. Il n'y a pas de réponse universellement bonne — seulement une bonne
+  réponse pour l'audience et la structure de coûts que vous avez.
 </Callout>
 
 ## Recommandation concrète de taux par type d'opérateur
@@ -176,17 +180,15 @@ Trois signaux qui justifient un changement :
 ## Comment les frais interagissent avec la liquidité partagée
 
 Si votre venue tourne sur liquidité partagée (ce que nous
-<a href="/blog/2026-04-shared-liquidity-day-one">recommandons fortement</a>),
-le calcul a une nuance qui vaut la peine d'être comprise. Le
-carnet partagé fournit de la profondeur à des spreads de
-niveau-protocole, ce qui signifie que le coût total d'exécution
-de vos traders est votre commission plus un spread serré
-(~30 bps) au niveau du protocole.
+
+<a href="/blog/2026-04-shared-liquidity-day-one">recommandons fortement</a>), le calcul a une nuance
+qui vaut la peine d'être comprise. Le carnet partagé fournit de la profondeur à des spreads de
+niveau-protocole, ce qui signifie que le coût total d'exécution de vos traders est votre commission
+plus un spread serré (~30 bps) au niveau du protocole.
 
 <Callout type="tip" title="Taux effectif, pas taux affiché">
-  Lorsque vous comparez votre venue à un concurrent, comparez
-  le coût total aller-retour du trader (commission × 2 + spread
-  × 2), pas le taux affiché.
+  Lorsque vous comparez votre venue à un concurrent, comparez le coût total aller-retour du trader
+  (commission × 2 + spread × 2), pas le taux affiché.
 </Callout>
 
 ## Erreurs courantes au jour un
@@ -214,10 +216,20 @@ normalisation.
 <Comparison
   columns={["Étape", "Commission opérateur", "Tiering", "Pourquoi"]}
   rows={[
-    ["Pré-lancement / beta privée", "0,85 %", "Plat", "Établir une baseline ; collecter des données de cohorte"],
+    [
+      "Pré-lancement / beta privée",
+      "0,85 %",
+      "Plat",
+      "Établir une baseline ; collecter des données de cohorte",
+    ],
     ["Lancement public → mois 6", "0,85 %", "Plat", "Maintenir pour collecter du signal"],
     ["Mois 6 → mois 12", "0,95 %", "Plat", "Hausse modeste après rétention prouvée"],
-    ["Mois 12+", "0,95 % / 0,80 % / 0,65 %", "Trois paliers par volume 30 jours", "Retenir les whales sans perdre le retail"],
+    [
+      "Mois 12+",
+      "0,95 % / 0,80 % / 0,65 %",
+      "Trois paliers par volume 30 jours",
+      "Retenir les whales sans perdre le retail",
+    ],
     ["Année 2+", "Négocié pour desks institutionnels", "Sur mesure", "Vrai flux prop arrive"],
   ]}
 />

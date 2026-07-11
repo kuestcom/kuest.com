@@ -20,10 +20,11 @@ competitive landscape (Kalshi, Polymarket, the new wave of regional
 white-labels) is doing.
 
 If you're earlier in your evaluation, start with the
+
 <a href="/blog/2026-03-prediction-market-land-grab">market opportunity post</a>
 or the <a href="/blog/2026-04-build-vs-license-prediction-market">build-vs-license analysis</a>.
-This one assumes you're past those questions and need to decide where
-to set the operator fee on day one.
+This one assumes you're past those questions and need to decide where to set the operator fee on day
+one.
 
 <Stat
   value="≈ 0.9%"
@@ -71,7 +72,12 @@ publicly observable execution data plus the operator survey we run
 each quarter:
 
 <Comparison
-  columns={["Venue type", "Typical operator fee", "Spread on liquid markets", "Total round-trip cost"]}
+  columns={[
+    "Venue type",
+    "Typical operator fee",
+    "Spread on liquid markets",
+    "Total round-trip cost",
+  ]}
   rows={[
     ["Kalshi (regulated US)", "0.0% (none)", "10–40 bps", "≈ 20–80 bps"],
     ["Polymarket (on-chain)", "≈ 1.0% (split protocol)", "20–60 bps", "≈ 1.4–1.6%"],
@@ -124,12 +130,10 @@ filters for traders with stronger conviction, which is sometimes
 desirable and sometimes not.
 
 <Callout type="info" title="The conviction filter is a feature">
-  Higher fees deliver higher per-trader profitability and lower trade
-  velocity. Lower fees deliver higher trade velocity and lower
-  per-trader profitability. There's no universally right answer —
-  there's only a right answer for the audience and the cost structure
-  you have. Operators who don't think about this end up oscillating
-  between fee changes and never settling.
+  Higher fees deliver higher per-trader profitability and lower trade velocity. Lower fees deliver
+  higher trade velocity and lower per-trader profitability. There's no universally right answer —
+  there's only a right answer for the audience and the cost structure you have. Operators who don't
+  think about this end up oscillating between fee changes and never settling.
 </Callout>
 
 ## A concrete rate recommendation, by operator type
@@ -209,12 +213,11 @@ exclusive markets, distribution), not a fee race.
 ## How fees interact with shared liquidity
 
 If your venue runs on shared liquidity (which we
-<a href="/blog/2026-04-shared-liquidity-day-one">recommend strongly</a>),
-the fee math has a wrinkle worth understanding. The shared
-order book provides depth at protocol-level spreads, which means
-your traders' all-in execution cost is your fee plus a tight (~30
-bps) protocol-level spread. That total is competitive even at
-1.0–1.5% operator fees, because the spread component is much tighter
+
+<a href="/blog/2026-04-shared-liquidity-day-one">recommend strongly</a>), the fee math has a wrinkle
+worth understanding. The shared order book provides depth at protocol-level spreads, which means
+your traders' all-in execution cost is your fee plus a tight (~30 bps) protocol-level spread. That
+total is competitive even at 1.0–1.5% operator fees, because the spread component is much tighter
 than a venue running its own cold-start book.
 
 Operators who try to bootstrap their own liquidity end up either
@@ -227,11 +230,9 @@ which lets you run a higher operator rate without the trader feeling
 it.
 
 <Callout type="tip" title="Effective rate, not headline rate">
-  When you compare your venue to a competitor, compare the
-  trader's total round-trip cost (operator fee × 2 + spread × 2),
-  not the headline operator fee. A 1.0% operator fee on shared
-  liquidity is often cheaper for the trader than a 0.5% operator
-  fee on a thin proprietary book.
+  When you compare your venue to a competitor, compare the trader's total round-trip cost (operator
+  fee × 2 + spread × 2), not the headline operator fee. A 1.0% operator fee on shared liquidity is
+  often cheaper for the trader than a 0.5% operator fee on a thin proprietary book.
 </Callout>
 
 ## Common mistakes operators make on day one
@@ -273,8 +274,18 @@ across the cohort of operators we've onboarded.
     ["Pre-launch / private beta", "0.85%", "Flat", "Establish baseline; collect cohort data"],
     ["Public launch → Month 6", "0.85%", "Flat", "Hold to gather signal; resist early adjustments"],
     ["Month 6 → Month 12", "0.95%", "Flat", "Modest raise after retention is proven"],
-    ["Month 12+", "0.95% / 0.80% / 0.65%", "Three-tier by 30-day volume", "Retain whales without losing retail"],
-    ["Year 2+", "Negotiated for institutional desks", "Custom", "Real prop flow joining; needs basis-point pricing"],
+    [
+      "Month 12+",
+      "0.95% / 0.80% / 0.65%",
+      "Three-tier by 30-day volume",
+      "Retain whales without losing retail",
+    ],
+    [
+      "Year 2+",
+      "Negotiated for institutional desks",
+      "Custom",
+      "Real prop flow joining; needs basis-point pricing",
+    ],
   ]}
 />
 
