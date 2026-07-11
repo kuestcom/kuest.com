@@ -32,7 +32,7 @@ export default defineConfig({
       RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'public', default: 'Kuest <hello@kuest.com>' }),
       PROTOCOL_PITCH_DECK_TO_EMAIL: envField.string({ context: 'server', access: 'public', default: 'hello@kuest.com' }),
       VERCEL_SUPABASE_REGION: envField.string({ context: 'server', access: 'public', optional: true }),
-      VERCEL_SUPABASE_ENV_VAR_PREFIX: envField.string({ context: 'server', access: 'public', default: 'PUBLIC_' }),
+      VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX: envField.string({ context: 'server', access: 'public', default: 'NEXT_PUBLIC_' }),
       RATE_LIMIT_WINDOW_MS: envField.number({ context: 'server', access: 'public', default: 600000, int: true, min: 1 }),
       RATE_LIMIT_LAUNCH_MAX: envField.number({ context: 'server', access: 'public', default: 30, int: true, min: 1 }),
       RATE_LIMIT_SUPABASE_RESOURCES_MAX: envField.number({ context: 'server', access: 'public', default: 240, int: true, min: 1 }),
