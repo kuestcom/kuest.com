@@ -7,6 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   adapter: cloudflare(),
   integrations: [react(), mdx()],
+  trailingSlash: 'never',
+  build: {
+    format: 'file',
+  },
   env: {
     schema: {
       SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://kuest.com', url: true }),
