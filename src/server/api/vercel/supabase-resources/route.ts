@@ -1,8 +1,8 @@
 import { LaunchError } from "@/lib/launch-utils";
-import { RATE_LIMIT_SUPABASE_RESOURCES_MAX, RATE_LIMIT_WINDOW_MS } from "astro:env/server";
 import { getValidVercelSession } from "@/lib/oauth-session";
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
 import { listSupabaseIntegrationResources } from "@/lib/vercel-api";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 interface RequestBody {
   token?: string;
@@ -10,6 +10,7 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
+  const { RATE_LIMIT_SUPABASE_RESOURCES_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig();
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({

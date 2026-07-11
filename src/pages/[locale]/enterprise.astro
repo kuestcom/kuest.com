@@ -1,10 +1,6 @@
 ---
 import type { SupportedLocale } from '@/i18n/locales'
-import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import EnterpriseView from '@/views/EnterpriseView.astro'
-export function getStaticPaths() {
-  return SUPPORTED_LOCALES.filter(locale => locale !== 'en').map(locale => ({ params: { locale } }))
-}
 const locale = Astro.params.locale as SupportedLocale
 ---
 <EnterpriseView locale={locale} />

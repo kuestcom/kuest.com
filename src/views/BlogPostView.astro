@@ -1,6 +1,5 @@
 ---
 import type { SupportedLocale } from '@/i18n/locales'
-import { SITE_URL } from 'astro:env/client'
 import BlogPostFooterIsland from '@/components/blog/BlogPostFooterIsland'
 import BlogPostHeroIsland from '@/components/blog/BlogPostHeroIsland'
 import MarketingDockNav from '@/components/MarketingDockNav'
@@ -12,6 +11,7 @@ import { getPost, listPosts } from '@/lib/blog/content'
 import { getPostCoverSrc } from '@/lib/blog/cover'
 import { getPostContent } from '@/lib/blog/mdx'
 import { CONTACT_HREF } from '@/lib/constants'
+import { getPublicRuntimeConfig } from '@/lib/server-env'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { createMdxComponents } from '@/mdx-components'
 
@@ -21,7 +21,7 @@ if (!post) throw new Error(`Unknown blog post: ${locale}/${slug}`)
 const Content = getPostContent(locale, post.contentSlug)
 if (!Content) throw new Error(`Missing MDX module: ${locale}/${post.contentSlug}`)
 const t = createTranslator(locale)
-const site = new URL(SITE_URL)
+const site = new URL(getPublicRuntimeConfig().SITE_URL)
 const coverSrc = getPostCoverSrc(post)
 const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
 const localizedPathByLocale = Object.fromEntries(post.availableLocales.map(code => [code, `/blog/${post.localizedSlugs[code] ?? post.slug}`]))

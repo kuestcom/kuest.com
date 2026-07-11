@@ -438,7 +438,7 @@ export default function MarketingPageRuntime({
     let isDisposed = false;
 
     if (document.fonts?.ready) {
-      document.fonts.ready.then(() => {
+      void document.fonts.ready.then(() => {
         if (!isDisposed) {
           remeasureAndQueue();
         }

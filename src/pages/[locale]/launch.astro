@@ -1,10 +1,6 @@
 ---
 import type { SupportedLocale } from '@/i18n/locales'
-import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import LaunchView from '@/views/LaunchView.astro'
-export function getStaticPaths() {
-  return SUPPORTED_LOCALES.filter(locale => locale !== 'en').map(locale => ({ params: { locale } }))
-}
 const locale = Astro.params.locale as SupportedLocale
 ---
 <LaunchView locale={locale} />

@@ -26,7 +26,7 @@ import { CONTACT_HREF } from "@/lib/constants";
 import { getDemoHref, serializeJsonForHtmlScript } from "@/lib/marketing-content";
 import { resolveSiteUrl } from "@/lib/site-url";
 
-function ProtocolPageContent({ locale }: { locale: SupportedLocale }) {
+function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; siteUrl: string }) {
   const t = createTranslator(locale);
   const demoHref = getDemoHref(locale);
   const partnerIcons = [Banknote, Bot, Building2] as const;
@@ -253,7 +253,7 @@ function ProtocolPageContent({ locale }: { locale: SupportedLocale }) {
       complete: false,
     },
   ];
-  const siteOrigin = resolveSiteUrl();
+  const siteOrigin = resolveSiteUrl(siteUrl);
 
   return (
     <>
@@ -786,10 +786,16 @@ function ProtocolPageContent({ locale }: { locale: SupportedLocale }) {
   );
 }
 
-export default function ProtocolPage({ locale }: { locale: SupportedLocale }) {
+export default function ProtocolPage({
+  locale,
+  siteUrl,
+}: {
+  locale: SupportedLocale;
+  siteUrl: string;
+}) {
   return (
     <I18nProvider locale={locale}>
-      <ProtocolPageContent locale={locale} />
+      <ProtocolPageContent locale={locale} siteUrl={siteUrl} />
     </I18nProvider>
   );
 }

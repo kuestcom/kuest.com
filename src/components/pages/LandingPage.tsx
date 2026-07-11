@@ -144,7 +144,7 @@ const EARLY_ACCESS_AVATAR_SRCS = [
   "https://avatars.githubusercontent.com/u/5?v=4",
 ] as const;
 
-function LandingPageContent({ locale }: { locale: SupportedLocale }) {
+function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; siteUrl: string }) {
   const t = createTranslator(locale);
   const launchHref = getPathname({ href: "/launch", locale });
   const previewHref = getDemoHref(locale);
@@ -465,7 +465,7 @@ function LandingPageContent({ locale }: { locale: SupportedLocale }) {
       ),
     },
   ];
-  const siteOrigin = resolveSiteUrl();
+  const siteOrigin = resolveSiteUrl(siteUrl);
 
   return (
     <>
@@ -968,10 +968,16 @@ function LandingPageContent({ locale }: { locale: SupportedLocale }) {
   );
 }
 
-export default function LandingPage({ locale }: { locale: SupportedLocale }) {
+export default function LandingPage({
+  locale,
+  siteUrl,
+}: {
+  locale: SupportedLocale;
+  siteUrl: string;
+}) {
   return (
     <I18nProvider locale={locale}>
-      <LandingPageContent locale={locale} />
+      <LandingPageContent locale={locale} siteUrl={siteUrl} />
     </I18nProvider>
   );
 }

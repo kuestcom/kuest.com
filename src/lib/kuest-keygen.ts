@@ -1,4 +1,9 @@
-import { CLOB_URL, KUEST_CHAIN_MODE, RELAYER_URL } from "astro:env/client";
+import type { PublicRuntimeConfig } from "@/lib/runtime-config";
+
+type KuestRuntimeConfig = Pick<
+  PublicRuntimeConfig,
+  "CLOB_URL" | "KUEST_CHAIN_MODE" | "RELAYER_URL"
+>;
 
 interface CreateKuestKeyInput {
   address: string;
@@ -27,12 +32,15 @@ type KuestKeyCredential = Omit<GeneratedKuestBundle, "address">;
 
 export const DEFAULT_KUEST_KEY_NONCE = "0";
 
-export const TARGET_CHAIN_MODE = KUEST_CHAIN_MODE === "polygon" ? "polygon" : "amoy";
+export function getRequiredChainId(config: KuestRuntimeConfig) {
+  return config.KUEST_CHAIN_MODE === "polygon" ? 137 : 80002;
+}
 
-export const REQUIRED_CHAIN_ID = TARGET_CHAIN_MODE === "polygon" ? 137 : 80002;
-
-export const REQUIRED_CHAIN_LABEL =
-  TARGET_CHAIN_MODE === "polygon" ? "Polygon Mainnet (137)" : "Polygon Amoy Testnet (80002)";
+export function getRequiredChainLabel(config: KuestRuntimeConfig) {
+  return config.KUEST_CHAIN_MODE === "polygon"
+    ? "Polygon Mainnet (137)"
+    : "Polygon Amoy Testnet (80002)";
+}
 
 const AMOY_CHAIN_HEX = "0x13882";
 const AMOY_ADD_PARAMS = {
@@ -47,8 +55,8 @@ const AMOY_ADD_PARAMS = {
   blockExplorerUrls: ["https://amoy.polygonscan.com/"],
 };
 
-function getKuestBaseUrls() {
-  return Array.from(new Set([CLOB_URL, RELAYER_URL]));
+function getKuestBaseUrls(config: KuestRuntimeConfig) {
+  return Array.from(new Set([config.CLOB_URL, config.RELAYER_URL]));
 }
 
 function getInjectedProvider(): Eip1193Provider | null {
@@ -212,39 +220,47 @@ function assertMatchingKuestCredentials(credentials: KuestKeyCredential[]) {
   return first;
 }
 
-async function createKuestKey(input: CreateKuestKeyInput) {
-  const targets = getKuestBaseUrls();
+async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeConfig) {
+  const targets = getKuestBaseUrls(config);
   const credentials = await Promise.all(
     targets.map((baseUrl) => createOrDeriveKuestKey(baseUrl, input)),
   );
   return assertMatchingKuestCredentials(credentials);
 }
 
-export async function mintKuestKeysFromSignature(input: CreateKuestKeyInput) {
-  const created = await createKuestKey(input);
+export async function mintKuestKeysFromSignature(
+  input: CreateKuestKeyInput,
+  config: KuestRuntimeConfig,
+) {
+  const created = await createKuestKey(input, config);
   return {
     address: input.address,
     ...created,
   } satisfies GeneratedKuestBundle;
 }
 
-export async function ensureRequiredNetworkViaProvider(provider: Eip1193Provider) {
+export async function ensureRequiredNetworkViaProvider(
+  provider: Eip1193Provider,
+  config: KuestRuntimeConfig,
+) {
+  const requiredChainId = getRequiredChainId(config);
+  const requiredChainLabel = getRequiredChainLabel(config);
   const chainHexRaw = await provider.request({ method: "eth_chainId" });
   const chainHex = typeof chainHexRaw === "string" ? chainHexRaw : "";
   const chainId = Number.parseInt(chainHex, 16);
 
-  if (chainId === REQUIRED_CHAIN_ID) {
+  if (chainId === requiredChainId) {
     return;
   }
 
-  const requiredHex = `0x${REQUIRED_CHAIN_ID.toString(16)}`;
+  const requiredHex = `0x${requiredChainId.toString(16)}`;
   try {
     await provider.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: requiredHex }],
     });
   } catch (error) {
-    if (REQUIRED_CHAIN_ID === 80002 && isMissingChainError(error)) {
+    if (requiredChainId === 80002 && isMissingChainError(error)) {
       await provider.request({
         method: "wallet_addEthereumChain",
         params: [AMOY_ADD_PARAMS],
@@ -255,7 +271,7 @@ export async function ensureRequiredNetworkViaProvider(provider: Eip1193Provider
       });
       return;
     }
-    throw new Error(`Unable to switch to ${REQUIRED_CHAIN_LABEL}.`);
+    throw new Error(`Unable to switch to ${requiredChainLabel}.`);
   }
 }
 
@@ -306,6 +322,7 @@ async function signTypedDataWithFallback(params: {
 
 export async function generateKuestKeysViaWallet(options: {
   onStatus?: (_message: string | null) => void;
+  runtimeConfig: KuestRuntimeConfig;
 }) {
   const onStatus = options.onStatus ?? (() => {});
   const provider = getInjectedProvider();
@@ -321,15 +338,17 @@ export async function generateKuestKeysViaWallet(options: {
     throw new Error("Wallet did not return an address.");
   }
 
-  onStatus(`Switching to ${REQUIRED_CHAIN_LABEL}...`);
-  await ensureRequiredNetworkViaProvider(provider);
+  const requiredChainId = getRequiredChainId(options.runtimeConfig);
+  const requiredChainLabel = getRequiredChainLabel(options.runtimeConfig);
+  onStatus(`Switching to ${requiredChainLabel}...`);
+  await ensureRequiredNetworkViaProvider(provider, options.runtimeConfig);
 
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const typedData = {
     domain: {
       name: "ClobAuthDomain",
       version: "1",
-      chainId: REQUIRED_CHAIN_ID,
+      chainId: requiredChainId,
     },
     types: {
       EIP712Domain: [
@@ -361,12 +380,15 @@ export async function generateKuestKeysViaWallet(options: {
   });
 
   onStatus("Minting Kuest credentials...");
-  const generated = await mintKuestKeysFromSignature({
-    address,
-    signature,
-    timestamp,
-    nonce: DEFAULT_KUEST_KEY_NONCE,
-  });
+  const generated = await mintKuestKeysFromSignature(
+    {
+      address,
+      signature,
+      timestamp,
+      nonce: DEFAULT_KUEST_KEY_NONCE,
+    },
+    options.runtimeConfig,
+  );
 
   onStatus(null);
   return generated;

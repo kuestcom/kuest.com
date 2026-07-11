@@ -16,13 +16,17 @@ interface SupabaseApiKey {
 }
 
 async function supabaseRequest<T>(token: string, path: string, init: RequestInit = {}) {
+  const headers = new Headers(init.headers);
+  if (!headers.has("Authorization")) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
   const response = await fetch(`${SUPABASE_API_BASE}${path}`, {
     ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      ...init.headers,
-    },
+    headers,
     cache: "no-store",
   });
 

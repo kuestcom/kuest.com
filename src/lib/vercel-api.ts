@@ -1,6 +1,6 @@
 import type { VercelDomainResponse, VercelProvisionResult } from "@/lib/launch-types";
-import { VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX, VERCEL_SUPABASE_REGION } from "astro:env/server";
 import { LaunchError } from "@/lib/launch-utils";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 const VERCEL_API_BASE = "https://api.vercel.com";
 
@@ -462,13 +462,17 @@ function mergeDomainResponse(
 }
 
 async function vercelRequest<T>(token: string, path: string, init: RequestInit = {}) {
+  const headers = new Headers(init.headers);
+  if (!headers.has("Authorization")) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
   const response = await fetch(`${VERCEL_API_BASE}${path}`, {
     ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      ...init.headers,
-    },
+    headers,
     cache: "no-store",
   });
 
@@ -609,7 +613,8 @@ function extractRequiredMetadataKeys(error: LaunchError) {
       if (!field || typeof field !== "object") {
         continue;
       }
-      const fieldMessage = String((field as { message?: unknown }).message ?? "");
+      const rawFieldMessage = (field as { message?: unknown }).message;
+      const fieldMessage = typeof rawFieldMessage === "string" ? rawFieldMessage : "";
       for (const match of fieldMessage.matchAll(/metadata\.(\w+)/gi)) {
         if (match[1]) {
           keys.add(match[1]);
@@ -1112,6 +1117,8 @@ export async function connectSupabaseViaVercelIntegration(params: {
   supabasePublicEnvVarPrefix?: string;
   log: (_step: string, _message: string) => void;
 }) {
+  const { VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX, VERCEL_SUPABASE_REGION } =
+    getServerRuntimeConfig();
   params.log("vercel-integration", "Searching installed Supabase integration...");
   const configuration = await findSupabaseConfiguration({
     token: params.token,

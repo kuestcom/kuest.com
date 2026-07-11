@@ -1,12 +1,6 @@
 import { Resend } from "resend";
-import {
-  PROTOCOL_PITCH_DECK_TO_EMAIL,
-  RATE_LIMIT_PROTOCOL_DECK_MAX,
-  RATE_LIMIT_WINDOW_MS,
-  RESEND_API_KEY,
-  RESEND_FROM_EMAIL,
-} from "astro:env/server";
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/;
 
@@ -24,6 +18,13 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(request: Request) {
+  const {
+    PROTOCOL_PITCH_DECK_TO_EMAIL,
+    RATE_LIMIT_PROTOCOL_DECK_MAX,
+    RATE_LIMIT_WINDOW_MS,
+    RESEND_API_KEY,
+    RESEND_FROM_EMAIL,
+  } = getServerRuntimeConfig();
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({
@@ -54,14 +55,14 @@ export async function POST(request: Request) {
     return badRequest("Invalid request payload.");
   }
 
-  const companyName =
+  const rawCompanyName =
     payload && typeof payload === "object" && "companyName" in payload
-      ? String(payload.companyName ?? "").trim()
-      : "";
-  const email =
-    payload && typeof payload === "object" && "email" in payload
-      ? String(payload.email ?? "").trim()
-      : "";
+      ? payload.companyName
+      : undefined;
+  const rawEmail =
+    payload && typeof payload === "object" && "email" in payload ? payload.email : undefined;
+  const companyName = typeof rawCompanyName === "string" ? rawCompanyName.trim() : "";
+  const email = typeof rawEmail === "string" ? rawEmail.trim() : "";
 
   if (!companyName) {
     return badRequest("Company name is required.");

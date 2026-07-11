@@ -1,7 +1,7 @@
 import type { OAuthSession, OAuthUser } from "@/lib/oauth";
-import { VERCEL_OAUTH_CLIENT_ID, VERCEL_OAUTH_CLIENT_SECRET } from "astro:env/server";
 import { LaunchError } from "@/lib/launch-utils";
 import { secondsToExpiresAt } from "@/lib/oauth";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 const VERCEL_AUTHORIZE_URL = "https://vercel.com/oauth/authorize";
 const VERCEL_TOKEN_URL = "https://api.vercel.com/login/oauth/token";
@@ -28,8 +28,8 @@ interface VercelTeamResponse {
 }
 
 function ensureVercelOAuthEnv() {
-  const clientId = VERCEL_OAUTH_CLIENT_ID ?? "";
-  const clientSecret = VERCEL_OAUTH_CLIENT_SECRET ?? "";
+  const { VERCEL_OAUTH_CLIENT_ID: clientId, VERCEL_OAUTH_CLIENT_SECRET: clientSecret } =
+    getServerRuntimeConfig();
   if (!clientId || !clientSecret) {
     throw new LaunchError("Missing VERCEL_OAUTH_CLIENT_ID or VERCEL_OAUTH_CLIENT_SECRET.", "oauth");
   }

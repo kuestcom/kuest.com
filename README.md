@@ -25,7 +25,7 @@ pnpm astro dev --background
 
 Use `pnpm astro dev status`, `pnpm astro dev logs`, and `pnpm astro dev stop` to manage the background server.
 
-Environment variables are declared and validated in `astro.config.mjs`. Browser-safe values are imported from `astro:env/client`; server settings and secrets are imported from `astro:env/server`. The names in `.env.example` are the complete application-facing names and do not require a framework-specific prefix.
+Environment variables are read from the Cloudflare Worker runtime. Browser-safe values are passed from the server to the React islands; secrets remain server-only. The names in `.env.example` are the complete application-facing names and do not require a framework-specific prefix.
 
 ## Verification
 
@@ -39,23 +39,43 @@ pnpm preview
 
 ## Cloudflare deployment
 
-1. Under Settings → Build → Variables and Secrets, add browser/public and build-time
-   configuration such as:
-   - SITE_URL
-   - GITHUB_APP_URL
-   - REOWN_APPKIT_PROJECT_ID
-   - SUPABASE_URL
-   - SUPABASE_ANON_KEY
-   - OAuth client IDs
-   - rate-limit settings
+Under **Settings → Variables and Secrets**, add browser-safe configuration as plaintext
+variables:
 
-2. Under Settings → Variables and Secrets, add runtime secrets as type Secret:
-   - VERCEL_OAUTH_CLIENT_SECRET
-   - SUPABASE_OAUTH_CLIENT_SECRET
-   - SUPABASE_SERVICE_ROLE_KEY
-   - RESEND_API_KEY
+- SITE_URL
+- GITHUB_APP_URL
+- DEFAULT_VERCEL_TEAM_ID
+- DEFAULT_SUPABASE_REGION
+- VERCEL_ALLOW_TOKEN_FALLBACK
+- KUEST_CHAIN_MODE
+- REOWN_APPKIT_PROJECT_ID
+- CLOB_URL
+- RELAYER_URL
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- VERCEL_OAUTH_CLIENT_ID
+- VERCEL_TEAM_ID
+- SUPABASE_OAUTH_CLIENT_ID
+- SUPABASE_OAUTH_SCOPES
+- SUPABASE_OAUTH_ORGANIZATION_NAME
+- RESEND_FROM_EMAIL
+- PROTOCOL_PITCH_DECK_TO_EMAIL
+- VERCEL_SUPABASE_REGION
+- VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX
+- all `RATE_LIMIT_*` settings
 
-The Worker configuration is in `wrangler.jsonc`. Client settings must be available to the build. Runtime server settings can be added under `vars`, while secrets should be uploaded without committing them:
+In that same **Settings → Variables and Secrets** section, add sensitive values with type
+**Secret**:
+
+- VERCEL_OAUTH_CLIENT_SECRET
+- SUPABASE_OAUTH_CLIENT_SECRET
+- SUPABASE_SERVICE_ROLE_KEY
+- RESEND_API_KEY
+
+No application variable needs to be duplicated under Build Variables and Secrets. After changing
+a runtime variable, deploy the new Worker configuration. The Worker configuration has
+`keep_vars: true`, so Wrangler deployments preserve plaintext variables managed in the dashboard.
+Secrets can also be uploaded without committing them:
 
 ```sh
 pnpm wrangler secret put RESEND_API_KEY
@@ -67,7 +87,7 @@ pnpm deploy
 
 For Cloudflare Workers Builds, use:
 
-- Root directory: `astro`
+- Root directory: the repository root
 - Build command: `pnpm build`
 - Deploy command: `pnpm wrangler deploy`
 

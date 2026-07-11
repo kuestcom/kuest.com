@@ -1,8 +1,4 @@
 ---
-import { listPostStaticParams } from '@/lib/blog/content'
 import BlogPostView from '@/views/BlogPostView.astro'
-export function getStaticPaths() {
-  return listPostStaticParams().filter(item => item.locale === 'en').map(item => ({ params: { slug: item.slug } }))
-}
 ---
 <BlogPostView locale="en" slug={Astro.params.slug!} />

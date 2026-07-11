@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormEvent } from "react";
+import type { SyntheticEvent } from "react";
 import { ChevronRightIcon } from "lucide-react";
 import { useExtracted } from "@/i18n";
 import { useEffect, useId, useState } from "react";
@@ -74,7 +74,7 @@ export default function ProtocolPitchDeckModal() {
     setIsOpen(false);
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault();
 
     if (isSubmitting) {

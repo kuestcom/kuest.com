@@ -6,8 +6,9 @@ import { createAppKit, useAppKitTheme } from "@reown/appkit/react";
 import { useEffect, useState } from "react";
 import { WagmiProvider } from "wagmi";
 import { AppKitContext, defaultAppKitValue } from "@/hooks/useAppKit";
-import { networks, projectId, wagmiAdapter, wagmiConfig } from "@/lib/appkit";
+import { createAppKitRuntime } from "@/lib/appkit";
 import { IS_BROWSER } from "@/lib/constants";
+import type { PublicRuntimeConfig } from "@/lib/runtime-config";
 
 let hasInitializedAppKit = false;
 let appKitInstance: AppKit | null = null;
@@ -15,16 +16,20 @@ let appKitInstance: AppKit | null = null;
 function initializeAppKitSingleton(
   themeMode: "light" | "dark",
   site: { name: string; description: string },
+  runtime: ReturnType<typeof createAppKitRuntime>,
 ) {
   if (hasInitializedAppKit || !IS_BROWSER) {
     return appKitInstance;
   }
 
   try {
+    if (!runtime.projectId) {
+      return null;
+    }
     const siteOrigin = window.location.origin;
     appKitInstance = createAppKit({
-      projectId: projectId!,
-      adapters: [wagmiAdapter],
+      projectId: runtime.projectId,
+      adapters: [runtime.wagmiAdapter],
       themeMode,
       defaultAccountTypes: { eip155: "eoa" },
       metadata: {
@@ -38,7 +43,7 @@ function initializeAppKitSingleton(
         "--w3m-border-radius-master": "2px",
         "--w3m-accent": "var(--primary)",
       },
-      networks,
+      networks: runtime.networks,
       featuredWalletIds: ["c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96"],
       features: {
         analytics: import.meta.env.PROD,
@@ -63,7 +68,14 @@ function AppKitThemeSynchronizer({ themeMode }: { themeMode: "light" | "dark" })
   return null;
 }
 
-export default function AppKitProvider({ children }: { children: ReactNode }) {
+export default function AppKitProvider({
+  children,
+  runtimeConfig,
+}: {
+  children: ReactNode;
+  runtimeConfig: PublicRuntimeConfig;
+}) {
+  const [appKitRuntime] = useState(() => createAppKitRuntime(runtimeConfig));
   const [appKitThemeMode, setAppKitThemeMode] = useState<"light" | "dark">("light");
   const [canSyncTheme, setCanSyncTheme] = useState(false);
   const [AppKitValue, setAppKitValue] = useState(defaultAppKitValue);
@@ -73,10 +85,14 @@ export default function AppKitProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const instance = initializeAppKitSingleton("dark", {
-      name: `Kuest Launchpad`,
-      description: `Launch your prediction market with guided setup.`,
-    });
+    const instance = initializeAppKitSingleton(
+      "dark",
+      {
+        name: `Kuest Launchpad`,
+        description: `Launch your prediction market with guided setup.`,
+      },
+      appKitRuntime,
+    );
 
     if (instance) {
       queueMicrotask(() => {
@@ -93,11 +109,18 @@ export default function AppKitProvider({ children }: { children: ReactNode }) {
           error: null,
         });
       });
+    } else if (!appKitRuntime.projectId) {
+      queueMicrotask(() => {
+        setAppKitValue({
+          ...defaultAppKitValue,
+          error: "Missing REOWN_APPKIT_PROJECT_ID in Cloudflare Variables and Secrets.",
+        });
+      });
     }
-  }, []);
+  }, [appKitRuntime]);
 
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={appKitRuntime.wagmiConfig}>
       <AppKitContext value={AppKitValue}>
         {children}
         {canSyncTheme && <AppKitThemeSynchronizer themeMode={appKitThemeMode} />}

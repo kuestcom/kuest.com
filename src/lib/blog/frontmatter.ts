@@ -8,7 +8,7 @@ export const blogFrontmatterSchema = z.object({
   updatedAt: z.coerce.date().optional(),
   author: z.object({
     name: z.string().trim().min(1),
-    url: z.string().trim().url().optional(),
+    url: z.string().trim().pipe(z.url()).optional(),
     avatar: z.string().trim().min(1).optional(),
   }),
   cover: z.string().trim().min(1).optional(),

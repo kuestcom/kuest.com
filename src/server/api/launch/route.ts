@@ -1,5 +1,4 @@
 import type { LaunchResponseBody } from "@/lib/launch-types";
-import { RATE_LIMIT_LAUNCH_MAX, RATE_LIMIT_WINDOW_MS, VERCEL_TEAM_ID } from "astro:env/server";
 import { registerDomainSnapshot } from "@/lib/domain-register";
 import {
   createLogger,
@@ -12,6 +11,7 @@ import {
 import { getValidVercelSession } from "@/lib/oauth-session";
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
 import { normalizeSiteUrl } from "@/lib/site-url";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 import {
   connectSupabaseViaVercelIntegration,
   createProjectDeployment,
@@ -66,6 +66,7 @@ async function registerLaunchDomainSnapshot(params: { url: string; apiKey?: stri
 }
 
 export async function POST(request: Request) {
+  const { RATE_LIMIT_LAUNCH_MAX, RATE_LIMIT_WINDOW_MS, VERCEL_TEAM_ID } = getServerRuntimeConfig();
   const startedAt = Date.now();
   const logs: LaunchResponseBody["logs"] = [];
   const log = createLogger(logs);

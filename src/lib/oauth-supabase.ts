@@ -1,12 +1,7 @@
 import type { OAuthSession, OAuthUser } from "@/lib/oauth";
-import {
-  SUPABASE_OAUTH_CLIENT_ID,
-  SUPABASE_OAUTH_CLIENT_SECRET,
-  SUPABASE_OAUTH_ORGANIZATION_NAME,
-  SUPABASE_OAUTH_SCOPES,
-} from "astro:env/server";
 import { LaunchError } from "@/lib/launch-utils";
 import { basicAuthHeader, secondsToExpiresAt } from "@/lib/oauth";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 const SUPABASE_AUTHORIZE_URL = "https://api.supabase.com/v1/oauth/authorize";
 const SUPABASE_TOKEN_URL = "https://api.supabase.com/v1/oauth/token";
@@ -31,8 +26,8 @@ interface SupabaseOrg {
 }
 
 function ensureSupabaseOAuthEnv() {
-  const clientId = SUPABASE_OAUTH_CLIENT_ID ?? "";
-  const clientSecret = SUPABASE_OAUTH_CLIENT_SECRET ?? "";
+  const { SUPABASE_OAUTH_CLIENT_ID: clientId, SUPABASE_OAUTH_CLIENT_SECRET: clientSecret } =
+    getServerRuntimeConfig();
   if (!clientId || !clientSecret) {
     throw new LaunchError(
       "Missing SUPABASE_OAUTH_CLIENT_ID or SUPABASE_OAUTH_CLIENT_SECRET.",
@@ -43,7 +38,7 @@ function ensureSupabaseOAuthEnv() {
 }
 
 function parseSupabaseScopes() {
-  return SUPABASE_OAUTH_SCOPES.trim();
+  return getServerRuntimeConfig().SUPABASE_OAUTH_SCOPES;
 }
 
 async function parseJsonResponse<T>(response: Response, step: string) {
@@ -74,7 +69,7 @@ export function buildSupabaseAuthorizeUrl(params: {
     code_challenge_method: "S256",
     scope: parseSupabaseScopes(),
   });
-  const org = SUPABASE_OAUTH_ORGANIZATION_NAME?.trim();
+  const org = getServerRuntimeConfig().SUPABASE_OAUTH_ORGANIZATION_NAME;
   if (org) {
     query.set("organization_name", org);
   }

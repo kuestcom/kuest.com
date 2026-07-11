@@ -1,6 +1,6 @@
-import { RATE_LIMIT_DOMAIN_REGISTER_MAX, RATE_LIMIT_WINDOW_MS } from "astro:env/server";
 import { registerDomainSnapshot } from "@/lib/domain-register";
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 interface RequestBody {
   url?: unknown;
@@ -12,6 +12,7 @@ function stringValue(value: unknown) {
 }
 
 export async function POST(request: Request) {
+  const { RATE_LIMIT_DOMAIN_REGISTER_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig();
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({

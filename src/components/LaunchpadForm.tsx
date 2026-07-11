@@ -1,13 +1,7 @@
 "use client";
 
-import type { FormEvent } from "react";
+import type { SyntheticEvent } from "react";
 import type { SupportedLocale } from "@/i18n/locales";
-import {
-  DEFAULT_SUPABASE_REGION,
-  DEFAULT_VERCEL_TEAM_ID,
-  GITHUB_APP_URL as CONFIGURED_GITHUB_APP_URL,
-  VERCEL_ALLOW_TOKEN_FALLBACK,
-} from "astro:env/client";
 import type {
   LaunchLogEntry,
   LaunchResponseBody,
@@ -45,13 +39,14 @@ import {
   DEFAULT_KUEST_KEY_NONCE,
   ensureRequiredNetworkViaProvider,
   generateKuestKeysViaWallet,
+  getRequiredChainId,
+  getRequiredChainLabel,
   mintKuestKeysFromSignature,
   readInjectedProvider,
-  REQUIRED_CHAIN_ID,
-  REQUIRED_CHAIN_LABEL,
 } from "@/lib/kuest-keygen";
 import { normalizeSiteUrl } from "@/lib/site-url";
 import { createSupabaseClient } from "@/lib/supabase";
+import type { PublicRuntimeConfig } from "@/lib/runtime-config";
 
 interface FormState {
   vercelAccessToken: string;
@@ -128,11 +123,9 @@ const SUPABASE_CREATE_NEW_OPTION = "__create_new__";
 const FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v6";
 const LEGACY_FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v4";
 const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = "token";
-const ALLOW_VERCEL_TOKEN_FALLBACK = VERCEL_ALLOW_TOKEN_FALLBACK;
 const FOOTER_BRAND_NAME = "Kuest";
 const VERCEL_GITHUB_CONNECT_LINK_THRESHOLD = 2;
 const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3;
-const GITHUB_APP_URL = CONFIGURED_GITHUB_APP_URL.trim();
 const VERCEL_GITHUB_APP_URL = "https://github.com/apps/vercel";
 const VERCEL_AUTHENTICATION_SETTINGS_URL = "https://vercel.com/account/settings/authentication";
 const REOWN_DASHBOARD_URL = "https://dashboard.reown.com/";
@@ -263,29 +256,31 @@ const LAUNCHPAD_COPY: Record<
   },
 };
 
-const DEFAULT_FORM: FormState = {
-  vercelAccessToken: "",
-  brandName: "",
-  projectSlugOverride: "",
-  gitRepo: "",
-  gitBranch: "main",
-  vercelTeamId: DEFAULT_VERCEL_TEAM_ID,
-  supabaseRegion: DEFAULT_SUPABASE_REGION,
-  supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-  contactEmail: "",
-  env: {
-    KUEST_ADDRESS: "",
-    KUEST_API_KEY: "",
-    KUEST_API_SECRET: "",
-    KUEST_PASSPHRASE: "",
-    ADMIN_WALLETS: "",
-    REOWN_APPKIT_PROJECT_ID: "",
-    BETTER_AUTH_SECRET: "",
-    CRON_SECRET: "",
-    SITE_URL: "",
-  },
-  extraEnvText: "",
-};
+function createDefaultForm(runtimeConfig: PublicRuntimeConfig): FormState {
+  return {
+    vercelAccessToken: "",
+    brandName: "",
+    projectSlugOverride: "",
+    gitRepo: "",
+    gitBranch: "main",
+    vercelTeamId: runtimeConfig.DEFAULT_VERCEL_TEAM_ID,
+    supabaseRegion: runtimeConfig.DEFAULT_SUPABASE_REGION,
+    supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
+    contactEmail: "",
+    env: {
+      KUEST_ADDRESS: "",
+      KUEST_API_KEY: "",
+      KUEST_API_SECRET: "",
+      KUEST_PASSPHRASE: "",
+      ADMIN_WALLETS: "",
+      REOWN_APPKIT_PROJECT_ID: "",
+      BETTER_AUTH_SECRET: "",
+      CRON_SECRET: "",
+      SITE_URL: "",
+    },
+    extraEnvText: "",
+  };
+}
 
 function slugify(input: string) {
   const slug = input
@@ -671,7 +666,13 @@ function StepFooterLanguageControl() {
   );
 }
 
-export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
+export default function LaunchpadForm({
+  locale,
+  runtimeConfig,
+}: {
+  locale: SupportedLocale;
+  runtimeConfig: PublicRuntimeConfig;
+}) {
   const t = useExtracted();
   const copy = LAUNCHPAD_COPY[locale];
   const account = useAccount();
@@ -680,7 +681,11 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const { signTypedDataAsync } = useSignTypedData();
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit();
 
-  const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [form, setForm] = useState<FormState>(() => createDefaultForm(runtimeConfig));
+  const ALLOW_VERCEL_TOKEN_FALLBACK = runtimeConfig.VERCEL_ALLOW_TOKEN_FALLBACK;
+  const GITHUB_APP_URL = runtimeConfig.GITHUB_APP_URL.trim();
+  const REQUIRED_CHAIN_ID = getRequiredChainId(runtimeConfig);
+  const REQUIRED_CHAIN_LABEL = getRequiredChainLabel(runtimeConfig);
   const [activeStep, setActiveStep] = useState<LaunchStep>(1);
   const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false);
   const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false);
@@ -1425,7 +1430,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     }
 
     try {
-      const supabase = createSupabaseClient();
+      const supabase = createSupabaseClient(runtimeConfig);
       const { error } = await supabase.from("key_emails").insert({
         api_key: apiKey.trim(),
         email,
@@ -1473,6 +1478,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
     try {
       const generated = await generateKuestKeysViaWallet({
+        runtimeConfig,
         onStatus: (message) => {
           if (!message) {
             setWalletInfo(null);
@@ -1522,7 +1528,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
           t("Switch to {network} in your wallet settings.", { network: REQUIRED_CHAIN_LABEL }),
         );
       }
-      await ensureRequiredNetworkViaProvider(provider);
+      await ensureRequiredNetworkViaProvider(provider, runtimeConfig);
       return;
     }
 
@@ -1533,7 +1539,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       if (!provider) {
         throw new Error(t("Unable to switch to {network}.", { network: REQUIRED_CHAIN_LABEL }));
       }
-      await ensureRequiredNetworkViaProvider(provider);
+      await ensureRequiredNetworkViaProvider(provider, runtimeConfig);
     }
   }
 
@@ -1612,12 +1618,15 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
       });
 
       setWalletInfo(t("Minting Kuest credentials..."));
-      const generated = await mintKuestKeysFromSignature({
-        address: account.address,
-        signature,
-        timestamp,
-        nonce: DEFAULT_KUEST_KEY_NONCE,
-      });
+      const generated = await mintKuestKeysFromSignature(
+        {
+          address: account.address,
+          signature,
+          timestamp,
+          nonce: DEFAULT_KUEST_KEY_NONCE,
+        },
+        runtimeConfig,
+      );
 
       const advancedToStep2 = applyGeneratedCredentials(generated);
       void saveContactEmailForKey(generated.apiKey);
@@ -1783,7 +1792,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
     ],
   );
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault();
     setIsLaunching(true);
     setRequestError(null);

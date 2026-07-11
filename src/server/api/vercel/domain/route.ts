@@ -1,9 +1,9 @@
-import { RATE_LIMIT_DOMAIN_MAX, RATE_LIMIT_WINDOW_MS } from "astro:env/server";
 import { registerDomainSnapshot } from "@/lib/domain-register";
 import { LaunchError } from "@/lib/launch-utils";
 import { getValidVercelSession } from "@/lib/oauth-session";
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
 import { addProjectDomain, verifyProjectDomain } from "@/lib/vercel-api";
+import { getServerRuntimeConfig } from "@/lib/server-env";
 
 interface RequestBody {
   token?: string;
@@ -27,6 +27,7 @@ function isLikelyDomain(input: string) {
 }
 
 export async function POST(request: Request) {
+  const { RATE_LIMIT_DOMAIN_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig();
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({

@@ -4,8 +4,15 @@ import KuestMark from "@/components/KuestMark";
 import LaunchpadForm from "@/components/LaunchpadForm";
 import { AppProviders } from "@/providers/AppProviders";
 import { Link } from "@/i18n/navigation";
+import type { PublicRuntimeConfig } from "@/lib/runtime-config";
 
-function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
+function LaunchPageContent({
+  locale,
+  runtimeConfig,
+}: {
+  locale: SupportedLocale;
+  runtimeConfig: PublicRuntimeConfig;
+}) {
   const t = createTranslator(locale);
 
   return (
@@ -32,7 +39,7 @@ function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
           </div>
 
           <div className="launch-form-intro">
-            <LaunchpadForm locale={locale} />
+            <LaunchpadForm locale={locale} runtimeConfig={runtimeConfig} />
           </div>
         </section>
       </div>
@@ -40,7 +47,13 @@ function LaunchPageContent({ locale }: { locale: SupportedLocale }) {
   );
 }
 
-export default function LaunchPage({ locale }: { locale: SupportedLocale }) {
+export default function LaunchPage({
+  locale,
+  runtimeConfig,
+}: {
+  locale: SupportedLocale;
+  runtimeConfig: PublicRuntimeConfig;
+}) {
   return (
     <I18nProvider locale={locale}>
       <div
@@ -48,8 +61,8 @@ export default function LaunchPage({ locale }: { locale: SupportedLocale }) {
         className="min-h-screen bg-background text-foreground"
         style={{ colorScheme: "dark" }}
       >
-        <AppProviders>
-          <LaunchPageContent locale={locale} />
+        <AppProviders runtimeConfig={runtimeConfig}>
+          <LaunchPageContent locale={locale} runtimeConfig={runtimeConfig} />
         </AppProviders>
       </div>
     </I18nProvider>

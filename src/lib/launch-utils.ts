@@ -10,8 +10,6 @@ export class LaunchError extends Error {
   ) {
     super(message);
     this.name = "LaunchError";
-    this.step = step;
-    this.details = details;
   }
 }
 

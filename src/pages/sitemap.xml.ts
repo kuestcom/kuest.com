@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
-import { SITE_URL } from "astro:env/client";
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { getPathname } from "@/i18n/navigation";
 import { listPostSitemapEntries } from "@/lib/blog/content";
+import { getPublicRuntimeConfig } from "@/lib/server-env";
 
 const STATIC_ROUTES = [
   { path: "/", priority: "1.0", frequency: "monthly" },
@@ -37,7 +37,7 @@ function entry(
 }
 
 export const GET: APIRoute = () => {
-  const origin = new URL(SITE_URL);
+  const origin = new URL(getPublicRuntimeConfig().SITE_URL);
   const staticEntries = STATIC_ROUTES.map((route) =>
     entry(
       origin,

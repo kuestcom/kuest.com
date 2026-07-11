@@ -27,7 +27,7 @@ const rawPostModules = import.meta.glob("/content/blog/**/*.mdx", {
 }) as Record<string, string>;
 const POST_PATH = /\/content\/blog\/([^/]+)\/([^/]+)\.mdx$/;
 
-function isSupportedLocale(value: string): value is SupportedLocale {
+export function isSupportedLocale(value: string): value is SupportedLocale {
   return (SUPPORTED_LOCALES as readonly string[]).includes(value);
 }
 

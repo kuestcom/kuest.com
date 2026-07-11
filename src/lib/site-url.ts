@@ -1,4 +1,4 @@
-import { SITE_URL } from "astro:env/client";
+import { PUBLIC_RUNTIME_DEFAULTS } from "@/lib/runtime-config";
 
 const HAS_PROTOCOL_PATTERN = /^[a-z][a-z0-9+.-]*:\/\//i;
 const LOCAL_HOST_PATTERN = /^(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0)(?::\d+)?(?:\/|$)/i;
@@ -26,6 +26,6 @@ export function normalizeSiteUrl(value: string) {
   }
 }
 
-export function resolveSiteUrl() {
-  return normalizeSiteUrl(SITE_URL);
+export function resolveSiteUrl(value = PUBLIC_RUNTIME_DEFAULTS.SITE_URL) {
+  return normalizeSiteUrl(value);
 }

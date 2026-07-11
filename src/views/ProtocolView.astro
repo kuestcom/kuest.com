@@ -3,9 +3,11 @@ import type { SupportedLocale } from '@/i18n/locales'
 import ProtocolPage from '@/components/pages/ProtocolPage'
 import { createTranslator } from '@/i18n'
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getPublicRuntimeConfig } from '@/lib/server-env'
 const { locale } = Astro.props as { locale: SupportedLocale }
 const t = createTranslator(locale)
+const { SITE_URL } = getPublicRuntimeConfig()
 ---
 <BaseLayout locale={locale} title={t('Kuest Protocol - Prediction Market Infrastructure')} description={t('Kuest is a white-label prediction market protocol that lets institutions, media companies, and creators launch branded markets with shared liquidity and protocol-level infrastructure.')} canonicalPath="/protocol">
-  <ProtocolPage client:load locale={locale} />
+  <ProtocolPage client:load locale={locale} siteUrl={SITE_URL} />
 </BaseLayout>
