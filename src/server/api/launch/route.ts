@@ -25,9 +25,6 @@ import {
   resolveProjectProductionUrl,
 } from '@/lib/vercel-api'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 function buildErrorResponse(
   error: unknown,
   status: number,

@@ -12,9 +12,6 @@ import {
   getRateLimitConfig,
 } from '@/lib/rate-limit'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 const EMAIL_REGEX = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/
 
 function badRequest(error: string, status = 400) {

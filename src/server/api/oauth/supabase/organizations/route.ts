@@ -1,9 +1,6 @@
 import { getValidSupabaseSession } from '@/lib/oauth-session'
 import { fetchSupabaseOrganizations } from '@/lib/oauth-supabase'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 export async function GET() {
   const session = await getValidSupabaseSession()
   if (!session?.accessToken) {

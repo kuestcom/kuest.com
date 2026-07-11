@@ -1,9 +1,6 @@
 import { getValidVercelSession } from '@/lib/oauth-session'
 import { fetchVercelTeams } from '@/lib/oauth-vercel'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 export async function GET() {
   const session = await getValidVercelSession()
   if (!session?.accessToken) {

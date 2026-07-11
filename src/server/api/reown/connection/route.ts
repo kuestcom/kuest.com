@@ -7,9 +7,6 @@ import {
 } from '@/lib/rate-limit'
 import { inspectReownProjectId } from '@/lib/reown-api'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 interface RequestBody {
   projectId?: string
 }

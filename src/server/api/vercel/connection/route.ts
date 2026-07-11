@@ -8,9 +8,6 @@ import {
 } from '@/lib/rate-limit'
 import { inspectVercelConnection } from '@/lib/vercel-api'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 interface RequestBody {
   token?: string
   gitRepo?: string

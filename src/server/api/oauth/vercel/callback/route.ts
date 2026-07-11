@@ -12,9 +12,6 @@ import {
 } from '@/lib/oauth-vercel'
 import { redirectResponse } from '@/server/response'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 function buildRedirectUri(request: Request) {
   const url = new URL(request.url)
   return `${url.origin}/api/oauth/vercel/callback`

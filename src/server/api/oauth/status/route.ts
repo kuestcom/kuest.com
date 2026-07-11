@@ -1,9 +1,6 @@
 import type { OAuthStatusResponse } from '@/lib/launch-types'
 import { getValidSupabaseSession, getValidVercelSession } from '@/lib/oauth-session'
 
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-
 function toProviderState(
   session: Awaited<ReturnType<typeof getValidVercelSession>>,
 ) {
