@@ -31,7 +31,7 @@ function initializeAppKitSingleton(
         name: site.name,
         description: site.description,
         url: siteOrigin,
-        icons: [`${siteOrigin}/images/kuest-logo.svg`],
+        icons: [`${siteOrigin}/assets/images/kuest-logo.svg`],
       },
       themeVariables: {
         '--w3m-font-family': 'var(--font-sans)',

@@ -734,11 +734,11 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
     display: block;
     flex: 0 0 auto;
     background: var(--color-accent);
-    mask-image: url("/images/kuest-logo.svg");
+    mask-image: url("/assets/images/kuest-logo.svg");
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;
-    -webkit-mask-image: url("/images/kuest-logo.svg");
+    -webkit-mask-image: url("/assets/images/kuest-logo.svg");
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
     -webkit-mask-size: contain;

@@ -2502,7 +2502,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
                                 "
                                 >
                                   <Image
-                                    src="/images/vercel.svg"
+                                    src="/assets/images/vercel.svg"
                                     alt="Vercel"
                                     width={14}
                                     height={14}

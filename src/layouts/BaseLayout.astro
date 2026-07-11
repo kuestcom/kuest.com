@@ -39,8 +39,8 @@ const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, loc
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#CDFF00" />
-    <link rel="icon" type="image/svg+xml" href="/images/kuest-logo.svg" />
-    <link rel="apple-touch-icon" href="/images/kuest-logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/assets/images/kuest-logo.svg" />
+    <link rel="apple-touch-icon" href="/assets/images/kuest-logo.svg" />
     <link rel="canonical" href={canonical} />
     {Object.entries(alternates).map(([code, path]) => (
       <link rel="alternate" hreflang={code} href={new URL(path, site)} />
