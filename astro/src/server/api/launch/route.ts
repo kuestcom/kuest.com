@@ -1,4 +1,5 @@
 import type { LaunchResponseBody } from '@/lib/launch-types'
+import { RATE_LIMIT_LAUNCH_MAX, RATE_LIMIT_WINDOW_MS, VERCEL_TEAM_ID } from 'astro:env/server'
 import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   createLogger,
@@ -88,9 +89,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:launch',
-      envMaxKey: 'RATE_LIMIT_LAUNCH_MAX',
-      defaultMax: 30,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_LAUNCH_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
   if (!rateLimit.allowed) {
@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     const projectName = sanitizeProjectName(payload.projectName || payload.brandName)
     const gitRepo = ensureValidRepo(payload.gitRepo)
     const gitBranch = payload.gitBranch.trim()
-    const vercelTeamId = payload.vercelTeamId?.trim() || process.env.VERCEL_TEAM_ID?.trim() || undefined
+    const vercelTeamId = payload.vercelTeamId?.trim() || VERCEL_TEAM_ID?.trim() || undefined
 
     const vercelSession = await getValidVercelSession()
 

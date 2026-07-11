@@ -2,6 +2,12 @@
 
 import type { FormEvent } from 'react'
 import type { SupportedLocale } from '@/i18n/locales'
+import {
+  DEFAULT_SUPABASE_REGION,
+  DEFAULT_VERCEL_TEAM_ID,
+  GITHUB_APP_URL as CONFIGURED_GITHUB_APP_URL,
+  VERCEL_ALLOW_TOKEN_FALLBACK,
+} from 'astro:env/client'
 import type {
   LaunchLogEntry,
   LaunchResponseBody,
@@ -122,12 +128,11 @@ const SUPABASE_CREATE_NEW_OPTION = '__create_new__'
 const FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v6'
 const LEGACY_FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v4'
 const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = 'token'
-const ALLOW_VERCEL_TOKEN_FALLBACK
-  = process.env.NEXT_PUBLIC_VERCEL_ALLOW_TOKEN_FALLBACK !== 'false'
+const ALLOW_VERCEL_TOKEN_FALLBACK = VERCEL_ALLOW_TOKEN_FALLBACK
 const FOOTER_BRAND_NAME = 'Kuest'
 const VERCEL_GITHUB_CONNECT_LINK_THRESHOLD = 2
 const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3
-const GITHUB_APP_URL = process.env.NEXT_PUBLIC_GITHUB_APP_URL?.trim() || ''
+const GITHUB_APP_URL = CONFIGURED_GITHUB_APP_URL.trim()
 const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
 const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
 const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
@@ -253,8 +258,8 @@ const DEFAULT_FORM: FormState = {
   projectSlugOverride: '',
   gitRepo: '',
   gitBranch: 'main',
-  vercelTeamId: process.env.NEXT_PUBLIC_DEFAULT_VERCEL_TEAM_ID ?? '',
-  supabaseRegion: process.env.NEXT_PUBLIC_DEFAULT_SUPABASE_REGION ?? 'us-east-1',
+  vercelTeamId: DEFAULT_VERCEL_TEAM_ID,
+  supabaseRegion: DEFAULT_SUPABASE_REGION,
   supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
   contactEmail: '',
   env: {
@@ -1190,7 +1195,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
 
   function startGitHubProvisioning() {
     if (!GITHUB_APP_URL) {
-      setGithubError('Missing NEXT_PUBLIC_GITHUB_APP_URL.')
+      setGithubError('Missing GITHUB_APP_URL.')
       return
     }
 

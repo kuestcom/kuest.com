@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { SITE_URL } from 'astro:env/client'
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
 import { listPostSitemapEntries } from '@/lib/blog/content'
@@ -23,8 +24,8 @@ function entry(origin: URL, pathByLocale: Partial<Record<string, string>>, lastM
   return `<url><loc>${xml(new URL(defaultPath, origin).toString())}</loc>${links}<xhtml:link rel="alternate" hreflang="x-default" href="${xml(new URL(defaultPath, origin).toString())}"/>${lastModified ? `<lastmod>${lastModified.toISOString()}</lastmod>` : ''}<changefreq>${frequency}</changefreq><priority>${priority}</priority></url>`
 }
 
-export const GET: APIRoute = ({ site }) => {
-  const origin = site ?? new URL('https://kuest.com')
+export const GET: APIRoute = () => {
+  const origin = new URL(SITE_URL)
   const staticEntries = STATIC_ROUTES.map(route => entry(
     origin,
     Object.fromEntries(SUPPORTED_LOCALES.map(locale => [locale, getPathname({ href: route.path, locale })])),

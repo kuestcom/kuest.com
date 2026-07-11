@@ -21,6 +21,7 @@ function initializeAppKitSingleton(
   }
 
   try {
+    const siteOrigin = window.location.origin
     appKitInstance = createAppKit({
       projectId: projectId!,
       adapters: [wagmiAdapter],
@@ -29,8 +30,8 @@ function initializeAppKitSingleton(
       metadata: {
         name: site.name,
         description: site.description,
-        url: process.env.NODE_ENV === 'production' ? 'https://kuest.com' : 'http://localhost:3000',
-        icons: [process.env.NODE_ENV === 'production' ? 'https://kuest.com/images/kuest-logo.svg' : 'http://localhost:3000/images/kuest-logo.svg'],
+        url: siteOrigin,
+        icons: [`${siteOrigin}/images/kuest-logo.svg`],
       },
       themeVariables: {
         '--w3m-font-family': 'var(--font-sans)',
@@ -40,7 +41,7 @@ function initializeAppKitSingleton(
       networks,
       featuredWalletIds: ['c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96'],
       features: {
-        analytics: process.env.NODE_ENV === 'production',
+        analytics: import.meta.env.PROD,
       },
     })
 

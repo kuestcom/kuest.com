@@ -235,7 +235,7 @@ function ProtocolPageContent({ locale }: { locale: SupportedLocale }) {
       complete: false,
     },
   ]
-  const siteOrigin = resolveSiteUrl(process.env)
+  const siteOrigin = resolveSiteUrl()
 
   return (
     <>

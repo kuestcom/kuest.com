@@ -1,5 +1,12 @@
 import { Resend } from 'resend'
 import {
+  PROTOCOL_PITCH_DECK_TO_EMAIL,
+  RATE_LIMIT_PROTOCOL_DECK_MAX,
+  RATE_LIMIT_WINDOW_MS,
+  RESEND_API_KEY,
+  RESEND_FROM_EMAIL,
+} from 'astro:env/server'
+import {
   buildRateLimitHeaders,
   checkRateLimit,
   getRateLimitConfig,
@@ -28,9 +35,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:protocol-deck',
-      envMaxKey: 'RATE_LIMIT_PROTOCOL_DECK_MAX',
-      defaultMax: 12,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_PROTOCOL_DECK_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
 
@@ -73,9 +79,9 @@ export async function POST(request: Request) {
     return badRequest('A valid email is required.')
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY?.trim()
-  const fromEmail = process.env.RESEND_FROM_EMAIL?.trim()
-  const toEmail = process.env.PROTOCOL_PITCH_DECK_TO_EMAIL?.trim() || 'bruno@maciel.com'
+  const resendApiKey = RESEND_API_KEY?.trim()
+  const fromEmail = RESEND_FROM_EMAIL.trim()
+  const toEmail = PROTOCOL_PITCH_DECK_TO_EMAIL.trim()
 
   if (!resendApiKey) {
     return badRequest('Email service is not configured.', 500)

@@ -1,3 +1,5 @@
+import { SITE_URL } from 'astro:env/client'
+
 const HAS_PROTOCOL_PATTERN = /^[a-z][a-z0-9+.-]*:\/\//i
 const LOCAL_HOST_PATTERN = /^(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0)(?::\d+)?(?:\/|$)/i
 
@@ -25,33 +27,6 @@ export function normalizeSiteUrl(value: string) {
   }
 }
 
-export function resolveSiteUrl(
-  env: Record<string, string | undefined> = process.env,
-) {
-  const explicitSiteUrl = typeof env.SITE_URL === 'string' && env.SITE_URL.trim()
-    ? env.SITE_URL
-    : null
-  const vercelProductionUrl
-    = typeof env.VERCEL_PROJECT_PRODUCTION_URL === 'string' && env.VERCEL_PROJECT_PRODUCTION_URL.trim()
-      ? env.VERCEL_PROJECT_PRODUCTION_URL
-      : null
-  const publicVercelProductionUrl
-    = typeof env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL === 'string'
-      && env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL.trim()
-      ? env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
-      : null
-
-  if (explicitSiteUrl) {
-    return normalizeSiteUrl(explicitSiteUrl)
-  }
-
-  if (vercelProductionUrl) {
-    return normalizeSiteUrl(vercelProductionUrl)
-  }
-
-  if (publicVercelProductionUrl) {
-    return normalizeSiteUrl(publicVercelProductionUrl)
-  }
-
-  return 'http://localhost:3000'
+export function resolveSiteUrl() {
+  return normalizeSiteUrl(SITE_URL)
 }

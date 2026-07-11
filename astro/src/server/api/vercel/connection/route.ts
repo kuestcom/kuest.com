@@ -1,3 +1,4 @@
+import { RATE_LIMIT_VERCEL_CONNECTION_MAX, RATE_LIMIT_WINDOW_MS } from 'astro:env/server'
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import {
@@ -21,9 +22,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:vercel-connection',
-      envMaxKey: 'RATE_LIMIT_VERCEL_CONNECTION_MAX',
-      defaultMax: 240,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_VERCEL_CONNECTION_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
   if (!rateLimit.allowed) {

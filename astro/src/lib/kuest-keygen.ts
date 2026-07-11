@@ -1,3 +1,5 @@
+import { CLOB_URL, KUEST_CHAIN_MODE, RELAYER_URL } from 'astro:env/client'
+
 interface CreateKuestKeyInput {
   address: string
   signature: string
@@ -26,7 +28,7 @@ type KuestKeyCredential = Omit<GeneratedKuestBundle, 'address'>
 export const DEFAULT_KUEST_KEY_NONCE = '0'
 
 export const TARGET_CHAIN_MODE
-  = process.env.NEXT_PUBLIC_KUEST_CHAIN_MODE === 'polygon' ? 'polygon' : 'amoy'
+  = KUEST_CHAIN_MODE === 'polygon' ? 'polygon' : 'amoy'
 
 export const REQUIRED_CHAIN_ID = TARGET_CHAIN_MODE === 'polygon' ? 137 : 80002
 
@@ -49,12 +51,7 @@ const AMOY_ADD_PARAMS = {
 }
 
 function getKuestBaseUrls() {
-  const defaults = ['https://clob.kuest.com', 'https://relayer.kuest.com']
-  const configured = [process.env.CLOB_URL, process.env.RELAYER_URL]
-    .map(value => value?.trim())
-    .filter((value): value is string => Boolean(value))
-  const merged = configured.length ? configured : defaults
-  return Array.from(new Set(merged))
+  return Array.from(new Set([CLOB_URL, RELAYER_URL]))
 }
 
 function getInjectedProvider(): Eip1193Provider | null {

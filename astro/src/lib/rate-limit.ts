@@ -98,24 +98,12 @@ export function buildRateLimitHeaders(result: RateLimitResult) {
 
 export function getRateLimitConfig(params: {
   route: string
-  envMaxKey: string
-  defaultMax: number
-  envWindowKey?: string
-  defaultWindowMs?: number
+  max: number
+  windowMs: number
 }) {
-  const defaultWindowMs = params.defaultWindowMs ?? 10 * 60 * 1000
-  const rawMax = process.env[params.envMaxKey]
-  const rawWindow = params.envWindowKey ? process.env[params.envWindowKey] : undefined
-
-  const max = Number(rawMax)
-  const windowMs = Number(rawWindow)
-
   return {
     route: params.route,
-    max: Number.isFinite(max) && max > 0 ? Math.floor(max) : params.defaultMax,
-    windowMs:
-      Number.isFinite(windowMs) && windowMs > 0
-        ? Math.floor(windowMs)
-        : defaultWindowMs,
+    max: Math.floor(params.max),
+    windowMs: Math.floor(params.windowMs),
   } satisfies RateLimitConfig
 }

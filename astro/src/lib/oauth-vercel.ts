@@ -1,4 +1,5 @@
 import type { OAuthSession, OAuthUser } from '@/lib/oauth'
+import { VERCEL_OAUTH_CLIENT_ID, VERCEL_OAUTH_CLIENT_SECRET } from 'astro:env/server'
 import { LaunchError } from '@/lib/launch-utils'
 import { secondsToExpiresAt } from '@/lib/oauth'
 
@@ -27,8 +28,8 @@ interface VercelTeamResponse {
 }
 
 function ensureVercelOAuthEnv() {
-  const clientId = process.env.VERCEL_OAUTH_CLIENT_ID ?? ''
-  const clientSecret = process.env.VERCEL_OAUTH_CLIENT_SECRET ?? ''
+  const clientId = VERCEL_OAUTH_CLIENT_ID ?? ''
+  const clientSecret = VERCEL_OAUTH_CLIENT_SECRET ?? ''
   if (!clientId || !clientSecret) {
     throw new LaunchError(
       'Missing VERCEL_OAUTH_CLIENT_ID or VERCEL_OAUTH_CLIENT_SECRET.',

@@ -432,7 +432,7 @@ function LandingPageContent({ locale }: { locale: SupportedLocale }) {
       ),
     },
   ]
-  const siteOrigin = resolveSiteUrl(process.env)
+  const siteOrigin = resolveSiteUrl()
 
   return (
     <>

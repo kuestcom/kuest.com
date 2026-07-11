@@ -32,7 +32,7 @@ export const OAUTH_COOKIE_NAMES = {
 
 const TEN_MINUTES = 60 * 10
 const THIRTY_DAYS = 60 * 60 * 24 * 30
-const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const IS_PRODUCTION = import.meta.env.PROD
 
 const COOKIE_OPTIONS = {
   httpOnly: true,

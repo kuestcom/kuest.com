@@ -1,3 +1,4 @@
+import { RATE_LIMIT_DOMAIN_MAX, RATE_LIMIT_WINDOW_MS } from 'astro:env/server'
 import { registerDomainSnapshot } from '@/lib/domain-register'
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
@@ -33,9 +34,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:vercel-domain',
-      envMaxKey: 'RATE_LIMIT_DOMAIN_MAX',
-      defaultMax: 90,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_DOMAIN_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
   if (!rateLimit.allowed) {

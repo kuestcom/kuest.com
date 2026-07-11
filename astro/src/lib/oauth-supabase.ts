@@ -1,4 +1,10 @@
 import type { OAuthSession, OAuthUser } from '@/lib/oauth'
+import {
+  SUPABASE_OAUTH_CLIENT_ID,
+  SUPABASE_OAUTH_CLIENT_SECRET,
+  SUPABASE_OAUTH_ORGANIZATION_NAME,
+  SUPABASE_OAUTH_SCOPES,
+} from 'astro:env/server'
 import { LaunchError } from '@/lib/launch-utils'
 import { basicAuthHeader, secondsToExpiresAt } from '@/lib/oauth'
 
@@ -25,8 +31,8 @@ interface SupabaseOrg {
 }
 
 function ensureSupabaseOAuthEnv() {
-  const clientId = process.env.SUPABASE_OAUTH_CLIENT_ID ?? ''
-  const clientSecret = process.env.SUPABASE_OAUTH_CLIENT_SECRET ?? ''
+  const clientId = SUPABASE_OAUTH_CLIENT_ID ?? ''
+  const clientSecret = SUPABASE_OAUTH_CLIENT_SECRET ?? ''
   if (!clientId || !clientSecret) {
     throw new LaunchError(
       'Missing SUPABASE_OAUTH_CLIENT_ID or SUPABASE_OAUTH_CLIENT_SECRET.',
@@ -37,7 +43,7 @@ function ensureSupabaseOAuthEnv() {
 }
 
 function parseSupabaseScopes() {
-  return process.env.SUPABASE_OAUTH_SCOPES?.trim() || 'openid offline_access'
+  return SUPABASE_OAUTH_SCOPES.trim()
 }
 
 async function parseJsonResponse<T>(response: Response, step: string) {
@@ -73,7 +79,7 @@ export function buildSupabaseAuthorizeUrl(params: {
     code_challenge_method: 'S256',
     scope: parseSupabaseScopes(),
   })
-  const org = process.env.SUPABASE_OAUTH_ORGANIZATION_NAME?.trim()
+  const org = SUPABASE_OAUTH_ORGANIZATION_NAME?.trim()
   if (org) {
     query.set('organization_name', org)
   }

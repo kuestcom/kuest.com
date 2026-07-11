@@ -1,5 +1,6 @@
 ---
 import type { SupportedLocale } from '@/i18n/locales'
+import { SITE_URL } from 'astro:env/client'
 import { SUPPORTED_LOCALES } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
 import '@/styles/globals.css'
@@ -26,7 +27,7 @@ const {
   ),
   article,
 } = Astro.props
-const site = Astro.site ?? new URL('https://kuest.com')
+const site = new URL(SITE_URL)
 const canonical = new URL(getPathname({ href: canonicalPath, locale }), site)
 const absoluteOgImage = new URL(ogImage, site)
 const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, locale: 'en' })

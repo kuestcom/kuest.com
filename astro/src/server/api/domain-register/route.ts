@@ -1,3 +1,4 @@
+import { RATE_LIMIT_DOMAIN_REGISTER_MAX, RATE_LIMIT_WINDOW_MS } from 'astro:env/server'
 import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   buildRateLimitHeaders,
@@ -22,9 +23,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:domain-register',
-      envMaxKey: 'RATE_LIMIT_DOMAIN_REGISTER_MAX',
-      defaultMax: 600,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_DOMAIN_REGISTER_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
   if (!rateLimit.allowed) {

@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_URL } from 'astro:env/client'
+import { SUPABASE_SERVICE_ROLE_KEY } from 'astro:env/server'
 import { normalizeSiteUrl } from '@/lib/site-url'
 
 const KEY_EMAILS_TABLE = 'key_emails'
@@ -59,14 +61,11 @@ function normalizeRegisteredUrl(input: string) {
 }
 
 function createDomainRegisterClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !serviceRoleKey) {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('Supabase domain registry environment variables are missing.')
   }
 
-  return createClient(supabaseUrl, serviceRoleKey, {
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

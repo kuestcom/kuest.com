@@ -1,4 +1,5 @@
 import type { VercelDomainResponse, VercelProvisionResult } from '@/lib/launch-types'
+import { VERCEL_SUPABASE_ENV_VAR_PREFIX, VERCEL_SUPABASE_REGION } from 'astro:env/server'
 import { LaunchError } from '@/lib/launch-utils'
 
 const VERCEL_API_BASE = 'https://api.vercel.com'
@@ -998,7 +999,6 @@ export async function provisionVercelProject(params: {
       method: 'POST',
       body: JSON.stringify({
         name: params.projectName,
-        framework: 'nextjs',
         gitRepository: {
           type: 'github',
           repo: params.gitRepo,
@@ -1045,7 +1045,6 @@ export async function provisionVercelProject(params: {
           method: 'POST',
           body: JSON.stringify({
             name: params.projectName,
-            framework: 'nextjs',
             gitRepository: {
               type: 'github',
               repo: params.gitRepo,
@@ -1288,7 +1287,7 @@ export async function connectSupabaseViaVercelIntegration(params: {
     new Set(
       [
         params.supabaseRegion,
-        process.env.VERCEL_SUPABASE_REGION,
+        VERCEL_SUPABASE_REGION,
         'us-east-1',
         'us-west-1',
         'eu-west-1',
@@ -1303,9 +1302,9 @@ export async function connectSupabaseViaVercelIntegration(params: {
     new Set(
       [
         params.supabasePublicEnvVarPrefix,
-        process.env.VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX,
-        'NEXT_PUBLIC_',
-        'NEXT_PUBLIC',
+        VERCEL_SUPABASE_ENV_VAR_PREFIX,
+        'PUBLIC_',
+        'PUBLIC',
       ]
         .map(value => value?.trim())
         .filter((value): value is string => Boolean(value)),

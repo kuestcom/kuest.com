@@ -1,4 +1,5 @@
 import { LaunchError } from '@/lib/launch-utils'
+import { RATE_LIMIT_SUPABASE_RESOURCES_MAX, RATE_LIMIT_WINDOW_MS } from 'astro:env/server'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import {
   buildRateLimitHeaders,
@@ -20,9 +21,8 @@ export async function POST(request: Request) {
     request,
     getRateLimitConfig({
       route: 'api:supabase-resources',
-      envMaxKey: 'RATE_LIMIT_SUPABASE_RESOURCES_MAX',
-      defaultMax: 240,
-      envWindowKey: 'RATE_LIMIT_WINDOW_MS',
+      max: RATE_LIMIT_SUPABASE_RESOURCES_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
     }),
   )
   if (!rateLimit.allowed) {
