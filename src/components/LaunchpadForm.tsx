@@ -681,7 +681,7 @@ export default function LaunchpadForm({ locale }: { locale: SupportedLocale }) {
   const copy = LAUNCHPAD_COPY[locale]
   const account = useAccount()
   const { disconnect, status: disconnectStatus } = useDisconnect()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync: switchChain } = useSwitchChain()
   const { signTypedDataAsync } = useSignTypedData()
   const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit()
 

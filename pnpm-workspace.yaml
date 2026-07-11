@@ -1,4 +1,9 @@
-minimumReleaseAge: 0
+minimumReleaseAge: 1440
+peerDependencyRules:
+  allowedVersions:
+    'abitype@1.0.8>zod': '4'
+    typescript: '6'
+    'use-sync-external-store@1.2.0>react': '19'
 allowBuilds:
   '@reown/appkit': false
   bufferutil: false
