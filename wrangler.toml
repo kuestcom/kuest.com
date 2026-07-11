@@ -1,0 +1,43 @@
+name = "kuest-com"
+main = "@astrojs/cloudflare/entrypoints/server"
+compatibility_date = "2026-07-10"
+compatibility_flags = ["nodejs_compat"]
+keep_vars = true
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
+
+[[kv_namespaces]]
+binding = "SESSION"
+id = "40240d0e161c4646b11e7f78894ed4ed"
+
+[images]
+binding = "IMAGES"
+
+[vars]
+GITHUB_APP_URL = "https://github-app.kuest.com"
+KUEST_CHAIN_MODE = "amoy"
+PROTOCOL_PITCH_DECK_TO_EMAIL = "hello@kuest.com"
+RATE_LIMIT_DOMAIN_MAX = "90"
+RATE_LIMIT_DOMAIN_REGISTER_MAX = "600"
+RATE_LIMIT_LAUNCH_MAX = "30"
+RATE_LIMIT_PROTOCOL_DECK_MAX = "12"
+RATE_LIMIT_REOWN_CONNECTION_MAX = "240"
+RATE_LIMIT_SUPABASE_RESOURCES_MAX = "240"
+RATE_LIMIT_VERCEL_CONNECTION_MAX = "240"
+RATE_LIMIT_WINDOW_MS = "600000"
+RESEND_FROM_EMAIL = "Kuest <hello@kuest.com>"
+SITE_URL = "https://kuest.com"
+
+[secrets]
+required = [
+  "REOWN_APPKIT_PROJECT_ID",
+  "RESEND_API_KEY",
+  "SUPABASE_ANON_KEY",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "SUPABASE_URL",
+  "VERCEL_OAUTH_CLIENT_ID",
+  "VERCEL_OAUTH_CLIENT_SECRET",
+]
