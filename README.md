@@ -1,6 +1,17 @@
-# Kuest.com — Astro + Cloudflare
+# Kuest Launch
 
-This is the Astro migration of the Kuest marketing site and launchpad. It includes 11 locales, 143 localized MDX posts, the launch wizard, OAuth callbacks, deployment APIs, sitemap/robots metadata, and a Cloudflare Workers deployment.
+Open-source launch flow for Kuest white-label prediction markets.
+
+- Landing: `https://kuest.com`
+- Launch: `https://kuest.com/launch`
+- The Protocol: `https://kuest.com/protocol`
+- Demo: `https://demo.kuest.com`
+
+Main goal of this repo:
+
+- Let people review and audit the full launch code
+- Keep a guided path for non-developers when needed
+- Support OAuth-first auth with token fallback
 
 ## Local development
 
