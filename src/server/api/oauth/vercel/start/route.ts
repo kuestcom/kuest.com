@@ -3,48 +3,48 @@ import {
   OAUTH_COOKIE_NAMES,
   randomStateToken,
   setTemporaryOAuthState,
-} from "@/lib/oauth";
-import { redirectResponse } from "@/server/response";
-import { buildVercelAuthorizeUrl } from "@/lib/oauth-vercel";
+} from '@/lib/oauth'
+import { redirectResponse } from '@/server/response'
+import { buildVercelAuthorizeUrl } from '@/lib/oauth-vercel'
 
 function buildRedirectUri(request: Request) {
-  const url = new URL(request.url);
-  return `${url.origin}/api/oauth/vercel/callback`;
+  const url = new URL(request.url)
+  return `${url.origin}/api/oauth/vercel/callback`
 }
 
 function safeReturnTo(input: string | null) {
-  if (!input || !input.startsWith("/") || input.startsWith("//")) {
-    return "/launch";
+  if (!input || !input.startsWith('/') || input.startsWith('//')) {
+    return '/launch'
   }
-  return input;
+  return input
 }
 
 export async function GET(request: Request) {
-  const requestUrl = new URL(request.url);
+  const requestUrl = new URL(request.url)
   try {
-    const returnTo = safeReturnTo(requestUrl.searchParams.get("return_to"));
-    const state = randomStateToken();
-    const pkce = createPkcePair();
-    const redirectUri = buildRedirectUri(request);
+    const returnTo = safeReturnTo(requestUrl.searchParams.get('return_to'))
+    const state = randomStateToken()
+    const pkce = createPkcePair()
+    const redirectUri = buildRedirectUri(request)
 
     await setTemporaryOAuthState(OAUTH_COOKIE_NAMES.vercelState, {
       state,
       codeVerifier: pkce.verifier,
       returnTo,
       createdAt: Date.now(),
-    });
+    })
 
     const authorizeUrl = buildVercelAuthorizeUrl({
       redirectUri,
       state,
       codeChallenge: pkce.challenge,
-    });
+    })
 
-    return redirectResponse(authorizeUrl);
+    return redirectResponse(authorizeUrl)
   } catch (error) {
-    const message = error instanceof Error ? error.message : "OAuth start failed.";
+    const message = error instanceof Error ? error.message : 'OAuth start failed.'
     return redirectResponse(
       new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
-    );
+    )
   }
 }

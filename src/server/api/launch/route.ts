@@ -1,5 +1,5 @@
-import type { LaunchResponseBody } from "@/lib/launch-types";
-import { registerDomainSnapshot } from "@/lib/domain-register";
+import type { LaunchResponseBody } from '@/lib/launch-types'
+import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   createLogger,
   ensureValidRepo,
@@ -7,11 +7,11 @@ import {
   masked,
   parseLaunchRequest,
   sanitizeProjectName,
-} from "@/lib/launch-utils";
-import { getValidVercelSession } from "@/lib/oauth-session";
-import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
-import { normalizeSiteUrl } from "@/lib/site-url";
-import { getServerRuntimeConfig } from "@/lib/server-env";
+} from '@/lib/launch-utils'
+import { getValidVercelSession } from '@/lib/oauth-session'
+import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
+import { normalizeSiteUrl } from '@/lib/site-url'
+import { getServerRuntimeConfig } from '@/lib/server-env'
 import {
   connectSupabaseViaVercelIntegration,
   createProjectDeployment,
@@ -19,10 +19,10 @@ import {
   preflightVercelSupabaseLaunch,
   provisionVercelProject,
   resolveProjectProductionUrl,
-} from "@/lib/vercel-api";
+} from '@/lib/vercel-api'
 
-function buildErrorResponse(error: unknown, status: number, body: Omit<LaunchResponseBody, "ok">) {
-  const message = error instanceof Error ? error.message : "Unknown error";
+function buildErrorResponse(error: unknown, status: number, body: Omit<LaunchResponseBody, 'ok'>) {
+  const message = error instanceof Error ? error.message : 'Unknown error'
   return Response.json(
     {
       ok: false,
@@ -30,25 +30,25 @@ function buildErrorResponse(error: unknown, status: number, body: Omit<LaunchRes
       error: message,
     },
     { status },
-  );
+  )
 }
 
 function buildDashboardUrl(projectName: string, vercelTeamId?: string) {
   if (vercelTeamId) {
-    return `https://vercel.com/${vercelTeamId}/${projectName}`;
+    return `https://vercel.com/${vercelTeamId}/${projectName}`
   }
-  return "https://vercel.com/dashboard";
+  return 'https://vercel.com/dashboard'
 }
 
 function withNormalizedSiteUrl(env: Record<string, string>): Record<string, string> {
   if (!env.SITE_URL) {
-    return env;
+    return env
   }
 
   return {
     ...env,
     SITE_URL: normalizeSiteUrl(env.SITE_URL),
-  };
+  }
 }
 
 async function registerLaunchDomainSnapshot(params: { url: string; apiKey?: string }) {
@@ -56,103 +56,103 @@ async function registerLaunchDomainSnapshot(params: { url: string; apiKey?: stri
     await registerDomainSnapshot({
       url: params.url,
       apiKey: params.apiKey,
-    });
+    })
   } catch (error) {
     console.warn(
-      "[domain-register] Failed to register launch domain.",
+      '[domain-register] Failed to register launch domain.',
       error instanceof Error ? error.message : error,
-    );
+    )
   }
 }
 
 export async function POST(request: Request) {
-  const { RATE_LIMIT_LAUNCH_MAX, RATE_LIMIT_WINDOW_MS, VERCEL_TEAM_ID } = getServerRuntimeConfig();
-  const startedAt = Date.now();
-  const logs: LaunchResponseBody["logs"] = [];
-  const log = createLogger(logs);
+  const { RATE_LIMIT_LAUNCH_MAX, RATE_LIMIT_WINDOW_MS, VERCEL_TEAM_ID } = getServerRuntimeConfig()
+  const startedAt = Date.now()
+  const logs: LaunchResponseBody['logs'] = []
+  const log = createLogger(logs)
 
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({
-      route: "api:launch",
+      route: 'api:launch',
       max: RATE_LIMIT_LAUNCH_MAX,
       windowMs: RATE_LIMIT_WINDOW_MS,
     }),
-  );
+  )
   if (!rateLimit.allowed) {
-    const durationMs = Date.now() - startedAt;
+    const durationMs = Date.now() - startedAt
     log(
-      "rate_limit",
+      'rate_limit',
       `Too many launch attempts from this IP. Retry in about ${rateLimit.retryAfterSec}s.`,
-      "warning",
-    );
+      'warning',
+    )
     return Response.json(
       {
         ok: false,
         logs,
         durationMs,
-        error: "Too many launch attempts. Please retry shortly.",
+        error: 'Too many launch attempts. Please retry shortly.',
       },
       {
         status: 429,
         headers: buildRateLimitHeaders(rateLimit),
       },
-    );
+    )
   }
 
   try {
-    const rawBody = (await request.json()) as unknown;
-    const payload = parseLaunchRequest(rawBody);
+    const rawBody = (await request.json()) as unknown
+    const payload = parseLaunchRequest(rawBody)
 
-    const projectName = sanitizeProjectName(payload.projectName || payload.brandName);
-    const gitRepo = ensureValidRepo(payload.gitRepo);
-    const gitBranch = payload.gitBranch.trim();
-    const vercelTeamId = payload.vercelTeamId?.trim() || VERCEL_TEAM_ID?.trim() || undefined;
+    const projectName = sanitizeProjectName(payload.projectName || payload.brandName)
+    const gitRepo = ensureValidRepo(payload.gitRepo)
+    const gitBranch = payload.gitBranch.trim()
+    const vercelTeamId = payload.vercelTeamId?.trim() || VERCEL_TEAM_ID?.trim() || undefined
 
-    const vercelSession = await getValidVercelSession();
+    const vercelSession = await getValidVercelSession()
 
-    const vercelToken = payload.tokens?.vercel || vercelSession?.accessToken || "";
+    const vercelToken = payload.tokens?.vercel || vercelSession?.accessToken || ''
 
     log(
-      "validation",
+      'validation',
       `Input accepted. Repo: ${gitRepo}#${gitBranch}. Database mode: ${payload.databaseMode}.`,
-    );
-    log("validation", `Vercel token: ${masked(vercelToken)}.`);
+    )
+    log('validation', `Vercel token: ${masked(vercelToken)}.`)
 
     if (!vercelToken) {
       throw new LaunchError(
-        "Missing Vercel authentication. Connect Vercel OAuth or paste a Vercel Access Token.",
-        "validation",
-      );
+        'Missing Vercel authentication. Connect Vercel OAuth or paste a Vercel Access Token.',
+        'validation',
+      )
     }
 
-    if (payload.databaseMode !== "vercel_supabase_integration") {
+    if (payload.databaseMode !== 'vercel_supabase_integration') {
       throw new LaunchError(
-        "Only vercel_supabase_integration is enabled in this launchpad instance.",
-        "validation",
-      );
+        'Only vercel_supabase_integration is enabled in this launchpad instance.',
+        'validation',
+      )
     }
 
-    let supabaseDashboardUrl: string | undefined;
+    let supabaseDashboardUrl: string | undefined
 
     const preflight = await preflightVercelSupabaseLaunch({
       token: vercelToken,
       teamId: vercelTeamId,
       projectName,
       log,
-    });
-    const launchTeamId = preflight.resolvedTeamId ?? vercelTeamId;
-    const env = withNormalizedSiteUrl({ ...payload.env });
+    })
+    const launchTeamId = preflight.resolvedTeamId ?? vercelTeamId
+    const env = withNormalizedSiteUrl({ ...payload.env })
 
     const vercelEnvironmentVariables = Object.entries(env)
-      .filter(([, value]) => value !== "")
+      .filter(([, value]) => value !== '')
       .map(([key, value]) => ({
         key,
         value,
-        target: ["production", "preview", "development"] as const,
-      }));
+        target: ['production', 'preview', 'development'] as const,
+      }))
 
-    const shouldAutoDeploy = payload.databaseMode !== "vercel_supabase_integration";
+    const shouldAutoDeploy = payload.databaseMode !== 'vercel_supabase_integration'
     const vercel = await provisionVercelProject({
       token: vercelToken,
       teamId: launchTeamId,
@@ -162,9 +162,9 @@ export async function POST(request: Request) {
       environmentVariables: vercelEnvironmentVariables,
       triggerDeployment: shouldAutoDeploy,
       log,
-    });
+    })
 
-    if (payload.databaseMode === "vercel_supabase_integration") {
+    if (payload.databaseMode === 'vercel_supabase_integration') {
       const integrated = await connectSupabaseViaVercelIntegration({
         token: vercelToken,
         teamId: launchTeamId,
@@ -173,8 +173,8 @@ export async function POST(request: Request) {
         existingResourceId: payload.supabase?.existingResourceId,
         supabaseRegion: payload.supabase?.region,
         log,
-      });
-      supabaseDashboardUrl = integrated.dashboardUrl ?? supabaseDashboardUrl;
+      })
+      supabaseDashboardUrl = integrated.dashboardUrl ?? supabaseDashboardUrl
 
       const deployment = await createProjectDeployment({
         token: vercelToken,
@@ -183,8 +183,8 @@ export async function POST(request: Request) {
         projectName: vercel.projectName,
         gitRepo,
         gitBranch,
-      });
-      log("vercel", "Deployment triggered after Supabase integration connection.");
+      })
+      log('vercel', 'Deployment triggered after Supabase integration connection.')
 
       const projectUrl = normalizeSiteUrl(
         (await resolveProjectProductionUrl({
@@ -194,15 +194,15 @@ export async function POST(request: Request) {
         })) ||
           deployment.url ||
           vercel.projectUrl ||
-          "",
-      );
+          '',
+      )
 
       await registerLaunchDomainSnapshot({
         url: projectUrl,
         apiKey: payload.env.KUEST_API_KEY,
-      });
+      })
 
-      const durationMs = Date.now() - startedAt;
+      const durationMs = Date.now() - startedAt
       return Response.json({
         ok: true,
         databaseMode: payload.databaseMode,
@@ -214,14 +214,14 @@ export async function POST(request: Request) {
         supabaseDashboardUrl,
         logs,
         durationMs,
-      });
+      })
     }
 
-    const durationMs = Date.now() - startedAt;
+    const durationMs = Date.now() - startedAt
     await registerLaunchDomainSnapshot({
-      url: vercel.projectUrl ?? "",
+      url: vercel.projectUrl ?? '',
       apiKey: payload.env.KUEST_API_KEY,
-    });
+    })
 
     return Response.json({
       ok: true,
@@ -234,18 +234,18 @@ export async function POST(request: Request) {
       supabaseDashboardUrl,
       logs,
       durationMs,
-    });
+    })
   } catch (error) {
-    const durationMs = Date.now() - startedAt;
+    const durationMs = Date.now() - startedAt
     if (error instanceof LaunchError) {
-      log(error.step, error.message, "error");
+      log(error.step, error.message, 'error')
       if (error.details) {
-        log(error.step, JSON.stringify(error.details), "warning");
+        log(error.step, JSON.stringify(error.details), 'warning')
       }
-      const requiresVercelGitImport = isMissingVercelGitImportError(error);
+      const requiresVercelGitImport = isMissingVercelGitImportError(error)
       const responseError = requiresVercelGitImport
-        ? "Finish connecting Vercel to GitHub, then try again."
-        : error.message;
+        ? 'Finish connecting Vercel to GitHub, then try again.'
+        : error.message
       return Response.json(
         {
           ok: false,
@@ -257,10 +257,10 @@ export async function POST(request: Request) {
           },
         },
         { status: 400 },
-      );
+      )
     }
 
-    log("unknown", "Unexpected internal error.", "error");
-    return buildErrorResponse(error, 500, { logs, durationMs });
+    log('unknown', 'Unexpected internal error.', 'error')
+    return buildErrorResponse(error, 500, { logs, durationMs })
   }
 }

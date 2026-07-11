@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { useExtracted } from "@/i18n";
-import { useEffect, useState } from "react";
+import { useExtracted } from '@/i18n'
+import { useEffect, useState } from 'react'
 
 export default function RotatingProofCards() {
-  const t = useExtracted();
+  const t = useExtracted()
   const cards = [
     {
-      label: t("2025 volume"),
-      value: "$63.5B",
+      label: t('2025 volume'),
+      value: '$63.5B',
       sub: t.rich(
-        "Prediction market volume hit $63.5B in 2025, according to <link>CertiK</link>.",
+        'Prediction market volume hit $63.5B in 2025, according to <link>CertiK</link>.',
         {
           link: (chunks) => (
             <a
@@ -26,9 +26,9 @@ export default function RotatingProofCards() {
       ),
     },
     {
-      label: t("Polymarket talks"),
-      value: "$15B",
-      sub: t.rich("Bloomberg put Polymarket talks near $15B, via <link>CoinDesk</link>.", {
+      label: t('Polymarket talks'),
+      value: '$15B',
+      sub: t.rich('Bloomberg put Polymarket talks near $15B, via <link>CoinDesk</link>.', {
         link: (chunks) => (
           <a
             href="https://www.coindesk.com/business/2025/10/23/polymarket-seeks-investment-at-valuation-of-usd12b-usd15b-bloomberg"
@@ -42,9 +42,9 @@ export default function RotatingProofCards() {
       }),
     },
     {
-      label: t("Kalshi valuation"),
-      value: "$11B",
-      sub: t.rich("Kalshi raised $1B at an $11B valuation, according to <link>TechCrunch</link>.", {
+      label: t('Kalshi valuation'),
+      value: '$11B',
+      sub: t.rich('Kalshi raised $1B at an $11B valuation, according to <link>TechCrunch</link>.', {
         link: (chunks) => (
           <a
             href="https://techcrunch.com/2025/11/20/source-kalshis-valuation-jumps-to-11b-after-raising-massive-1b-round/"
@@ -58,10 +58,10 @@ export default function RotatingProofCards() {
       }),
     },
     {
-      label: t("Weekly volume"),
-      value: "$2B",
+      label: t('Weekly volume'),
+      value: '$2B',
       sub: t.rich(
-        "Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>.",
+        'Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>.',
         {
           link: (chunks) => (
             <a
@@ -76,31 +76,31 @@ export default function RotatingProofCards() {
         },
       ),
     },
-  ];
+  ]
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const clampedActiveIndex = cards.length === 0 ? -1 : Math.min(activeIndex, cards.length - 1);
+  const [activeIndex, setActiveIndex] = useState(0)
+  const clampedActiveIndex = cards.length === 0 ? -1 : Math.min(activeIndex, cards.length - 1)
 
   useEffect(() => {
     if (cards.length < 2) {
-      return;
+      return
     }
 
     const intervalId = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % cards.length);
-    }, 4200);
+      setActiveIndex((current) => (current + 1) % cards.length)
+    }, 4200)
 
     return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [cards.length]);
+      window.clearInterval(intervalId)
+    }
+  }, [cards.length])
 
   return (
     <div className="solution-proof-rotator" id="solutionProofRotator">
       {cards.map((card, index) => (
         <article
           key={`${card.label}-${card.value}`}
-          className={`solution-proof-card ${index === clampedActiveIndex ? "is-active" : ""}`}
+          className={`solution-proof-card ${index === clampedActiveIndex ? 'is-active' : ''}`}
         >
           <div className="solution-proof-card-label">{card.label}</div>
           <div className="solution-proof-card-value">{card.value}</div>
@@ -108,5 +108,5 @@ export default function RotatingProofCards() {
         </article>
       ))}
     </div>
-  );
+  )
 }

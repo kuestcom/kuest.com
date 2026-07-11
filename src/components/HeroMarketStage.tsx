@@ -1,14 +1,14 @@
-import Image from "@/compat/Image";
-import { HERO_MARKET_SCENES } from "@/lib/marketing-shared-data";
+import Image from '@/compat/Image'
+import { HERO_MARKET_SCENES } from '@/lib/marketing-shared-data'
 
 export default function HeroMarketStage({
   titles,
   yesLabel,
   noLabel,
 }: {
-  titles: readonly string[];
-  yesLabel: string;
-  noLabel: string;
+  titles: readonly string[]
+  yesLabel: string
+  noLabel: string
 }) {
   return (
     <div className="hero-market-stage" aria-hidden="true">
@@ -19,16 +19,16 @@ export default function HeroMarketStage({
               HERO_MARKET_SCENES.slice(0, sceneIndex).reduce(
                 (total, entry) => total + entry.cards.length,
                 0,
-              ) + cardIndex;
-            const title = titles[titleIndex] ?? "";
-            const expandSide = "expandSide" in card ? card.expandSide : undefined;
+              ) + cardIndex
+            const title = titles[titleIndex] ?? ''
+            const expandSide = 'expandSide' in card ? card.expandSide : undefined
 
             return (
               <figure
                 key={card.cardClassName}
                 className={card.cardClassName}
                 data-expand-side={expandSide}
-                style={{ ["--hero-market-rotate" as string]: card.rotate }}
+                style={{ ['--hero-market-rotate' as string]: card.rotate }}
               >
                 <div className="protocol-hero-card-shell">
                   <div className="hero-market-card-media">
@@ -55,10 +55,10 @@ export default function HeroMarketStage({
                   ) : null}
                 </div>
               </figure>
-            );
+            )
           })}
         </div>
       ))}
     </div>
-  );
+  )
 }

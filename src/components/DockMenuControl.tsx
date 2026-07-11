@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/navigation";
+import { Link } from '@/i18n/navigation'
 
 export default function DockMenuControl({
   homeHref,
@@ -15,19 +15,19 @@ export default function DockMenuControl({
   protocolLabel,
   blogLabel,
 }: {
-  homeHref: string;
-  enterpriseHref: string;
-  protocolHref: string;
-  blogHref?: string;
-  demoHref?: string;
-  demoLabel?: string;
-  active: "home" | "enterprise" | "protocol" | "blog";
-  openLabel: string;
-  menuAriaLabel: string;
-  homeLabel: string;
-  enterpriseLabel: string;
-  protocolLabel: string;
-  blogLabel?: string;
+  homeHref: string
+  enterpriseHref: string
+  protocolHref: string
+  blogHref?: string
+  demoHref?: string
+  demoLabel?: string
+  active: 'home' | 'enterprise' | 'protocol' | 'blog'
+  openLabel: string
+  menuAriaLabel: string
+  homeLabel: string
+  enterpriseLabel: string
+  protocolLabel: string
+  blogLabel?: string
 }) {
   return (
     <div className="site-language-control site-nav-control" id="dockSiteNavControl">
@@ -51,7 +51,7 @@ export default function DockMenuControl({
         role="menu"
         aria-label={menuAriaLabel}
       >
-        {active === "home" ? (
+        {active === 'home' ? (
           <span
             className="site-language-option site-nav-option is-disabled"
             role="menuitem"
@@ -64,12 +64,12 @@ export default function DockMenuControl({
             {homeLabel}
           </Link>
         )}
-        {active === "home" && demoHref && demoLabel ? (
+        {active === 'home' && demoHref && demoLabel ? (
           <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
             {demoLabel}
           </a>
         ) : null}
-        {active === "enterprise" ? (
+        {active === 'enterprise' ? (
           <span
             className="site-language-option site-nav-option is-disabled"
             role="menuitem"
@@ -86,12 +86,12 @@ export default function DockMenuControl({
             {enterpriseLabel}
           </Link>
         )}
-        {active === "enterprise" && demoHref && demoLabel ? (
+        {active === 'enterprise' && demoHref && demoLabel ? (
           <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
             {demoLabel}
           </a>
         ) : null}
-        {active === "protocol" ? (
+        {active === 'protocol' ? (
           <span
             className="site-language-option site-nav-option is-disabled"
             role="menuitem"
@@ -109,7 +109,7 @@ export default function DockMenuControl({
           </Link>
         )}
         {blogHref && blogLabel ? (
-          active === "blog" ? (
+          active === 'blog' ? (
             <span
               className="site-language-option site-nav-option is-disabled"
               role="menuitem"
@@ -125,5 +125,5 @@ export default function DockMenuControl({
         ) : null}
       </div>
     </div>
-  );
+  )
 }

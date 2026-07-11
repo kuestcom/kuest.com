@@ -68,7 +68,7 @@
   z-index: 16;
 }
 
-.protocol-page .hero-market-card.is-featured[data-expand-side="right"] .protocol-hero-card-shell {
+.protocol-page .hero-market-card.is-featured[data-expand-side='right'] .protocol-hero-card-shell {
   display: flex;
   flex-direction: row;
   grid-template-columns: var(--protocol-card-size) var(--protocol-card-panel-width);
@@ -80,11 +80,11 @@
   animation-fill-mode: both, both;
 }
 
-.protocol-page .hero-market-card.is-featured[data-expand-side="left"] {
+.protocol-page .hero-market-card.is-featured[data-expand-side='left'] {
   width: calc(var(--protocol-card-size) + var(--protocol-card-panel-width));
 }
 
-.protocol-page .hero-market-card.is-featured[data-expand-side="left"] .protocol-hero-card-shell {
+.protocol-page .hero-market-card.is-featured[data-expand-side='left'] .protocol-hero-card-shell {
   display: flex;
   flex-direction: row-reverse;
   margin-left: auto;
@@ -108,13 +108,13 @@
   pointer-events: none;
 }
 
-.protocol-page .hero-market-card.is-featured[data-expand-side="right"] .protocol-hero-card-panel {
+.protocol-page .hero-market-card.is-featured[data-expand-side='right'] .protocol-hero-card-panel {
   animation: protocol-hero-feature-panel-right var(--hero-market-cycle) linear infinite;
   animation-delay: var(--hero-scene-delay);
   animation-fill-mode: both;
 }
 
-.protocol-page .hero-market-card.is-featured[data-expand-side="left"] .protocol-hero-card-panel {
+.protocol-page .hero-market-card.is-featured[data-expand-side='left'] .protocol-hero-card-panel {
   justify-items: end;
   text-align: right;
   animation: protocol-hero-feature-panel-left var(--hero-market-cycle) linear infinite;
@@ -457,11 +457,11 @@
   width: clamp(88px, 8.8vw, 112px) !important;
 }
 
-:root[data-theme-mode="dark"] .protocol-inline-logo-xp-mark {
+:root[data-theme-mode='dark'] .protocol-inline-logo-xp-mark {
   filter: brightness(0) invert(1);
 }
 
-:root[data-theme-mode="light"] .protocol-inline-logo-xp-mark {
+:root[data-theme-mode='light'] .protocol-inline-logo-xp-mark {
   filter: none;
 }
 

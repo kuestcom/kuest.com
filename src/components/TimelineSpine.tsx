@@ -6,5 +6,5 @@ export default function TimelineSpine({ count }: { count: number }) {
         <div key={i} className="tl-dot" data-p={i + 1}></div>
       ))}
     </div>
-  );
+  )
 }

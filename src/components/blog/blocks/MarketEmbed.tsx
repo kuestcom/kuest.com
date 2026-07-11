@@ -1,8 +1,8 @@
-import Image from "@/compat/Image";
+import Image from '@/compat/Image'
 
 interface MarketRow {
-  label: string;
-  pct: number;
+  label: string
+  pct: number
 }
 
 export default function MarketEmbed({
@@ -15,17 +15,17 @@ export default function MarketEmbed({
   yesLabel,
   noLabel,
 }: {
-  title: string;
-  cat: string;
-  cover: string;
-  pct?: number;
-  rows?: MarketRow[];
-  vol?: string;
-  yesLabel: string;
-  noLabel: string;
+  title: string
+  cat: string
+  cover: string
+  pct?: number
+  rows?: MarketRow[]
+  vol?: string
+  yesLabel: string
+  noLabel: string
 }) {
-  const showRows = rows && rows.length > 0;
-  const showBinary = !showRows && pct !== undefined;
+  const showRows = rows && rows.length > 0
+  const showBinary = !showRows && pct !== undefined
 
   return (
     <figure className="blog-market">
@@ -62,5 +62,5 @@ export default function MarketEmbed({
         </div>
       </div>
     </figure>
-  );
+  )
 }

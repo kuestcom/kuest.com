@@ -1,31 +1,31 @@
 export const SUPPORTED_LOCALES = [
-  "en",
-  "de",
-  "es",
-  "pt",
-  "fr",
-  "ja",
-  "zh",
-  "ar",
-  "ru",
-  "it",
-  "pl",
-] as const;
+  'en',
+  'de',
+  'es',
+  'pt',
+  'fr',
+  'ja',
+  'zh',
+  'ar',
+  'ru',
+  'it',
+  'pl',
+] as const
 
-export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 
-export const DEFAULT_LOCALE: SupportedLocale = "en";
+export const DEFAULT_LOCALE: SupportedLocale = 'en'
 
 export const LANGUAGE_OPTIONS = [
-  { code: "en", label: "English", flagSrc: "/assets/flags/en.svg" },
-  { code: "de", label: "Deutsch", flagSrc: "/assets/flags/de.svg" },
-  { code: "es", label: "Español", flagSrc: "/assets/flags/es.svg" },
-  { code: "pt", label: "Português", flagSrc: "/assets/flags/pt.svg" },
-  { code: "fr", label: "Français", flagSrc: "/assets/flags/fr.svg" },
-  { code: "ja", label: "日本語", flagSrc: "/assets/flags/ja.svg" },
-  { code: "zh", label: "中文", flagSrc: "/assets/flags/zh.svg" },
-  { code: "ar", label: "العربية", flagSrc: "/assets/flags/ar.svg" },
-  { code: "ru", label: "Русский", flagSrc: "/assets/flags/ru.svg" },
-  { code: "it", label: "Italiano", flagSrc: "/assets/flags/it.svg" },
-  { code: "pl", label: "Polski", flagSrc: "/assets/flags/pl.svg" },
-] as const satisfies ReadonlyArray<{ code: SupportedLocale; label: string; flagSrc: string }>;
+  { code: 'en', label: 'English', flagSrc: '/assets/flags/en.svg' },
+  { code: 'de', label: 'Deutsch', flagSrc: '/assets/flags/de.svg' },
+  { code: 'es', label: 'Español', flagSrc: '/assets/flags/es.svg' },
+  { code: 'pt', label: 'Português', flagSrc: '/assets/flags/pt.svg' },
+  { code: 'fr', label: 'Français', flagSrc: '/assets/flags/fr.svg' },
+  { code: 'ja', label: '日本語', flagSrc: '/assets/flags/ja.svg' },
+  { code: 'zh', label: '中文', flagSrc: '/assets/flags/zh.svg' },
+  { code: 'ar', label: 'العربية', flagSrc: '/assets/flags/ar.svg' },
+  { code: 'ru', label: 'Русский', flagSrc: '/assets/flags/ru.svg' },
+  { code: 'it', label: 'Italiano', flagSrc: '/assets/flags/it.svg' },
+  { code: 'pl', label: 'Polski', flagSrc: '/assets/flags/pl.svg' },
+] as const satisfies ReadonlyArray<{ code: SupportedLocale; label: string; flagSrc: string }>

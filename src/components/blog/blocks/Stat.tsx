@@ -1,4 +1,4 @@
-import { toSafeExternalHref } from "@/lib/url-safety";
+import { toSafeExternalHref } from '@/lib/url-safety'
 
 export default function Stat({
   value,
@@ -6,12 +6,12 @@ export default function Stat({
   sourceHref,
   sourceLabel,
 }: {
-  value: string;
-  label: string;
-  sourceHref?: string;
-  sourceLabel?: string;
+  value: string
+  label: string
+  sourceHref?: string
+  sourceLabel?: string
 }) {
-  const safeSourceHref = sourceHref ? toSafeExternalHref(sourceHref) : null;
+  const safeSourceHref = sourceHref ? toSafeExternalHref(sourceHref) : null
 
   return (
     <div className="blog-stat">
@@ -29,5 +29,5 @@ export default function Stat({
         </a>
       ) : null}
     </div>
-  );
+  )
 }

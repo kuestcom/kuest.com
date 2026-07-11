@@ -1,2 +1,2 @@
-export { POST } from "./api/domain-register";
-export const prerender = false;
+export { POST } from './api/domain-register'
+export const prerender = false

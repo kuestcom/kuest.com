@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import type { SyntheticEvent } from "react";
-import type { SupportedLocale } from "@/i18n/locales";
+import type { SyntheticEvent } from 'react'
+import type { SupportedLocale } from '@/i18n/locales'
 import type {
   LaunchLogEntry,
   LaunchResponseBody,
@@ -9,8 +9,8 @@ import type {
   ReownConnectionStatusResponse,
   VercelConnectionStatusResponse,
   VercelDomainResponse,
-} from "@/lib/launch-types";
-import { useWalletInfo } from "@reown/appkit/react";
+} from '@/lib/launch-types'
+import { useWalletInfo } from '@reown/appkit/react'
 import {
   AlertTriangleIcon,
   ArrowLeftIcon,
@@ -27,14 +27,14 @@ import {
   RocketIcon,
   WalletIcon,
   XIcon,
-} from "lucide-react";
-import { useExtracted, useLocale } from "@/i18n";
-import Image from "@/compat/Image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from "wagmi";
-import { useAppKit } from "@/hooks/useAppKit";
-import { LANGUAGE_OPTIONS } from "@/i18n/locales";
-import { getPathname } from "@/i18n/navigation";
+} from 'lucide-react'
+import { useExtracted, useLocale } from '@/i18n'
+import Image from '@/compat/Image'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
+import { useAppKit } from '@/hooks/useAppKit'
+import { LANGUAGE_OPTIONS } from '@/i18n/locales'
+import { getPathname } from '@/i18n/navigation'
 import {
   DEFAULT_KUEST_KEY_NONCE,
   ensureRequiredNetworkViaProvider,
@@ -43,282 +43,282 @@ import {
   getRequiredChainLabel,
   mintKuestKeysFromSignature,
   readInjectedProvider,
-} from "@/lib/kuest-keygen";
-import { normalizeSiteUrl } from "@/lib/site-url";
-import { createSupabaseClient } from "@/lib/supabase";
-import type { PublicRuntimeConfig } from "@/lib/runtime-config";
+} from '@/lib/kuest-keygen'
+import { normalizeSiteUrl } from '@/lib/site-url'
+import { createSupabaseClient } from '@/lib/supabase'
+import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 
 interface FormState {
-  vercelAccessToken: string;
-  brandName: string;
-  projectSlugOverride: string;
-  gitRepo: string;
-  gitBranch: string;
-  vercelTeamId: string;
-  supabaseRegion: string;
-  supabaseResourceId: string;
-  contactEmail: string;
+  vercelAccessToken: string
+  brandName: string
+  projectSlugOverride: string
+  gitRepo: string
+  gitBranch: string
+  vercelTeamId: string
+  supabaseRegion: string
+  supabaseResourceId: string
+  contactEmail: string
   env: {
-    KUEST_ADDRESS: string;
-    KUEST_API_KEY: string;
-    KUEST_API_SECRET: string;
-    KUEST_PASSPHRASE: string;
-    ADMIN_WALLETS: string;
-    REOWN_APPKIT_PROJECT_ID: string;
-    BETTER_AUTH_SECRET: string;
-    CRON_SECRET: string;
-    SITE_URL: string;
-  };
-  extraEnvText: string;
+    KUEST_ADDRESS: string
+    KUEST_API_KEY: string
+    KUEST_API_SECRET: string
+    KUEST_PASSPHRASE: string
+    ADMIN_WALLETS: string
+    REOWN_APPKIT_PROJECT_ID: string
+    BETTER_AUTH_SECRET: string
+    CRON_SECRET: string
+    SITE_URL: string
+  }
+  extraEnvText: string
 }
 
 interface SupabaseResourceOption {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface SupabaseResourcesResponse {
-  resources?: SupabaseResourceOption[];
-  resolvedTeamId?: string;
-  error?: string;
+  resources?: SupabaseResourceOption[]
+  resolvedTeamId?: string
+  error?: string
 }
 
 interface VercelDomainApiResponse {
-  domain?: VercelDomainResponse;
-  error?: string;
+  domain?: VercelDomainResponse
+  error?: string
 }
 
-type TimelineStatus = "idle" | "running" | "done" | "error";
+type TimelineStatus = 'idle' | 'running' | 'done' | 'error'
 
 interface TimelineEntry {
-  id: string;
-  label: string;
-  status: TimelineStatus;
+  id: string
+  label: string
+  status: TimelineStatus
 }
 
 interface ActionPromptProps {
-  open: boolean;
-  title: string;
-  description: string;
-  showConnectedWalletIcon?: boolean;
-  allowClose?: boolean;
-  onClose?: () => void;
+  open: boolean
+  title: string
+  description: string
+  showConnectedWalletIcon?: boolean
+  allowClose?: boolean
+  onClose?: () => void
 }
 
 interface ActionPromptWalletIconProps {
-  className?: string;
-  rounded?: boolean;
-  fit?: "cover" | "contain";
+  className?: string
+  rounded?: boolean
+  fit?: 'cover' | 'contain'
 }
 
-type VercelAuthMethod = "oauth" | "token";
-type LaunchStep = 1 | 2 | 3;
+type VercelAuthMethod = 'oauth' | 'token'
+type LaunchStep = 1 | 2 | 3
 
 interface GitHubConnectState {
-  repoUrl: string;
-  syncEnabled: boolean;
+  repoUrl: string
+  syncEnabled: boolean
 }
 
-const SUPABASE_CREATE_NEW_OPTION = "__create_new__";
-const FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v6";
-const LEGACY_FORM_SESSION_STORAGE_KEY = "launchpad_form_state_v4";
-const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = "token";
-const FOOTER_BRAND_NAME = "Kuest";
-const VERCEL_GITHUB_CONNECT_LINK_THRESHOLD = 2;
-const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3;
-const VERCEL_GITHUB_APP_URL = "https://github.com/apps/vercel";
-const VERCEL_AUTHENTICATION_SETTINGS_URL = "https://vercel.com/account/settings/authentication";
-const REOWN_DASHBOARD_URL = "https://dashboard.reown.com/";
-const VERCEL_DASHBOARD_URL = "https://vercel.com/dashboard";
-const DISCORD_URL = "https://discord.gg/kuest";
+const SUPABASE_CREATE_NEW_OPTION = '__create_new__'
+const FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v6'
+const LEGACY_FORM_SESSION_STORAGE_KEY = 'launchpad_form_state_v4'
+const DEFAULT_VERCEL_AUTH_METHOD: VercelAuthMethod = 'token'
+const FOOTER_BRAND_NAME = 'Kuest'
+const VERCEL_GITHUB_CONNECT_LINK_THRESHOLD = 2
+const VERCEL_GITHUB_REFRESH_LINK_THRESHOLD = 3
+const VERCEL_GITHUB_APP_URL = 'https://github.com/apps/vercel'
+const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/authentication'
+const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
+const VERCEL_DASHBOARD_URL = 'https://vercel.com/dashboard'
+const DISCORD_URL = 'https://discord.gg/kuest'
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
   {
-    connectionsStep: string;
-    step2Connections: string;
-    step3Deploy: string;
-    githubInfo: string;
-    redirecting: string;
-    connectGitHub: string;
-    oauthSoon: string;
+    connectionsStep: string
+    step2Connections: string
+    step3Deploy: string
+    githubInfo: string
+    redirecting: string
+    connectGitHub: string
+    oauthSoon: string
   }
 > = {
   en: {
-    connectionsStep: "Connections",
-    step2Connections: "Step 2. Connections",
-    step3Deploy: "Step 3. Deploy",
+    connectionsStep: 'Connections',
+    step2Connections: 'Step 2. Connections',
+    step3Deploy: 'Step 3. Deploy',
     githubInfo:
-      "Authorize Kuest on GitHub so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.",
-    redirecting: "Redirecting...",
-    connectGitHub: "Connect GitHub",
-    oauthSoon: "OAuth (soon)",
+      'Authorize Kuest on GitHub so we can create a repository in your GitHub account with a cloned Kuest prediction market. If you already have your own repository, you can enter it manually in Advanced options.',
+    redirecting: 'Redirecting...',
+    connectGitHub: 'Connect GitHub',
+    oauthSoon: 'OAuth (soon)',
   },
   de: {
-    connectionsStep: "Verbindungen",
-    step2Connections: "Schritt 2. Verbindungen",
-    step3Deploy: "Schritt 3. Bereitstellen",
+    connectionsStep: 'Verbindungen',
+    step2Connections: 'Schritt 2. Verbindungen',
+    step3Deploy: 'Schritt 3. Bereitstellen',
     githubInfo:
-      "Autorisiere Kuest auf GitHub, damit wir in deinem GitHub-Konto ein Repository mit einem geklonten Kuest Prediction Market erstellen können. Wenn du bereits ein eigenes Repository hast, kannst du es in den erweiterten Optionen manuell eintragen.",
-    redirecting: "Weiterleitung...",
-    connectGitHub: "GitHub verbinden",
-    oauthSoon: "(bald) OAuth",
+      'Autorisiere Kuest auf GitHub, damit wir in deinem GitHub-Konto ein Repository mit einem geklonten Kuest Prediction Market erstellen können. Wenn du bereits ein eigenes Repository hast, kannst du es in den erweiterten Optionen manuell eintragen.',
+    redirecting: 'Weiterleitung...',
+    connectGitHub: 'GitHub verbinden',
+    oauthSoon: '(bald) OAuth',
   },
   es: {
-    connectionsStep: "Conexiones",
-    step2Connections: "Paso 2. Conexiones",
-    step3Deploy: "Paso 3. Implementar",
+    connectionsStep: 'Conexiones',
+    step2Connections: 'Paso 2. Conexiones',
+    step3Deploy: 'Paso 3. Implementar',
     githubInfo:
-      "Autoriza a Kuest en GitHub para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.",
-    redirecting: "Redirigiendo...",
-    connectGitHub: "Conectar GitHub",
-    oauthSoon: "OAuth (soon)",
+      'Autoriza a Kuest en GitHub para que podamos crear un repositorio en tu cuenta de GitHub con un clon del prediction market de Kuest. Si ya tienes tu propio repositorio, puedes introducirlo manualmente en las opciones avanzadas.',
+    redirecting: 'Redirigiendo...',
+    connectGitHub: 'Conectar GitHub',
+    oauthSoon: 'OAuth (soon)',
   },
   pt: {
-    connectionsStep: "Conexões",
-    step2Connections: "Etapa 2. Conexões",
-    step3Deploy: "Etapa 3. Implantar",
+    connectionsStep: 'Conexões',
+    step2Connections: 'Etapa 2. Conexões',
+    step3Deploy: 'Etapa 3. Implantar',
     githubInfo:
-      "Autorize a Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.",
-    redirecting: "Redirecionando...",
-    connectGitHub: "Conectar GitHub",
-    oauthSoon: "OAuth (soon)",
+      'Autorize a Kuest no GitHub para que possamos criar um repositório na sua conta com um clone do prediction market da Kuest. Se você já tem seu próprio repositório, pode preenchê-lo manualmente em Opções avançadas.',
+    redirecting: 'Redirecionando...',
+    connectGitHub: 'Conectar GitHub',
+    oauthSoon: 'OAuth (soon)',
   },
   fr: {
-    connectionsStep: "Connexions",
-    step2Connections: "Étape 2. Connexions",
-    step3Deploy: "Étape 3. Déployer",
+    connectionsStep: 'Connexions',
+    step2Connections: 'Étape 2. Connexions',
+    step3Deploy: 'Étape 3. Déployer',
     githubInfo:
-      "Autorisez Kuest sur GitHub afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.",
-    redirecting: "Redirection...",
-    connectGitHub: "Connecter GitHub",
-    oauthSoon: "OAuth (soon)",
+      'Autorisez Kuest sur GitHub afin que nous puissions créer un dépôt dans votre compte GitHub avec un clone du prediction market de Kuest. Si vous avez déjà votre propre dépôt, vous pouvez le renseigner manuellement dans les options avancées.',
+    redirecting: 'Redirection...',
+    connectGitHub: 'Connecter GitHub',
+    oauthSoon: 'OAuth (soon)',
   },
   ja: {
-    connectionsStep: "接続",
-    step2Connections: "ステップ 2. 接続",
-    step3Deploy: "ステップ 3. デプロイ",
+    connectionsStep: '接続',
+    step2Connections: 'ステップ 2. 接続',
+    step3Deploy: 'ステップ 3. デプロイ',
     githubInfo:
-      "GitHub で Kuest を承認すると、Kuest の prediction market を複製したリポジトリをあなたの GitHub アカウントに作成できます。すでに自分のリポジトリがある場合は、詳細オプションで手動入力できます。",
-    redirecting: "リダイレクト中...",
-    connectGitHub: "GitHub を接続",
-    oauthSoon: "OAuth (soon)",
+      'GitHub で Kuest を承認すると、Kuest の prediction market を複製したリポジトリをあなたの GitHub アカウントに作成できます。すでに自分のリポジトリがある場合は、詳細オプションで手動入力できます。',
+    redirecting: 'リダイレクト中...',
+    connectGitHub: 'GitHub を接続',
+    oauthSoon: 'OAuth (soon)',
   },
   zh: {
-    connectionsStep: "连接",
-    step2Connections: "第 2 步：连接",
-    step3Deploy: "第 3 步：部署",
+    connectionsStep: '连接',
+    step2Connections: '第 2 步：连接',
+    step3Deploy: '第 3 步：部署',
     githubInfo:
-      "请在 GitHub 上授权 Kuest，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。",
-    redirecting: "正在跳转...",
-    connectGitHub: "连接 GitHub",
-    oauthSoon: "OAuth (soon)",
+      '请在 GitHub 上授权 Kuest，这样我们就能在你的 GitHub 账号中创建一个包含 Kuest prediction market 克隆的仓库。如果你已经有自己的仓库，也可以在高级选项中手动填写。',
+    redirecting: '正在跳转...',
+    connectGitHub: '连接 GitHub',
+    oauthSoon: 'OAuth (soon)',
   },
   ar: {
-    connectionsStep: "الاتصالات",
-    step2Connections: "الخطوة 2. الاتصالات",
-    step3Deploy: "الخطوة 3. النشر",
+    connectionsStep: 'الاتصالات',
+    step2Connections: 'الخطوة 2. الاتصالات',
+    step3Deploy: 'الخطوة 3. النشر',
     githubInfo:
-      "خوّل Kuest على GitHub حتى نتمكن من إنشاء مستودع في حسابك على GitHub يحتوي على نسخة من سوق التوقعات من Kuest. إذا كان لديك مستودعك الخاص بالفعل، يمكنك إدخاله يدويا في الخيارات المتقدمة.",
-    redirecting: "جار التحويل...",
-    connectGitHub: "ربط GitHub",
-    oauthSoon: "OAuth (قريبا)",
+      'خوّل Kuest على GitHub حتى نتمكن من إنشاء مستودع في حسابك على GitHub يحتوي على نسخة من سوق التوقعات من Kuest. إذا كان لديك مستودعك الخاص بالفعل، يمكنك إدخاله يدويا في الخيارات المتقدمة.',
+    redirecting: 'جار التحويل...',
+    connectGitHub: 'ربط GitHub',
+    oauthSoon: 'OAuth (قريبا)',
   },
   ru: {
-    connectionsStep: "Подключения",
-    step2Connections: "Шаг 2. Подключения",
-    step3Deploy: "Шаг 3. Развертывание",
+    connectionsStep: 'Подключения',
+    step2Connections: 'Шаг 2. Подключения',
+    step3Deploy: 'Шаг 3. Развертывание',
     githubInfo:
-      "Авторизуйте Kuest на GitHub, чтобы мы могли создать репозиторий в вашем аккаунте GitHub с клоном prediction market от Kuest. Если у вас уже есть собственный репозиторий, вы можете ввести его вручную в дополнительных настройках.",
-    redirecting: "Перенаправление...",
-    connectGitHub: "Подключить GitHub",
-    oauthSoon: "OAuth (скоро)",
+      'Авторизуйте Kuest на GitHub, чтобы мы могли создать репозиторий в вашем аккаунте GitHub с клоном prediction market от Kuest. Если у вас уже есть собственный репозиторий, вы можете ввести его вручную в дополнительных настройках.',
+    redirecting: 'Перенаправление...',
+    connectGitHub: 'Подключить GitHub',
+    oauthSoon: 'OAuth (скоро)',
   },
   it: {
-    connectionsStep: "Connessioni",
-    step2Connections: "Passaggio 2. Connessioni",
-    step3Deploy: "Passaggio 3. Distribuisci",
+    connectionsStep: 'Connessioni',
+    step2Connections: 'Passaggio 2. Connessioni',
+    step3Deploy: 'Passaggio 3. Distribuisci',
     githubInfo:
-      "Autorizza Kuest su GitHub così possiamo creare nel tuo account GitHub un repository con un clone del prediction market di Kuest. Se hai già un tuo repository, puoi inserirlo manualmente nelle opzioni avanzate.",
-    redirecting: "Reindirizzamento...",
-    connectGitHub: "Collega GitHub",
-    oauthSoon: "OAuth (presto)",
+      'Autorizza Kuest su GitHub così possiamo creare nel tuo account GitHub un repository con un clone del prediction market di Kuest. Se hai già un tuo repository, puoi inserirlo manualmente nelle opzioni avanzate.',
+    redirecting: 'Reindirizzamento...',
+    connectGitHub: 'Collega GitHub',
+    oauthSoon: 'OAuth (presto)',
   },
   pl: {
-    connectionsStep: "Połączenia",
-    step2Connections: "Krok 2. Połączenia",
-    step3Deploy: "Krok 3. Wdrożenie",
+    connectionsStep: 'Połączenia',
+    step2Connections: 'Krok 2. Połączenia',
+    step3Deploy: 'Krok 3. Wdrożenie',
     githubInfo:
-      "Autoryzuj Kuest na GitHubie, abyśmy mogli utworzyć w Twoim koncie repozytorium ze sklonowanym prediction marketem Kuest. Jeśli masz już własne repozytorium, możesz wpisać je ręcznie w opcjach zaawansowanych.",
-    redirecting: "Przekierowywanie...",
-    connectGitHub: "Połącz GitHub",
-    oauthSoon: "OAuth (wkrótce)",
+      'Autoryzuj Kuest na GitHubie, abyśmy mogli utworzyć w Twoim koncie repozytorium ze sklonowanym prediction marketem Kuest. Jeśli masz już własne repozytorium, możesz wpisać je ręcznie w opcjach zaawansowanych.',
+    redirecting: 'Przekierowywanie...',
+    connectGitHub: 'Połącz GitHub',
+    oauthSoon: 'OAuth (wkrótce)',
   },
-};
+}
 
 function createDefaultForm(runtimeConfig: PublicRuntimeConfig): FormState {
   return {
-    vercelAccessToken: "",
-    brandName: "",
-    projectSlugOverride: "",
-    gitRepo: "",
-    gitBranch: "main",
+    vercelAccessToken: '',
+    brandName: '',
+    projectSlugOverride: '',
+    gitRepo: '',
+    gitBranch: 'main',
     vercelTeamId: runtimeConfig.DEFAULT_VERCEL_TEAM_ID,
     supabaseRegion: runtimeConfig.DEFAULT_SUPABASE_REGION,
     supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-    contactEmail: "",
+    contactEmail: '',
     env: {
-      KUEST_ADDRESS: "",
-      KUEST_API_KEY: "",
-      KUEST_API_SECRET: "",
-      KUEST_PASSPHRASE: "",
-      ADMIN_WALLETS: "",
-      REOWN_APPKIT_PROJECT_ID: "",
-      BETTER_AUTH_SECRET: "",
-      CRON_SECRET: "",
-      SITE_URL: "",
+      KUEST_ADDRESS: '',
+      KUEST_API_KEY: '',
+      KUEST_API_SECRET: '',
+      KUEST_PASSPHRASE: '',
+      ADMIN_WALLETS: '',
+      REOWN_APPKIT_PROJECT_ID: '',
+      BETTER_AUTH_SECRET: '',
+      CRON_SECRET: '',
+      SITE_URL: '',
     },
-    extraEnvText: "",
-  };
+    extraEnvText: '',
+  }
 }
 
 function slugify(input: string) {
   const slug = input
     .toLowerCase()
-    .replace(/[^a-z0-9-]/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return (slug || "kuest-market").slice(0, 96);
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return (slug || 'kuest-market').slice(0, 96)
 }
 
 function randomString(length: number) {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789-_!@#%*";
-  const bytes = new Uint32Array(length);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes, (value) => alphabet[value % alphabet.length]).join("");
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789-_!@#%*'
+  const bytes = new Uint32Array(length)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, (value) => alphabet[value % alphabet.length]).join('')
 }
 
 function parseExtraEnv(extraEnvText: string) {
-  const env: Record<string, string> = {};
+  const env: Record<string, string> = {}
   const lines = extraEnvText
-    .split("\n")
+    .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
-    .filter((line) => !line.startsWith("#"));
+    .filter((line) => !line.startsWith('#'))
 
   for (const line of lines) {
-    const separator = line.indexOf("=");
+    const separator = line.indexOf('=')
     if (separator <= 0) {
-      continue;
+      continue
     }
-    const key = line.slice(0, separator).trim();
-    const value = line.slice(separator + 1).trim();
+    const key = line.slice(0, separator).trim()
+    const value = line.slice(separator + 1).trim()
     if (key) {
-      env[key] = value;
+      env[key] = value
     }
   }
 
-  return env;
+  return env
 }
 
 function toPersistableFormState(form: FormState, githubState: GitHubConnectState) {
@@ -342,44 +342,44 @@ function toPersistableFormState(form: FormState, githubState: GitHubConnectState
     },
     githubRepoUrl: githubState.repoUrl,
     githubSyncEnabled: githubState.syncEnabled,
-  };
+  }
 }
 
 function shortAddress(address?: string) {
   if (!address) {
-    return "";
+    return ''
   }
   if (address.length <= 10) {
-    return address;
+    return address
   }
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
 
 function maskToken(value: string) {
-  const token = value.trim();
+  const token = value.trim()
   if (!token) {
-    return "";
+    return ''
   }
   if (token.length <= 10) {
-    return "••••••••";
+    return '••••••••'
   }
-  return `${token.slice(0, 4)}...${token.slice(-4)}`;
+  return `${token.slice(0, 4)}...${token.slice(-4)}`
 }
 
 function mapTimeline(status: TimelineStatus, index: number, runningIndex: number) {
-  if (status === "error") {
-    return status;
+  if (status === 'error') {
+    return status
   }
-  if (status === "done") {
-    return status;
+  if (status === 'done') {
+    return status
   }
   if (index < runningIndex) {
-    return "done";
+    return 'done'
   }
   if (index === runningIndex) {
-    return "running";
+    return 'running'
   }
-  return "idle";
+  return 'idle'
 }
 
 function LogList({ locale, logs }: { locale: SupportedLocale; logs: LaunchLogEntry[] }) {
@@ -394,14 +394,14 @@ function LogList({ locale, logs }: { locale: SupportedLocale; logs: LaunchLogEnt
             {new Date(entry.at).toLocaleString(locale)}
           </div>
           <div className="launch-log-head text-sm font-semibold text-foreground">
-            [{entry.step}]{" "}
+            [{entry.step}]{' '}
             <span
               className={
-                entry.level === "error"
-                  ? "text-destructive"
-                  : entry.level === "warning"
-                    ? "text-primary/90"
-                    : "text-primary"
+                entry.level === 'error'
+                  ? 'text-destructive'
+                  : entry.level === 'warning'
+                    ? 'text-primary/90'
+                    : 'text-primary'
               }
             >
               {entry.level.toUpperCase()}
@@ -411,7 +411,7 @@ function LogList({ locale, logs }: { locale: SupportedLocale; logs: LaunchLogEnt
         </li>
       ))}
     </ul>
-  );
+  )
 }
 
 function InfoTip({ text }: { text: string }) {
@@ -422,7 +422,7 @@ function InfoTip({ text }: { text: string }) {
       </button>
       <span className="launch-info-tip-bubble">{text}</span>
     </span>
-  );
+  )
 }
 
 function ConnectionCardTitle({
@@ -431,10 +431,10 @@ function ConnectionCardTitle({
   title,
   infoText,
 }: {
-  iconSrc: string;
-  iconAlt: string;
-  title: string;
-  infoText: string;
+  iconSrc: string
+  iconAlt: string
+  title: string
+  infoText: string
 }) {
   return (
     <div className="flex items-center gap-2">
@@ -444,7 +444,7 @@ function ConnectionCardTitle({
       <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       <InfoTip text={infoText} />
     </div>
-  );
+  )
 }
 
 function ActionPrompt({
@@ -455,10 +455,10 @@ function ActionPrompt({
   allowClose = false,
   onClose,
 }: ActionPromptProps) {
-  const t = useExtracted();
+  const t = useExtracted()
 
   if (!open) {
-    return null;
+    return null
   }
 
   return (
@@ -482,7 +482,7 @@ function ActionPrompt({
               absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition
               hover:bg-muted/60 hover:text-foreground
             "
-            aria-label={t("Close waiting modal")}
+            aria-label={t('Close waiting modal')}
           >
             <XIcon className="size-4" />
           </button>
@@ -520,42 +520,42 @@ function ActionPrompt({
         "
         >
           <Loader2Icon className="size-4 animate-spin text-primary" />
-          <span>{t("Waiting for wallet approval...")}</span>
+          <span>{t('Waiting for wallet approval...')}</span>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function ActionPromptWalletIcon({
-  className = "size-16",
+  className = 'size-16',
   rounded = true,
-  fit = "cover",
+  fit = 'cover',
 }: ActionPromptWalletIconProps) {
-  const t = useExtracted();
-  const { walletInfo } = useWalletInfo();
-  const [failedIconUrl, setFailedIconUrl] = useState<string | null>(null);
-  const walletName = typeof walletInfo?.name === "string" ? walletInfo.name : undefined;
-  const walletIconUrl = typeof walletInfo?.icon === "string" ? walletInfo.icon.trim() : "";
+  const t = useExtracted()
+  const { walletInfo } = useWalletInfo()
+  const [failedIconUrl, setFailedIconUrl] = useState<string | null>(null)
+  const walletName = typeof walletInfo?.name === 'string' ? walletInfo.name : undefined
+  const walletIconUrl = typeof walletInfo?.icon === 'string' ? walletInfo.icon.trim() : ''
 
   if (!walletIconUrl || failedIconUrl === walletIconUrl) {
-    return <WalletIcon className={`${className} text-primary`} strokeWidth={1.7} />;
+    return <WalletIcon className={`${className} text-primary`} strokeWidth={1.7} />
   }
 
   return (
     <Image
       key={walletIconUrl}
       src={walletIconUrl}
-      alt={walletName ? t("{walletName} wallet icon", { walletName }) : t("Connected wallet icon")}
+      alt={walletName ? t('{walletName} wallet icon', { walletName }) : t('Connected wallet icon')}
       width={64}
       height={64}
       unoptimized
-      className={`${className} ${rounded ? "rounded-2xl" : ""} ${
-        fit === "contain" ? "object-contain" : "object-cover"
+      className={`${className} ${rounded ? 'rounded-2xl' : ''} ${
+        fit === 'contain' ? 'object-contain' : 'object-cover'
       }`}
       onError={() => setFailedIconUrl(walletIconUrl)}
     />
-  );
+  )
 }
 
 function StepFooterBrand() {
@@ -564,52 +564,52 @@ function StepFooterBrand() {
       <span className="launch-footer-brand-logo" />
       <span className="launch-footer-brand-text">{FOOTER_BRAND_NAME}</span>
     </span>
-  );
+  )
 }
 
 function StepFooterLanguageControl() {
-  const t = useExtracted();
-  const locale = useLocale();
-  const [open, setOpen] = useState(false);
-  const controlRef = useRef<HTMLDivElement | null>(null);
+  const t = useExtracted()
+  const locale = useLocale()
+  const [open, setOpen] = useState(false)
+  const controlRef = useRef<HTMLDivElement | null>(null)
   const currentLocaleOption =
-    LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0];
+    LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0]
 
   useEffect(() => {
     if (!open) {
-      return;
+      return
     }
 
     function handlePointerDown(event: MouseEvent | TouchEvent) {
       if (!controlRef.current?.contains(event.target as Node)) {
-        setOpen(false);
+        setOpen(false)
       }
     }
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setOpen(false);
+      if (event.key === 'Escape') {
+        setOpen(false)
       }
     }
 
-    document.addEventListener("mousedown", handlePointerDown);
-    document.addEventListener("touchstart", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('mousedown', handlePointerDown)
+    document.addEventListener('touchstart', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
 
     return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      document.removeEventListener("touchstart", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open]);
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('touchstart', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [open])
 
   return (
     <div className="launch-step-footer-language">
-      <div ref={controlRef} className="launch-language-control" data-open={open ? "true" : "false"}>
+      <div ref={controlRef} className="launch-language-control" data-open={open ? 'true' : 'false'}>
         <button
           type="button"
           className="launch-language-trigger"
-          aria-label={t("Change launch app language")}
+          aria-label={t('Change launch app language')}
           aria-haspopup="listbox"
           aria-expanded={open}
           onClick={() => setOpen((previous) => !previous)}
@@ -632,18 +632,18 @@ function StepFooterLanguageControl() {
         <div
           className="launch-language-menu"
           role="listbox"
-          aria-label={t("Change launch app language")}
+          aria-label={t('Change launch app language')}
         >
           {LANGUAGE_OPTIONS.map((option) => {
-            const isSelected = option.code === locale;
+            const isSelected = option.code === locale
 
             return (
               <a
                 key={option.code}
                 role="option"
                 aria-selected={isSelected}
-                className={`launch-language-option ${isSelected ? "is-selected" : ""}`}
-                href={getPathname({ href: "/launch", locale: option.code })}
+                className={`launch-language-option ${isSelected ? 'is-selected' : ''}`}
+                href={getPathname({ href: '/launch', locale: option.code })}
                 onClick={() => setOpen(false)}
               >
                 <span className="launch-language-option-row">
@@ -658,116 +658,114 @@ function StepFooterLanguageControl() {
                   <span>{option.label}</span>
                 </span>
               </a>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function LaunchpadForm({
   locale,
   runtimeConfig,
 }: {
-  locale: SupportedLocale;
-  runtimeConfig: PublicRuntimeConfig;
+  locale: SupportedLocale
+  runtimeConfig: PublicRuntimeConfig
 }) {
-  const t = useExtracted();
-  const copy = LAUNCHPAD_COPY[locale];
-  const account = useAccount();
-  const { disconnect, status: disconnectStatus } = useDisconnect();
-  const { switchChainAsync: switchChain } = useSwitchChain();
-  const { signTypedDataAsync } = useSignTypedData();
-  const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit();
+  const t = useExtracted()
+  const copy = LAUNCHPAD_COPY[locale]
+  const account = useAccount()
+  const { disconnect, status: disconnectStatus } = useDisconnect()
+  const { switchChainAsync: switchChain } = useSwitchChain()
+  const { signTypedDataAsync } = useSignTypedData()
+  const { open: openAppKit, isReady: isAppKitReady, error: appKitError } = useAppKit()
 
-  const [form, setForm] = useState<FormState>(() => createDefaultForm(runtimeConfig));
-  const ALLOW_VERCEL_TOKEN_FALLBACK = runtimeConfig.VERCEL_ALLOW_TOKEN_FALLBACK;
-  const GITHUB_APP_URL = runtimeConfig.GITHUB_APP_URL.trim();
-  const REQUIRED_CHAIN_ID = getRequiredChainId(runtimeConfig);
-  const REQUIRED_CHAIN_LABEL = getRequiredChainLabel(runtimeConfig);
-  const [activeStep, setActiveStep] = useState<LaunchStep>(1);
-  const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false);
-  const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false);
+  const [form, setForm] = useState<FormState>(() => createDefaultForm(runtimeConfig))
+  const ALLOW_VERCEL_TOKEN_FALLBACK = runtimeConfig.VERCEL_ALLOW_TOKEN_FALLBACK
+  const GITHUB_APP_URL = runtimeConfig.GITHUB_APP_URL.trim()
+  const REQUIRED_CHAIN_ID = getRequiredChainId(runtimeConfig)
+  const REQUIRED_CHAIN_LABEL = getRequiredChainLabel(runtimeConfig)
+  const [activeStep, setActiveStep] = useState<LaunchStep>(1)
+  const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false)
+  const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false)
   const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(
     DEFAULT_VERCEL_AUTH_METHOD,
-  );
-  const [githubRepoUrl, setGithubRepoUrl] = useState("");
-  const [githubSyncEnabled, setGithubSyncEnabled] = useState(false);
-  const [githubError, setGithubError] = useState<string | null>(null);
-  const [isRedirectingToGitHub, setIsRedirectingToGitHub] = useState(false);
-  const [oauthStatus, setOauthStatus] = useState<OAuthStatusResponse | null>(null);
-  const [oauthStatusLoading, setOauthStatusLoading] = useState(false);
-  const [oauthStatusError, setOauthStatusError] = useState<string | null>(null);
+  )
+  const [githubRepoUrl, setGithubRepoUrl] = useState('')
+  const [githubSyncEnabled, setGithubSyncEnabled] = useState(false)
+  const [githubError, setGithubError] = useState<string | null>(null)
+  const [isRedirectingToGitHub, setIsRedirectingToGitHub] = useState(false)
+  const [oauthStatus, setOauthStatus] = useState<OAuthStatusResponse | null>(null)
+  const [oauthStatusLoading, setOauthStatusLoading] = useState(false)
+  const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
   const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(
     null,
-  );
-  const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null);
-  const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false);
-  const [vercelGitHubConnectClicks, setVercelGitHubConnectClicks] = useState(0);
-  const [vercelGitHubRefreshClicks, setVercelGitHubRefreshClicks] = useState(0);
-  const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false);
-  const [reownConnection, setReownConnection] = useState<ReownConnectionStatusResponse | null>(
-    null,
-  );
-  const [reownConnectionError, setReownConnectionError] = useState<string | null>(null);
-  const [reownConnectionLoading, setReownConnectionLoading] = useState(false);
+  )
+  const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
+  const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
+  const [vercelGitHubConnectClicks, setVercelGitHubConnectClicks] = useState(0)
+  const [vercelGitHubRefreshClicks, setVercelGitHubRefreshClicks] = useState(0)
+  const [awaitingVercelGitHubConnection, setAwaitingVercelGitHubConnection] = useState(false)
+  const [reownConnection, setReownConnection] = useState<ReownConnectionStatusResponse | null>(null)
+  const [reownConnectionError, setReownConnectionError] = useState<string | null>(null)
+  const [reownConnectionLoading, setReownConnectionLoading] = useState(false)
 
-  const [walletActionLoading, setWalletActionLoading] = useState(false);
-  const [walletInfo, setWalletInfo] = useState<string | null>(null);
-  const [walletError, setWalletError] = useState<string | null>(null);
-  const [connectPromptOpen, setConnectPromptOpen] = useState(false);
-  const [signPromptOpen, setSignPromptOpen] = useState(false);
-  const [autoSignAfterConnect, setAutoSignAfterConnect] = useState(false);
+  const [walletActionLoading, setWalletActionLoading] = useState(false)
+  const [walletInfo, setWalletInfo] = useState<string | null>(null)
+  const [walletError, setWalletError] = useState<string | null>(null)
+  const [connectPromptOpen, setConnectPromptOpen] = useState(false)
+  const [signPromptOpen, setSignPromptOpen] = useState(false)
+  const [autoSignAfterConnect, setAutoSignAfterConnect] = useState(false)
 
-  const [supabaseResources, setSupabaseResources] = useState<SupabaseResourceOption[]>([]);
-  const [isLoadingSupabaseResources, setIsLoadingSupabaseResources] = useState(false);
-  const [supabaseResourcesError, setSupabaseResourcesError] = useState<string | null>(null);
+  const [supabaseResources, setSupabaseResources] = useState<SupabaseResourceOption[]>([])
+  const [isLoadingSupabaseResources, setIsLoadingSupabaseResources] = useState(false)
+  const [supabaseResourcesError, setSupabaseResourcesError] = useState<string | null>(null)
 
-  const [isLaunching, setIsLaunching] = useState(false);
-  const [result, setResult] = useState<LaunchResponseBody | null>(null);
-  const [requestError, setRequestError] = useState<string | null>(null);
-  const [customDomain, setCustomDomain] = useState("");
-  const [domainActionLoading, setDomainActionLoading] = useState<"add" | "verify" | null>(null);
-  const [domainActionError, setDomainActionError] = useState<string | null>(null);
-  const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null);
+  const [isLaunching, setIsLaunching] = useState(false)
+  const [result, setResult] = useState<LaunchResponseBody | null>(null)
+  const [requestError, setRequestError] = useState<string | null>(null)
+  const [customDomain, setCustomDomain] = useState('')
+  const [domainActionLoading, setDomainActionLoading] = useState<'add' | 'verify' | null>(null)
+  const [domainActionError, setDomainActionError] = useState<string | null>(null)
+  const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null)
 
   const TIMELINE = useMemo(
     () => [
       {
-        id: "validation",
-        label: t("Validate launch setting"),
+        id: 'validation',
+        label: t('Validate launch setting'),
       },
       {
-        id: "vercel",
-        label: t("Prepare or reuse Vercel project"),
+        id: 'vercel',
+        label: t('Prepare or reuse Vercel project'),
       },
       {
-        id: "database",
-        label: t("Attach Supabase database"),
+        id: 'database',
+        label: t('Attach Supabase database'),
       },
       {
-        id: "deploy",
-        label: t("Trigger deployment"),
+        id: 'deploy',
+        label: t('Trigger deployment'),
       },
     ],
     [t],
-  );
+  )
 
   const [timeline, setTimeline] = useState<TimelineEntry[]>(
     TIMELINE.map((item) => ({
       id: item.id,
       label: item.label,
-      status: "idle",
+      status: 'idle',
     })),
-  );
+  )
 
-  const timelineIntervalRef = useRef<number | null>(null);
-  const timelineIndexRef = useRef(0);
-  const latestReownProjectIdRef = useRef("");
+  const timelineIntervalRef = useRef<number | null>(null)
+  const timelineIndexRef = useRef(0)
+  const latestReownProjectIdRef = useRef('')
   const handleConnectOrSignRef = useRef<
     ((_options?: { autoProgress?: boolean }) => Promise<void>) | null
-  >(null);
+  >(null)
 
   useEffect(() => {
     // @ts-expect-error ignore
@@ -776,234 +774,234 @@ export default function LaunchpadForm({
         ...entry,
         label: TIMELINE.find((item) => item.id === entry.id)?.label,
       })),
-    );
-  }, [TIMELINE]);
+    )
+  }, [TIMELINE])
 
-  const isConnected = account.status === "connected" && Boolean(account.address);
+  const isConnected = account.status === 'connected' && Boolean(account.address)
   const onRequiredChain =
-    isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false;
+    isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false
 
   const step1Complete =
     Boolean(form.env.KUEST_ADDRESS) &&
     Boolean(form.env.KUEST_API_KEY) &&
     Boolean(form.env.KUEST_API_SECRET) &&
-    Boolean(form.env.KUEST_PASSPHRASE);
-  const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected);
+    Boolean(form.env.KUEST_PASSPHRASE)
+  const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected)
   const vercelOauthIdentity =
-    oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || "";
-  const vercelConnectionReady = Boolean(vercelConnection?.connected);
-  const vercelConnectionIdentity = vercelConnection?.identity?.trim() || "";
-  const vercelGitImportReady = Boolean(vercelConnection?.githubImportReady);
-  const reownConnectionReady = Boolean(reownConnection?.valid);
+    oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
+  const vercelConnectionReady = Boolean(vercelConnection?.connected)
+  const vercelConnectionIdentity = vercelConnection?.identity?.trim() || ''
+  const vercelGitImportReady = Boolean(vercelConnection?.githubImportReady)
+  const reownConnectionReady = Boolean(reownConnection?.valid)
 
   const resolvedProjectSlug = useMemo(() => {
     if (form.projectSlugOverride.trim()) {
-      return slugify(form.projectSlugOverride);
+      return slugify(form.projectSlugOverride)
     }
-    return slugify(form.brandName);
-  }, [form.projectSlugOverride, form.brandName]);
+    return slugify(form.brandName)
+  }, [form.projectSlugOverride, form.brandName])
 
   const computedSiteUrl = useMemo(() => {
-    const siteUrlOverride = normalizeSiteUrl(form.env.SITE_URL);
+    const siteUrlOverride = normalizeSiteUrl(form.env.SITE_URL)
     if (siteUrlOverride) {
-      return siteUrlOverride;
+      return siteUrlOverride
     }
-    return normalizeSiteUrl(`https://${resolvedProjectSlug}.vercel.app`);
-  }, [resolvedProjectSlug, form.env.SITE_URL]);
+    return normalizeSiteUrl(`https://${resolvedProjectSlug}.vercel.app`)
+  }, [resolvedProjectSlug, form.env.SITE_URL])
 
   useEffect(() => {
     return () => {
       if (timelineIntervalRef.current) {
-        window.clearInterval(timelineIntervalRef.current);
+        window.clearInterval(timelineIntervalRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   useEffect(() => {
     try {
       const raw =
         window.sessionStorage.getItem(FORM_SESSION_STORAGE_KEY) ||
-        window.sessionStorage.getItem(LEGACY_FORM_SESSION_STORAGE_KEY);
-      window.sessionStorage.removeItem(LEGACY_FORM_SESSION_STORAGE_KEY);
+        window.sessionStorage.getItem(LEGACY_FORM_SESSION_STORAGE_KEY)
+      window.sessionStorage.removeItem(LEGACY_FORM_SESSION_STORAGE_KEY)
       if (!raw) {
-        return;
+        return
       }
-      const parsed = JSON.parse(raw) as Partial<ReturnType<typeof toPersistableFormState>>;
-      if (!parsed || typeof parsed !== "object") {
-        return;
+      const parsed = JSON.parse(raw) as Partial<ReturnType<typeof toPersistableFormState>>
+      if (!parsed || typeof parsed !== 'object') {
+        return
       }
 
       setForm((previous) => ({
         ...previous,
-        brandName: typeof parsed.brandName === "string" ? parsed.brandName : previous.brandName,
+        brandName: typeof parsed.brandName === 'string' ? parsed.brandName : previous.brandName,
         projectSlugOverride:
-          typeof parsed.projectSlugOverride === "string"
+          typeof parsed.projectSlugOverride === 'string'
             ? parsed.projectSlugOverride
             : previous.projectSlugOverride,
-        gitRepo: typeof parsed.gitRepo === "string" ? parsed.gitRepo : previous.gitRepo,
-        gitBranch: typeof parsed.gitBranch === "string" ? parsed.gitBranch : previous.gitBranch,
+        gitRepo: typeof parsed.gitRepo === 'string' ? parsed.gitRepo : previous.gitRepo,
+        gitBranch: typeof parsed.gitBranch === 'string' ? parsed.gitBranch : previous.gitBranch,
         vercelTeamId:
-          typeof parsed.vercelTeamId === "string" ? parsed.vercelTeamId : previous.vercelTeamId,
+          typeof parsed.vercelTeamId === 'string' ? parsed.vercelTeamId : previous.vercelTeamId,
         supabaseRegion:
-          typeof parsed.supabaseRegion === "string"
+          typeof parsed.supabaseRegion === 'string'
             ? parsed.supabaseRegion
             : previous.supabaseRegion,
         supabaseResourceId:
-          typeof parsed.supabaseResourceId === "string"
+          typeof parsed.supabaseResourceId === 'string'
             ? parsed.supabaseResourceId
             : previous.supabaseResourceId,
         contactEmail:
-          typeof parsed.contactEmail === "string" ? parsed.contactEmail : previous.contactEmail,
+          typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
         env: {
           ...previous.env,
           KUEST_ADDRESS:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.KUEST_ADDRESS === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.KUEST_ADDRESS === 'string'
               ? parsed.env.KUEST_ADDRESS
               : previous.env.KUEST_ADDRESS,
           KUEST_API_KEY:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.KUEST_API_KEY === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.KUEST_API_KEY === 'string'
               ? parsed.env.KUEST_API_KEY
               : previous.env.KUEST_API_KEY,
           KUEST_API_SECRET:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.KUEST_API_SECRET === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.KUEST_API_SECRET === 'string'
               ? parsed.env.KUEST_API_SECRET
               : previous.env.KUEST_API_SECRET,
           KUEST_PASSPHRASE:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.KUEST_PASSPHRASE === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.KUEST_PASSPHRASE === 'string'
               ? parsed.env.KUEST_PASSPHRASE
               : previous.env.KUEST_PASSPHRASE,
           ADMIN_WALLETS:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.ADMIN_WALLETS === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.ADMIN_WALLETS === 'string'
               ? parsed.env.ADMIN_WALLETS
               : previous.env.ADMIN_WALLETS,
           REOWN_APPKIT_PROJECT_ID:
             parsed.env &&
-            typeof parsed.env === "object" &&
-            typeof parsed.env.REOWN_APPKIT_PROJECT_ID === "string"
+            typeof parsed.env === 'object' &&
+            typeof parsed.env.REOWN_APPKIT_PROJECT_ID === 'string'
               ? parsed.env.REOWN_APPKIT_PROJECT_ID
               : previous.env.REOWN_APPKIT_PROJECT_ID,
           SITE_URL:
-            parsed.env && typeof parsed.env === "object" && typeof parsed.env.SITE_URL === "string"
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.SITE_URL === 'string'
               ? normalizeSiteUrl(parsed.env.SITE_URL)
               : previous.env.SITE_URL,
         },
-      }));
-      setGithubRepoUrl(typeof parsed.githubRepoUrl === "string" ? parsed.githubRepoUrl : "");
-      setGithubSyncEnabled(parsed.githubSyncEnabled === true);
+      }))
+      setGithubRepoUrl(typeof parsed.githubRepoUrl === 'string' ? parsed.githubRepoUrl : '')
+      setGithubSyncEnabled(parsed.githubSyncEnabled === true)
     } catch {
       // keep defaults
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     try {
       const persistable = toPersistableFormState(form, {
         repoUrl: githubRepoUrl,
         syncEnabled: githubSyncEnabled,
-      });
-      window.sessionStorage.setItem(FORM_SESSION_STORAGE_KEY, JSON.stringify(persistable));
+      })
+      window.sessionStorage.setItem(FORM_SESSION_STORAGE_KEY, JSON.stringify(persistable))
     } catch {
       // ignore storage errors
     }
-  }, [form, githubRepoUrl, githubSyncEnabled]);
+  }, [form, githubRepoUrl, githubSyncEnabled])
 
   useEffect(() => {
     if (isConnected) {
-      setConnectPromptOpen(false);
+      setConnectPromptOpen(false)
     }
-  }, [isConnected]);
+  }, [isConnected])
 
   const refreshOAuthStatus = useCallback(async () => {
-    setOauthStatusLoading(true);
+    setOauthStatusLoading(true)
     try {
-      const response = await fetch("/api/oauth/status", {
-        cache: "no-store",
-      });
-      const json = (await response.json()) as OAuthStatusResponse;
-      setOauthStatus(json);
+      const response = await fetch('/api/oauth/status', {
+        cache: 'no-store',
+      })
+      const json = (await response.json()) as OAuthStatusResponse
+      setOauthStatus(json)
       if (response.ok) {
-        setOauthStatusError(null);
+        setOauthStatusError(null)
       }
     } catch (error) {
       setOauthStatusError(
-        error instanceof Error ? error.message : t("Unable to check OAuth connection status."),
-      );
+        error instanceof Error ? error.message : t('Unable to check OAuth connection status.'),
+      )
     } finally {
-      setOauthStatusLoading(false);
+      setOauthStatusLoading(false)
     }
-  }, [t]);
+  }, [t])
 
   const refreshVercelConnection = useCallback(
     async (options?: { silent?: boolean }) => {
-      const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : "";
-      const requiresToken = vercelAuthMethod === "token";
-      const requiresOAuth = vercelAuthMethod === "oauth";
+      const token = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : ''
+      const requiresToken = vercelAuthMethod === 'token'
+      const requiresOAuth = vercelAuthMethod === 'oauth'
 
       if (requiresToken && !token) {
-        setVercelConnection(null);
-        setVercelConnectionLoading(false);
+        setVercelConnection(null)
+        setVercelConnectionLoading(false)
         setVercelConnectionError(
-          options?.silent ? null : t("Paste your Vercel Access Token first."),
-        );
-        return;
+          options?.silent ? null : t('Paste your Vercel Access Token first.'),
+        )
+        return
       }
 
       if (requiresOAuth && !vercelOauthConnected) {
-        setVercelConnection(null);
-        setVercelConnectionLoading(false);
-        setVercelConnectionError(options?.silent ? null : t("Connect Vercel first."));
-        return;
+        setVercelConnection(null)
+        setVercelConnectionLoading(false)
+        setVercelConnectionError(options?.silent ? null : t('Connect Vercel first.'))
+        return
       }
 
       if (!options?.silent) {
-        setVercelConnectionError(null);
+        setVercelConnectionError(null)
       }
 
-      setVercelConnectionLoading(true);
+      setVercelConnectionLoading(true)
 
       try {
-        const response = await fetch("/api/vercel/connection", {
-          method: "POST",
+        const response = await fetch('/api/vercel/connection', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             token: token || undefined,
             gitRepo: form.gitRepo.trim() || undefined,
             teamId: form.vercelTeamId.trim() || undefined,
           }),
-        });
+        })
 
-        const json = (await response.json()) as VercelConnectionStatusResponse;
+        const json = (await response.json()) as VercelConnectionStatusResponse
         if (!response.ok || !json.connected) {
-          setVercelConnection(null);
+          setVercelConnection(null)
           setVercelConnectionError(
-            json.error ?? t("We could not verify this Vercel connection. Check it and try again."),
-          );
-          return;
+            json.error ?? t('We could not verify this Vercel connection. Check it and try again.'),
+          )
+          return
         }
 
-        setVercelConnection(json);
-        setVercelConnectionError(null);
+        setVercelConnection(json)
+        setVercelConnectionError(null)
       } catch (error) {
-        setVercelConnection(null);
+        setVercelConnection(null)
         setVercelConnectionError(
           error instanceof Error
             ? error.message
-            : t("We could not verify this Vercel connection. Check it and try again."),
-        );
+            : t('We could not verify this Vercel connection. Check it and try again.'),
+        )
       } finally {
-        setVercelConnectionLoading(false);
+        setVercelConnectionLoading(false)
       }
     },
     [
@@ -1014,312 +1012,312 @@ export default function LaunchpadForm({
       vercelAuthMethod,
       vercelOauthConnected,
     ],
-  );
+  )
 
   const refreshReownConnection = useCallback(async (projectId: string) => {
-    const normalizedProjectId = projectId.trim();
-    latestReownProjectIdRef.current = normalizedProjectId;
+    const normalizedProjectId = projectId.trim()
+    latestReownProjectIdRef.current = normalizedProjectId
 
     if (!normalizedProjectId) {
-      setReownConnection(null);
-      setReownConnectionError(null);
-      setReownConnectionLoading(false);
-      return;
+      setReownConnection(null)
+      setReownConnectionError(null)
+      setReownConnectionLoading(false)
+      return
     }
 
-    setReownConnectionLoading(true);
+    setReownConnectionLoading(true)
 
     try {
-      const response = await fetch("/api/reown/connection", {
-        method: "POST",
+      const response = await fetch('/api/reown/connection', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           projectId: normalizedProjectId,
         }),
-      });
+      })
 
-      const json = (await response.json()) as ReownConnectionStatusResponse;
+      const json = (await response.json()) as ReownConnectionStatusResponse
       if (latestReownProjectIdRef.current !== normalizedProjectId) {
-        return;
+        return
       }
 
       if (!response.ok || !json.valid) {
-        setReownConnection(null);
+        setReownConnection(null)
         setReownConnectionError(
-          json.error ?? "We could not verify this Reown Project ID. Check it and try again.",
-        );
-        return;
+          json.error ?? 'We could not verify this Reown Project ID. Check it and try again.',
+        )
+        return
       }
 
-      setReownConnection(json);
-      setReownConnectionError(null);
+      setReownConnection(json)
+      setReownConnectionError(null)
     } catch (error) {
       if (latestReownProjectIdRef.current !== normalizedProjectId) {
-        return;
+        return
       }
 
-      setReownConnection(null);
+      setReownConnection(null)
       setReownConnectionError(
         error instanceof Error
           ? error.message
-          : "We could not verify this Reown Project ID. Check it and try again.",
-      );
+          : 'We could not verify this Reown Project ID. Check it and try again.',
+      )
     } finally {
       if (latestReownProjectIdRef.current === normalizedProjectId) {
-        setReownConnectionLoading(false);
+        setReownConnectionLoading(false)
       }
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    void refreshOAuthStatus();
-  }, [refreshOAuthStatus]);
+    void refreshOAuthStatus()
+  }, [refreshOAuthStatus])
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
+    if (typeof window === 'undefined') {
+      return
     }
 
-    const url = new URL(window.location.href);
-    const oauthResult = url.searchParams.get("oauth");
-    const oauthError = url.searchParams.get("oauth_error");
+    const url = new URL(window.location.href)
+    const oauthResult = url.searchParams.get('oauth')
+    const oauthError = url.searchParams.get('oauth_error')
 
     if (!oauthResult && !oauthError) {
-      return;
+      return
     }
 
-    if (oauthResult === "vercel_connected") {
-      setVercelAuthMethod("token");
-      setOauthStatusError(t("OAuth is not available right now, use Access Token."));
+    if (oauthResult === 'vercel_connected') {
+      setVercelAuthMethod('token')
+      setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
     }
 
     if (oauthError) {
-      setOauthStatusError(oauthError);
+      setOauthStatusError(oauthError)
     }
 
-    url.searchParams.delete("oauth");
-    url.searchParams.delete("oauth_error");
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-  }, [refreshOAuthStatus, t]);
+    url.searchParams.delete('oauth')
+    url.searchParams.delete('oauth_error')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }, [refreshOAuthStatus, t])
 
   useEffect(() => {
     if (!awaitingVercelGitHubConnection) {
-      return;
+      return
     }
 
     function handleReconnectCheck() {
-      if (document.visibilityState === "hidden") {
-        return;
+      if (document.visibilityState === 'hidden') {
+        return
       }
-      setAwaitingVercelGitHubConnection(false);
-      void refreshVercelConnection({ silent: true });
+      setAwaitingVercelGitHubConnection(false)
+      void refreshVercelConnection({ silent: true })
     }
 
-    window.addEventListener("focus", handleReconnectCheck);
-    document.addEventListener("visibilitychange", handleReconnectCheck);
+    window.addEventListener('focus', handleReconnectCheck)
+    document.addEventListener('visibilitychange', handleReconnectCheck)
 
     return () => {
-      window.removeEventListener("focus", handleReconnectCheck);
-      document.removeEventListener("visibilitychange", handleReconnectCheck);
-    };
-  }, [awaitingVercelGitHubConnection, refreshVercelConnection]);
+      window.removeEventListener('focus', handleReconnectCheck)
+      document.removeEventListener('visibilitychange', handleReconnectCheck)
+    }
+  }, [awaitingVercelGitHubConnection, refreshVercelConnection])
 
   useEffect(() => {
-    const projectId = form.env.REOWN_APPKIT_PROJECT_ID.trim();
-    latestReownProjectIdRef.current = projectId;
+    const projectId = form.env.REOWN_APPKIT_PROJECT_ID.trim()
+    latestReownProjectIdRef.current = projectId
 
     if (!projectId) {
-      setReownConnection(null);
-      setReownConnectionError(null);
-      setReownConnectionLoading(false);
-      return;
+      setReownConnection(null)
+      setReownConnectionError(null)
+      setReownConnectionLoading(false)
+      return
     }
 
     const timeoutId = window.setTimeout(() => {
-      void refreshReownConnection(projectId);
-    }, 450);
+      void refreshReownConnection(projectId)
+    }, 450)
 
     return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [form.env.REOWN_APPKIT_PROJECT_ID, refreshReownConnection]);
+      window.clearTimeout(timeoutId)
+    }
+  }, [form.env.REOWN_APPKIT_PROJECT_ID, refreshReownConnection])
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
+    if (typeof window === 'undefined') {
+      return
     }
 
-    const url = new URL(window.location.href);
-    const githubRepo = url.searchParams.get("github_repo");
-    const nextGithubRepoUrl = url.searchParams.get("github_repo_url");
-    const nextGithubSync = url.searchParams.get("github_sync");
-    const nextGithubError = url.searchParams.get("github_error");
+    const url = new URL(window.location.href)
+    const githubRepo = url.searchParams.get('github_repo')
+    const nextGithubRepoUrl = url.searchParams.get('github_repo_url')
+    const nextGithubSync = url.searchParams.get('github_sync')
+    const nextGithubError = url.searchParams.get('github_error')
 
     if (!githubRepo && !nextGithubError) {
-      return;
+      return
     }
 
     if (githubRepo) {
       setForm((previous) => ({
         ...previous,
         gitRepo: githubRepo,
-      }));
-      setGithubRepoUrl(nextGithubRepoUrl || "");
-      setGithubSyncEnabled(nextGithubSync === "enabled");
-      setGithubError(null);
-      setIsRedirectingToGitHub(false);
-      setActiveStep(2);
+      }))
+      setGithubRepoUrl(nextGithubRepoUrl || '')
+      setGithubSyncEnabled(nextGithubSync === 'enabled')
+      setGithubError(null)
+      setIsRedirectingToGitHub(false)
+      setActiveStep(2)
     }
 
     if (nextGithubError) {
-      setGithubError(nextGithubError);
-      setIsRedirectingToGitHub(false);
-      setActiveStep(2);
+      setGithubError(nextGithubError)
+      setIsRedirectingToGitHub(false)
+      setActiveStep(2)
     }
 
-    url.searchParams.delete("github_repo");
-    url.searchParams.delete("github_repo_url");
-    url.searchParams.delete("github_sync");
-    url.searchParams.delete("github_source");
-    url.searchParams.delete("github_error");
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-  }, []);
+    url.searchParams.delete('github_repo')
+    url.searchParams.delete('github_repo_url')
+    url.searchParams.delete('github_sync')
+    url.searchParams.delete('github_source')
+    url.searchParams.delete('github_error')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }, [])
 
   function startGitHubProvisioning() {
     if (!GITHUB_APP_URL) {
-      setGithubError("Missing GITHUB_APP_URL.");
-      return;
+      setGithubError('Missing GITHUB_APP_URL.')
+      return
     }
 
-    if (typeof window === "undefined") {
-      return;
+    if (typeof window === 'undefined') {
+      return
     }
 
-    setGithubError(null);
-    setIsRedirectingToGitHub(true);
+    setGithubError(null)
+    setIsRedirectingToGitHub(true)
 
-    const returnTo = new URL(window.location.href);
-    returnTo.searchParams.delete("github_repo");
-    returnTo.searchParams.delete("github_repo_url");
-    returnTo.searchParams.delete("github_sync");
-    returnTo.searchParams.delete("github_source");
-    returnTo.searchParams.delete("github_error");
+    const returnTo = new URL(window.location.href)
+    returnTo.searchParams.delete('github_repo')
+    returnTo.searchParams.delete('github_repo_url')
+    returnTo.searchParams.delete('github_sync')
+    returnTo.searchParams.delete('github_source')
+    returnTo.searchParams.delete('github_error')
 
-    const connectUrl = new URL("/connect", GITHUB_APP_URL);
-    connectUrl.searchParams.set("return_to", returnTo.toString());
+    const connectUrl = new URL('/connect', GITHUB_APP_URL)
+    connectUrl.searchParams.set('return_to', returnTo.toString())
 
-    window.location.assign(connectUrl.toString());
+    window.location.assign(connectUrl.toString())
   }
 
   const disconnectVercelOAuth = useCallback(async () => {
-    setOauthStatusError(null);
-    setVercelConnection(null);
-    setVercelConnectionError(null);
+    setOauthStatusError(null)
+    setVercelConnection(null)
+    setVercelConnectionError(null)
     try {
-      await fetch("/api/oauth/vercel/disconnect", {
-        method: "POST",
-      });
-      setSupabaseResources([]);
+      await fetch('/api/oauth/vercel/disconnect', {
+        method: 'POST',
+      })
+      setSupabaseResources([])
       setForm((previous) => ({
         ...previous,
         supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-      }));
-      await refreshOAuthStatus();
+      }))
+      await refreshOAuthStatus()
     } catch (error) {
       setOauthStatusError(
-        error instanceof Error ? error.message : t("Failed to disconnect Vercel OAuth."),
-      );
+        error instanceof Error ? error.message : t('Failed to disconnect Vercel OAuth.'),
+      )
     }
-  }, [t, refreshOAuthStatus]);
+  }, [t, refreshOAuthStatus])
 
   function startVercelOAuth() {
-    setVercelAuthMethod("token");
-    setOauthStatusError(t("OAuth is not available right now, use Access Token."));
+    setVercelAuthMethod('token')
+    setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
   }
 
   function startVercelGitHubConnect() {
-    setVercelGitHubConnectClicks((previous) => previous + 1);
-    setAwaitingVercelGitHubConnection(true);
-    window.open(VERCEL_GITHUB_APP_URL, "_blank", "noopener,noreferrer");
+    setVercelGitHubConnectClicks((previous) => previous + 1)
+    setAwaitingVercelGitHubConnection(true)
+    window.open(VERCEL_GITHUB_APP_URL, '_blank', 'noopener,noreferrer')
   }
 
   function refreshVercelGitHubConnection() {
-    setVercelGitHubRefreshClicks((previous) => previous + 1);
-    void refreshVercelConnection();
+    setVercelGitHubRefreshClicks((previous) => previous + 1)
+    void refreshVercelConnection()
   }
 
   function switchVercelAuthMethod(nextMethod: VercelAuthMethod) {
-    if (nextMethod === "oauth") {
-      setVercelAuthMethod("token");
-      setOauthStatusError(t("OAuth is not available right now, use Access Token."));
-      return;
+    if (nextMethod === 'oauth') {
+      setVercelAuthMethod('token')
+      setOauthStatusError(t('OAuth is not available right now, use Access Token.'))
+      return
     }
 
-    setVercelAuthMethod(nextMethod);
-    setOauthStatusError(null);
-    setVercelConnection(null);
-    setVercelConnectionError(null);
-    setIsVercelTokenInputFocused(false);
-    setSupabaseResources([]);
+    setVercelAuthMethod(nextMethod)
+    setOauthStatusError(null)
+    setVercelConnection(null)
+    setVercelConnectionError(null)
+    setIsVercelTokenInputFocused(false)
+    setSupabaseResources([])
     setForm((previous) => ({
       ...previous,
       supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-    }));
+    }))
   }
 
   const loadSupabaseResources = useCallback(
     async (options?: { silentIfNoToken?: boolean }) => {
-      const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : "";
-      const requiresToken = vercelAuthMethod === "token";
-      const requiresOAuth = vercelAuthMethod === "oauth";
+      const token = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : ''
+      const requiresToken = vercelAuthMethod === 'token'
+      const requiresOAuth = vercelAuthMethod === 'oauth'
 
       if (requiresToken && !token) {
-        setSupabaseResources([]);
+        setSupabaseResources([])
         setForm((previous) => ({
           ...previous,
           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-        }));
+        }))
         if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError(t("Paste your Vercel Access Token first."));
+          setSupabaseResourcesError(t('Paste your Vercel Access Token first.'))
         } else {
-          setSupabaseResourcesError(null);
+          setSupabaseResourcesError(null)
         }
-        return;
+        return
       }
       if (requiresOAuth && !vercelOauthConnected) {
-        setSupabaseResources([]);
+        setSupabaseResources([])
         setForm((previous) => ({
           ...previous,
           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-        }));
+        }))
         if (!options?.silentIfNoToken) {
-          setSupabaseResourcesError(t("Connect Vercel OAuth first."));
+          setSupabaseResourcesError(t('Connect Vercel OAuth first.'))
         } else {
-          setSupabaseResourcesError(null);
+          setSupabaseResourcesError(null)
         }
-        return;
+        return
       }
 
-      setIsLoadingSupabaseResources(true);
-      setSupabaseResourcesError(null);
+      setIsLoadingSupabaseResources(true)
+      setSupabaseResourcesError(null)
 
       try {
-        const response = await fetch("/api/vercel/supabase-resources", {
-          method: "POST",
+        const response = await fetch('/api/vercel/supabase-resources', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             token: token || undefined,
             teamId: form.vercelTeamId.trim() || undefined,
           }),
-        });
+        })
 
-        const json = (await response.json()) as SupabaseResourcesResponse;
-        const resources = Array.isArray(json.resources) ? json.resources : [];
-        setSupabaseResources(resources);
+        const json = (await response.json()) as SupabaseResourcesResponse
+        const resources = Array.isArray(json.resources) ? json.resources : []
+        setSupabaseResources(resources)
         setForm((previous) => ({
           ...previous,
           supabaseResourceId:
@@ -1327,51 +1325,51 @@ export default function LaunchpadForm({
             resources.some((resource) => resource.id === previous.supabaseResourceId)
               ? previous.supabaseResourceId
               : SUPABASE_CREATE_NEW_OPTION,
-        }));
+        }))
 
         if (!response.ok) {
-          setSupabaseResourcesError(json.error ?? t("Failed to list Supabase databases."));
+          setSupabaseResourcesError(json.error ?? t('Failed to list Supabase databases.'))
         } else if (!resources.length) {
           setSupabaseResourcesError(
-            t("No existing database found. You can still create a new one."),
-          );
+            t('No existing database found. You can still create a new one.'),
+          )
         } else {
-          setSupabaseResourcesError(null);
+          setSupabaseResourcesError(null)
         }
       } catch (error) {
-        setSupabaseResources([]);
+        setSupabaseResources([])
         setSupabaseResourcesError(
-          error instanceof Error ? error.message : t("Failed to list Supabase databases."),
-        );
+          error instanceof Error ? error.message : t('Failed to list Supabase databases.'),
+        )
       } finally {
-        setIsLoadingSupabaseResources(false);
+        setIsLoadingSupabaseResources(false)
       }
     },
     [t, form.vercelAccessToken, form.vercelTeamId, vercelAuthMethod, vercelOauthConnected],
-  );
+  )
 
   useEffect(() => {
-    const tokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused;
-    const hasAuth = vercelAuthMethod === "oauth" ? vercelOauthConnected : tokenReady;
+    const tokenReady = Boolean(form.vercelAccessToken.trim()) && !isVercelTokenInputFocused
+    const hasAuth = vercelAuthMethod === 'oauth' ? vercelOauthConnected : tokenReady
 
     if (!hasAuth) {
-      setVercelConnection(null);
-      setVercelConnectionError(null);
-      setSupabaseResources([]);
-      setSupabaseResourcesError(null);
-      return;
+      setVercelConnection(null)
+      setVercelConnectionError(null)
+      setSupabaseResources([])
+      setSupabaseResourcesError(null)
+      return
     }
 
     const timeout = window.setTimeout(() => {
-      void refreshVercelConnection({ silent: true });
+      void refreshVercelConnection({ silent: true })
       if (vercelConnectionReady) {
-        void loadSupabaseResources({ silentIfNoToken: true });
+        void loadSupabaseResources({ silentIfNoToken: true })
       }
-    }, 650);
+    }, 650)
 
     return () => {
-      window.clearTimeout(timeout);
-    };
+      window.clearTimeout(timeout)
+    }
   }, [
     form.vercelAccessToken,
     isVercelTokenInputFocused,
@@ -1380,29 +1378,29 @@ export default function LaunchpadForm({
     vercelConnectionReady,
     refreshVercelConnection,
     loadSupabaseResources,
-  ]);
+  ])
 
   function mergeAdminWallets(previousValue: string, walletAddress: string) {
-    const normalizedTarget = walletAddress.trim().toLowerCase();
+    const normalizedTarget = walletAddress.trim().toLowerCase()
     if (!/^0x[a-f0-9]{40}$/.test(normalizedTarget)) {
-      return previousValue;
+      return previousValue
     }
     const values = previousValue
-      .split(",")
+      .split(',')
       .map((value) => value.trim())
       .filter((value) => /^0x[a-fA-F0-9]{40}$/.test(value))
-      .map((value) => value.toLowerCase());
+      .map((value) => value.toLowerCase())
     if (values.some((value) => value.toLowerCase() === normalizedTarget)) {
-      return values.join(",");
+      return values.join(',')
     }
-    return [...values, normalizedTarget].join(",");
+    return [...values, normalizedTarget].join(',')
   }
 
   function applyGeneratedCredentials(input: {
-    address: string;
-    apiKey: string;
-    apiSecret: string;
-    passphrase: string;
+    address: string
+    apiKey: string
+    apiSecret: string
+    passphrase: string
   }) {
     setForm((previous) => ({
       ...previous,
@@ -1414,38 +1412,38 @@ export default function LaunchpadForm({
         KUEST_PASSPHRASE: input.passphrase,
         ADMIN_WALLETS: mergeAdminWallets(previous.env.ADMIN_WALLETS, input.address),
       },
-    }));
+    }))
 
-    const hasBrandName = Boolean(form.brandName.trim());
+    const hasBrandName = Boolean(form.brandName.trim())
     if (hasBrandName) {
-      setActiveStep(2);
+      setActiveStep(2)
     }
-    return hasBrandName;
+    return hasBrandName
   }
 
   async function saveContactEmailForKey(apiKey: string) {
-    const email = form.contactEmail.trim();
+    const email = form.contactEmail.trim()
     if (!email || !apiKey.trim()) {
-      return;
+      return
     }
 
     try {
-      const supabase = createSupabaseClient(runtimeConfig);
-      const { error } = await supabase.from("key_emails").insert({
+      const supabase = createSupabaseClient(runtimeConfig)
+      const { error } = await supabase.from('key_emails').insert({
         api_key: apiKey.trim(),
         email,
-      });
+      })
 
       // Duplicate email+key is expected in retries.
-      if (error && error.code !== "23505") {
-        throw new Error(error.message ?? "Supabase rejected email save.");
+      if (error && error.code !== '23505') {
+        throw new Error(error.message ?? 'Supabase rejected email save.')
       }
     } catch (error) {
       // Email save is optional and must never block key generation.
       console.warn(
-        "[launch] Optional email save failed:",
+        '[launch] Optional email save failed:',
         error instanceof Error ? error.message : error,
-      );
+      )
     }
   }
 
@@ -1454,170 +1452,170 @@ export default function LaunchpadForm({
       ...previous,
       env: {
         ...previous.env,
-        KUEST_ADDRESS: "",
-        KUEST_API_KEY: "",
-        KUEST_API_SECRET: "",
-        KUEST_PASSPHRASE: "",
-        ADMIN_WALLETS: "",
+        KUEST_ADDRESS: '',
+        KUEST_API_KEY: '',
+        KUEST_API_SECRET: '',
+        KUEST_PASSPHRASE: '',
+        ADMIN_WALLETS: '',
       },
-    }));
-    setWalletInfo(null);
-    setWalletError(null);
-    setAutoSignAfterConnect(false);
+    }))
+    setWalletInfo(null)
+    setWalletError(null)
+    setAutoSignAfterConnect(false)
   }
 
   function handleWalletDisconnect() {
-    disconnect();
-    clearGeneratedCredentials();
+    disconnect()
+    clearGeneratedCredentials()
   }
 
   async function handleGenerateWithInjectedWallet() {
-    setWalletActionLoading(true);
-    setWalletError(null);
-    setWalletInfo(null);
+    setWalletActionLoading(true)
+    setWalletError(null)
+    setWalletInfo(null)
 
     try {
       const generated = await generateKuestKeysViaWallet({
         runtimeConfig,
         onStatus: (message) => {
           if (!message) {
-            setWalletInfo(null);
-            return;
+            setWalletInfo(null)
+            return
           }
-          if (message.includes("Minting")) {
-            setWalletInfo(t("Creating your account..."));
-            return;
+          if (message.includes('Minting')) {
+            setWalletInfo(t('Creating your account...'))
+            return
           }
-          if (message.includes("sign")) {
-            setWalletInfo(t("Check your wallet and confirm."));
-            return;
+          if (message.includes('sign')) {
+            setWalletInfo(t('Check your wallet and confirm.'))
+            return
           }
-          setWalletInfo(message);
+          setWalletInfo(message)
         },
-      });
-      const advancedToStep2 = applyGeneratedCredentials(generated);
-      void saveContactEmailForKey(generated.apiKey);
+      })
+      const advancedToStep2 = applyGeneratedCredentials(generated)
+      void saveContactEmailForKey(generated.apiKey)
       if (advancedToStep2) {
-        setWalletInfo(null);
+        setWalletInfo(null)
       } else {
-        setWalletInfo(t("Wallet connected. Enter your site name to continue."));
+        setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
       }
     } catch (error) {
       setWalletError(
         error instanceof Error
           ? error.message
-          : t("Failed to generate credentials with browser wallet."),
-      );
+          : t('Failed to generate credentials with browser wallet.'),
+      )
     } finally {
-      setWalletActionLoading(false);
+      setWalletActionLoading(false)
     }
   }
 
   async function handleEnsureRequiredNetwork() {
     if (!isConnected) {
-      throw new Error(t("Connect wallet before switching network."));
+      throw new Error(t('Connect wallet before switching network.'))
     }
     if (onRequiredChain) {
-      return;
+      return
     }
 
     if (!switchChain) {
-      const provider = readInjectedProvider();
+      const provider = readInjectedProvider()
       if (!provider) {
         throw new Error(
-          t("Switch to {network} in your wallet settings.", { network: REQUIRED_CHAIN_LABEL }),
-        );
+          t('Switch to {network} in your wallet settings.', { network: REQUIRED_CHAIN_LABEL }),
+        )
       }
-      await ensureRequiredNetworkViaProvider(provider, runtimeConfig);
-      return;
+      await ensureRequiredNetworkViaProvider(provider, runtimeConfig)
+      return
     }
 
     try {
-      await switchChain({ chainId: REQUIRED_CHAIN_ID });
+      await switchChain({ chainId: REQUIRED_CHAIN_ID })
     } catch {
-      const provider = readInjectedProvider();
+      const provider = readInjectedProvider()
       if (!provider) {
-        throw new Error(t("Unable to switch to {network}.", { network: REQUIRED_CHAIN_LABEL }));
+        throw new Error(t('Unable to switch to {network}.', { network: REQUIRED_CHAIN_LABEL }))
       }
-      await ensureRequiredNetworkViaProvider(provider, runtimeConfig);
+      await ensureRequiredNetworkViaProvider(provider, runtimeConfig)
     }
   }
 
   async function handleConnectOrSign(options?: { autoProgress?: boolean }) {
-    const autoProgress = options?.autoProgress ?? false;
+    const autoProgress = options?.autoProgress ?? false
 
     if (!isAppKitReady) {
-      await handleGenerateWithInjectedWallet();
-      return;
+      await handleGenerateWithInjectedWallet()
+      return
     }
 
-    setWalletError(null);
+    setWalletError(null)
 
     if (!isConnected) {
-      setWalletInfo(t("Open your wallet and approve the connection."));
-      setConnectPromptOpen(true);
+      setWalletInfo(t('Open your wallet and approve the connection.'))
+      setConnectPromptOpen(true)
       try {
-        await openAppKit();
+        await openAppKit()
       } catch (error) {
-        setConnectPromptOpen(false);
-        throw error;
+        setConnectPromptOpen(false)
+        throw error
       }
-      return;
+      return
     }
 
     if (!onRequiredChain) {
-      setWalletActionLoading(true);
-      setWalletInfo(t("Switching to {network}...", { network: REQUIRED_CHAIN_LABEL }));
+      setWalletActionLoading(true)
+      setWalletInfo(t('Switching to {network}...', { network: REQUIRED_CHAIN_LABEL }))
       try {
-        await handleEnsureRequiredNetwork();
+        await handleEnsureRequiredNetwork()
         if (!autoProgress) {
           setWalletInfo(
-            t("{network} is active. Click Sign to continue.", { network: REQUIRED_CHAIN_LABEL }),
-          );
+            t('{network} is active. Click Sign to continue.', { network: REQUIRED_CHAIN_LABEL }),
+          )
         }
       } finally {
-        setWalletActionLoading(false);
+        setWalletActionLoading(false)
       }
       if (!autoProgress) {
-        return;
+        return
       }
     }
 
     if (!account.address || account.chainId === undefined) {
-      throw new Error(t("Wallet connection is not ready."));
+      throw new Error(t('Wallet connection is not ready.'))
     }
 
-    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const timestamp = Math.floor(Date.now() / 1000).toString()
 
-    setWalletActionLoading(true);
-    setSignPromptOpen(true);
-    setWalletInfo(t("Approve one signature to generate credentials."));
+    setWalletActionLoading(true)
+    setSignPromptOpen(true)
+    setWalletInfo(t('Approve one signature to generate credentials.'))
 
     try {
       const signature = await signTypedDataAsync({
         domain: {
-          name: "ClobAuthDomain",
-          version: "1",
+          name: 'ClobAuthDomain',
+          version: '1',
           chainId: account.chainId,
         },
         types: {
           ClobAuth: [
-            { name: "address", type: "address" },
-            { name: "timestamp", type: "string" },
-            { name: "nonce", type: "uint256" },
-            { name: "message", type: "string" },
+            { name: 'address', type: 'address' },
+            { name: 'timestamp', type: 'string' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'message', type: 'string' },
           ],
         },
-        primaryType: "ClobAuth",
+        primaryType: 'ClobAuth',
         message: {
           address: account.address,
           timestamp,
           nonce: BigInt(DEFAULT_KUEST_KEY_NONCE),
-          message: "This message attests that I control the given wallet",
+          message: 'This message attests that I control the given wallet',
         },
-      });
+      })
 
-      setWalletInfo(t("Minting Kuest credentials..."));
+      setWalletInfo(t('Minting Kuest credentials...'))
       const generated = await mintKuestKeysFromSignature(
         {
           address: account.address,
@@ -1626,137 +1624,137 @@ export default function LaunchpadForm({
           nonce: DEFAULT_KUEST_KEY_NONCE,
         },
         runtimeConfig,
-      );
+      )
 
-      const advancedToStep2 = applyGeneratedCredentials(generated);
-      void saveContactEmailForKey(generated.apiKey);
+      const advancedToStep2 = applyGeneratedCredentials(generated)
+      void saveContactEmailForKey(generated.apiKey)
       if (advancedToStep2) {
-        setWalletInfo(null);
+        setWalletInfo(null)
       } else {
-        setWalletInfo(t("Wallet connected. Enter your site name to continue."));
+        setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
       }
     } catch (error) {
       setWalletError(
-        error instanceof Error ? error.message : t("Unable to sign and generate keys."),
-      );
+        error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
+      )
     } finally {
-      setSignPromptOpen(false);
-      setWalletActionLoading(false);
+      setSignPromptOpen(false)
+      setWalletActionLoading(false)
     }
   }
 
-  handleConnectOrSignRef.current = handleConnectOrSign;
+  handleConnectOrSignRef.current = handleConnectOrSign
 
   useEffect(() => {
     if (!autoSignAfterConnect || !isConnected || step1Complete || walletActionLoading) {
-      return;
+      return
     }
 
-    let cancelled = false;
+    let cancelled = false
     void (async () => {
       try {
-        await handleConnectOrSignRef.current?.({ autoProgress: true });
+        await handleConnectOrSignRef.current?.({ autoProgress: true })
       } catch (error) {
         if (!cancelled) {
           setWalletError(
-            error instanceof Error ? error.message : t("Unable to continue wallet signing flow."),
-          );
+            error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+          )
         }
       } finally {
         if (!cancelled) {
-          setAutoSignAfterConnect(false);
+          setAutoSignAfterConnect(false)
         }
       }
-    })();
+    })()
 
     return () => {
-      cancelled = true;
-    };
-  }, [t, autoSignAfterConnect, isConnected, step1Complete, walletActionLoading]);
+      cancelled = true
+    }
+  }, [t, autoSignAfterConnect, isConnected, step1Complete, walletActionLoading])
 
   function startTimelineAnimation() {
     if (timelineIntervalRef.current) {
-      window.clearInterval(timelineIntervalRef.current);
-      timelineIntervalRef.current = null;
+      window.clearInterval(timelineIntervalRef.current)
+      timelineIntervalRef.current = null
     }
 
-    timelineIndexRef.current = 0;
+    timelineIndexRef.current = 0
     setTimeline(
       TIMELINE.map((item, index) => ({
         ...item,
-        status: index === 0 ? "running" : "idle",
+        status: index === 0 ? 'running' : 'idle',
       })),
-    );
+    )
 
     timelineIntervalRef.current = window.setInterval(() => {
-      timelineIndexRef.current = Math.min(timelineIndexRef.current + 1, TIMELINE.length - 1);
+      timelineIndexRef.current = Math.min(timelineIndexRef.current + 1, TIMELINE.length - 1)
       setTimeline((previous) =>
         previous.map((entry, index) => ({
           ...entry,
           status: mapTimeline(entry.status, index, timelineIndexRef.current),
         })),
-      );
-    }, 1500);
+      )
+    }, 1500)
   }
 
   function stopTimelineAnimation(success: boolean) {
     if (timelineIntervalRef.current) {
-      window.clearInterval(timelineIntervalRef.current);
-      timelineIntervalRef.current = null;
+      window.clearInterval(timelineIntervalRef.current)
+      timelineIntervalRef.current = null
     }
 
     if (success) {
       setTimeline((previous) =>
         previous.map((entry) => ({
           ...entry,
-          status: "done",
+          status: 'done',
         })),
-      );
-      return;
+      )
+      return
     }
 
     setTimeline((previous) =>
       previous.map((entry, index) => {
         if (index < timelineIndexRef.current) {
-          return { ...entry, status: "done" };
+          return { ...entry, status: 'done' }
         }
         if (index === timelineIndexRef.current) {
-          return { ...entry, status: "error" };
+          return { ...entry, status: 'error' }
         }
-        return { ...entry, status: "idle" };
+        return { ...entry, status: 'idle' }
       }),
-    );
+    )
   }
 
   function normalizeCustomDomain(value: string) {
     return value
       .trim()
       .toLowerCase()
-      .replace(/^https?:\/\//, "")
-      .replace(/\/+$/, "");
+      .replace(/^https?:\/\//, '')
+      .replace(/\/+$/, '')
   }
 
   const handleDomainAction = useCallback(
-    async (action: "add" | "verify") => {
+    async (action: 'add' | 'verify') => {
       if (!result?.ok) {
-        return;
+        return
       }
 
-      const domain = normalizeCustomDomain(customDomain);
+      const domain = normalizeCustomDomain(customDomain)
       if (!domain) {
-        setDomainActionError(t("Enter a domain first."));
-        return;
+        setDomainActionError(t('Enter a domain first.'))
+        return
       }
 
-      setDomainActionLoading(action);
-      setDomainActionError(null);
+      setDomainActionLoading(action)
+      setDomainActionError(null)
 
       try {
-        const token = vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
-        const response = await fetch("/api/vercel/domain", {
-          method: "POST",
+        const token = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : undefined
+        const response = await fetch('/api/vercel/domain', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             action,
@@ -1766,19 +1764,19 @@ export default function LaunchpadForm({
             projectName: result.projectName || resolvedProjectSlug,
             teamId: result.resolvedTeamId || form.vercelTeamId.trim() || undefined,
           }),
-        });
+        })
 
-        const json = (await response.json()) as VercelDomainApiResponse;
+        const json = (await response.json()) as VercelDomainApiResponse
         if (!response.ok || !json.domain) {
-          throw new Error(json.error ?? t("Domain action failed."));
+          throw new Error(json.error ?? t('Domain action failed.'))
         }
 
-        setDomainState(json.domain);
-        setCustomDomain(json.domain.name);
+        setDomainState(json.domain)
+        setCustomDomain(json.domain.name)
       } catch (error) {
-        setDomainActionError(error instanceof Error ? error.message : t("Domain action failed."));
+        setDomainActionError(error instanceof Error ? error.message : t('Domain action failed.'))
       } finally {
-        setDomainActionLoading(null);
+        setDomainActionLoading(null)
       }
     },
     [
@@ -1790,35 +1788,35 @@ export default function LaunchpadForm({
       result,
       vercelAuthMethod,
     ],
-  );
+  )
 
   async function onSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
-    event.preventDefault();
-    setIsLaunching(true);
-    setRequestError(null);
-    setResult(null);
-    setDomainState(null);
-    setDomainActionError(null);
-    setDomainActionLoading(null);
-    setCustomDomain("");
-    setActiveStep(3);
-    startTimelineAnimation();
+    event.preventDefault()
+    setIsLaunching(true)
+    setRequestError(null)
+    setResult(null)
+    setDomainState(null)
+    setDomainActionError(null)
+    setDomainActionLoading(null)
+    setCustomDomain('')
+    setActiveStep(3)
+    startTimelineAnimation()
 
     try {
       const resolvedVercelToken =
-        vercelAuthMethod === "token" ? form.vercelAccessToken.trim() : undefined;
+        vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : undefined
       const env = {
         ...form.env,
         ...parseExtraEnv(form.extraEnvText),
-      };
-      env.SITE_URL = normalizeSiteUrl(env.SITE_URL);
+      }
+      env.SITE_URL = normalizeSiteUrl(env.SITE_URL)
       const payload = {
         brandName: form.brandName,
         contactEmail: form.contactEmail.trim() || undefined,
         projectName: resolvedProjectSlug,
         gitRepo: form.gitRepo,
         gitBranch: form.gitBranch,
-        databaseMode: "vercel_supabase_integration" as const,
+        databaseMode: 'vercel_supabase_integration' as const,
         vercelTeamId: form.vercelTeamId || undefined,
         supabase: {
           region: form.supabaseRegion.trim() || undefined,
@@ -1831,62 +1829,62 @@ export default function LaunchpadForm({
           vercel: resolvedVercelToken,
         },
         env,
-      };
+      }
 
-      const response = await fetch("/api/launch", {
-        method: "POST",
+      const response = await fetch('/api/launch', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-      });
+      })
 
-      const json = (await response.json()) as LaunchResponseBody;
-      setResult(json);
+      const json = (await response.json()) as LaunchResponseBody
+      setResult(json)
 
       if (!response.ok || !json.ok) {
-        setRequestError(json.error ?? t("Launch failed."));
-        stopTimelineAnimation(false);
+        setRequestError(json.error ?? t('Launch failed.'))
+        stopTimelineAnimation(false)
       } else {
-        stopTimelineAnimation(true);
+        stopTimelineAnimation(true)
       }
     } catch (error) {
-      setRequestError(error instanceof Error ? error.message : t("Failed to call API."));
-      stopTimelineAnimation(false);
+      setRequestError(error instanceof Error ? error.message : t('Failed to call API.'))
+      stopTimelineAnimation(false)
     } finally {
-      setIsLaunching(false);
+      setIsLaunching(false)
     }
   }
 
-  const step2GitHubReady = Boolean(form.gitRepo.trim());
-  const step3TokenReady = vercelAuthMethod === "token" && vercelConnectionReady;
+  const step2GitHubReady = Boolean(form.gitRepo.trim())
+  const step3TokenReady = vercelAuthMethod === 'token' && vercelConnectionReady
   const step3VercelAuthReady =
-    vercelAuthMethod === "oauth"
+    vercelAuthMethod === 'oauth'
       ? vercelOauthConnected && vercelConnectionReady
-      : vercelConnectionReady;
-  const step3VercelReady = step3VercelAuthReady && vercelGitImportReady;
-  const step3ReownReady = reownConnectionReady;
-  const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim());
+      : vercelConnectionReady
+  const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
+  const step3ReownReady = reownConnectionReady
+  const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
   const step2ConnectionsReady =
-    step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady;
-  const githubStatusText = form.gitRepo.trim() ? form.gitRepo : "";
+    step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
+  const githubStatusText = form.gitRepo.trim() ? form.gitRepo : ''
   const vercelGitImportRequiredHint =
-    result?.ok === false && result.hints?.vercelGitImportRequired === true;
+    result?.ok === false && result.hints?.vercelGitImportRequired === true
   const vercelStatusText = step3VercelAuthReady
     ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
-    : "";
-  const showVercelGitHubButton = step2GitHubReady && step3VercelAuthReady && !vercelGitImportReady;
+    : ''
+  const showVercelGitHubButton = step2GitHubReady && step3VercelAuthReady && !vercelGitImportReady
   const showVercelGitHubStep =
-    step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint);
+    step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
   const showVercelAuthenticationSettingsLink =
     vercelGitHubConnectClicks >= VERCEL_GITHUB_CONNECT_LINK_THRESHOLD ||
-    vercelGitHubRefreshClicks >= VERCEL_GITHUB_REFRESH_LINK_THRESHOLD;
-  const hasSuccessfulDeployment = result?.ok === true;
+    vercelGitHubRefreshClicks >= VERCEL_GITHUB_REFRESH_LINK_THRESHOLD
+  const hasSuccessfulDeployment = result?.ok === true
 
   const stepItems = [
     {
       number: 1,
-      title: t("Site + Admin wallet"),
+      title: t('Site + Admin wallet'),
       done: step1Complete && Boolean(form.brandName.trim()),
       active: activeStep === 1,
     },
@@ -1898,38 +1896,38 @@ export default function LaunchpadForm({
     },
     {
       number: 3,
-      title: t("Deploy"),
+      title: t('Deploy'),
       done: Boolean(result?.ok),
       active: activeStep === 3,
     },
-  ] as const;
+  ] as const
 
-  const storedStep1Address = form.env.KUEST_ADDRESS.trim();
+  const storedStep1Address = form.env.KUEST_ADDRESS.trim()
   const connectedAddressMatchesStep1 =
     !isConnected ||
     !account.address ||
-    storedStep1Address.toLowerCase() === account.address.toLowerCase();
+    storedStep1Address.toLowerCase() === account.address.toLowerCase()
   const showSignedWalletState =
-    step1Complete && Boolean(storedStep1Address) && connectedAddressMatchesStep1;
-  const brandNameReady = Boolean(form.brandName.trim());
+    step1Complete && Boolean(storedStep1Address) && connectedAddressMatchesStep1
+  const brandNameReady = Boolean(form.brandName.trim())
   const step1PrimaryLabel = !isAppKitReady
-    ? t("Use browser wallet")
+    ? t('Use browser wallet')
     : !isConnected
-      ? t("Connect")
+      ? t('Connect')
       : !onRequiredChain
-        ? t("Switch to {network}", { network: REQUIRED_CHAIN_LABEL })
-        : t("Sign");
+        ? t('Switch to {network}', { network: REQUIRED_CHAIN_LABEL })
+        : t('Sign')
   const step1WalletLabel = showSignedWalletState
     ? `${shortAddress(storedStep1Address)} · ${account.chain?.name ?? REQUIRED_CHAIN_LABEL}`
-    : "";
-  const canContinueStep2 = showSignedWalletState && brandNameReady;
-  const canContinueStep3 = canContinueStep2 && step2ConnectionsReady;
-  const launchSiteName = form.brandName.trim() || result?.projectName || resolvedProjectSlug;
-  const launchProjectUrl = result?.projectUrl || computedSiteUrl;
-  const discordSupportLabel = t("Join our Discord for support");
+    : ''
+  const canContinueStep2 = showSignedWalletState && brandNameReady
+  const canContinueStep3 = canContinueStep2 && step2ConnectionsReady
+  const launchSiteName = form.brandName.trim() || result?.projectName || resolvedProjectSlug
+  const launchProjectUrl = result?.projectUrl || computedSiteUrl
+  const discordSupportLabel = t('Join our Discord for support')
   const customDomainAllowlistUrl = domainState?.name
     ? `https://*.${normalizeCustomDomain(domainState.name)}`
-    : "";
+    : ''
 
   return (
     <form onSubmit={onSubmit} className="launch-shell">
@@ -1940,7 +1938,7 @@ export default function LaunchpadForm({
               <CircleCheckIcon className="size-20" strokeWidth={1.45} />
             </div>
             <div className="launch-success-copy">
-              <h2>{t("{siteName} configured successfully", { siteName: launchSiteName })}</h2>
+              <h2>{t('{siteName} configured successfully', { siteName: launchSiteName })}</h2>
             </div>
 
             <ul className="launch-success-list">
@@ -1948,13 +1946,13 @@ export default function LaunchpadForm({
                 <span className="launch-success-list-icon" aria-hidden="true">
                   <ClockIcon className="size-4" />
                 </span>
-                <span>{t("Vercel takes about 7 minutes to deploy your site")}</span>
+                <span>{t('Vercel takes about 7 minutes to deploy your site')}</span>
               </li>
               <li>
                 <span className="launch-success-list-icon" aria-hidden="true">
                   <CalendarDaysIcon className="size-4" />
                 </span>
-                <span>{t("Markets can appear within 15 minutes.")}</span>
+                <span>{t('Markets can appear within 15 minutes.')}</span>
               </li>
               <li>
                 <span className="launch-success-list-icon is-attention" aria-hidden="true">
@@ -1962,7 +1960,7 @@ export default function LaunchpadForm({
                 </span>
                 <span>
                   {t.rich(
-                    "Meanwhile, add <site>{siteUrl}</site> to the domain allowlist in the Configuration tab of your Reown project at <link>dashboard.reown.com</link>.",
+                    'Meanwhile, add <site>{siteUrl}</site> to the domain allowlist in the Configuration tab of your Reown project at <link>dashboard.reown.com</link>.',
                     {
                       siteUrl: launchProjectUrl,
                       site: (chunks) => <code className="launch-success-url">{chunks}</code>,
@@ -2000,7 +1998,7 @@ export default function LaunchpadForm({
                 target="_blank"
                 rel="noreferrer"
               >
-                <span>{t("Go to {siteUrl}", { siteUrl: launchProjectUrl })}</span>
+                <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
                 <ArrowRightIcon className="size-4" />
               </a>
             </div>
@@ -2009,21 +2007,21 @@ export default function LaunchpadForm({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <h4 className="text-sm font-semibold text-foreground">
-                    {t("Custom domain (optional)")}
+                    {t('Custom domain (optional)')}
                   </h4>
                   <InfoTip
                     text={t(
-                      "Use your own domain after deploy. Add it first, then verify DNS records.",
+                      'Use your own domain after deploy. Add it first, then verify DNS records.',
                     )}
                   />
                 </div>
                 {domainState && (
                   <span
                     className={`text-xs font-semibold ${
-                      domainState.verified ? "text-primary" : "text-muted-foreground"
+                      domainState.verified ? 'text-primary' : 'text-muted-foreground'
                     }`}
                   >
-                    {domainState.verified ? t("Verified") : t("Pending verification")}
+                    {domainState.verified ? t('Verified') : t('Pending verification')}
                   </span>
                 )}
               </div>
@@ -2038,28 +2036,28 @@ export default function LaunchpadForm({
                   type="button"
                   className="launch-mini-button"
                   onClick={() => {
-                    void handleDomainAction("add");
+                    void handleDomainAction('add')
                   }}
                   disabled={domainActionLoading !== null}
                 >
-                  {domainActionLoading === "add" ? t("Adding...") : t("Add domain")}
+                  {domainActionLoading === 'add' ? t('Adding...') : t('Add domain')}
                 </button>
                 <button
                   type="button"
                   className="launch-mini-button"
                   onClick={() => {
-                    void handleDomainAction("verify");
+                    void handleDomainAction('verify')
                   }}
                   disabled={domainActionLoading !== null || !customDomain.trim()}
                 >
-                  {domainActionLoading === "verify" ? t("Verifying...") : t("Verify")}
+                  {domainActionLoading === 'verify' ? t('Verifying...') : t('Verify')}
                 </button>
               </div>
               {domainActionError && (
                 <div className="launch-domain-error mt-2">
                   <p className="text-xs font-medium text-primary/90">{domainActionError}</p>
                   <p className="text-xs text-muted-foreground">
-                    {t.rich("You can also add your domain in the <link>Vercel dashboard</link>.", {
+                    {t.rich('You can also add your domain in the <link>Vercel dashboard</link>.', {
                       link: (chunks) => (
                         <a
                           className="launch-link"
@@ -2077,7 +2075,7 @@ export default function LaunchpadForm({
               {domainState?.verified && customDomainAllowlistUrl && (
                 <p className="launch-helper-text mt-3 text-xs text-muted-foreground">
                   {t.rich(
-                    "Add {domainUrl} to the Reown Configuration domain allowlist too: <link>dashboard.reown.com</link>.",
+                    'Add {domainUrl} to the Reown Configuration domain allowlist too: <link>dashboard.reown.com</link>.',
                     {
                       domainUrl: customDomainAllowlistUrl,
                       link: (chunks) => (
@@ -2101,7 +2099,7 @@ export default function LaunchpadForm({
                 "
                 >
                   <p className="font-semibold text-foreground">
-                    {t("Nameservers to set at your registrar:")}
+                    {t('Nameservers to set at your registrar:')}
                   </p>
                   <div className="mt-1 space-y-1">
                     {domainState.nameservers.map((nameServer) => (
@@ -2116,14 +2114,14 @@ export default function LaunchpadForm({
                 <div className="mt-3 space-y-2">
                   {domainState.verification.map((record, index) => (
                     <div
-                      key={`${record.type ?? "record"}-${record.domain ?? "domain"}-${index}`}
+                      key={`${record.type ?? 'record'}-${record.domain ?? 'domain'}-${index}`}
                       className="
                         launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
                       "
                     >
-                      <span className="font-semibold text-foreground">{record.type || "DNS"}:</span>{" "}
-                      {record.domain || "@"} {"->"}{" "}
-                      {record.value || t("check Vercel DNS instructions")}
+                      <span className="font-semibold text-foreground">{record.type || 'DNS'}:</span>{' '}
+                      {record.domain || '@'} {'->'}{' '}
+                      {record.value || t('check Vercel DNS instructions')}
                     </div>
                   ))}
                 </div>
@@ -2133,7 +2131,7 @@ export default function LaunchpadForm({
             {result.logs.length > 0 && (
               <details className="launch-logs-disclosure">
                 <summary>
-                  <span>{t("Logs")}</span>
+                  <span>{t('Logs')}</span>
                   <ChevronDownIcon className="size-4" />
                 </summary>
                 <div className="launch-logs-section">
@@ -2151,18 +2149,18 @@ export default function LaunchpadForm({
             <button
               key={step.number}
               type="button"
-              className={`launch-step ${step.active ? "is-active" : ""} ${step.done ? "is-done" : ""}`}
+              className={`launch-step ${step.active ? 'is-active' : ''} ${step.done ? 'is-done' : ''}`}
               onClick={() => {
                 if (step.number === 1) {
-                  setActiveStep(1);
-                  return;
+                  setActiveStep(1)
+                  return
                 }
                 if (step.number === 2 && canContinueStep2) {
-                  setActiveStep(2);
-                  return;
+                  setActiveStep(2)
+                  return
                 }
                 if (step.number === 3 && canContinueStep3) {
-                  setActiveStep(3);
+                  setActiveStep(3)
                 }
               }}
               disabled={
@@ -2182,13 +2180,13 @@ export default function LaunchpadForm({
 
       {!hasSuccessfulDeployment && activeStep === 1 && (
         <section className="launch-island launch-step1-island">
-          <h2 className="sr-only">{t("Step 1. Site + Admin wallet")}</h2>
+          <h2 className="sr-only">{t('Step 1. Site + Admin wallet')}</h2>
 
           <div className="launch-grid launch-step1-brand-grid mt-5">
             <label className="launch-field launch-step1-brand-field">
               <span className="launch-field-label">
-                <span>{t("Site name")}</span>
-                <InfoTip text={t("This is your brand name.")} />
+                <span>{t('Site name')}</span>
+                <InfoTip text={t('This is your brand name.')} />
               </span>
               <input
                 value={form.brandName}
@@ -2198,16 +2196,16 @@ export default function LaunchpadForm({
                     brandName: event.target.value,
                   }))
                 }
-                placeholder={t("Your Prediction Market Site Name")}
+                placeholder={t('Your Prediction Market Site Name')}
                 required
               />
             </label>
             <label className="launch-field">
-              <span>{t("Email (optional)")}</span>
+              <span>{t('Email (optional)')}</span>
               <input
                 type="email"
                 value={form.contactEmail}
-                placeholder={t("you@team.com")}
+                placeholder={t('you@team.com')}
                 onChange={(event) =>
                   setForm((previous) => ({
                     ...previous,
@@ -2220,31 +2218,31 @@ export default function LaunchpadForm({
 
           <div className="launch-step1-wallet mt-5 rounded-2xl border border-border/70 p-5">
             <div className="launch-step1-wallet-header mb-2 flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-foreground">{t("Admin wallet")}</h3>
+              <h3 className="text-sm font-semibold text-foreground">{t('Admin wallet')}</h3>
               <InfoTip
                 text={t(
-                  "One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.",
+                  'One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.',
                 )}
               />
             </div>
             {!isConnected && (
               <div className="launch-step1-wallet-copy">
                 <p className="text-xs text-muted-foreground">
-                  {t("For the simplest setup, use")}{" "}
+                  {t('For the simplest setup, use')}{' '}
                   <a
                     className="launch-link"
                     href="https://metamask.io/download"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="hidden sm:inline!">{t("MetaMask browser extension")}</span>
-                    <span className="sm:hidden">{t("MetaMask app")}</span>
+                    <span className="hidden sm:inline!">{t('MetaMask browser extension')}</span>
+                    <span className="sm:hidden">{t('MetaMask app')}</span>
                   </a>
-                  . {t("No balance required, no funds moved, no gas fees.")}
+                  . {t('No balance required, no funds moved, no gas fees.')}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {t(
-                    "We try to switch to Polygon Amoy automatically and add the network when needed.",
+                    'We try to switch to Polygon Amoy automatically and add the network when needed.',
                   )}
                 </p>
               </div>
@@ -2266,9 +2264,9 @@ export default function LaunchpadForm({
                     type="button"
                     className="launch-mini-button"
                     onClick={handleWalletDisconnect}
-                    disabled={disconnectStatus === "pending"}
+                    disabled={disconnectStatus === 'pending'}
                   >
-                    {t("Disconnect")}
+                    {t('Disconnect')}
                   </button>
                 )}
               </div>
@@ -2279,16 +2277,16 @@ export default function LaunchpadForm({
                   className="launch-cta launch-cta-compact"
                   onClick={() => {
                     if (!step1Complete && isAppKitReady && !isConnected) {
-                      setAutoSignAfterConnect(true);
+                      setAutoSignAfterConnect(true)
                     }
-                    void handleConnectOrSign();
+                    void handleConnectOrSign()
                   }}
                   disabled={walletActionLoading}
                 >
                   {walletActionLoading ? (
                     <span className="inline-flex items-center gap-2">
                       <Loader2Icon className="size-4 animate-spin" />
-                      {t("Working...")}
+                      {t('Working...')}
                     </span>
                   ) : (
                     step1PrimaryLabel
@@ -2300,9 +2298,9 @@ export default function LaunchpadForm({
                     type="button"
                     className="launch-mini-button"
                     onClick={handleWalletDisconnect}
-                    disabled={disconnectStatus === "pending"}
+                    disabled={disconnectStatus === 'pending'}
                   >
-                    {t("Disconnect")}
+                    {t('Disconnect')}
                   </button>
                 )}
               </div>
@@ -2321,10 +2319,10 @@ export default function LaunchpadForm({
             <StepFooterLanguageControl />
             <StepFooterBrand />
             <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">{t("Continue")}</span>
+              <span className="launch-binary-label">{t('Continue')}</span>
               <button type="button" className="launch-choice-button launch-choice-no" disabled>
                 <ArrowLeftIcon className="size-3.5" />
-                {t("No")}
+                {t('No')}
               </button>
               <button
                 type="button"
@@ -2332,7 +2330,7 @@ export default function LaunchpadForm({
                 disabled={!canContinueStep2}
                 onClick={() => setActiveStep(2)}
               >
-                {t("Yes")}
+                {t('Yes')}
                 <ArrowRightIcon className="size-3.5" />
               </button>
             </div>
@@ -2400,8 +2398,8 @@ export default function LaunchpadForm({
                 <ConnectionCardTitle
                   iconSrc="/assets/images/vercel.svg"
                   iconAlt="Vercel"
-                  title={t("Vercel authentication")}
-                  infoText={t("Allow Vercel to import your GitHub repository for deploys.")}
+                  title={t('Vercel authentication')}
+                  infoText={t('Allow Vercel to import your GitHub repository for deploys.')}
                 />
                 {step3VercelReady ? (
                   <CircleCheckIcon className="size-5 text-primary" />
@@ -2414,16 +2412,16 @@ export default function LaunchpadForm({
                   <button
                     type="button"
                     className="launch-mini-button"
-                    onClick={() => switchVercelAuthMethod("token")}
-                    disabled={vercelAuthMethod === "token"}
+                    onClick={() => switchVercelAuthMethod('token')}
+                    disabled={vercelAuthMethod === 'token'}
                   >
-                    {t("Access Token")}
+                    {t('Access Token')}
                   </button>
                   <button
                     type="button"
                     className="launch-mini-button"
-                    onClick={() => switchVercelAuthMethod("oauth")}
-                    disabled={vercelAuthMethod === "oauth"}
+                    onClick={() => switchVercelAuthMethod('oauth')}
+                    disabled={vercelAuthMethod === 'oauth'}
                   >
                     {copy.oauthSoon}
                   </button>
@@ -2433,11 +2431,11 @@ export default function LaunchpadForm({
               <div className="launch-connection-step">
                 <div className="launch-connection-step-header">
                   <span className="launch-connection-step-index">1</span>
-                  <span className="launch-connection-step-label">{t("Connect Vercel")}</span>
+                  <span className="launch-connection-step-label">{t('Connect Vercel')}</span>
                   {step3VercelAuthReady && <CircleCheckIcon className="size-4 text-primary" />}
                 </div>
 
-                {vercelAuthMethod === "oauth" ? (
+                {vercelAuthMethod === 'oauth' ? (
                   <>
                     {step3VercelAuthReady ? (
                       <div className="launch-status-field">
@@ -2453,11 +2451,11 @@ export default function LaunchpadForm({
                           type="button"
                           className="launch-status-action"
                           onClick={() => {
-                            void disconnectVercelOAuth();
+                            void disconnectVercelOAuth()
                           }}
                           disabled={oauthStatusLoading}
-                          aria-label={t("Disconnect")}
-                          title={t("Disconnect")}
+                          aria-label={t('Disconnect')}
+                          title={t('Disconnect')}
                         >
                           <XIcon className="size-4" />
                         </button>
@@ -2479,11 +2477,11 @@ export default function LaunchpadForm({
                         </span>
                         {vercelOauthConnected ? (
                           <span className="text-xs font-medium text-foreground">
-                            {vercelOauthIdentity || t("Connected account")}
+                            {vercelOauthIdentity || t('Connected account')}
                           </span>
                         ) : (
                           <span className="text-xs text-muted-foreground">
-                            {t("Not connected")}
+                            {t('Not connected')}
                           </span>
                         )}
 
@@ -2492,11 +2490,11 @@ export default function LaunchpadForm({
                             type="button"
                             className="launch-mini-button"
                             onClick={() => {
-                              void disconnectVercelOAuth();
+                              void disconnectVercelOAuth()
                             }}
                             disabled={oauthStatusLoading}
                           >
-                            {t("Disconnect")}
+                            {t('Disconnect')}
                           </button>
                         ) : (
                           <button
@@ -2505,7 +2503,7 @@ export default function LaunchpadForm({
                             onClick={startVercelOAuth}
                             disabled={oauthStatusLoading}
                           >
-                            {oauthStatusLoading ? t("Checking...") : t("Connect Vercel")}
+                            {oauthStatusLoading ? t('Checking...') : t('Connect Vercel')}
                           </button>
                         )}
                       </div>
@@ -2527,16 +2525,16 @@ export default function LaunchpadForm({
                           type="button"
                           className="launch-status-action"
                           onClick={() => {
-                            setVercelConnection(null);
-                            setVercelConnectionError(null);
+                            setVercelConnection(null)
+                            setVercelConnectionError(null)
                             setForm((previous) => ({
                               ...previous,
-                              vercelAccessToken: "",
+                              vercelAccessToken: '',
                               supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                            }));
+                            }))
                           }}
-                          aria-label={t("Disconnect")}
-                          title={t("Disconnect")}
+                          aria-label={t('Disconnect')}
+                          title={t('Disconnect')}
                         >
                           <XIcon className="size-4" />
                         </button>
@@ -2544,22 +2542,22 @@ export default function LaunchpadForm({
                     ) : (
                       <div className="launch-token-entry">
                         <label className="launch-field">
-                          <span className="sr-only">{t("Vercel Access Token")}</span>
+                          <span className="sr-only">{t('Vercel Access Token')}</span>
                           <input
                             type="password"
                             value={form.vercelAccessToken}
                             onChange={(event) => {
-                              setVercelConnection(null);
-                              setVercelConnectionError(null);
+                              setVercelConnection(null)
+                              setVercelConnectionError(null)
                               setForm((previous) => ({
                                 ...previous,
                                 vercelAccessToken: event.target.value,
                                 supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
-                              }));
+                              }))
                             }}
                             onFocus={() => setIsVercelTokenInputFocused(true)}
                             onBlur={() => setIsVercelTokenInputFocused(false)}
-                            placeholder={t("Paste Vercel Access Token")}
+                            placeholder={t('Paste Vercel Access Token')}
                             required
                           />
                         </label>
@@ -2570,7 +2568,7 @@ export default function LaunchpadForm({
                             target="_blank"
                             rel="noreferrer"
                           >
-                            {t("Create token in Vercel")}
+                            {t('Create token in Vercel')}
                           </a>
                         </p>
                       </div>
@@ -2584,7 +2582,7 @@ export default function LaunchpadForm({
                   <div className="launch-connection-step-header">
                     <span className="launch-connection-step-index">2</span>
                     <span className="launch-connection-step-label">
-                      {t("Connect Vercel to GitHub")}
+                      {t('Connect Vercel to GitHub')}
                     </span>
                     {vercelGitImportReady && <CircleCheckIcon className="size-4 text-primary" />}
                   </div>
@@ -2595,7 +2593,7 @@ export default function LaunchpadForm({
                         className="launch-mini-button"
                         onClick={startVercelGitHubConnect}
                       >
-                        {t("Connect Vercel to GitHub")}
+                        {t('Connect Vercel to GitHub')}
                       </button>
                       <button
                         type="button"
@@ -2606,12 +2604,12 @@ export default function LaunchpadForm({
                         {vercelConnectionLoading ? (
                           <span className="inline-flex items-center gap-2">
                             <Loader2Icon className="size-3.5 animate-spin" />
-                            {t("Refreshing...")}
+                            {t('Refreshing...')}
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-2">
                             <RefreshCwIcon className="size-3.5" />
-                            {t("Refresh")}
+                            {t('Refresh')}
                           </span>
                         )}
                       </button>
@@ -2623,9 +2621,9 @@ export default function LaunchpadForm({
                             target="_blank"
                             rel="noreferrer"
                           >
-                            {t("Connect your Vercel account to GitHub")}
-                          </a>{" "}
-                          {t("Allow the Vercel app to access {repo} on GitHub.", {
+                            {t('Connect your Vercel account to GitHub')}
+                          </a>{' '}
+                          {t('Allow the Vercel app to access {repo} on GitHub.', {
                             repo: form.gitRepo.trim(),
                           })}
                         </p>
@@ -2651,8 +2649,8 @@ export default function LaunchpadForm({
                 <ConnectionCardTitle
                   iconSrc="/assets/images/reown.svg"
                   iconAlt="Reown"
-                  title={t("Reown Project ID")}
-                  infoText={t("Reown Project ID enables wallet login for your end users.")}
+                  title={t('Reown Project ID')}
+                  infoText={t('Reown Project ID enables wallet login for your end users.')}
                 />
                 {step3ReownReady ? (
                   <CircleCheckIcon className="size-5 text-primary" />
@@ -2661,28 +2659,28 @@ export default function LaunchpadForm({
                 )}
               </div>
               <label className="launch-field">
-                <span className="sr-only">{t("Reown Project ID")}</span>
+                <span className="sr-only">{t('Reown Project ID')}</span>
                 <input
                   value={form.env.REOWN_APPKIT_PROJECT_ID}
                   onChange={(event) => {
-                    setReownConnection(null);
-                    setReownConnectionError(null);
-                    setReownConnectionLoading(Boolean(event.target.value.trim()));
+                    setReownConnection(null)
+                    setReownConnectionError(null)
+                    setReownConnectionLoading(Boolean(event.target.value.trim()))
                     setForm((previous) => ({
                       ...previous,
                       env: {
                         ...previous.env,
                         REOWN_APPKIT_PROJECT_ID: event.target.value,
                       },
-                    }));
+                    }))
                   }}
-                  placeholder={t("Required")}
+                  placeholder={t('Required')}
                   required
                 />
               </label>
               {reownConnectionLoading && form.env.REOWN_APPKIT_PROJECT_ID.trim() && (
                 <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
-                  {t("Checking...")}
+                  {t('Checking...')}
                 </p>
               )}
               {reownConnectionError && (
@@ -2691,7 +2689,7 @@ export default function LaunchpadForm({
                 </p>
               )}
               <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
-                {t("Get it at")}{" "}
+                {t('Get it at')}{' '}
                 <a
                   className="launch-link"
                   href="https://cloud.reown.com"
@@ -2699,8 +2697,8 @@ export default function LaunchpadForm({
                   rel="noreferrer"
                 >
                   cloud.reown.com
-                </a>{" "}
-                {t("→ create/select project → copy Project ID.")}
+                </a>{' '}
+                {t('→ create/select project → copy Project ID.')}
               </p>
             </div>
 
@@ -2709,9 +2707,9 @@ export default function LaunchpadForm({
                 <ConnectionCardTitle
                   iconSrc="/assets/images/supabase.svg"
                   iconAlt="Supabase"
-                  title={t("Supabase database")}
+                  title={t('Supabase database')}
                   infoText={t(
-                    "Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.",
+                    'Supabase stores users, sessions, and app data. It is connected or created through your Vercel integration.',
                   )}
                 />
                 {step3DatabaseReady ? (
@@ -2732,10 +2730,10 @@ export default function LaunchpadForm({
                   }
                   disabled={isLoadingSupabaseResources}
                 >
-                  <option value={SUPABASE_CREATE_NEW_OPTION}>{t("CREATE NEW DATABASE")}</option>
+                  <option value={SUPABASE_CREATE_NEW_OPTION}>{t('CREATE NEW DATABASE')}</option>
                   {supabaseResources.map((resource, index) => (
                     <option key={resource.id} value={resource.id}>
-                      {t("SUPABASE DATABASE {index} - {name}", {
+                      {t('SUPABASE DATABASE {index} - {name}', {
                         index: `${index + 1}`,
                         name: resource.name,
                       })}
@@ -2746,11 +2744,11 @@ export default function LaunchpadForm({
                   type="button"
                   className="launch-mini-button"
                   onClick={() => {
-                    void loadSupabaseResources();
+                    void loadSupabaseResources()
                   }}
                   disabled={!step3VercelAuthReady || isLoadingSupabaseResources}
                 >
-                  {isLoadingSupabaseResources ? t("Refreshing...") : t("Refresh")}
+                  {isLoadingSupabaseResources ? t('Refreshing...') : t('Refresh')}
                 </button>
               </div>
               {supabaseResourcesError && (
@@ -2770,9 +2768,9 @@ export default function LaunchpadForm({
               "
               onClick={() => setStep2AdvancedOpen((previous) => !previous)}
             >
-              <span>{t("Advanced options")}</span>
+              <span>{t('Advanced options')}</span>
               <ChevronDownIcon
-                className={`size-4 transition-transform ${step2AdvancedOpen ? "rotate-180" : ""}`}
+                className={`size-4 transition-transform ${step2AdvancedOpen ? 'rotate-180' : ''}`}
               />
             </button>
 
@@ -2780,11 +2778,11 @@ export default function LaunchpadForm({
               <div className="launch-step2-advanced-body mt-4 border-t border-border/60 pt-4">
                 <div className="launch-grid">
                   <label className="launch-field">
-                    <span>{t("Project slug (auto)")}</span>
+                    <span>{t('Project slug (auto)')}</span>
                     <input value={resolvedProjectSlug} readOnly />
                   </label>
                   <label className="launch-field">
-                    <span>{t("Project slug override")}</span>
+                    <span>{t('Project slug override')}</span>
                     <input
                       value={form.projectSlugOverride}
                       onChange={(event) =>
@@ -2793,26 +2791,26 @@ export default function LaunchpadForm({
                           projectSlugOverride: event.target.value,
                         }))
                       }
-                      placeholder={t("optional")}
+                      placeholder={t('optional')}
                     />
                   </label>
                   <label className="launch-field">
-                    <span>{t("Repository")}</span>
+                    <span>{t('Repository')}</span>
                     <input
                       value={form.gitRepo}
                       onChange={(event) => {
-                        setGithubError(null);
-                        setGithubRepoUrl("");
-                        setGithubSyncEnabled(false);
+                        setGithubError(null)
+                        setGithubRepoUrl('')
+                        setGithubSyncEnabled(false)
                         setForm((previous) => ({
                           ...previous,
                           gitRepo: event.target.value,
-                        }));
+                        }))
                       }}
                     />
                   </label>
                   <label className="launch-field">
-                    <span>{t("Branch")}</span>
+                    <span>{t('Branch')}</span>
                     <input
                       value={form.gitBranch}
                       onChange={(event) =>
@@ -2824,7 +2822,7 @@ export default function LaunchpadForm({
                     />
                   </label>
                   <label className="launch-field">
-                    <span>{t("Vercel Team ID")}</span>
+                    <span>{t('Vercel Team ID')}</span>
                     <input
                       value={form.vercelTeamId}
                       onChange={(event) =>
@@ -2834,11 +2832,11 @@ export default function LaunchpadForm({
                           supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
                         }))
                       }
-                      placeholder={t("empty = personal account")}
+                      placeholder={t('empty = personal account')}
                     />
                   </label>
                   <label className="launch-field">
-                    <span>{t("Supabase region")}</span>
+                    <span>{t('Supabase region')}</span>
                     <input
                       value={form.supabaseRegion}
                       onChange={(event) =>
@@ -2864,7 +2862,7 @@ export default function LaunchpadForm({
                             },
                           }))
                         }
-                        placeholder={t("empty = auto generated by API")}
+                        placeholder={t('empty = auto generated by API')}
                       />
                       <button
                         type="button"
@@ -2879,7 +2877,7 @@ export default function LaunchpadForm({
                           }))
                         }
                       >
-                        {t("Generate")}
+                        {t('Generate')}
                       </button>
                     </div>
                   </label>
@@ -2897,7 +2895,7 @@ export default function LaunchpadForm({
                             },
                           }))
                         }
-                        placeholder={t("empty = auto generated by API")}
+                        placeholder={t('empty = auto generated by API')}
                       />
                       <button
                         type="button"
@@ -2912,12 +2910,12 @@ export default function LaunchpadForm({
                           }))
                         }
                       >
-                        {t("Generate")}
+                        {t('Generate')}
                       </button>
                     </div>
                   </label>
                   <label className="launch-field">
-                    <span>{t("SITE_URL override")}</span>
+                    <span>{t('SITE_URL override')}</span>
                     <input
                       value={form.env.SITE_URL}
                       onChange={(event) =>
@@ -2934,7 +2932,7 @@ export default function LaunchpadForm({
                   </label>
                 </div>
                 <label className="launch-field mt-4">
-                  <span>{t("Extra env vars (.env format)")}</span>
+                  <span>{t('Extra env vars (.env format)')}</span>
                   <textarea
                     value={form.extraEnvText}
                     onChange={(event) =>
@@ -2944,7 +2942,7 @@ export default function LaunchpadForm({
                       }))
                     }
                     rows={5}
-                    placeholder={"OPENROUTER_API_KEY=...\nSENTRY_DSN=..."}
+                    placeholder={'OPENROUTER_API_KEY=...\nSENTRY_DSN=...'}
                   />
                 </label>
               </div>
@@ -2955,14 +2953,14 @@ export default function LaunchpadForm({
             <StepFooterLanguageControl />
             <StepFooterBrand />
             <div className="launch-step-footer-control launch-binary-nav">
-              <span className="launch-binary-label">{t("Continue")}</span>
+              <span className="launch-binary-label">{t('Continue')}</span>
               <button
                 type="button"
                 className="launch-choice-button launch-choice-no"
                 onClick={() => setActiveStep(1)}
               >
                 <ArrowLeftIcon className="size-3.5" />
-                {t("No")}
+                {t('No')}
               </button>
               <button
                 type="button"
@@ -2970,7 +2968,7 @@ export default function LaunchpadForm({
                 disabled={!canContinueStep3}
                 onClick={() => setActiveStep(3)}
               >
-                {t("Yes")}
+                {t('Yes')}
                 <ArrowRightIcon className="size-3.5" />
               </button>
             </div>
@@ -2991,24 +2989,24 @@ export default function LaunchpadForm({
                 >
                   <span
                     className={`launch-timeline-dot ${
-                      entry.status === "done"
-                        ? "is-done"
-                        : entry.status === "running"
-                          ? "is-running"
-                          : entry.status === "error"
-                            ? "is-error"
-                            : ""
+                      entry.status === 'done'
+                        ? 'is-done'
+                        : entry.status === 'running'
+                          ? 'is-running'
+                          : entry.status === 'error'
+                            ? 'is-error'
+                            : ''
                     }`}
                   >
-                    {entry.status === "done" ? <CheckIcon className="size-3" /> : null}
+                    {entry.status === 'done' ? <CheckIcon className="size-3" /> : null}
                   </span>
                   <span
                     className={
-                      entry.status === "error"
-                        ? "text-destructive"
-                        : entry.status === "running"
-                          ? "text-primary"
-                          : "text-muted-foreground"
+                      entry.status === 'error'
+                        ? 'text-destructive'
+                        : entry.status === 'running'
+                          ? 'text-primary'
+                          : 'text-muted-foreground'
                     }
                   >
                     {entry.label}
@@ -3021,7 +3019,7 @@ export default function LaunchpadForm({
               <StepFooterLanguageControl />
               <StepFooterBrand />
               <div className="launch-step-footer-control launch-binary-nav">
-                <span className="launch-binary-label">{t("Deploy")}</span>
+                <span className="launch-binary-label">{t('Deploy')}</span>
                 <button
                   type="button"
                   className="launch-choice-button launch-choice-no"
@@ -3029,7 +3027,7 @@ export default function LaunchpadForm({
                   onClick={() => setActiveStep(2)}
                 >
                   <ArrowLeftIcon className="size-3.5" />
-                  {t("No")}
+                  {t('No')}
                 </button>
                 <button
                   type="submit"
@@ -3039,12 +3037,12 @@ export default function LaunchpadForm({
                   {isLaunching ? (
                     <span className="inline-flex items-center gap-2">
                       <Loader2Icon className="size-4 animate-spin" />
-                      {t("Yes")}
+                      {t('Yes')}
                     </span>
                   ) : (
                     <>
                       <RocketIcon className="size-3.5" />
-                      {t("Yes")}
+                      {t('Yes')}
                     </>
                   )}
                 </button>
@@ -3065,7 +3063,7 @@ export default function LaunchpadForm({
           {result && result.logs.length > 0 && (
             <details className="launch-logs-disclosure launch-step3-logs">
               <summary>
-                <span>{t("Logs")}</span>
+                <span>{t('Logs')}</span>
                 <ChevronDownIcon className="size-4" />
               </summary>
               <div className="launch-logs-section">
@@ -3078,8 +3076,8 @@ export default function LaunchpadForm({
 
       <ActionPrompt
         open={connectPromptOpen}
-        title={t("Connecting wallet")}
-        description={t("Open your wallet and approve the connection to continue.")}
+        title={t('Connecting wallet')}
+        description={t('Open your wallet and approve the connection to continue.')}
         showConnectedWalletIcon={isAppKitReady}
         allowClose
         onClose={() => setConnectPromptOpen(false)}
@@ -3087,12 +3085,12 @@ export default function LaunchpadForm({
 
       <ActionPrompt
         open={signPromptOpen}
-        title={t("Waiting for signature")}
-        description={t("Approve the signature in your wallet to continue.")}
+        title={t('Waiting for signature')}
+        description={t('Approve the signature in your wallet to continue.')}
         showConnectedWalletIcon={isAppKitReady}
         allowClose
         onClose={() => setSignPromptOpen(false)}
       />
     </form>
-  );
+  )
 }

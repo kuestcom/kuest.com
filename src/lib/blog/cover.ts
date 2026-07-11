@@ -1,17 +1,17 @@
-import type { BlogPost, BlogPostSummary } from "./content";
+import type { BlogPost, BlogPostSummary } from './content'
 
-const PLACEHOLDER_COVER = "/assets/blog/placeholder.svg";
+const PLACEHOLDER_COVER = '/assets/blog/placeholder.svg'
 
 export function getPostCoverSrc(post: BlogPost | BlogPostSummary): string {
-  const cover = post.frontmatter.cover;
+  const cover = post.frontmatter.cover
   if (!cover) {
-    return PLACEHOLDER_COVER;
+    return PLACEHOLDER_COVER
   }
-  if (/^https?:\/\//.test(cover) || cover.startsWith("/")) {
-    return cover;
+  if (/^https?:\/\//.test(cover) || cover.startsWith('/')) {
+    return cover
   }
-  if (cover.startsWith("./")) {
-    return `/assets/blog/${post.contentSlug}/${cover.slice(2)}`;
+  if (cover.startsWith('./')) {
+    return `/assets/blog/${post.contentSlug}/${cover.slice(2)}`
   }
-  return `/assets/blog/${post.contentSlug}/${cover}`;
+  return `/assets/blog/${post.contentSlug}/${cover}`
 }

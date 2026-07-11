@@ -1,126 +1,126 @@
-"use client";
+'use client'
 
-import type { SyntheticEvent } from "react";
-import { ChevronRightIcon } from "lucide-react";
-import { useExtracted } from "@/i18n";
-import { useEffect, useId, useState } from "react";
+import type { SyntheticEvent } from 'react'
+import { ChevronRightIcon } from 'lucide-react'
+import { useExtracted } from '@/i18n'
+import { useEffect, useId, useState } from 'react'
 
 export default function ProtocolPitchDeckModal() {
-  const t = useExtracted();
-  const [isOpen, setIsOpen] = useState(false);
-  const [companyName, setCompanyName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const t = useExtracted()
+  const [isOpen, setIsOpen] = useState(false)
+  const [companyName, setCompanyName] = useState('')
+  const [email, setEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<{
-    kind: "idle" | "success" | "error";
-    message: string;
+    kind: 'idle' | 'success' | 'error'
+    message: string
   }>({
-    kind: "idle",
-    message: "",
-  });
-  const titleId = useId();
-  const descriptionId = useId();
+    kind: 'idle',
+    message: '',
+  })
+  const titleId = useId()
+  const descriptionId = useId()
 
   useEffect(() => {
     function handleDocumentClick(event: MouseEvent) {
-      const target = event.target;
+      const target = event.target
 
       if (!(target instanceof Element)) {
-        return;
+        return
       }
 
-      const openTrigger = target.closest("[data-protocol-deck-open]");
+      const openTrigger = target.closest('[data-protocol-deck-open]')
 
       if (openTrigger) {
-        event.preventDefault();
-        setIsOpen(true);
+        event.preventDefault()
+        setIsOpen(true)
       }
     }
 
-    document.addEventListener("click", handleDocumentClick);
+    document.addEventListener('click', handleDocumentClick)
 
     return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, []);
+      document.removeEventListener('click', handleDocumentClick)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isOpen) {
-      return;
+      return
     }
 
-    const previousOverflow = document.body.style.overflow;
+    const previousOverflow = document.body.style.overflow
 
     function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setIsOpen(false);
+      if (event.key === 'Escape') {
+        setIsOpen(false)
       }
     }
 
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleEscape)
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen]);
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen])
 
   function closeModal() {
     if (isSubmitting) {
-      return;
+      return
     }
 
-    setIsOpen(false);
+    setIsOpen(false)
   }
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
-    event.preventDefault();
+    event.preventDefault()
 
     if (isSubmitting) {
-      return;
+      return
     }
 
-    setIsSubmitting(true);
-    setStatus({ kind: "idle", message: "" });
+    setIsSubmitting(true)
+    setStatus({ kind: 'idle', message: '' })
 
     try {
-      const response = await fetch("/api/protocol-deck", {
-        method: "POST",
+      const response = await fetch('/api/protocol-deck', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           companyName,
           email,
         }),
-      });
+      })
 
       const payload = (await response.json().catch(() => null)) as {
-        ok?: boolean;
-        error?: string;
-      } | null;
+        ok?: boolean
+        error?: string
+      } | null
 
       if (!response.ok || !payload?.ok) {
-        throw new Error(payload?.error || t("We couldn't send your request. Please try again."));
+        throw new Error(payload?.error || t("We couldn't send your request. Please try again."))
       }
 
       setStatus({
-        kind: "success",
+        kind: 'success',
         message: t("Request sent. We'll reach out by email."),
-      });
-      setCompanyName("");
-      setEmail("");
+      })
+      setCompanyName('')
+      setEmail('')
     } catch (error) {
       setStatus({
-        kind: "error",
+        kind: 'error',
         message:
           error instanceof Error && error.message
             ? error.message
             : t("We couldn't send your request. Please try again."),
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   }
 
@@ -129,7 +129,7 @@ export default function ProtocolPitchDeckModal() {
       <button
         type="button"
         className="protocol-deck-modal-backdrop"
-        aria-label={t("Close modal")}
+        aria-label={t('Close modal')}
         onClick={closeModal}
       />
       <div
@@ -142,14 +142,14 @@ export default function ProtocolPitchDeckModal() {
         <button
           type="button"
           className="protocol-deck-modal-close"
-          aria-label={t("Close modal")}
+          aria-label={t('Close modal')}
           onClick={closeModal}
         >
           ×
         </button>
-        <div className="protocol-deck-modal-kicker">{t("REQUEST DECK")}</div>
+        <div className="protocol-deck-modal-kicker">{t('REQUEST DECK')}</div>
         <h3 id={titleId} className="protocol-deck-modal-title">
-          {t("Request the Kuest Protocol pitch deck")}
+          {t('Request the Kuest Protocol pitch deck')}
         </h3>
         <p id={descriptionId} className="protocol-deck-modal-description">
           {t("Leave your company name and email and we'll route the request to the team.")}
@@ -157,35 +157,35 @@ export default function ProtocolPitchDeckModal() {
 
         <form className="protocol-deck-form" onSubmit={handleSubmit}>
           <label className="protocol-deck-field">
-            <span>{t("Company name")}</span>
+            <span>{t('Company name')}</span>
             <input
               type="text"
               value={companyName}
               onChange={(event) => setCompanyName(event.target.value)}
-              placeholder={t("Your company")}
+              placeholder={t('Your company')}
               autoComplete="organization"
               required
             />
           </label>
 
           <label className="protocol-deck-field">
-            <span>{t("Work email")}</span>
+            <span>{t('Work email')}</span>
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder={t("you@company.com")}
+              placeholder={t('you@company.com')}
               autoComplete="email"
               required
             />
           </label>
 
           <div
-            className={`protocol-deck-status ${status.kind === "success" ? "is-success" : ""}${
-              status.kind === "error" ? `is-error` : ""
+            className={`protocol-deck-status ${status.kind === 'success' ? 'is-success' : ''}${
+              status.kind === 'error' ? `is-error` : ''
             }`}
             aria-live="polite"
-            hidden={status.kind === "idle"}
+            hidden={status.kind === 'idle'}
           >
             {status.message}
           </div>
@@ -196,7 +196,7 @@ export default function ProtocolPitchDeckModal() {
               className="btn-cta btn-cta-secondary protocol-deck-action"
               onClick={closeModal}
             >
-              <span className="cta-label">{t("Cancel")}</span>
+              <span className="cta-label">{t('Cancel')}</span>
             </button>
             <button
               type="submit"
@@ -204,7 +204,7 @@ export default function ProtocolPitchDeckModal() {
               disabled={isSubmitting}
             >
               <span className="cta-label">
-                {isSubmitting ? t("Sending...") : t("Send request")}
+                {isSubmitting ? t('Sending...') : t('Send request')}
               </span>
               <ChevronRightIcon />
             </button>
@@ -212,5 +212,5 @@ export default function ProtocolPitchDeckModal() {
         </form>
       </div>
     </div>
-  );
+  )
 }

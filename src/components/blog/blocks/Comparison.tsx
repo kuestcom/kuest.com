@@ -2,8 +2,8 @@ export default function Comparison({
   columns,
   rows,
 }: {
-  columns: string[];
-  rows: (string | number)[][];
+  columns: string[]
+  rows: (string | number)[][]
 }) {
   return (
     <div className="blog-comparison">
@@ -30,5 +30,5 @@ export default function Comparison({
         </tbody>
       </table>
     </div>
-  );
+  )
 }

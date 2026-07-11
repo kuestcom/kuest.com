@@ -1,12 +1,12 @@
 ---
-title: "How Prediction Market Resolution Actually Works: UMA, Oracles, and the Settlement Layer"
-description: "A deep technical breakdown of how prediction-market contracts get resolved — the optimistic oracle, dispute mechanics, escalation games, and why settlement is the part that decides which platforms survive."
+title: 'How Prediction Market Resolution Actually Works: UMA, Oracles, and the Settlement Layer'
+description: 'A deep technical breakdown of how prediction-market contracts get resolved — the optimistic oracle, dispute mechanics, escalation games, and why settlement is the part that decides which platforms survive.'
 publishedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["protocol", "settlement", "oracle", "technical"]
+tags: ['protocol', 'settlement', 'oracle', 'technical']
 ---
 
 If you spend enough time around prediction-market builders, you'll
@@ -188,13 +188,13 @@ the operator is not the resolver, the data source is named and locked
 at market creation, and the dispute mechanism is public.
 
 <Comparison
-  columns={["Failure mode", "Centralised resolver", "Optimistic oracle"]}
+  columns={['Failure mode', 'Centralised resolver', 'Optimistic oracle']}
   rows={[
-    ["Vague contract", "High exposure", "Disputes; correctly identifies bad spec"],
-    ["Data source moves", "Manual reconcile", "Replay through dispute"],
-    ["Operator interest conflict", "Existential", "Structurally separated"],
-    ["Cost of malicious resolution", "Trust collapse", "Bond + vote rewrite"],
-    ["Speed for trivial markets", "Faster", "Same (no dispute path)"],
+    ['Vague contract', 'High exposure', 'Disputes; correctly identifies bad spec'],
+    ['Data source moves', 'Manual reconcile', 'Replay through dispute'],
+    ['Operator interest conflict', 'Existential', 'Structurally separated'],
+    ['Cost of malicious resolution', 'Trust collapse', 'Bond + vote rewrite'],
+    ['Speed for trivial markets', 'Faster', 'Same (no dispute path)'],
   ]}
 />
 
@@ -288,6 +288,6 @@ is that it's also the part where the heavy lifting is already done.
 <KuestCTA
   headline="Curious how Kuest's resolution rails compare to your current spec?"
   body="We'll walk through your contract templates, edge cases, and dispute exposure — and show you what the same markets would look like under shared resolution."
-  primary={{ href: "/launch", label: "Audit my markets" }}
-  secondary={{ href: "/enterprise", label: "Talk to engineering" }}
+  primary={{ href: '/launch', label: 'Audit my markets' }}
+  secondary={{ href: '/enterprise', label: 'Talk to engineering' }}
 />

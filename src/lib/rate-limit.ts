@@ -1,99 +1,99 @@
 interface RateLimitConfig {
-  route: string;
-  max: number;
-  windowMs: number;
+  route: string
+  max: number
+  windowMs: number
 }
 
 interface RateLimitResult {
-  allowed: boolean;
-  limit: number;
-  remaining: number;
-  retryAfterSec: number;
+  allowed: boolean
+  limit: number
+  remaining: number
+  retryAfterSec: number
 }
 
-const buckets = new Map<string, number[]>();
-const MAX_BUCKETS = 10_000;
+const buckets = new Map<string, number[]>()
+const MAX_BUCKETS = 10_000
 
 function getClientIp(request: Request) {
-  const forwardedFor = request.headers.get("x-forwarded-for");
+  const forwardedFor = request.headers.get('x-forwarded-for')
   if (forwardedFor) {
-    const first = forwardedFor.split(",")[0]?.trim();
+    const first = forwardedFor.split(',')[0]?.trim()
     if (first) {
-      return first;
+      return first
     }
   }
 
-  const realIp = request.headers.get("x-real-ip")?.trim();
+  const realIp = request.headers.get('x-real-ip')?.trim()
   if (realIp) {
-    return realIp;
+    return realIp
   }
 
-  return "unknown";
+  return 'unknown'
 }
 
 function pruneTimestamps(values: number[], now: number, windowMs: number) {
-  const threshold = now - windowMs;
-  let start = 0;
+  const threshold = now - windowMs
+  let start = 0
   while (start < values.length && values[start] <= threshold) {
-    start += 1;
+    start += 1
   }
-  return start > 0 ? values.slice(start) : values;
+  return start > 0 ? values.slice(start) : values
 }
 
 function cleanupBuckets(now: number, windowMs: number) {
   if (buckets.size <= MAX_BUCKETS) {
-    return;
+    return
   }
 
-  const threshold = now - windowMs;
+  const threshold = now - windowMs
   for (const [key, timestamps] of buckets.entries()) {
     // @ts-expect-error ignore
     if (!timestamps.length || timestamps.at(-1) <= threshold) {
-      buckets.delete(key);
+      buckets.delete(key)
     }
   }
 }
 
 export function checkRateLimit(request: Request, config: RateLimitConfig): RateLimitResult {
-  const now = Date.now();
-  const ip = getClientIp(request);
-  const key = `${config.route}:${ip}`;
-  const existing = buckets.get(key) ?? [];
-  const values = pruneTimestamps(existing, now, config.windowMs);
+  const now = Date.now()
+  const ip = getClientIp(request)
+  const key = `${config.route}:${ip}`
+  const existing = buckets.get(key) ?? []
+  const values = pruneTimestamps(existing, now, config.windowMs)
 
   if (values.length >= config.max) {
-    const retryAfterMs = Math.max(1_000, config.windowMs - (now - values[0]));
-    const retryAfterSec = Math.ceil(retryAfterMs / 1_000);
-    buckets.set(key, values);
-    cleanupBuckets(now, config.windowMs);
+    const retryAfterMs = Math.max(1_000, config.windowMs - (now - values[0]))
+    const retryAfterSec = Math.ceil(retryAfterMs / 1_000)
+    buckets.set(key, values)
+    cleanupBuckets(now, config.windowMs)
     return {
       allowed: false,
       limit: config.max,
       remaining: 0,
       retryAfterSec,
-    };
+    }
   }
 
-  values.push(now);
-  buckets.set(key, values);
-  cleanupBuckets(now, config.windowMs);
+  values.push(now)
+  buckets.set(key, values)
+  cleanupBuckets(now, config.windowMs)
   return {
     allowed: true,
     limit: config.max,
     remaining: Math.max(0, config.max - values.length),
     retryAfterSec: 0,
-  };
+  }
 }
 
 export function buildRateLimitHeaders(result: RateLimitResult) {
   const headers = new Headers({
-    "X-RateLimit-Limit": String(result.limit),
-    "X-RateLimit-Remaining": String(result.remaining),
-  });
+    'X-RateLimit-Limit': String(result.limit),
+    'X-RateLimit-Remaining': String(result.remaining),
+  })
   if (!result.allowed && result.retryAfterSec > 0) {
-    headers.set("Retry-After", String(result.retryAfterSec));
+    headers.set('Retry-After', String(result.retryAfterSec))
   }
-  return headers;
+  return headers
 }
 
 export function getRateLimitConfig(params: { route: string; max: number; windowMs: number }) {
@@ -101,5 +101,5 @@ export function getRateLimitConfig(params: { route: string; max: number; windowM
     route: params.route,
     max: Math.floor(params.max),
     windowMs: Math.floor(params.windowMs),
-  } satisfies RateLimitConfig;
+  } satisfies RateLimitConfig
 }

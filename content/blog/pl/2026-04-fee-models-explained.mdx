@@ -1,14 +1,14 @@
 ---
-title: "Opłaty transakcyjne wyjaśnione: jak ustawić je bez odstraszania traderów"
-slug: "2026-04-fee-models-explained"
-description: "Praktyczny przewodnik 2026 po wyborze stawki opłaty dla rynku predykcyjnego: co według nas działa, co zabija wolumen i jak rozwijać model wraz ze wzrostem."
+title: 'Opłaty transakcyjne wyjaśnione: jak ustawić je bez odstraszania traderów'
+slug: '2026-04-fee-models-explained'
+description: 'Praktyczny przewodnik 2026 po wyborze stawki opłaty dla rynku predykcyjnego: co według nas działa, co zabija wolumen i jak rozwijać model wraz ze wzrostem.'
 publishedAt: 2026-04-08
 updatedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["operators", "playbook", "fees", "monetisation"]
+tags: ['operators', 'playbook', 'fees', 'monetisation']
 ---
 
 Opłata od każdej transakcji to najważniejsza pojedyncza liczba w Twoim
@@ -74,17 +74,17 @@ prowadzimy co kwartał:
 
 <Comparison
   columns={[
-    "Typ venue",
-    "Typowa opłata operatora",
-    "Spread na płynnych rynkach",
-    "Całkowity koszt round-trip",
+    'Typ venue',
+    'Typowa opłata operatora',
+    'Spread na płynnych rynkach',
+    'Całkowity koszt round-trip',
   ]}
   rows={[
-    ["Kalshi (regulowane USA)", "0.0% (brak)", "10–40 bps", "≈ 20–80 bps"],
-    ["Polymarket (on-chain)", "≈ 1.0% (split protocol)", "20–60 bps", "≈ 1.4–1.6%"],
-    ["Regionalne white-label brokerage dla retailu", "0.8–1.5%", "20–80 bps", "≈ 1.2–2.3%"],
-    ["Crypto-native exchange overlays", "0.3–0.7%", "20–60 bps", "≈ 0.7–1.4%"],
-    ["Creator / community venues", "1.5–2.5%", "30–100 bps", "≈ 2.0–3.5%"],
+    ['Kalshi (regulowane USA)', '0.0% (brak)', '10–40 bps', '≈ 20–80 bps'],
+    ['Polymarket (on-chain)', '≈ 1.0% (split protocol)', '20–60 bps', '≈ 1.4–1.6%'],
+    ['Regionalne white-label brokerage dla retailu', '0.8–1.5%', '20–80 bps', '≈ 1.2–2.3%'],
+    ['Crypto-native exchange overlays', '0.3–0.7%', '20–60 bps', '≈ 0.7–1.4%'],
+    ['Creator / community venues', '1.5–2.5%', '30–100 bps', '≈ 2.0–3.5%'],
   ]}
 />
 
@@ -264,32 +264,32 @@ jeszcze nie wystartował, poniższy fee schedule działał niezawodnie w
 kohorcie operatorów, których onboardowaliśmy.
 
 <Comparison
-  columns={["Etap", "Opłata operatora", "Tiering", "Dlaczego"]}
+  columns={['Etap', 'Opłata operatora', 'Tiering', 'Dlaczego']}
   rows={[
     [
-      "Pre-launch / private beta",
-      "0.85%",
-      "Flat",
-      "Ustalenie baseline; zebranie danych kohortowych",
+      'Pre-launch / private beta',
+      '0.85%',
+      'Flat',
+      'Ustalenie baseline; zebranie danych kohortowych',
     ],
     [
-      "Public launch → Month 6",
-      "0.85%",
-      "Flat",
-      "Utrzymanie stawki, aby zebrać sygnał; opór przed wczesnymi korektami",
+      'Public launch → Month 6',
+      '0.85%',
+      'Flat',
+      'Utrzymanie stawki, aby zebrać sygnał; opór przed wczesnymi korektami',
     ],
-    ["Month 6 → Month 12", "0.95%", "Flat", "Umiarkowana podwyżka po potwierdzeniu retencji"],
+    ['Month 6 → Month 12', '0.95%', 'Flat', 'Umiarkowana podwyżka po potwierdzeniu retencji'],
     [
-      "Month 12+",
-      "0.95% / 0.80% / 0.65%",
-      "Trzy tiery według 30-dniowego wolumenu",
-      "Utrzymanie whales bez utraty retailu",
+      'Month 12+',
+      '0.95% / 0.80% / 0.65%',
+      'Trzy tiery według 30-dniowego wolumenu',
+      'Utrzymanie whales bez utraty retailu',
     ],
     [
-      "Year 2+",
-      "Negocjowana dla institutional desks",
-      "Custom",
-      "Dołącza realny prop flow; potrzebuje wyceny w basis points",
+      'Year 2+',
+      'Negocjowana dla institutional desks',
+      'Custom',
+      'Dołącza realny prop flow; potrzebuje wyceny w basis points',
     ],
   ]}
 />
@@ -305,6 +305,6 @@ powinien wytrzymać.
 <KuestCTA
   headline="Chcesz model opłat dopasowany do konkretnej publiczności?"
   body="Przejdziemy przez profil Twoich odbiorców, docelową jurysdykcję i venue, z którymi Twoi traderzy najpewniej będą Cię porównywać, a potem damy Ci obronną stawkę startową w mniej niż godzinę."
-  primary={{ href: "/launch", label: "Uruchom launch wizard" }}
-  secondary={{ href: "/enterprise", label: "Umów rozmowę o strategii opłat" }}
+  primary={{ href: '/launch', label: 'Uruchom launch wizard' }}
+  secondary={{ href: '/enterprise', label: 'Umów rozmowę o strategii opłat' }}
 />

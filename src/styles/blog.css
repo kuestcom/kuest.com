@@ -756,19 +756,19 @@ html:has(.blog-page) {
   }
 }
 
-.blog-callout[data-type="info"] {
+.blog-callout[data-type='info'] {
   --blog-callout-accent: var(--accent);
 }
 
-.blog-callout[data-type="tip"] {
+.blog-callout[data-type='tip'] {
   --blog-callout-accent: var(--color-accent);
 }
 
-.blog-callout[data-type="warning"] {
+.blog-callout[data-type='warning'] {
   --blog-callout-accent: var(--gold);
 }
 
-.blog-callout[data-type="error"] {
+.blog-callout[data-type='error'] {
   --blog-callout-accent: var(--red);
 }
 
@@ -1019,11 +1019,11 @@ html:has(.blog-page) {
   text-transform: uppercase;
 }
 
-.blog-comparison th[data-col="0"] {
+.blog-comparison th[data-col='0'] {
   color: var(--color-muted);
 }
 
-.blog-comparison th:not([data-col="0"]) {
+.blog-comparison th:not([data-col='0']) {
   color: var(--color-accent);
 }
 
@@ -1034,7 +1034,7 @@ html:has(.blog-page) {
   color: color-mix(in oklab, var(--color-text) 88%, transparent);
 }
 
-.blog-comparison td[data-col="0"] {
+.blog-comparison td[data-col='0'] {
   font-family: var(--font-sans);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
@@ -1080,7 +1080,7 @@ html:has(.blog-page) {
 
 /* Accent glow anchored to the top edge of the card. */
 .blog-cta::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0 0 auto 0;
   height: 220px;

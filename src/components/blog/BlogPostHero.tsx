@@ -1,19 +1,19 @@
-import type { BlogPost, BlogPostSummary } from "@/lib/blog/content";
-import { ArrowLeftIcon } from "lucide-react";
-import Image from "@/compat/Image";
-import { Link } from "@/i18n/navigation";
+import type { BlogPost, BlogPostSummary } from '@/lib/blog/content'
+import { ArrowLeftIcon } from 'lucide-react'
+import Image from '@/compat/Image'
+import { Link } from '@/i18n/navigation'
 
 function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  const first = parts[0];
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  const first = parts[0]
   if (!first) {
-    return "K";
+    return 'K'
   }
   if (parts.length === 1) {
-    return first.slice(0, 2).toUpperCase();
+    return first.slice(0, 2).toUpperCase()
   }
-  const last = parts.at(-1) ?? first;
-  return (first[0] + last[0]).toUpperCase();
+  const last = parts.at(-1) ?? first
+  return (first[0] + last[0]).toUpperCase()
 }
 
 export default function BlogPostHero({
@@ -23,15 +23,15 @@ export default function BlogPostHero({
   readingTimeLabel,
   backLabel,
 }: {
-  post: BlogPost | BlogPostSummary;
-  coverSrc: string;
-  dateLabel: string;
-  readingTimeLabel: string;
-  backLabel: string;
+  post: BlogPost | BlogPostSummary
+  coverSrc: string
+  dateLabel: string
+  readingTimeLabel: string
+  backLabel: string
 }) {
-  const tag = post.frontmatter.tags[0];
-  const author = post.frontmatter.author;
-  const initials = getInitials(author.name);
+  const tag = post.frontmatter.tags[0]
+  const author = post.frontmatter.author
+  const initials = getInitials(author.name)
 
   return (
     <header className="blog-post-hero">
@@ -84,5 +84,5 @@ export default function BlogPostHero({
         />
       </figure>
     </header>
-  );
+  )
 }

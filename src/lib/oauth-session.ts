@@ -1,28 +1,28 @@
-import { clearCookie, OAUTH_COOKIE_NAMES, readOAuthSession, setOAuthSession } from "@/lib/oauth";
-import { refreshSupabaseAccessToken } from "@/lib/oauth-supabase";
-import { refreshVercelAccessToken } from "@/lib/oauth-vercel";
+import { clearCookie, OAUTH_COOKIE_NAMES, readOAuthSession, setOAuthSession } from '@/lib/oauth'
+import { refreshSupabaseAccessToken } from '@/lib/oauth-supabase'
+import { refreshVercelAccessToken } from '@/lib/oauth-vercel'
 
 function isExpired(expiresAt?: number) {
   if (!expiresAt) {
-    return false;
+    return false
   }
-  return Date.now() >= expiresAt - 45_000;
+  return Date.now() >= expiresAt - 45_000
 }
 
 export async function getValidVercelSession() {
-  const session = await readOAuthSession(OAUTH_COOKIE_NAMES.vercelSession);
+  const session = await readOAuthSession(OAUTH_COOKIE_NAMES.vercelSession)
   if (!session?.accessToken) {
-    return null;
+    return null
   }
   if (!isExpired(session.expiresAt)) {
-    return session;
+    return session
   }
   if (!session.refreshToken) {
-    return session;
+    return session
   }
 
   try {
-    const refreshed = await refreshVercelAccessToken(session.refreshToken);
+    const refreshed = await refreshVercelAccessToken(session.refreshToken)
     const nextSession = {
       accessToken: refreshed.access_token,
       refreshToken: refreshed.refresh_token ?? session.refreshToken,
@@ -30,29 +30,29 @@ export async function getValidVercelSession() {
         ? Date.now() + Number(refreshed.expires_in) * 1000
         : session.expiresAt,
       user: session.user,
-    };
-    await setOAuthSession(OAUTH_COOKIE_NAMES.vercelSession, nextSession);
-    return nextSession;
+    }
+    await setOAuthSession(OAUTH_COOKIE_NAMES.vercelSession, nextSession)
+    return nextSession
   } catch {
-    await clearCookie(OAUTH_COOKIE_NAMES.vercelSession);
-    return null;
+    await clearCookie(OAUTH_COOKIE_NAMES.vercelSession)
+    return null
   }
 }
 
 export async function getValidSupabaseSession() {
-  const session = await readOAuthSession(OAUTH_COOKIE_NAMES.supabaseSession);
+  const session = await readOAuthSession(OAUTH_COOKIE_NAMES.supabaseSession)
   if (!session?.accessToken) {
-    return null;
+    return null
   }
   if (!isExpired(session.expiresAt)) {
-    return session;
+    return session
   }
   if (!session.refreshToken) {
-    return session;
+    return session
   }
 
   try {
-    const refreshed = await refreshSupabaseAccessToken(session.refreshToken);
+    const refreshed = await refreshSupabaseAccessToken(session.refreshToken)
     const nextSession = {
       accessToken: refreshed.access_token,
       refreshToken: refreshed.refresh_token ?? session.refreshToken,
@@ -60,11 +60,11 @@ export async function getValidSupabaseSession() {
         ? Date.now() + Number(refreshed.expires_in) * 1000
         : session.expiresAt,
       user: session.user,
-    };
-    await setOAuthSession(OAUTH_COOKIE_NAMES.supabaseSession, nextSession);
-    return nextSession;
+    }
+    await setOAuthSession(OAUTH_COOKIE_NAMES.supabaseSession, nextSession)
+    return nextSession
   } catch {
-    await clearCookie(OAUTH_COOKIE_NAMES.supabaseSession);
-    return null;
+    await clearCookie(OAUTH_COOKIE_NAMES.supabaseSession)
+    return null
   }
 }

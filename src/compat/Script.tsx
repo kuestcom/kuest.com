@@ -1,10 +1,10 @@
-import type { ReactNode, ScriptHTMLAttributes } from "react";
+import type { ReactNode, ScriptHTMLAttributes } from 'react'
 
 type ScriptProps = ScriptHTMLAttributes<HTMLScriptElement> & {
-  strategy?: string;
-  children?: ReactNode;
-};
+  strategy?: string
+  children?: ReactNode
+}
 
 export default function Script({ strategy: _strategy, ...props }: ScriptProps) {
-  return <script {...props} />;
+  return <script {...props} />
 }

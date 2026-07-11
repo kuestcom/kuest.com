@@ -1,12 +1,12 @@
 ---
-title: "Comment fonctionne réellement la résolution des marchés de prédiction : UMA, oracles et la couche de règlement"
+title: 'Comment fonctionne réellement la résolution des marchés de prédiction : UMA, oracles et la couche de règlement'
 description: "Une analyse technique approfondie de la résolution des contrats de marché de prédiction — l'optimistic oracle, la mécanique des contestations, les jeux d'escalade et pourquoi le règlement est la partie qui décide quelles plateformes survivent."
 publishedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["protocol", "settlement", "oracle", "technical"]
+tags: ['protocol', 'settlement', 'oracle', 'technical']
 ---
 
 Si vous passez assez de temps parmi les bâtisseurs de marchés de
@@ -209,21 +209,21 @@ résolveur, la source de données est nommée et verrouillée à la
 création du marché, et le mécanisme de contestation est public.
 
 <Comparison
-  columns={["Mode d'échec", "Résolveur centralisé", "Optimistic oracle"]}
+  columns={["Mode d'échec", 'Résolveur centralisé', 'Optimistic oracle']}
   rows={[
     [
-      "Contrat vague",
-      "Forte exposition",
-      "Contestations ; identifie correctement la mauvaise spec",
+      'Contrat vague',
+      'Forte exposition',
+      'Contestations ; identifie correctement la mauvaise spec',
     ],
-    ["Source de données qui bouge", "Rapprochement manuel", "Replay via contestation"],
-    ["Conflit d'intérêts opérateur", "Existentiel", "Structurellement séparé"],
+    ['Source de données qui bouge', 'Rapprochement manuel', 'Replay via contestation'],
+    ["Conflit d'intérêts opérateur", 'Existentiel', 'Structurellement séparé'],
     [
       "Coût d'une résolution malveillante",
-      "Effondrement de la confiance",
-      "Caution + réécriture par vote",
+      'Effondrement de la confiance',
+      'Caution + réécriture par vote',
     ],
-    ["Vitesse sur marchés triviaux", "Plus rapide", "Identique (pas de voie de contestation)"],
+    ['Vitesse sur marchés triviaux', 'Plus rapide', 'Identique (pas de voie de contestation)'],
   ]}
 />
 
@@ -330,6 +330,6 @@ déjà fait.
 <KuestCTA
   headline="Curieux de voir comment les rails de résolution de Kuest se comparent à votre spec actuelle ?"
   body="Nous parcourons vos modèles de contrat, vos cas limites et votre exposition aux contestations — et nous vous montrons à quoi ressembleraient les mêmes marchés en résolution mutualisée."
-  primary={{ href: "/launch", label: "Auditer mes marchés" }}
-  secondary={{ href: "/enterprise", label: "Parler à l'ingénierie" }}
+  primary={{ href: '/launch', label: 'Auditer mes marchés' }}
+  secondary={{ href: '/enterprise', label: "Parler à l'ingénierie" }}
 />

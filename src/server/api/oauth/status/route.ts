@@ -1,5 +1,5 @@
-import type { OAuthStatusResponse } from "@/lib/launch-types";
-import { getValidSupabaseSession, getValidVercelSession } from "@/lib/oauth-session";
+import type { OAuthStatusResponse } from '@/lib/launch-types'
+import { getValidSupabaseSession, getValidVercelSession } from '@/lib/oauth-session'
 
 function toProviderState(session: Awaited<ReturnType<typeof getValidVercelSession>>) {
   if (session) {
@@ -8,21 +8,18 @@ function toProviderState(session: Awaited<ReturnType<typeof getValidVercelSessio
       email: session.user?.email,
       login: session.user?.login,
       name: session.user?.name,
-    };
+    }
   }
-  return { connected: false };
+  return { connected: false }
 }
 
 export async function GET() {
-  const [vercel, supabase] = await Promise.all([
-    getValidVercelSession(),
-    getValidSupabaseSession(),
-  ]);
+  const [vercel, supabase] = await Promise.all([getValidVercelSession(), getValidSupabaseSession()])
 
   const response: OAuthStatusResponse = {
     vercel: toProviderState(vercel),
     supabase: toProviderState(supabase),
-  };
+  }
 
-  return Response.json(response);
+  return Response.json(response)
 }

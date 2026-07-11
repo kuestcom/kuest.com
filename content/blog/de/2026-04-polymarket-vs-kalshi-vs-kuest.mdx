@@ -1,12 +1,12 @@
 ---
-title: "Polymarket vs. Kalshi vs. Kuest: Der Vergleich 2026, den jeder Betreiber braucht"
-description: "Ein ehrlicher Full-Stack-Vergleich von Polymarket, Kalshi und Kuest — was jede Plattform ist, für wen sie gemacht ist, ihre Gebührenökonomie, regulatorische Positionierung und warum die Protokollebene eine andere Kategorie ist als die Venues."
+title: 'Polymarket vs. Kalshi vs. Kuest: Der Vergleich 2026, den jeder Betreiber braucht'
+description: 'Ein ehrlicher Full-Stack-Vergleich von Polymarket, Kalshi und Kuest — was jede Plattform ist, für wen sie gemacht ist, ihre Gebührenökonomie, regulatorische Positionierung und warum die Protokollebene eine andere Kategorie ist als die Venues.'
 publishedAt: 2026-04-12
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["comparison", "polymarket", "kalshi", "platforms", "protocol"]
+tags: ['comparison', 'polymarket', 'kalshi', 'platforms', 'protocol']
 ---
 
 Wer sich 2026 mit der Kategorie der Vorhersagemärkte beschäftigt,
@@ -228,34 +228,34 @@ Gebührenmodelle, weil sie unterschiedliche Positionen im Stack
 bespielen.
 
 <Comparison
-  columns={["Dimension", "Polymarket", "Kalshi", "Kuest (Betreiber-Deploys)"]}
+  columns={['Dimension', 'Polymarket', 'Kalshi', 'Kuest (Betreiber-Deploys)']}
   rows={[
     [
-      "Trader-Hauptgebühr",
-      "≈ 1,0 % pro Seite (Aufteilung Protokoll/Betreiber)",
-      "0,0 % (keine Gebühr pro Trade)",
-      "Vom Betreiber festgelegt, typischerweise 0,5–1,5 %",
+      'Trader-Hauptgebühr',
+      '≈ 1,0 % pro Seite (Aufteilung Protokoll/Betreiber)',
+      '0,0 % (keine Gebühr pro Trade)',
+      'Vom Betreiber festgelegt, typischerweise 0,5–1,5 %',
     ],
     [
-      "Versteckte Kosten",
-      "Spread (~30–60 bps)",
-      "Spread + Marktdaten-Tier",
-      "Spread (~20–60 bps im geteilten Buch)",
+      'Versteckte Kosten',
+      'Spread (~30–60 bps)',
+      'Spread + Marktdaten-Tier',
+      'Spread (~20–60 bps im geteilten Buch)',
     ],
-    ["Maker-Rabatt", "Nein", "Nein", "Nein (Design des geteilten Buchs)"],
+    ['Maker-Rabatt', 'Nein', 'Nein', 'Nein (Design des geteilten Buchs)'],
     [
-      "Betreiberanteil",
-      "Nicht zutreffend (einzelne Venue)",
-      "Nicht zutreffend",
-      "100 % der Betreibergebühr",
+      'Betreiberanteil',
+      'Nicht zutreffend (einzelne Venue)',
+      'Nicht zutreffend',
+      '100 % der Betreibergebühr',
     ],
     [
-      "Protokollanteil",
-      "Polymarket behält seine Venue-Marge",
-      "Wird über Ökosystemumsätze ausgeglichen",
-      "Kleine Protokollgebühr unterhalb der Betreibergebühr",
+      'Protokollanteil',
+      'Polymarket behält seine Venue-Marge',
+      'Wird über Ökosystemumsätze ausgeglichen',
+      'Kleine Protokollgebühr unterhalb der Betreibergebühr',
     ],
-    ["Overrides pro Jurisdiktion", "Nein", "Nein", "Ja"],
+    ['Overrides pro Jurisdiktion', 'Nein', 'Nein', 'Ja'],
   ]}
 />
 
@@ -277,51 +277,51 @@ Ein granularerer Vergleich über die Dimensionen, die Betreibern
 üblicherweise wichtig sind:
 
 <Comparison
-  columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
+  columns={['Feature', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
     [
-      "Settlement-Asset",
-      "USDC On-Chain",
-      "USD Bankenverwahrung",
-      "USDC On-Chain (Betreiber kann Fiat überlagern)",
+      'Settlement-Asset',
+      'USDC On-Chain',
+      'USD Bankenverwahrung',
+      'USDC On-Chain (Betreiber kann Fiat überlagern)',
     ],
     [
-      "Auflösungsmodell",
-      "UMA Optimistic Oracle",
-      "Zentralisiertes Marktintegritätsteam",
-      "UMA-basiert, mit expliziten Regeln und öffentlichem Dispute-Prozess",
+      'Auflösungsmodell',
+      'UMA Optimistic Oracle',
+      'Zentralisiertes Marktintegritätsteam',
+      'UMA-basiert, mit expliziten Regeln und öffentlichem Dispute-Prozess',
     ],
-    ["Geografische Verfügbarkeit", "Global außer USA", "Nur USA", "Pro Betreiber konfigurierbar"],
+    ['Geografische Verfügbarkeit', 'Global außer USA', 'Nur USA', 'Pro Betreiber konfigurierbar'],
     [
-      "KYC-Anforderung",
-      "Keine (nur Wallet)",
-      "Vollständiges US-reguliertes KYC",
-      "Vom Betreiber definiert (wallet-only oder externe KYC-Schicht)",
-    ],
-    [
-      "Markterstellung",
-      "Permissionless (Admin-Kuration)",
-      "Vorab durch Börse genehmigt",
-      "Vom Betreiber innerhalb der Protokollgrenzen verwaltet",
+      'KYC-Anforderung',
+      'Keine (nur Wallet)',
+      'Vollständiges US-reguliertes KYC',
+      'Vom Betreiber definiert (wallet-only oder externe KYC-Schicht)',
     ],
     [
-      "Verwahrungsmodell",
-      "Self-Custody",
-      "Regulierter Bankpartner",
-      "Konfigurierbar: selbst oder reguliert",
+      'Markterstellung',
+      'Permissionless (Admin-Kuration)',
+      'Vorab durch Börse genehmigt',
+      'Vom Betreiber innerhalb der Protokollgrenzen verwaltet',
     ],
     [
-      "Orderbuch-Tiefe beim Start",
-      "Bestehend (etablierte Venue)",
-      "Bestehend (etablierte Venue)",
-      "Geteilt (Day-1-Tiefe für neue Betreiber)",
+      'Verwahrungsmodell',
+      'Self-Custody',
+      'Regulierter Bankpartner',
+      'Konfigurierbar: selbst oder reguliert',
     ],
-    ["Betreiber-Branding", "Nur Polymarket", "Nur Kalshi", "Pro Betreiber-Deploy"],
     [
-      "Ökosystem-Passung",
-      "On-Chain-nativ",
-      "Reguliert, US-institutionell",
-      "Betreiberseitig (jede Jurisdiktion, jedes Publikum)",
+      'Orderbuch-Tiefe beim Start',
+      'Bestehend (etablierte Venue)',
+      'Bestehend (etablierte Venue)',
+      'Geteilt (Day-1-Tiefe für neue Betreiber)',
+    ],
+    ['Betreiber-Branding', 'Nur Polymarket', 'Nur Kalshi', 'Pro Betreiber-Deploy'],
+    [
+      'Ökosystem-Passung',
+      'On-Chain-nativ',
+      'Reguliert, US-institutionell',
+      'Betreiberseitig (jede Jurisdiktion, jedes Publikum)',
     ],
   ]}
 />
@@ -520,6 +520,6 @@ Protokollebene, und es ist die Position, die Kuest besetzt.
 <KuestCTA
   headline="Möchten Sie Ihr Publikum auf die richtige Plattformkombination abbilden?"
   body="Wir gehen Ihr Publikum, Ihre Jurisdiktion, Ihre Wettbewerbsposition und die richtige Kombination aus Kuest-, Polymarket- und Kalshi-Zugangspunkten für Ihren spezifischen Fall durch."
-  primary={{ href: "/launch", label: "Launch-Wizard starten" }}
-  secondary={{ href: "/enterprise", label: "Strategiegespräch buchen" }}
+  primary={{ href: '/launch', label: 'Launch-Wizard starten' }}
+  secondary={{ href: '/enterprise', label: 'Strategiegespräch buchen' }}
 />

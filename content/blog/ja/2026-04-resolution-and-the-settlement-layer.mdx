@@ -1,12 +1,12 @@
 ---
-title: "予測市場の解決は実際にどう動くのか：UMA、オラクル、決済レイヤー"
-description: "予測市場契約がどう解決されるかの技術的な深掘り。オプティミスティック・オラクル、紛争メカニクス、エスカレーションゲーム、そしてなぜ決済が生き残るプラットフォームを決めるのか。"
+title: '予測市場の解決は実際にどう動くのか：UMA、オラクル、決済レイヤー'
+description: '予測市場契約がどう解決されるかの技術的な深掘り。オプティミスティック・オラクル、紛争メカニクス、エスカレーションゲーム、そしてなぜ決済が生き残るプラットフォームを決めるのか。'
 publishedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["protocol", "settlement", "oracle", "technical"]
+tags: ['protocol', 'settlement', 'oracle', 'technical']
 ---
 
 予測市場のビルダーと長く話していると、議論がきれいに2つに分かれることに気づきます。スタックの前面（マッチング、UX、流動性）と、背面（解決、決済、オラクル）です。前面の問題はエンジニアリング時間と資本で解けます。背面の問題は暗号経済設計で解く必要があり、予測市場プラットフォームが実際に生きるか死ぬかはそこで決まります。
@@ -100,13 +100,13 @@ tags: ["protocol", "settlement", "oracle", "technical"]
 3つすべてに対する最もきれいな防御は、解決経路が運営者の裁量に依存しないよう契約を設計することです。オプティミスティック・オラクルのパターンはこれに構造的に適しています。運営者は解決者ではなく、データソースは市場作成時に命名され固定され、紛争メカニズムは公開されています。
 
 <Comparison
-  columns={["失敗モード", "中央集権解決者", "オプティミスティック・オラクル"]}
+  columns={['失敗モード', '中央集権解決者', 'オプティミスティック・オラクル']}
   rows={[
-    ["曖昧な契約", "High exposure", "Disputes; correctly identifies bad spec"],
-    ["データソース移動", "Manual reconcile", "Replay through dispute"],
-    ["運営者の利害衝突", "Existential", "Structurally separated"],
-    ["悪意ある解決のコスト", "Trust collapse", "Bond + vote rewrite"],
-    ["単純市場の速度", "Faster", "Same (no dispute path)"],
+    ['曖昧な契約', 'High exposure', 'Disputes; correctly identifies bad spec'],
+    ['データソース移動', 'Manual reconcile', 'Replay through dispute'],
+    ['運営者の利害衝突', 'Existential', 'Structurally separated'],
+    ['悪意ある解決のコスト', 'Trust collapse', 'Bond + vote rewrite'],
+    ['単純市場の速度', 'Faster', 'Same (no dispute path)'],
   ]}
 />
 
@@ -146,6 +146,6 @@ Kuest上で運営する、または代替プロトコルと比較する運営者
 <KuestCTA
   headline="Kuestの解決レールが現在の仕様とどう違うか見ますか？"
   body="契約テンプレート、エッジケース、紛争エクスポージャーを一緒に確認し、同じ市場が共有解決下でどう見えるかをお見せします。"
-  primary={{ href: "/launch", label: "市場を監査" }}
-  secondary={{ href: "/enterprise", label: "エンジニアリングに相談" }}
+  primary={{ href: '/launch', label: '市場を監査' }}
+  secondary={{ href: '/enterprise', label: 'エンジニアリングに相談' }}
 />

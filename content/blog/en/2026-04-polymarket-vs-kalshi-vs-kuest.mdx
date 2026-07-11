@@ -1,12 +1,12 @@
 ---
-title: "Polymarket vs Kalshi vs Kuest: The 2026 Comparison Every Operator Needs"
+title: 'Polymarket vs Kalshi vs Kuest: The 2026 Comparison Every Operator Needs'
 description: "An honest, full-stack comparison of Polymarket, Kalshi, and Kuest — what each is, who they're for, fee economics, regulatory posture, and why the protocol layer is a different category from the venues."
 publishedAt: 2026-04-12
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["comparison", "polymarket", "kalshi", "platforms", "protocol"]
+tags: ['comparison', 'polymarket', 'kalshi', 'platforms', 'protocol']
 ---
 
 If you're looking at the prediction-market category in 2026, you'll
@@ -210,29 +210,29 @@ The three platforms have structurally different fee models because
 they're playing different positions in the stack.
 
 <Comparison
-  columns={["Dimension", "Polymarket", "Kalshi", "Kuest (operator deploys)"]}
+  columns={['Dimension', 'Polymarket', 'Kalshi', 'Kuest (operator deploys)']}
   rows={[
     [
-      "Headline trader fee",
-      "≈ 1.0% per side (split protocol/operator)",
-      "0.0% (no per-trade fee)",
-      "Operator-set, typically 0.5–1.5%",
+      'Headline trader fee',
+      '≈ 1.0% per side (split protocol/operator)',
+      '0.0% (no per-trade fee)',
+      'Operator-set, typically 0.5–1.5%',
     ],
     [
-      "Hidden costs",
-      "Spread (~30–60 bps)",
-      "Spread + market-data tier",
-      "Spread (~20–60 bps on shared book)",
+      'Hidden costs',
+      'Spread (~30–60 bps)',
+      'Spread + market-data tier',
+      'Spread (~20–60 bps on shared book)',
     ],
-    ["Maker rebate", "No", "No", "No (shared book design)"],
-    ["Operator share", "Not applicable (single venue)", "Not applicable", "100% of operator fee"],
+    ['Maker rebate', 'No', 'No', 'No (shared book design)'],
+    ['Operator share', 'Not applicable (single venue)', 'Not applicable', '100% of operator fee'],
     [
-      "Protocol take",
-      "Polymarket retains its venue margin",
-      "Recovered through ecosystem revenue",
-      "Small protocol fee underneath operator fee",
+      'Protocol take',
+      'Polymarket retains its venue margin',
+      'Recovered through ecosystem revenue',
+      'Small protocol fee underneath operator fee',
     ],
-    ["Per-jurisdiction overrides", "No", "No", "Yes"],
+    ['Per-jurisdiction overrides', 'No', 'No', 'Yes'],
   ]}
 />
 
@@ -252,51 +252,51 @@ A more granular comparison across the dimensions operators usually
 care about:
 
 <Comparison
-  columns={["Feature", "Polymarket", "Kalshi", "Kuest"]}
+  columns={['Feature', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
     [
-      "Settlement asset",
-      "USDC on-chain",
-      "USD bank custody",
-      "USDC on-chain (operator may layer fiat)",
+      'Settlement asset',
+      'USDC on-chain',
+      'USD bank custody',
+      'USDC on-chain (operator may layer fiat)',
     ],
     [
-      "Resolution model",
-      "UMA Optimistic Oracle",
-      "Centralised market-integrity team",
-      "UMA-based with explicit rules and public dispute process",
+      'Resolution model',
+      'UMA Optimistic Oracle',
+      'Centralised market-integrity team',
+      'UMA-based with explicit rules and public dispute process',
     ],
-    ["Geographic availability", "Global except US", "US only", "Configurable per operator"],
+    ['Geographic availability', 'Global except US', 'US only', 'Configurable per operator'],
     [
-      "KYC requirement",
-      "None (wallet-only)",
-      "Full US-regulated KYC",
-      "Operator-defined (wallet-only or external KYC layer)",
-    ],
-    [
-      "Market creation",
-      "Permissionless (admin curation)",
-      "Pre-approved by exchange",
-      "Operator-managed within protocol limits",
+      'KYC requirement',
+      'None (wallet-only)',
+      'Full US-regulated KYC',
+      'Operator-defined (wallet-only or external KYC layer)',
     ],
     [
-      "Custody model",
-      "Self-custody",
-      "Regulated banking partner",
-      "Configurable: self or regulated",
+      'Market creation',
+      'Permissionless (admin curation)',
+      'Pre-approved by exchange',
+      'Operator-managed within protocol limits',
     ],
     [
-      "Order-book depth on launch",
-      "Existing (mature venue)",
-      "Existing (mature venue)",
-      "Shared (Day-1 deep for new operators)",
+      'Custody model',
+      'Self-custody',
+      'Regulated banking partner',
+      'Configurable: self or regulated',
     ],
-    ["Operator branding", "Polymarket only", "Kalshi only", "Per operator deploy"],
     [
-      "Ecosystem fit",
-      "On-chain native",
-      "Regulated US institutional",
-      "Operator-side (any jurisdiction, any audience)",
+      'Order-book depth on launch',
+      'Existing (mature venue)',
+      'Existing (mature venue)',
+      'Shared (Day-1 deep for new operators)',
+    ],
+    ['Operator branding', 'Polymarket only', 'Kalshi only', 'Per operator deploy'],
+    [
+      'Ecosystem fit',
+      'On-chain native',
+      'Regulated US institutional',
+      'Operator-side (any jurisdiction, any audience)',
     ],
   ]}
 />
@@ -377,7 +377,7 @@ Kalshi are not in the operator-infrastructure business.
 <Callout type="info" title="Why this distinction matters strategically">
   Operators who treat the comparison as "Kuest vs Polymarket" end up trying to optimize for a
   competition that doesn't exist. The right comparison is "Kuest vs build it yourself," which is the
-  comparison we covered in{" "}
+  comparison we covered in{' '}
   <a href="/blog/2026-04-build-vs-license-prediction-market">the build-vs-license post</a>.
   Polymarket is the venue your traders might compare execution against; Kuest is the infrastructure
   that lets you compete on audience instead of on infrastructure.
@@ -480,6 +480,6 @@ Kuest occupies.
 <KuestCTA
   headline="Want to map your audience against the right platform combination?"
   body="We'll walk through your audience, your jurisdiction, your competitive position, and the right combination of Kuest, Polymarket, and Kalshi access points for your specific case."
-  primary={{ href: "/launch", label: "Run the launch wizard" }}
-  secondary={{ href: "/enterprise", label: "Book a strategy call" }}
+  primary={{ href: '/launch', label: 'Run the launch wizard' }}
+  secondary={{ href: '/enterprise', label: 'Book a strategy call' }}
 />

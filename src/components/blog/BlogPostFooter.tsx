@@ -1,6 +1,6 @@
-import type { BlogPostSummary } from "@/lib/blog/content";
-import { ArrowRightIcon } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import type { BlogPostSummary } from '@/lib/blog/content'
+import { ArrowRightIcon } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 
 export default function BlogPostFooter({
   related,
@@ -8,13 +8,13 @@ export default function BlogPostFooter({
   relatedLabel,
   relatedDateLabels,
 }: {
-  related: BlogPostSummary[];
-  backLabel: string;
-  relatedLabel: string;
-  relatedDateLabels: Record<string, string>;
+  related: BlogPostSummary[]
+  backLabel: string
+  relatedLabel: string
+  relatedDateLabels: Record<string, string>
 }) {
   if (related.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -40,5 +40,5 @@ export default function BlogPostFooter({
         ))}
       </ul>
     </div>
-  );
+  )
 }

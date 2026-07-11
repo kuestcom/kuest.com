@@ -1,12 +1,12 @@
 ---
-title: "Build vs License a Prediction Market: A 2026 Cost-and-Time Analysis"
-description: "What it actually costs to build a prediction market from scratch — engineering, audits, oracles, compliance, liquidity — versus licensing infrastructure. Real numbers, real timelines."
+title: 'Build vs License a Prediction Market: A 2026 Cost-and-Time Analysis'
+description: 'What it actually costs to build a prediction market from scratch — engineering, audits, oracles, compliance, liquidity — versus licensing infrastructure. Real numbers, real timelines.'
 publishedAt: 2026-04-02
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["operators", "playbook", "infrastructure"]
+tags: ['operators', 'playbook', 'infrastructure']
 ---
 
 If you're a brokerage, a media operator, or a fintech that has decided
@@ -75,21 +75,21 @@ build-out plans we've reviewed. These are 2026 numbers, scoped to a
 team that knows what it's doing — not the cheapest possible build.
 
 <Comparison
-  columns={["Component", "Initial cost", "Time", "Ongoing"]}
+  columns={['Component', 'Initial cost', 'Time', 'Ongoing']}
   rows={[
     [
-      "Smart contracts + audit (OpenZeppelin or Trail of Bits)",
-      "$280k – $520k",
-      "4–6 months",
-      "$30k / yr",
+      'Smart contracts + audit (OpenZeppelin or Trail of Bits)',
+      '$280k – $520k',
+      '4–6 months',
+      '$30k / yr',
     ],
-    ["Matching engine + relayer architecture", "$520k – $980k", "5–8 months", "$140k / yr"],
-    ["Settlement / oracle integration", "$180k – $360k", "3–5 months", "$60k / yr"],
-    ["Wallet + custody (regulated jurisdiction)", "$420k – $800k", "5–9 months", "$220k / yr"],
-    ["KYC / AML pipeline (1 jurisdiction)", "$140k – $260k", "2–4 months", "$80k / yr"],
-    ["Frontend + mobile + design system", "$580k – $1.1M", "5–7 months", "$280k / yr"],
-    ["Liquidity (initial market-making)", "$1.0M – $2.5M", "ongoing", "deeply variable"],
-    ["Ops / support / monitoring infrastructure", "$320k – $640k", "2–3 months", "$340k / yr"],
+    ['Matching engine + relayer architecture', '$520k – $980k', '5–8 months', '$140k / yr'],
+    ['Settlement / oracle integration', '$180k – $360k', '3–5 months', '$60k / yr'],
+    ['Wallet + custody (regulated jurisdiction)', '$420k – $800k', '5–9 months', '$220k / yr'],
+    ['KYC / AML pipeline (1 jurisdiction)', '$140k – $260k', '2–4 months', '$80k / yr'],
+    ['Frontend + mobile + design system', '$580k – $1.1M', '5–7 months', '$280k / yr'],
+    ['Liquidity (initial market-making)', '$1.0M – $2.5M', 'ongoing', 'deeply variable'],
+    ['Ops / support / monitoring infrastructure', '$320k – $640k', '2–3 months', '$340k / yr'],
   ]}
 />
 
@@ -161,16 +161,16 @@ operators that built — same contracts, same depth, same UX
 sophistication — at a different cost structure.
 
 <Comparison
-  columns={["Dimension", "Build", "License (Kuest)"]}
+  columns={['Dimension', 'Build', 'License (Kuest)']}
   rows={[
-    ["Time to first live trade", "8–14 months", "Days"],
-    ["Upfront capital", "$3.4M – $7.2M", "≈ $0"],
-    ["Liquidity at launch", "Cold-start", "Shared from existing venues"],
-    ["Audit ownership", "Operator", "Inherited (OpenZeppelin)"],
-    ["Resolution rails", "Build / integrate", "Managed"],
-    ["Per-jurisdiction overlay", "+$200k each", "Configuration"],
-    ["Engineering team size", "5–8 FTE", "0"],
-    ["Operator fee on every trade", "Yes", "Yes"],
+    ['Time to first live trade', '8–14 months', 'Days'],
+    ['Upfront capital', '$3.4M – $7.2M', '≈ $0'],
+    ['Liquidity at launch', 'Cold-start', 'Shared from existing venues'],
+    ['Audit ownership', 'Operator', 'Inherited (OpenZeppelin)'],
+    ['Resolution rails', 'Build / integrate', 'Managed'],
+    ['Per-jurisdiction overlay', '+$200k each', 'Configuration'],
+    ['Engineering team size', '5–8 FTE', '0'],
+    ['Operator fee on every trade', 'Yes', 'Yes'],
   ]}
 />
 
@@ -288,6 +288,6 @@ The same scope, built from scratch, takes a year and a half.
 <KuestCTA
   headline="Want to see what your build vs license breakeven looks like?"
   body="We can walk through your specific scope, audience, and target jurisdictions and give you a concrete build-vs-license calc inside an hour."
-  primary={{ href: "/launch", label: "Run the launch wizard" }}
-  secondary={{ href: "/enterprise", label: "Talk to sales" }}
+  primary={{ href: '/launch', label: 'Run the launch wizard' }}
+  secondary={{ href: '/enterprise', label: 'Talk to sales' }}
 />

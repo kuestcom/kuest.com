@@ -1,12 +1,12 @@
 ---
-title: "Polymarket vs Kalshi vs Kuest: a comparação de 2026 que todo operador precisa"
-description: "Uma comparação honesta e de ponta a ponta entre Polymarket, Kalshi e Kuest — o que cada um é, para quem se destinam, sua economia de taxas, postura regulatória e por que a camada de protocolo é uma categoria diferente das venues."
+title: 'Polymarket vs Kalshi vs Kuest: a comparação de 2026 que todo operador precisa'
+description: 'Uma comparação honesta e de ponta a ponta entre Polymarket, Kalshi e Kuest — o que cada um é, para quem se destinam, sua economia de taxas, postura regulatória e por que a camada de protocolo é uma categoria diferente das venues.'
 publishedAt: 2026-04-12
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["comparison", "polymarket", "kalshi", "platforms", "protocol"]
+tags: ['comparison', 'polymarket', 'kalshi', 'platforms', 'protocol']
 ---
 
 Se você está olhando para a categoria de mercados de previsão em
@@ -228,34 +228,34 @@ As três plataformas têm modelos de taxas estruturalmente diferentes
 porque estão jogando posições diferentes na pilha.
 
 <Comparison
-  columns={["Dimensão", "Polymarket", "Kalshi", "Kuest (deploys de operador)"]}
+  columns={['Dimensão', 'Polymarket', 'Kalshi', 'Kuest (deploys de operador)']}
   rows={[
     [
-      "Taxa principal do trader",
-      "≈ 1,0 % por lado (rateio protocolo/operador)",
-      "0,0 % (sem taxa por operação)",
-      "Definida pelo operador, tipicamente 0,5–1,5 %",
+      'Taxa principal do trader',
+      '≈ 1,0 % por lado (rateio protocolo/operador)',
+      '0,0 % (sem taxa por operação)',
+      'Definida pelo operador, tipicamente 0,5–1,5 %',
     ],
     [
-      "Custos ocultos",
-      "Spread (~30–60 bps)",
-      "Spread + nível de dados de mercado",
-      "Spread (~20–60 bps no livro compartilhado)",
+      'Custos ocultos',
+      'Spread (~30–60 bps)',
+      'Spread + nível de dados de mercado',
+      'Spread (~20–60 bps no livro compartilhado)',
     ],
-    ["Rebate ao maker", "Não", "Não", "Não (design de livro compartilhado)"],
+    ['Rebate ao maker', 'Não', 'Não', 'Não (design de livro compartilhado)'],
     [
-      "Participação do operador",
-      "Não se aplica (venue única)",
-      "Não se aplica",
-      "100 % da taxa do operador",
+      'Participação do operador',
+      'Não se aplica (venue única)',
+      'Não se aplica',
+      '100 % da taxa do operador',
     ],
     [
-      "Receita do protocolo",
-      "A Polymarket retém sua margem de venue",
-      "Recuperada via receita do ecossistema",
-      "Pequena taxa de protocolo abaixo da taxa do operador",
+      'Receita do protocolo',
+      'A Polymarket retém sua margem de venue',
+      'Recuperada via receita do ecossistema',
+      'Pequena taxa de protocolo abaixo da taxa do operador',
     ],
-    ["Overrides por jurisdição", "Não", "Não", "Sim"],
+    ['Overrides por jurisdição', 'Não', 'Não', 'Sim'],
   ]}
 />
 
@@ -278,51 +278,51 @@ Uma comparação mais granular nas dimensões com que os operadores
 costumam se importar:
 
 <Comparison
-  columns={["Funcionalidade", "Polymarket", "Kalshi", "Kuest"]}
+  columns={['Funcionalidade', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
     [
-      "Ativo de liquidação",
-      "USDC on-chain",
-      "Custódia bancária em USD",
-      "USDC on-chain (operador pode sobrepor fiat)",
+      'Ativo de liquidação',
+      'USDC on-chain',
+      'Custódia bancária em USD',
+      'USDC on-chain (operador pode sobrepor fiat)',
     ],
     [
-      "Modelo de resolução",
-      "UMA Optimistic Oracle",
-      "Equipe centralizada de integridade de mercado",
-      "Baseado em UMA, com regras explícitas e processo público de disputa",
+      'Modelo de resolução',
+      'UMA Optimistic Oracle',
+      'Equipe centralizada de integridade de mercado',
+      'Baseado em UMA, com regras explícitas e processo público de disputa',
     ],
-    ["Disponibilidade geográfica", "Global, exceto EUA", "Apenas EUA", "Configurável por operador"],
+    ['Disponibilidade geográfica', 'Global, exceto EUA', 'Apenas EUA', 'Configurável por operador'],
     [
-      "Exigência de KYC",
-      "Nenhuma (apenas carteira)",
-      "KYC completo regulado nos EUA",
-      "Definida pelo operador (wallet-only ou camada externa de KYC)",
-    ],
-    [
-      "Criação de mercados",
-      "Permissionless (curadoria de admin)",
-      "Pré-aprovada pela exchange",
-      "Gerenciada pelo operador dentro dos limites do protocolo",
+      'Exigência de KYC',
+      'Nenhuma (apenas carteira)',
+      'KYC completo regulado nos EUA',
+      'Definida pelo operador (wallet-only ou camada externa de KYC)',
     ],
     [
-      "Modelo de custódia",
-      "Auto-custódia",
-      "Parceiro bancário regulado",
-      "Configurável: própria ou regulada",
+      'Criação de mercados',
+      'Permissionless (curadoria de admin)',
+      'Pré-aprovada pela exchange',
+      'Gerenciada pelo operador dentro dos limites do protocolo',
     ],
     [
-      "Profundidade do livro de ordens no lançamento",
-      "Existente (venue madura)",
-      "Existente (venue madura)",
-      "Compartilhada (Dia 1 profundo para novos operadores)",
+      'Modelo de custódia',
+      'Auto-custódia',
+      'Parceiro bancário regulado',
+      'Configurável: própria ou regulada',
     ],
-    ["Branding do operador", "Apenas Polymarket", "Apenas Kalshi", "Por deploy de operador"],
     [
-      "Encaixe no ecossistema",
-      "Nativo on-chain",
-      "Institucional regulado nos EUA",
-      "Lado do operador (qualquer jurisdição, qualquer público)",
+      'Profundidade do livro de ordens no lançamento',
+      'Existente (venue madura)',
+      'Existente (venue madura)',
+      'Compartilhada (Dia 1 profundo para novos operadores)',
+    ],
+    ['Branding do operador', 'Apenas Polymarket', 'Apenas Kalshi', 'Por deploy de operador'],
+    [
+      'Encaixe no ecossistema',
+      'Nativo on-chain',
+      'Institucional regulado nos EUA',
+      'Lado do operador (qualquer jurisdição, qualquer público)',
     ],
   ]}
 />
@@ -523,6 +523,6 @@ que a Kuest ocupa.
 <KuestCTA
   headline="Quer mapear seu público contra a combinação certa de plataformas?"
   body="Vamos percorrer seu público, sua jurisdição, sua posição competitiva e a combinação certa de pontos de acesso da Kuest, da Polymarket e da Kalshi para o seu caso específico."
-  primary={{ href: "/launch", label: "Rodar o assistente de lançamento" }}
-  secondary={{ href: "/enterprise", label: "Agendar uma chamada estratégica" }}
+  primary={{ href: '/launch', label: 'Rodar o assistente de lançamento' }}
+  secondary={{ href: '/enterprise', label: 'Agendar uma chamada estratégica' }}
 />

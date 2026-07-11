@@ -1,12 +1,12 @@
 ---
-title: "Polymarket vs Kalshi vs Kuest: la comparación de 2026 que todo operador necesita"
-description: "Una comparación honesta y de pila completa entre Polymarket, Kalshi y Kuest: qué es cada uno, para quién están hechos, su economía de comisiones, su postura regulatoria y por qué la capa de protocolo es una categoría distinta a la de las venues."
+title: 'Polymarket vs Kalshi vs Kuest: la comparación de 2026 que todo operador necesita'
+description: 'Una comparación honesta y de pila completa entre Polymarket, Kalshi y Kuest: qué es cada uno, para quién están hechos, su economía de comisiones, su postura regulatoria y por qué la capa de protocolo es una categoría distinta a la de las venues.'
 publishedAt: 2026-04-12
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["comparison", "polymarket", "kalshi", "platforms", "protocol"]
+tags: ['comparison', 'polymarket', 'kalshi', 'platforms', 'protocol']
 ---
 
 Si está mirando la categoría de mercados de predicción en 2026, se
@@ -234,34 +234,34 @@ Las tres plataformas tienen modelos de comisiones estructuralmente
 distintos porque están jugando posiciones diferentes en el stack.
 
 <Comparison
-  columns={["Dimensión", "Polymarket", "Kalshi", "Kuest (despliegues de operador)"]}
+  columns={['Dimensión', 'Polymarket', 'Kalshi', 'Kuest (despliegues de operador)']}
   rows={[
     [
-      "Comisión principal del trader",
-      "≈ 1,0 % por lado (reparto protocolo/operador)",
-      "0,0 % (sin comisión por operación)",
-      "Definida por el operador, típicamente 0,5–1,5 %",
+      'Comisión principal del trader',
+      '≈ 1,0 % por lado (reparto protocolo/operador)',
+      '0,0 % (sin comisión por operación)',
+      'Definida por el operador, típicamente 0,5–1,5 %',
     ],
     [
-      "Costes ocultos",
-      "Spread (~30–60 pb)",
-      "Spread + nivel de datos de mercado",
-      "Spread (~20–60 pb sobre el libro compartido)",
+      'Costes ocultos',
+      'Spread (~30–60 pb)',
+      'Spread + nivel de datos de mercado',
+      'Spread (~20–60 pb sobre el libro compartido)',
     ],
-    ["Rebate al maker", "No", "No", "No (diseño del libro compartido)"],
+    ['Rebate al maker', 'No', 'No', 'No (diseño del libro compartido)'],
     [
-      "Cuota del operador",
-      "No aplica (venue única)",
-      "No aplica",
-      "100 % de la comisión del operador",
+      'Cuota del operador',
+      'No aplica (venue única)',
+      'No aplica',
+      '100 % de la comisión del operador',
     ],
     [
-      "Toma del protocolo",
-      "Polymarket retiene su margen de venue",
-      "Recuperada vía ingresos del ecosistema",
-      "Pequeña comisión de protocolo bajo la comisión del operador",
+      'Toma del protocolo',
+      'Polymarket retiene su margen de venue',
+      'Recuperada vía ingresos del ecosistema',
+      'Pequeña comisión de protocolo bajo la comisión del operador',
     ],
-    ["Overrides por jurisdicción", "No", "No", "Sí"],
+    ['Overrides por jurisdicción', 'No', 'No', 'Sí'],
   ]}
 />
 
@@ -284,56 +284,56 @@ Una comparación más granular en las dimensiones que suelen
 preocupar a los operadores:
 
 <Comparison
-  columns={["Función", "Polymarket", "Kalshi", "Kuest"]}
+  columns={['Función', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
     [
-      "Activo de liquidación",
-      "USDC on-chain",
-      "Custodia bancaria en USD",
-      "USDC on-chain (el operador puede superponer fiat)",
+      'Activo de liquidación',
+      'USDC on-chain',
+      'Custodia bancaria en USD',
+      'USDC on-chain (el operador puede superponer fiat)',
     ],
     [
-      "Modelo de resolución",
-      "UMA Optimistic Oracle",
-      "Equipo centralizado de integridad de mercado",
-      "Basado en UMA, con reglas explícitas y proceso público de disputa",
+      'Modelo de resolución',
+      'UMA Optimistic Oracle',
+      'Equipo centralizado de integridad de mercado',
+      'Basado en UMA, con reglas explícitas y proceso público de disputa',
     ],
     [
-      "Disponibilidad geográfica",
-      "Global excepto EE. UU.",
-      "Solo EE. UU.",
-      "Configurable por operador",
+      'Disponibilidad geográfica',
+      'Global excepto EE. UU.',
+      'Solo EE. UU.',
+      'Configurable por operador',
     ],
     [
-      "Requisito de KYC",
-      "Ninguno (solo wallet)",
-      "KYC completo regulado en EE. UU.",
-      "Definido por el operador (wallet-only o capa externa de KYC)",
+      'Requisito de KYC',
+      'Ninguno (solo wallet)',
+      'KYC completo regulado en EE. UU.',
+      'Definido por el operador (wallet-only o capa externa de KYC)',
     ],
     [
-      "Creación de mercados",
-      "Permissionless (curación de admin)",
-      "Pre-aprobada por el exchange",
-      "Gestionada por el operador dentro de los límites del protocolo",
+      'Creación de mercados',
+      'Permissionless (curación de admin)',
+      'Pre-aprobada por el exchange',
+      'Gestionada por el operador dentro de los límites del protocolo',
     ],
     [
-      "Modelo de custodia",
-      "Autocustodia",
-      "Socio bancario regulado",
-      "Configurable: propia o regulada",
+      'Modelo de custodia',
+      'Autocustodia',
+      'Socio bancario regulado',
+      'Configurable: propia o regulada',
     ],
     [
-      "Profundidad del libro de órdenes en el lanzamiento",
-      "Existente (venue madura)",
-      "Existente (venue madura)",
-      "Compartida (Día 1 profundo para nuevos operadores)",
+      'Profundidad del libro de órdenes en el lanzamiento',
+      'Existente (venue madura)',
+      'Existente (venue madura)',
+      'Compartida (Día 1 profundo para nuevos operadores)',
     ],
-    ["Marca del operador", "Solo Polymarket", "Solo Kalshi", "Por despliegue de operador"],
+    ['Marca del operador', 'Solo Polymarket', 'Solo Kalshi', 'Por despliegue de operador'],
     [
-      "Encaje en el ecosistema",
-      "Nativo on-chain",
-      "Institucional regulado en EE. UU.",
-      "Lado del operador (cualquier jurisdicción, cualquier audiencia)",
+      'Encaje en el ecosistema',
+      'Nativo on-chain',
+      'Institucional regulado en EE. UU.',
+      'Lado del operador (cualquier jurisdicción, cualquier audiencia)',
     ],
   ]}
 />
@@ -540,6 +540,6 @@ posición que ocupa Kuest.
 <KuestCTA
   headline="¿Quiere mapear su audiencia contra la combinación correcta de plataformas?"
   body="Repasaremos su audiencia, su jurisdicción, su posición competitiva y la combinación correcta de puntos de acceso de Kuest, Polymarket y Kalshi para su caso específico."
-  primary={{ href: "/launch", label: "Ejecutar el asistente de lanzamiento" }}
-  secondary={{ href: "/enterprise", label: "Reservar una llamada estratégica" }}
+  primary={{ href: '/launch', label: 'Ejecutar el asistente de lanzamiento' }}
+  secondary={{ href: '/enterprise', label: 'Reservar una llamada estratégica' }}
 />

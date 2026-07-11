@@ -1,51 +1,51 @@
-import { registerDomainSnapshot } from "@/lib/domain-register";
-import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
-import { getServerRuntimeConfig } from "@/lib/server-env";
+import { registerDomainSnapshot } from '@/lib/domain-register'
+import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
+import { getServerRuntimeConfig } from '@/lib/server-env'
 
 interface RequestBody {
-  url?: unknown;
-  siteUrl?: unknown;
+  url?: unknown
+  siteUrl?: unknown
 }
 
 function stringValue(value: unknown) {
-  return typeof value === "string" ? value.trim() : "";
+  return typeof value === 'string' ? value.trim() : ''
 }
 
 export async function POST(request: Request) {
-  const { RATE_LIMIT_DOMAIN_REGISTER_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig();
+  const { RATE_LIMIT_DOMAIN_REGISTER_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig()
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({
-      route: "api:domain-register",
+      route: 'api:domain-register',
       max: RATE_LIMIT_DOMAIN_REGISTER_MAX,
       windowMs: RATE_LIMIT_WINDOW_MS,
     }),
-  );
+  )
   if (!rateLimit.allowed) {
     return Response.json(
-      { ok: false, error: "Too many registration attempts." },
+      { ok: false, error: 'Too many registration attempts.' },
       {
         status: 429,
         headers: buildRateLimitHeaders(rateLimit),
       },
-    );
+    )
   }
 
   try {
-    const body = (await request.json()) as RequestBody;
-    const url = stringValue(body.url) || stringValue(body.siteUrl);
+    const body = (await request.json()) as RequestBody
+    const url = stringValue(body.url) || stringValue(body.siteUrl)
     if (!url) {
-      return Response.json({ ok: false, error: "url is required." }, { status: 400 });
+      return Response.json({ ok: false, error: 'url is required.' }, { status: 400 })
     }
 
-    const result = await registerDomainSnapshot({ url });
+    const result = await registerDomainSnapshot({ url })
 
     return Response.json({
       ok: true,
       ignored: result.ignored,
-    });
+    })
   } catch (error) {
-    console.error("[domain-register] Failed to register domain.", error);
-    return Response.json({ ok: false, error: "Unable to register domain." }, { status: 500 });
+    console.error('[domain-register] Failed to register domain.', error)
+    return Response.json({ ok: false, error: 'Unable to register domain.' }, { status: 500 })
   }
 }

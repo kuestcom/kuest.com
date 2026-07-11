@@ -1,52 +1,52 @@
-import { LaunchError } from "@/lib/launch-utils";
-import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from "@/lib/rate-limit";
-import { inspectReownProjectId } from "@/lib/reown-api";
-import { getServerRuntimeConfig } from "@/lib/server-env";
+import { LaunchError } from '@/lib/launch-utils'
+import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
+import { inspectReownProjectId } from '@/lib/reown-api'
+import { getServerRuntimeConfig } from '@/lib/server-env'
 
 interface RequestBody {
-  projectId?: string;
+  projectId?: string
 }
 
 export async function POST(request: Request) {
-  const { RATE_LIMIT_REOWN_CONNECTION_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig();
+  const { RATE_LIMIT_REOWN_CONNECTION_MAX, RATE_LIMIT_WINDOW_MS } = getServerRuntimeConfig()
   const rateLimit = checkRateLimit(
     request,
     getRateLimitConfig({
-      route: "api:reown-connection",
+      route: 'api:reown-connection',
       max: RATE_LIMIT_REOWN_CONNECTION_MAX,
       windowMs: RATE_LIMIT_WINDOW_MS,
     }),
-  );
+  )
 
   if (!rateLimit.allowed) {
     return Response.json(
       {
         valid: false,
-        error: "Too many checks. Please retry shortly.",
+        error: 'Too many checks. Please retry shortly.',
       },
       {
         status: 429,
         headers: buildRateLimitHeaders(rateLimit),
       },
-    );
+    )
   }
 
   try {
-    const body = (await request.json()) as RequestBody;
-    const projectId = typeof body.projectId === "string" ? body.projectId.trim() : "";
+    const body = (await request.json()) as RequestBody
+    const projectId = typeof body.projectId === 'string' ? body.projectId.trim() : ''
 
     if (!projectId) {
       return Response.json(
         {
           valid: false,
-          error: "Missing Reown Project ID.",
+          error: 'Missing Reown Project ID.',
         },
         { status: 400 },
-      );
+      )
     }
 
-    const result = await inspectReownProjectId(projectId);
-    return Response.json(result);
+    const result = await inspectReownProjectId(projectId)
+    return Response.json(result)
   } catch (error) {
     if (error instanceof LaunchError) {
       return Response.json(
@@ -55,15 +55,15 @@ export async function POST(request: Request) {
           error: error.message,
         },
         { status: 400 },
-      );
+      )
     }
 
     return Response.json(
       {
         valid: false,
-        error: error instanceof Error ? error.message : "Unexpected error.",
+        error: error instanceof Error ? error.message : 'Unexpected error.',
       },
       { status: 500 },
-    );
+    )
   }
 }

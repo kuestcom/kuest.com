@@ -1,7 +1,7 @@
-import type { ComponentProps } from "react";
-import type { SupportedLocale } from "@/i18n/locales";
-import { I18nProvider } from "@/i18n";
-import BlogPostFooter from "./BlogPostFooter";
+import type { ComponentProps } from 'react'
+import type { SupportedLocale } from '@/i18n/locales'
+import { I18nProvider } from '@/i18n'
+import BlogPostFooter from './BlogPostFooter'
 
 export default function BlogPostFooterIsland({
   locale,
@@ -11,5 +11,5 @@ export default function BlogPostFooterIsland({
     <I18nProvider locale={locale}>
       <BlogPostFooter {...props} />
     </I18nProvider>
-  );
+  )
 }

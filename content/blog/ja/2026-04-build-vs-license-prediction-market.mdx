@@ -1,12 +1,12 @@
 ---
-title: "予測市場を構築するかライセンスするか：2026年のコスト・時間分析"
-description: "予測市場をゼロから構築する実際のコスト。エンジニアリング、監査、オラクル、コンプライアンス、流動性。そしてインフラをライセンスする場合との比較。"
+title: '予測市場を構築するかライセンスするか：2026年のコスト・時間分析'
+description: '予測市場をゼロから構築する実際のコスト。エンジニアリング、監査、オラクル、コンプライアンス、流動性。そしてインフラをライセンスする場合との比較。'
 publishedAt: 2026-04-02
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["operators", "playbook", "infrastructure"]
+tags: ['operators', 'playbook', 'infrastructure']
 ---
 
 証券会社、メディア運営者、フィンテックが予測市場の会場を立ち上げると決めたなら、次の判断はインフラを自前で作るかライセンスするかです。多くのチームはこの問いにざっくりした見積もりで向き合い、実際の数字に驚きます。これは私たち自身が欲しかった分解です。
@@ -42,21 +42,21 @@ tags: ["operators", "playbook", "infrastructure"]
 私たちがレビューしてきた運営者の構築計画で繰り返し出てくるコスト構造は次の通りです。これは2026年の数字で、何をしているか分かっているチームを前提にしています。最安構築ではありません。
 
 <Comparison
-  columns={["コンポーネント", "初期コスト", "期間", "継続費用"]}
+  columns={['コンポーネント', '初期コスト', '期間', '継続費用']}
   rows={[
     [
-      "スマートコントラクト + 監査（OpenZeppelinまたはTrail of Bits）",
-      "$280k – $520k",
-      "4–6 months",
-      "$30k / yr",
+      'スマートコントラクト + 監査（OpenZeppelinまたはTrail of Bits）',
+      '$280k – $520k',
+      '4–6 months',
+      '$30k / yr',
     ],
-    ["マッチングエンジン + リレイヤー構成", "$520k – $980k", "5–8 months", "$140k / yr"],
-    ["決済 / オラクル統合", "$180k – $360k", "3–5 months", "$60k / yr"],
-    ["ウォレット + カストディ（規制法域）", "$420k – $800k", "5–9 months", "$220k / yr"],
-    ["KYC / AMLパイプライン（1法域）", "$140k – $260k", "2–4 months", "$80k / yr"],
-    ["フロントエンド + モバイル + デザインシステム", "$580k – $1.1M", "5–7 months", "$280k / yr"],
-    ["流動性（初期マーケットメイク）", "$1.0M – $2.5M", "ongoing", "deeply variable"],
-    ["運用 / サポート / 監視インフラ", "$320k – $640k", "2–3 months", "$340k / yr"],
+    ['マッチングエンジン + リレイヤー構成', '$520k – $980k', '5–8 months', '$140k / yr'],
+    ['決済 / オラクル統合', '$180k – $360k', '3–5 months', '$60k / yr'],
+    ['ウォレット + カストディ（規制法域）', '$420k – $800k', '5–9 months', '$220k / yr'],
+    ['KYC / AMLパイプライン（1法域）', '$140k – $260k', '2–4 months', '$80k / yr'],
+    ['フロントエンド + モバイル + デザインシステム', '$580k – $1.1M', '5–7 months', '$280k / yr'],
+    ['流動性（初期マーケットメイク）', '$1.0M – $2.5M', 'ongoing', 'deeply variable'],
+    ['運用 / サポート / 監視インフラ', '$320k – $640k', '2–3 months', '$340k / yr'],
   ]}
 />
 
@@ -89,16 +89,16 @@ tags: ["operators", "playbook", "infrastructure"]
 インフラのライセンスは部分的な答えではありません。きれいにライセンスする運営者は、構築した運営者と同じ商品面、同じ深さ、同じUXの洗練度を、違うコスト構造で使っています。
 
 <Comparison
-  columns={["観点", "構築", "ライセンス（Kuest）"]}
+  columns={['観点', '構築', 'ライセンス（Kuest）']}
   rows={[
-    ["最初のライブ取引まで", "8–14 months", "Days"],
-    ["初期資本", "$3.4M – $7.2M", "≈ $0"],
-    ["ローンチ時の流動性", "Cold-start", "Shared from existing venues"],
-    ["監査所有", "Operator", "Inherited (OpenZeppelin)"],
-    ["解決レール", "Build / integrate", "Managed"],
-    ["法域別オーバーレイ", "+$200k each", "Configuration"],
-    ["必要エンジニア数", "5–8 FTE", "0"],
-    ["全取引の運営者手数料", "Yes", "Yes"],
+    ['最初のライブ取引まで', '8–14 months', 'Days'],
+    ['初期資本', '$3.4M – $7.2M', '≈ $0'],
+    ['ローンチ時の流動性', 'Cold-start', 'Shared from existing venues'],
+    ['監査所有', 'Operator', 'Inherited (OpenZeppelin)'],
+    ['解決レール', 'Build / integrate', 'Managed'],
+    ['法域別オーバーレイ', '+$200k each', 'Configuration'],
+    ['必要エンジニア数', '5–8 FTE', '0'],
+    ['全取引の運営者手数料', 'Yes', 'Yes'],
   ]}
 />
 
@@ -155,6 +155,6 @@ Kuestでのクリーンなライセンス展開は、時間順に次のように
 <KuestCTA
   headline="構築とライセンスの損益分岐点を見てみますか？"
   body="あなたの具体的な範囲、オーディエンス、対象法域をもとに、1時間以内で具体的な構築 vs ライセンス計算を出せます。"
-  primary={{ href: "/launch", label: "ローンチウィザードを実行" }}
-  secondary={{ href: "/enterprise", label: "営業に相談" }}
+  primary={{ href: '/launch', label: 'ローンチウィザードを実行' }}
+  secondary={{ href: '/enterprise', label: '営業に相談' }}
 />

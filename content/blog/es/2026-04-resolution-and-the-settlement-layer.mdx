@@ -1,12 +1,12 @@
 ---
-title: "Cómo funciona realmente la resolución en mercados de predicción: UMA, oracles y la capa de liquidación"
-description: "Un desglose técnico profundo de cómo se resuelven los contratos de mercado de predicción — el optimistic oracle, la mecánica de disputas, los juegos de escalada y por qué la liquidación es la parte que decide qué plataformas sobreviven."
+title: 'Cómo funciona realmente la resolución en mercados de predicción: UMA, oracles y la capa de liquidación'
+description: 'Un desglose técnico profundo de cómo se resuelven los contratos de mercado de predicción — el optimistic oracle, la mecánica de disputas, los juegos de escalada y por qué la liquidación es la parte que decide qué plataformas sobreviven.'
 publishedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["protocol", "settlement", "oracle", "technical"]
+tags: ['protocol', 'settlement', 'oracle', 'technical']
 ---
 
 Si pasas suficiente tiempo entre constructores de mercados de
@@ -208,13 +208,13 @@ está nombrada y bloqueada en la creación del mercado, y el
 mecanismo de disputa es público.
 
 <Comparison
-  columns={["Modo de fallo", "Resolutor centralizado", "Optimistic oracle"]}
+  columns={['Modo de fallo', 'Resolutor centralizado', 'Optimistic oracle']}
   rows={[
-    ["Contrato vago", "Alta exposición", "Disputas; identifica correctamente la mala spec"],
-    ["La fuente de datos cambia", "Conciliación manual", "Replay vía disputa"],
-    ["Conflicto de intereses del operador", "Existencial", "Estructuralmente separado"],
-    ["Coste de resolución maliciosa", "Colapso de confianza", "Bond + reescritura por voto"],
-    ["Velocidad en mercados triviales", "Más rápido", "Igual (sin vía de disputa)"],
+    ['Contrato vago', 'Alta exposición', 'Disputas; identifica correctamente la mala spec'],
+    ['La fuente de datos cambia', 'Conciliación manual', 'Replay vía disputa'],
+    ['Conflicto de intereses del operador', 'Existencial', 'Estructuralmente separado'],
+    ['Coste de resolución maliciosa', 'Colapso de confianza', 'Bond + reescritura por voto'],
+    ['Velocidad en mercados triviales', 'Más rápido', 'Igual (sin vía de disputa)'],
   ]}
 />
 
@@ -317,6 +317,6 @@ hecho.
 <KuestCTA
   headline="¿Curioso por saber cómo se comparan los rieles de resolución de Kuest con tu spec actual?"
   body="Repasamos contigo tus plantillas de contrato, casos límite y exposición a disputas — y te mostramos cómo se verían los mismos mercados bajo resolución compartida."
-  primary={{ href: "/launch", label: "Auditar mis mercados" }}
-  secondary={{ href: "/enterprise", label: "Hablar con ingeniería" }}
+  primary={{ href: '/launch', label: 'Auditar mis mercados' }}
+  secondary={{ href: '/enterprise', label: 'Hablar con ingeniería' }}
 />

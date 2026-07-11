@@ -1,12 +1,12 @@
 ---
-title: "预测市场裁定的真实运作方式：UMA、oracle 与结算层"
-description: "对预测市场合约如何被裁定的深度技术解析 —— optimistic oracle、争议机制、升级博弈，以及为何结算才是决定哪些平台能存活下来的环节。"
+title: '预测市场裁定的真实运作方式：UMA、oracle 与结算层'
+description: '对预测市场合约如何被裁定的深度技术解析 —— optimistic oracle、争议机制、升级博弈，以及为何结算才是决定哪些平台能存活下来的环节。'
 publishedAt: 2026-04-22
 author:
-  name: "Kuest"
-  url: "https://kuest.com"
+  name: 'Kuest'
+  url: 'https://kuest.com'
 cover: cover.jpg
-tags: ["protocol", "settlement", "oracle", "technical"]
+tags: ['protocol', 'settlement', 'oracle', 'technical']
 ---
 
 如果你在预测市场的构建者圈子里待得够久，就会注意到讨论会清晰地分成
@@ -156,13 +156,13 @@ venue 最重要的运营杠杆。
 者，数据源在市场创建时就被命名并锁定，争议机制公开可见。
 
 <Comparison
-  columns={["失败模式", "中心化裁定者", "Optimistic oracle"]}
+  columns={['失败模式', '中心化裁定者', 'Optimistic oracle']}
   rows={[
-    ["含糊合约", "高暴露", "争议；正确识别糟糕规范"],
-    ["数据源迁移", "手动对账", "通过争议重放"],
-    ["运营者利益冲突", "存亡级", "结构上分离"],
-    ["恶意裁定的成本", "信任崩溃", "保证金 + 投票改写"],
-    ["简单市场上的速度", "更快", "相同（无争议路径）"],
+    ['含糊合约', '高暴露', '争议；正确识别糟糕规范'],
+    ['数据源迁移', '手动对账', '通过争议重放'],
+    ['运营者利益冲突', '存亡级', '结构上分离'],
+    ['恶意裁定的成本', '信任崩溃', '保证金 + 投票改写'],
+    ['简单市场上的速度', '更快', '相同（无争议路径）'],
   ]}
 />
 
@@ -235,6 +235,6 @@ venue 争议率为 0.1–0.3%（与 Polymarket 长期速率一致），你大概
 <KuestCTA
   headline="想知道 Kuest 的裁定轨道与你当前 spec 相比如何？"
   body="我们会与你一起梳理合约模板、边缘情况和争议暴露 —— 并向你展示同样的市场在共享裁定下会是什么样子。"
-  primary={{ href: "/launch", label: "审计我的市场" }}
-  secondary={{ href: "/enterprise", label: "与工程团队对话" }}
+  primary={{ href: '/launch', label: '审计我的市场' }}
+  secondary={{ href: '/enterprise', label: '与工程团队对话' }}
 />
