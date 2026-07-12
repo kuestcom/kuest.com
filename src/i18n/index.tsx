@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { SupportedLocale } from './locales'
-import { createContext, useContext } from 'react'
+import { createContext, createElement, Fragment, useContext } from 'react'
 import ar from './messages/ar.json'
 import de from './messages/de.json'
 import en from './messages/en.json'
@@ -58,7 +58,7 @@ export function createTranslator(locale: SupportedLocale): Translator {
     if (cursor < translated.length) {
       nodes.push(interpolate(translated.slice(cursor), values as Values))
     }
-    return nodes.length === 1 ? nodes[0] : nodes
+    return nodes.length === 1 ? nodes[0] : createElement(Fragment, null, ...nodes)
   }
   return translate
 }

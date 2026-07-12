@@ -60,12 +60,22 @@ export default function DockMenuControl({
             {homeLabel}
           </span>
         ) : (
-          <Link href={homeHref} className="site-language-option site-nav-option" role="menuitem">
+          <Link
+            href={homeHref}
+            className="site-language-option site-nav-option"
+            role="menuitem"
+            aria-label={homeLabel}
+          >
             {homeLabel}
           </Link>
         )}
         {active === 'home' && demoHref && demoLabel ? (
-          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+          <a
+            href={demoHref}
+            className="site-language-option site-nav-option"
+            role="menuitem"
+            aria-label={demoLabel}
+          >
             {demoLabel}
           </a>
         ) : null}
@@ -82,12 +92,18 @@ export default function DockMenuControl({
             href={enterpriseHref}
             className="site-language-option site-nav-option"
             role="menuitem"
+            aria-label={enterpriseLabel}
           >
             {enterpriseLabel}
           </Link>
         )}
         {active === 'enterprise' && demoHref && demoLabel ? (
-          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem">
+          <a
+            href={demoHref}
+            className="site-language-option site-nav-option"
+            role="menuitem"
+            aria-label={demoLabel}
+          >
             {demoLabel}
           </a>
         ) : null}
@@ -104,6 +120,7 @@ export default function DockMenuControl({
             href={protocolHref}
             className="site-language-option site-nav-option"
             role="menuitem"
+            aria-label={protocolLabel}
           >
             {protocolLabel}
           </Link>
@@ -118,7 +135,12 @@ export default function DockMenuControl({
               {blogLabel}
             </span>
           ) : (
-            <Link href={blogHref} className="site-language-option site-nav-option" role="menuitem">
+            <Link
+              href={blogHref}
+              className="site-language-option site-nav-option"
+              role="menuitem"
+              aria-label={blogLabel}
+            >
               {blogLabel}
             </Link>
           )

@@ -2750,6 +2750,10 @@ body {
   padding-inline: 14px;
   font-size: 13px;
 }
+.dock-nav .nav-cta {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
 .dock-theme-toggle {
   position: relative;
   display: inline-flex;

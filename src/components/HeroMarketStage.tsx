@@ -41,7 +41,7 @@ export default function HeroMarketStage({
                     />
                   </div>
                   {expandSide ? (
-                    <figcaption className="protocol-hero-card-panel" aria-hidden="true">
+                    <div className="protocol-hero-card-panel" aria-hidden="true">
                       <div className="protocol-hero-card-title">{title}</div>
                       <div className="protocol-hero-card-actions">
                         <span className="hero-market-tooltip-btn hero-market-tooltip-btn-yes">
@@ -51,7 +51,7 @@ export default function HeroMarketStage({
                           {noLabel}
                         </span>
                       </div>
-                    </figcaption>
+                    </div>
                   ) : null}
                 </div>
               </figure>

@@ -44,7 +44,7 @@ export default function MarketingDockNav({
   return (
     <I18nProvider locale={locale}>
       <nav id="dockNav" className="dock-nav" aria-label={t('Site navigation')}>
-        <a href="#page-top" className="nav-logo">
+        <a href="#page-top" className="nav-logo" aria-label="Kuest">
           <KuestMark />
           Kuest
         </a>
@@ -83,7 +83,7 @@ export default function MarketingDockNav({
             labelToDark={t('Switch to dark mode')}
             labelToLight={t('Switch to light mode')}
           />
-          <a href={ctaHref} className="nb nb-solid nav-cta">
+          <a href={ctaHref} className="nb nb-solid nav-cta" aria-label={ctaLabel}>
             <span className="cta-label">{ctaLabel}</span>
             <ChevronRightIcon />
           </a>

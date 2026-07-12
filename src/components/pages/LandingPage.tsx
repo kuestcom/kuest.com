@@ -527,7 +527,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
         demoHref="#p3-demo"
         demoLabel="Demo"
         ctaHref={launchHref}
-        ctaLabel={t('Start your prediction market')}
+        ctaLabel={t('Get started')}
       />
 
       <main id="page-top" className="page">
@@ -653,6 +653,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                         alt="Polymarket"
                         width={132}
                         height={28}
+                        loading="lazy"
                         className="attention-scroll-brand-logo"
                       />
                     </div>
@@ -662,6 +663,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                         alt="Kalshi"
                         width={124}
                         height={28}
+                        loading="lazy"
                         className="attention-scroll-brand-logo"
                       />
                     </div>
@@ -720,6 +722,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                       alt=""
                       width={28}
                       height={28}
+                      loading="lazy"
                       className="size-7 rounded-full border-2 border-[#0e1117] object-cover"
                       style={{ marginLeft: index === 0 ? 0 : -8 }}
                     />

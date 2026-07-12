@@ -33,7 +33,7 @@ export default function SiteFooter({
           aria-label={docsLabel}
           title={docsLabel}
         >
-          <Image src="/assets/images/docs.svg" alt="" width={21} height={21} />
+          <Image src="/assets/images/docs.svg" alt="" width={21} height={21} loading="lazy" />
         </a>
         <a
           id="footerMailLink"
@@ -42,7 +42,7 @@ export default function SiteFooter({
           aria-label={contactLabel}
           title={contactLabel}
         >
-          <Image src="/assets/images/mail.svg" alt="" width={20} height={20} />
+          <Image src="/assets/images/mail.svg" alt="" width={20} height={20} loading="lazy" />
         </a>
         <a
           id="footerXLink"
@@ -53,7 +53,7 @@ export default function SiteFooter({
           aria-label={xLabel}
           title={xLabel}
         >
-          <Image src="/assets/images/x.svg" alt="" width={20} height={20} />
+          <Image src="/assets/images/x.svg" alt="" width={20} height={20} loading="lazy" />
         </a>
         <a
           id="footerDiscordLink"
@@ -64,7 +64,7 @@ export default function SiteFooter({
           aria-label={discordLabel}
           title={discordLabel}
         >
-          <Image src="/assets/images/discord.svg" alt="" width={20} height={20} />
+          <Image src="/assets/images/discord.svg" alt="" width={20} height={20} loading="lazy" />
         </a>
       </div>
     </footer>

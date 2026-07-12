@@ -97,6 +97,7 @@ export default function NicheShowcase({
                 alt=""
                 width={92}
                 height={92}
+                loading="lazy"
                 className="prediction-showcase-thumb"
               />
               <h3 className={titleClassName}>{card.title}</h3>
