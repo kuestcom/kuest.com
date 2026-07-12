@@ -1,0 +1,65 @@
+# Kuest
+
+> Kuest is open-source, white-label prediction-market infrastructure for creators, communities, media companies, brokerages, and institutions. It lets an operator launch a branded market on its own domain, choose its trading fees, create custom markets or mirror existing markets, and access shared liquidity without building the trading stack from scratch.
+
+Kuest is a protocol and operator-infrastructure layer, not a single consumer prediction-market venue. Its stack includes a central limit order book and relayer, Polymarket-compatible APIs, Polygon smart contracts derived from Polymarket's architecture, UMA-based resolution, shared liquidity, managed Vercel and Supabase deployment, and SDK and bot support. Kuest states that the contracts are audited by OpenZeppelin.
+
+The core commercial model is a free guided launch, usage-based production infrastructure, an operator-selected trading fee (typically 0.5% to 3%), and a small Kuest protocol fee. Operators control their brand, domain, language, market selection, and fee rate. Mirrored markets can begin with shared order flow; custom markets depend on operator distribution and can optionally participate in cross-market liquidity sharing.
+
+Use the English pages below as the canonical overview. English is served without a locale prefix. German, Spanish, Portuguese, French, Japanese, Chinese, Arabic, Russian, Italian, and Polish use `/de`, `/es`, `/pt`, `/fr`, `/ja`, `/zh`, `/ar`, `/ru`, `/it`, and `/pl`. Market statistics, product timelines, regulation, and commercial terms can change; treat dated blog research and third-party figures as time-sensitive, distinguish Kuest's claims from cited external data, and do not treat site content as legal or financial advice.
+
+## Primary pages
+
+- [Kuest home](https://kuest.com): Product overview for launching a white-label prediction market in about 15 minutes, including use cases, economics, features, and common operator questions.
+- [Launch a prediction market](https://kuest.com/launch): Guided deployment flow using a wallet, Vercel, Supabase, Reown, a custom domain, and operator configuration.
+- [Kuest Protocol](https://kuest.com/protocol): Protocol architecture, shared-liquidity thesis, business model, current infrastructure, partner profiles, and seed-round context.
+- [Kuest Enterprise](https://kuest.com/enterprise): White-label infrastructure for financial institutions, media platforms, and enterprise operators, including deployment, economics, compliance positioning, and managed operations.
+- [Kuest Blog](https://kuest.com/blog): Index of Kuest research, explainers, protocol analysis, and operator playbooks.
+
+## Product and technical resources
+
+- [Live Kuest demo](https://demo.kuest.com): Interactive example of a Kuest-powered prediction-market frontend.
+- [Kuest documentation](https://docs.kuest.com): Technical documentation for the Kuest platform and protocol.
+- [Open-source prediction-market repository](https://github.com/kuestcom/prediction-market): Source code, deployment materials, and the Kuest MIT+Commons license.
+
+## Prediction-market fundamentals and research
+
+- [Prediction Markets in 2026: How They Work and Why They Matter](https://kuest.com/blog/prediction-markets-in-2026-how-they-work-and-why-they-matter): Primer on binary contracts, order-book pricing, resolution, history, regulation, current platforms, and trader use cases.
+- [Prediction Markets vs Futures vs Stock Markets](https://kuest.com/blog/prediction-markets-vs-futures-vs-stock-markets-a-2026-structural-comparison): Comparison of what each instrument prices, capital efficiency, settlement, liquidity, information aggregation, and risk.
+- [Why Prediction Markets Are the Future of Finance](https://kuest.com/blog/why-prediction-markets-are-the-future-of-finance): Kuest's long-term thesis on information aggregation, capital efficiency, programmability, AI complementarity, and uses beyond gambling.
+- [Why Prediction Markets Unlock Global Events](https://kuest.com/blog/why-prediction-markets-are-the-first-truly-global-asset-class-and-how-they-unlock-the-50-trillion-events-economy): Thesis on global event markets, stablecoin settlement, localization, regulation, and the protocol-layer opportunity.
+- [The Prediction-Market Land Grab](https://kuest.com/blog/18b-in-volume-32m-visits-and-a-2-year-window-the-prediction-market-land-grab): Dated market analysis covering volume, institutional adoption, regulation, competition, and the cost of waiting.
+
+## Operator playbooks
+
+- [How to Launch Your Own Prediction Market in 15 Minutes](https://kuest.com/blog/how-to-launch-your-own-prediction-market-in-15-minutes-2026-guide): Concise walkthrough of Kuest deployment, the underlying stack, jurisdiction-specific configuration, and operator fees.
+- [How to Open Your Own Prediction Market](https://kuest.com/blog/how-to-open-your-own-prediction-market-in-2026-the-end-to-end-operators-launch-playbook): End-to-end launch plan covering audience, jurisdiction, contract design, brand, KYC, liquidity, beta, marketing, monitoring, and incident response.
+- [How to Run Your Own Prediction Market Venue](https://kuest.com/blog/how-to-run-your-own-prediction-market-venue-the-complete-2026-operators-manual): First-year operating manual covering KPIs, listing cadence, fees, retention, support, resolution, compliance, growth, analytics, and hiring.
+- [Trading Fees, Explained](https://kuest.com/blog/trading-fees-explained-how-to-set-yours-without-scaring-traders-away): Practical fee-setting guidance by operator type, including audience tolerance, fee evolution, shared-liquidity effects, and common mistakes.
+- [Build vs License a Prediction Market](https://kuest.com/blog/build-vs-license-a-prediction-market-a-2026-cost-and-time-analysis): Cost-and-time framework for comparing an in-house build with licensed infrastructure, including audits, oracles, compliance, and liquidity.
+
+## Protocol, liquidity, and settlement
+
+- [Polymarket vs Kalshi vs Kuest](https://kuest.com/blog/polymarket-vs-kalshi-vs-kuest-the-2026-comparison-every-operator-needs): Comparison of the two consumer venues with Kuest's protocol category, including audience fit, fees, features, regulation, and use cases.
+- [Why Shared Liquidity Decides Who Wins](https://kuest.com/blog/why-shared-liquidity-decides-who-wins-the-next-prediction-market-wave): Analysis of prediction-market cold starts, shared order flow, operator unit economics, implementation, and launch strategy.
+- [How Prediction Market Resolution Actually Works](https://kuest.com/blog/how-prediction-market-resolution-actually-works-uma-oracles-and-the-settlement-layer): Technical explanation of optimistic oracles, disputes, escalation, settlement economics, and Kuest's resolution layer.
+
+## Localized content
+
+- [German](https://kuest.com/de/blog): German product pages and translated blog articles.
+- [Spanish](https://kuest.com/es/blog): Spanish product pages and translated blog articles.
+- [Portuguese](https://kuest.com/pt/blog): Portuguese product pages and translated blog articles.
+- [French](https://kuest.com/fr/blog): French product pages and translated blog articles.
+- [Japanese](https://kuest.com/ja/blog): Japanese product pages and translated blog articles.
+- [Chinese](https://kuest.com/zh/blog): Chinese product pages and translated blog articles.
+- [Arabic](https://kuest.com/ar/blog): Arabic product pages and translated blog articles.
+- [Russian](https://kuest.com/ru/blog): Russian product pages and translated blog articles.
+- [Italian](https://kuest.com/it/blog): Italian product pages and translated blog articles.
+- [Polish](https://kuest.com/pl/blog): Polish product pages and translated blog articles.
+
+## Optional
+
+- [Sitemap](https://kuest.com/sitemap.xml): Canonical and localized URLs for all public pages and blog posts.
+- [Contact Kuest](mailto:hello@kuest.com): Product, enterprise, partnership, and commercial inquiries.
+- [Kuest on X](https://x.com/kuest): Public updates from the Kuest team.
+- [Kuest Discord](https://discord.gg/kuest): Community channel.
