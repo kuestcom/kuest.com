@@ -30,6 +30,7 @@ const site = new URL(getPublicRuntimeConfig().SITE_URL)
 const canonical = new URL(getPathname({ href: canonicalPath, locale }), site)
 const absoluteOgImage = new URL(ogImage, site)
 const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, locale: 'en' })
+const usesOpenSauceOne = !['ar', 'ja', 'ru', 'zh'].includes(locale)
 ---
 
 <!doctype html>
@@ -38,6 +39,24 @@ const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, loc
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#CDFF00" />
+    {usesOpenSauceOne && (
+      <>
+        <link
+          rel="preload"
+          href="/assets/fonts/open-sauce-one-400.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/assets/fonts/open-sauce-one-700.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin="anonymous"
+        />
+      </>
+    )}
     <link rel="icon" type="image/svg+xml" href="/assets/images/kuest-logo.svg" />
     <link rel="apple-touch-icon" href="/assets/images/kuest-logo.svg" />
     <link rel="canonical" href={canonical} />
@@ -67,12 +86,34 @@ const defaultAlternate = alternates.en ?? getPathname({ href: canonicalPath, loc
         document.documentElement.dataset.themeMode = mode;
       } catch {}
     </script>
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-S0S2K7EQE4"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-S0S2K7EQE4');
+
+      function loadGoogleTag() {
+        if (document.querySelector('script[data-kuest-google-tag]')) return;
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-S0S2K7EQE4';
+        script.dataset.kuestGoogleTag = 'true';
+        document.head.appendChild(script);
+      }
+
+      function scheduleGoogleTag() {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadGoogleTag, { timeout: 5000 });
+        } else {
+          window.setTimeout(loadGoogleTag, 2500);
+        }
+      }
+
+      if (document.readyState === 'complete') {
+        scheduleGoogleTag();
+      } else {
+        window.addEventListener('load', scheduleGoogleTag, { once: true });
+      }
     </script>
     <slot name="head" />
   </head>

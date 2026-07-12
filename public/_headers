@@ -1,3 +1,5 @@
 /api/og/blog/*
   Content-Type: image/svg+xml; charset=utf-8
   Cache-Control: public, max-age=86400
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

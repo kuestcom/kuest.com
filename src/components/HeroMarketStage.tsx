@@ -1,5 +1,6 @@
 import Image from '@/compat/Image'
 import { HERO_MARKET_SCENES } from '@/lib/marketing-shared-data'
+import { useEffect, useState } from 'react'
 
 export default function HeroMarketStage({
   titles,
@@ -10,6 +11,35 @@ export default function HeroMarketStage({
   yesLabel: string
   noLabel: string
 }) {
+  const [showDeferredScenes, setShowDeferredScenes] = useState(false)
+
+  useEffect(() => {
+    let idleCallbackId: number | undefined
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+
+    const revealDeferredScenes = () => {
+      if ('requestIdleCallback' in window) {
+        idleCallbackId = window.requestIdleCallback(() => setShowDeferredScenes(true), {
+          timeout: 2500,
+        })
+      } else {
+        timeoutId = setTimeout(() => setShowDeferredScenes(true), 1500)
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      revealDeferredScenes()
+    } else {
+      window.addEventListener('load', revealDeferredScenes, { once: true })
+    }
+
+    return () => {
+      window.removeEventListener('load', revealDeferredScenes)
+      if (idleCallbackId !== undefined) window.cancelIdleCallback(idleCallbackId)
+      if (timeoutId !== undefined) clearTimeout(timeoutId)
+    }
+  }, [])
+
   return (
     <div className="hero-market-stage" aria-hidden="true">
       {HERO_MARKET_SCENES.map((scene, sceneIndex) => (
@@ -22,6 +52,7 @@ export default function HeroMarketStage({
               ) + cardIndex
             const title = titles[titleIndex] ?? ''
             const expandSide = 'expandSide' in card ? card.expandSide : undefined
+            const shouldRenderImage = sceneIndex === 0 || showDeferredScenes
 
             return (
               <figure
@@ -32,13 +63,16 @@ export default function HeroMarketStage({
               >
                 <div className="protocol-hero-card-shell">
                   <div className="hero-market-card-media">
-                    <Image
-                      src={card.imageSrc}
-                      alt=""
-                      width={320}
-                      height={320}
-                      className="size-full object-cover"
-                    />
+                    {shouldRenderImage ? (
+                      <Image
+                        src={card.imageSrc}
+                        alt=""
+                        width={320}
+                        height={320}
+                        fetchPriority="low"
+                        className="size-full object-cover"
+                      />
+                    ) : null}
                   </div>
                   {expandSide ? (
                     <div className="protocol-hero-card-panel" aria-hidden="true">

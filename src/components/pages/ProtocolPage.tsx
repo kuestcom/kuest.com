@@ -316,7 +316,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
         <section className="panel-wrap panel-static hero-stack-panel protocol-hero-panel" id="p0">
           <div className="panel-sticky">
             <div className="panel-inner hero-stack">
-              <div className="r hero-copy protocol-hero-copy">
+              <div className="hero-copy protocol-hero-copy">
                 <div className="hero-copy-main">
                   <div className="hero-brand-row">
                     <div className="hero-brand" aria-hidden="true">

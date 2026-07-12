@@ -534,7 +534,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
         <section className="panel-wrap panel-static hero-stack-panel" id="p0">
           <div className="panel-sticky">
             <div className="panel-inner hero-stack">
-              <div className="r hero-copy">
+              <div className="hero-copy">
                 <div className="hero-copy-main">
                   <div className="hero-brand-row">
                     <div className="hero-brand" aria-hidden="true">
