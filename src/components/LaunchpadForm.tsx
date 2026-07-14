@@ -44,6 +44,12 @@ import {
   mintKuestKeysFromSignature,
   readInjectedProvider,
 } from '@/lib/kuest-keygen'
+import {
+  DEFAULT_SUPABASE_REGION,
+  DEFAULT_VERCEL_REGION,
+  SUPABASE_REGIONS,
+  VERCEL_REGIONS,
+} from '@/lib/deployment-regions'
 import { normalizeSiteUrl } from '@/lib/site-url'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
@@ -55,6 +61,7 @@ interface FormState {
   gitRepo: string
   gitBranch: string
   vercelTeamId: string
+  vercelRegion: string
   supabaseRegion: string
   supabaseResourceId: string
   contactEmail: string
@@ -264,7 +271,8 @@ function createDefaultForm(runtimeConfig: PublicRuntimeConfig): FormState {
     gitRepo: '',
     gitBranch: 'main',
     vercelTeamId: runtimeConfig.DEFAULT_VERCEL_TEAM_ID,
-    supabaseRegion: runtimeConfig.DEFAULT_SUPABASE_REGION,
+    vercelRegion: runtimeConfig.DEFAULT_VERCEL_REGION || DEFAULT_VERCEL_REGION,
+    supabaseRegion: runtimeConfig.DEFAULT_SUPABASE_REGION || DEFAULT_SUPABASE_REGION,
     supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
     contactEmail: '',
     env: {
@@ -328,6 +336,7 @@ function toPersistableFormState(form: FormState, githubState: GitHubConnectState
     gitRepo: form.gitRepo,
     gitBranch: form.gitBranch,
     vercelTeamId: form.vercelTeamId,
+    vercelRegion: form.vercelRegion,
     supabaseRegion: form.supabaseRegion,
     supabaseResourceId: form.supabaseResourceId,
     contactEmail: form.contactEmail,
@@ -842,6 +851,8 @@ export default function LaunchpadForm({
         gitBranch: typeof parsed.gitBranch === 'string' ? parsed.gitBranch : previous.gitBranch,
         vercelTeamId:
           typeof parsed.vercelTeamId === 'string' ? parsed.vercelTeamId : previous.vercelTeamId,
+        vercelRegion:
+          typeof parsed.vercelRegion === 'string' ? parsed.vercelRegion : previous.vercelRegion,
         supabaseRegion:
           typeof parsed.supabaseRegion === 'string'
             ? parsed.supabaseRegion
@@ -1818,6 +1829,7 @@ export default function LaunchpadForm({
         gitBranch: form.gitBranch,
         databaseMode: 'vercel_supabase_integration' as const,
         vercelTeamId: form.vercelTeamId || undefined,
+        vercelRegion: form.vercelRegion.trim() || undefined,
         supabase: {
           region: form.supabaseRegion.trim() || undefined,
           existingResourceId:
@@ -2836,8 +2848,29 @@ export default function LaunchpadForm({
                     />
                   </label>
                   <label className="launch-field">
+                    <span>{t('Vercel region')}</span>
+                    <select
+                      value={form.vercelRegion}
+                      onChange={(event) =>
+                        setForm((previous) => ({
+                          ...previous,
+                          vercelRegion: event.target.value,
+                        }))
+                      }
+                    >
+                      {!VERCEL_REGIONS.some((region) => region.id === form.vercelRegion) && (
+                        <option value={form.vercelRegion}>{form.vercelRegion}</option>
+                      )}
+                      {VERCEL_REGIONS.map((region) => (
+                        <option key={region.id} value={region.id}>
+                          {region.location} ({region.id})
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="launch-field">
                     <span>{t('Supabase region')}</span>
-                    <input
+                    <select
                       value={form.supabaseRegion}
                       onChange={(event) =>
                         setForm((previous) => ({
@@ -2845,8 +2878,16 @@ export default function LaunchpadForm({
                           supabaseRegion: event.target.value,
                         }))
                       }
-                      placeholder="us-east-1"
-                    />
+                    >
+                      {!SUPABASE_REGIONS.some((region) => region.id === form.supabaseRegion) && (
+                        <option value={form.supabaseRegion}>{form.supabaseRegion}</option>
+                      )}
+                      {SUPABASE_REGIONS.map((region) => (
+                        <option key={region.id} value={region.id}>
+                          {region.location} ({region.id})
+                        </option>
+                      ))}
+                    </select>
                   </label>
                   <label className="launch-field">
                     <span>BETTER_AUTH_SECRET</span>

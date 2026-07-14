@@ -1,5 +1,6 @@
 import type { LaunchLogEntry, LaunchLogLevel, LaunchRequestBody } from '@/lib/launch-types'
 import { randomBytes } from 'node:crypto'
+import { isSupabaseRegion, isVercelRegion } from '@/lib/deployment-regions'
 import { normalizeSiteUrl } from '@/lib/site-url'
 
 export class LaunchError extends Error {
@@ -103,6 +104,18 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
     throw new LaunchError('env block is required.', 'validation')
   }
 
+  const vercelRegion =
+    typeof raw.vercelRegion === 'string' ? raw.vercelRegion.trim().toLowerCase() : ''
+  if (vercelRegion && !isVercelRegion(vercelRegion)) {
+    throw new LaunchError('vercelRegion must be a valid Vercel region id.', 'validation')
+  }
+
+  const supabaseRegion =
+    typeof raw.supabase?.region === 'string' ? raw.supabase.region.trim().toLowerCase() : ''
+  if (supabaseRegion && !isSupabaseRegion(supabaseRegion)) {
+    throw new LaunchError('supabase.region must be a valid Supabase region id.', 'validation')
+  }
+
   const envObject = Object.fromEntries(
     Object.entries(raw.env).map(([key, value]) => [key, String(value ?? '').trim()]),
   )
@@ -153,6 +166,7 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
       typeof raw.vercelTeamId === 'string' && raw.vercelTeamId.trim()
         ? raw.vercelTeamId.trim()
         : undefined,
+    vercelRegion: vercelRegion || undefined,
     tokens: {
       vercel:
         typeof raw.tokens?.vercel === 'string' && raw.tokens.vercel.trim()
@@ -169,10 +183,7 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
             typeof raw.supabase.organizationId === 'string' && raw.supabase.organizationId.trim()
               ? raw.supabase.organizationId.trim()
               : undefined,
-          region:
-            typeof raw.supabase.region === 'string' && raw.supabase.region.trim()
-              ? raw.supabase.region.trim()
-              : undefined,
+          region: supabaseRegion || undefined,
           databasePassword:
             typeof raw.supabase.databasePassword === 'string' &&
             raw.supabase.databasePassword.trim()

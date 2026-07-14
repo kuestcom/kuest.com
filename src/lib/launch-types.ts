@@ -23,6 +23,7 @@ export interface LaunchRequestBody {
   gitRepo: string
   gitBranch: string
   vercelTeamId?: string
+  vercelRegion?: string
   databaseMode: DatabaseMode
   tokens?: {
     vercel?: string

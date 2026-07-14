@@ -1,7 +1,10 @@
+import { DEFAULT_SUPABASE_REGION, DEFAULT_VERCEL_REGION } from '@/lib/deployment-regions'
+
 export interface PublicRuntimeConfig {
   SITE_URL: string
   GITHUB_APP_URL: string
   DEFAULT_VERCEL_TEAM_ID: string
+  DEFAULT_VERCEL_REGION: string
   DEFAULT_SUPABASE_REGION: string
   VERCEL_ALLOW_TOKEN_FALLBACK: boolean
   KUEST_CHAIN_MODE: 'amoy' | 'polygon'
@@ -16,7 +19,8 @@ export const PUBLIC_RUNTIME_DEFAULTS: PublicRuntimeConfig = {
   SITE_URL: 'https://kuest.com',
   GITHUB_APP_URL: 'https://github-app.kuest.com',
   DEFAULT_VERCEL_TEAM_ID: '',
-  DEFAULT_SUPABASE_REGION: 'us-east-1',
+  DEFAULT_VERCEL_REGION,
+  DEFAULT_SUPABASE_REGION,
   VERCEL_ALLOW_TOKEN_FALLBACK: true,
   KUEST_CHAIN_MODE: 'amoy',
   REOWN_APPKIT_PROJECT_ID: '',

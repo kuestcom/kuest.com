@@ -1,4 +1,5 @@
 import type { VercelDomainResponse, VercelProvisionResult } from '@/lib/launch-types'
+import { DEFAULT_SUPABASE_REGION } from '@/lib/deployment-regions'
 import { LaunchError } from '@/lib/launch-utils'
 import { getServerRuntimeConfig } from '@/lib/server-env'
 
@@ -762,6 +763,24 @@ async function findProjectByName(params: { token: string; teamId?: string; proje
   return null
 }
 
+async function updateProjectFunctionRegion(params: {
+  token: string
+  teamId?: string
+  projectIdOrName: string
+  vercelRegion: string
+}) {
+  const path = withTeamId(
+    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}`,
+    params.teamId,
+  )
+  await vercelRequest<VercelProject>(params.token, path, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      serverlessFunctionRegion: params.vercelRegion,
+    }),
+  })
+}
+
 export async function preflightVercelSupabaseLaunch(params: {
   token: string
   teamId?: string
@@ -967,6 +986,7 @@ export async function provisionVercelProject(params: {
   projectName: string
   gitRepo: string
   gitBranch: string
+  vercelRegion?: string
   environmentVariables: VercelEnvVar[]
   triggerDeployment?: boolean
   log: (_step: string, _message: string) => void
@@ -988,6 +1008,7 @@ export async function provisionVercelProject(params: {
           repo: params.gitRepo,
           productionBranch: params.gitBranch,
         },
+        ...(params.vercelRegion ? { serverlessFunctionRegion: params.vercelRegion } : undefined),
         environmentVariables: params.environmentVariables.map((item) => ({
           key: item.key,
           value: item.value,
@@ -1030,6 +1051,9 @@ export async function provisionVercelProject(params: {
               repo: params.gitRepo,
               productionBranch: params.gitBranch,
             },
+            ...(params.vercelRegion
+              ? { serverlessFunctionRegion: params.vercelRegion }
+              : undefined),
           }),
         })
       } catch (retryError) {
@@ -1071,6 +1095,15 @@ export async function provisionVercelProject(params: {
   params.log('vercel', `Project ready: ${project.name} (${project.id}).`)
   if (reusedExisting) {
     params.log('vercel', 'Using existing project. Existing environment variables were preserved.')
+    if (params.vercelRegion) {
+      await updateProjectFunctionRegion({
+        token: params.token,
+        teamId: params.teamId,
+        projectIdOrName: project.id,
+        vercelRegion: params.vercelRegion,
+      })
+      params.log('vercel', `Vercel function region updated to ${params.vercelRegion}.`)
+    }
   }
   const shouldTriggerDeployment = params.triggerDeployment ?? true
   let deploymentId: string | undefined
@@ -1085,6 +1118,7 @@ export async function provisionVercelProject(params: {
         projectName: project.name,
         gitRepo: params.gitRepo,
         gitBranch: params.gitBranch,
+        vercelRegion: params.vercelRegion,
       })
       deploymentId = deployment.id
       deploymentUrl = deployment.url
@@ -1259,9 +1293,9 @@ export async function connectSupabaseViaVercelIntegration(params: {
       [
         params.supabaseRegion,
         VERCEL_SUPABASE_REGION,
+        DEFAULT_SUPABASE_REGION,
         'us-east-1',
         'us-west-1',
-        'eu-west-1',
         'sa-east-1',
         'ap-southeast-1',
       ]
@@ -1463,6 +1497,7 @@ export async function createProjectDeployment(params: {
   projectName: string
   gitRepo: string
   gitBranch: string
+  vercelRegion?: string
 }) {
   const path = withTeamId('/v13/deployments', params.teamId)
   const projectReference = params.projectId || params.projectName
@@ -1474,6 +1509,9 @@ export async function createProjectDeployment(params: {
         name: params.projectName,
         target: 'production',
         project: projectReference,
+        ...(params.vercelRegion
+          ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
+          : undefined),
       }),
     })
     const resolved = await resolveDeploymentPublicUrl({
@@ -1499,6 +1537,9 @@ export async function createProjectDeployment(params: {
           name: params.projectName,
           target: 'production',
           project: projectReference,
+          ...(params.vercelRegion
+            ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
+            : undefined),
           gitSource: {
             type: 'github',
             repo: params.gitRepo,
@@ -1539,6 +1580,9 @@ export async function createProjectDeployment(params: {
           name: params.projectName,
           target: 'production',
           project: projectReference,
+          ...(params.vercelRegion
+            ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
+            : undefined),
           gitSource: {
             type: 'github',
             repo: params.gitRepo,

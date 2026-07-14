@@ -159,6 +159,7 @@ export async function POST(request: Request) {
       projectName,
       gitRepo,
       gitBranch,
+      vercelRegion: payload.vercelRegion,
       environmentVariables: vercelEnvironmentVariables,
       triggerDeployment: shouldAutoDeploy,
       log,
@@ -183,6 +184,7 @@ export async function POST(request: Request) {
         projectName: vercel.projectName,
         gitRepo,
         gitBranch,
+        vercelRegion: payload.vercelRegion,
       })
       log('vercel', 'Deployment triggered after Supabase integration connection.')
 
