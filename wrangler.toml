@@ -26,7 +26,7 @@ AFFILIATE_KUEST_FEE_RECEIVER = "0x645E67CC15DAE4F312dc941fA190c52E7d598c67"
 AFFILIATE_MAX_ATTEMPTS = "8"
 AFFILIATE_MAX_HISTORY_PAGES = "20"
 AFFILIATE_RPC_URL = "https://polygon-amoy.drpc.org"
-AFFILIATE_START_BLOCK = "0"
+AFFILIATE_START_BLOCK = "42753000"
 AFFILIATE_DRY_RUN = "true"
 AFFILIATE_TOKEN_DECIMALS = "6"
 GITHUB_APP_URL = "https://github-app.kuest.com"
@@ -44,7 +44,7 @@ RESEND_FROM_EMAIL = "Kuest <hello@kuest.com>"
 SITE_URL = "https://kuest.com"
 
 [triggers]
-crons = []
+crons = ["*/5 * * * *"]
 
 [[d1_databases]]
 binding = "AFFILIATE_DB"
