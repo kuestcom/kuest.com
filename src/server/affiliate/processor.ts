@@ -1,6 +1,6 @@
 import { createDubTracker } from './dub'
 import { deliverLeadOutbox } from './lead'
-import { deterministicInvoiceId, retryDelayMs } from './logic'
+import { confirmedSafeBlockNumber, deterministicInvoiceId, retryAt } from './logic'
 import { rawToCentsWithRemainder } from './money'
 import { nowIso } from './repository'
 import { fetchFeeHistoryPage, getBlockTimestamp } from './source'
@@ -13,6 +13,10 @@ type OperatorRow = {
   chain_id: number
 }
 
+export function operatorPageFromRows(rows: OperatorRow[], limit: number) {
+  return { operators: rows.slice(0, limit), cycleComplete: rows.length <= limit }
+}
+
 type MatchRow = {
   operator_wallet: string
   chain_id: number
@@ -21,10 +25,6 @@ type MatchRow = {
   amount_raw: string
   has_builder_fee: number
   has_affiliate_fee: number
-}
-
-function retryAt(attempt: number) {
-  return new Date(Date.now() + retryDelayMs(attempt)).toISOString()
 }
 
 async function readCheckpoint(db: D1Database, streamKey: string, fallback: number) {
@@ -56,7 +56,7 @@ async function listOperatorsRoundRobin(db: D1Database, chainId: number, limit: n
     .bind(stateKey)
     .first<{ state_value: string }>()
   const cursor = state?.state_value || ''
-  const first = await db
+  const page = await db
     .prepare(
       `SELECT operator_wallet, deposit_wallet, chain_id
          FROM affiliate_operator_attributions
@@ -64,23 +64,9 @@ async function listOperatorsRoundRobin(db: D1Database, chainId: number, limit: n
           AND operator_wallet > ?
         ORDER BY operator_wallet LIMIT ?`,
     )
-    .bind(chainId, cursor, limit)
+    .bind(chainId, cursor, limit + 1)
     .all<OperatorRow>()
-  const operators = [...(first.results || [])]
-  if (operators.length < limit && cursor) {
-    const wrapped = await db
-      .prepare(
-        `SELECT operator_wallet, deposit_wallet, chain_id
-           FROM affiliate_operator_attributions
-          WHERE chain_id = ? AND dub_click_id IS NOT NULL AND fee_processing_status = 'active'
-            AND operator_wallet <= ?
-          ORDER BY operator_wallet LIMIT ?`,
-      )
-      .bind(chainId, cursor, limit - operators.length)
-      .all<OperatorRow>()
-    operators.push(...(wrapped.results || []))
-  }
-  return { operators, stateKey }
+  return { ...operatorPageFromRows(page.results || [], limit), stateKey }
 }
 
 async function saveOperatorCursor(db: D1Database, stateKey: string, operatorWallet: string) {
@@ -89,7 +75,8 @@ async function saveOperatorCursor(db: D1Database, stateKey: string, operatorWall
       `INSERT INTO affiliate_runtime_state (state_key, state_value, updated_at)
        VALUES (?, ?, ?)
        ON CONFLICT(state_key) DO UPDATE SET
-         state_value = excluded.state_value, updated_at = excluded.updated_at`,
+         state_value = excluded.state_value, updated_at = excluded.updated_at
+       WHERE affiliate_runtime_state.state_value != excluded.state_value`,
     )
     .bind(stateKey, operatorWallet, nowIso())
     .run()
@@ -283,7 +270,53 @@ async function quarantineAmbiguousTransactions(db: D1Database, chainId: number) 
   }
 }
 
-async function createFeeBatches(
+type FeeBatchLease = {
+  leaseId: string
+  roundingRemainderRaw: string
+  grossFeeRaw: string
+  grossFeeCents: number
+}
+
+async function claimFeeBatchLease(db: D1Database, row: MatchRow): Promise<FeeBatchLease | null> {
+  const leaseId = crypto.randomUUID()
+  const now = nowIso()
+  const leaseUntil = new Date(Date.now() + 15 * 60_000).toISOString()
+  const attribution = await db
+    .prepare(
+      `UPDATE affiliate_operator_attributions
+          SET fee_batch_lease_id = ?, fee_batch_lease_until = ?, updated_at = ?
+        WHERE operator_wallet = ? AND chain_id = ? AND fee_processing_status = 'active'
+          AND (fee_batch_lease_until IS NULL OR fee_batch_lease_until <= ?)
+      RETURNING rounding_remainder_raw, gross_fee_raw, gross_fee_cents`,
+    )
+    .bind(leaseId, leaseUntil, now, row.operator_wallet, row.chain_id, now)
+    .first<{
+      rounding_remainder_raw: string
+      gross_fee_raw: string
+      gross_fee_cents: number
+    }>()
+  return attribution
+    ? {
+        leaseId,
+        roundingRemainderRaw: attribution.rounding_remainder_raw,
+        grossFeeRaw: attribution.gross_fee_raw,
+        grossFeeCents: attribution.gross_fee_cents,
+      }
+    : null
+}
+
+async function releaseFeeBatchLease(db: D1Database, row: MatchRow, leaseId: string) {
+  await db
+    .prepare(
+      `UPDATE affiliate_operator_attributions
+          SET fee_batch_lease_id = NULL, fee_batch_lease_until = NULL, updated_at = ?
+        WHERE operator_wallet = ? AND chain_id = ? AND fee_batch_lease_id = ?`,
+    )
+    .bind(nowIso(), row.operator_wallet, row.chain_id, leaseId)
+    .run()
+}
+
+export async function createFeeBatches(
   db: D1Database,
   chainId: number,
   tokenDecimals: number,
@@ -309,100 +342,126 @@ async function createFeeBatches(
     .bind(chainId, limit)
     .all<MatchRow>()
 
+  const grouped = new Map<string, MatchRow[]>()
   for (const row of rows.results || []) {
-    const attribution = await db
-      .prepare(
-        `SELECT rounding_remainder_raw, gross_fee_raw, gross_fee_cents
-         FROM affiliate_operator_attributions
-        WHERE operator_wallet = ? AND chain_id = ? AND fee_processing_status = 'active'`,
-      )
-      .bind(row.operator_wallet, row.chain_id)
-      .first<{
-        rounding_remainder_raw: string
-        gross_fee_raw: string
-        gross_fee_cents: number
-      }>()
-    if (!attribution) continue
-    const converted = rawToCentsWithRemainder({
-      amountRaw: row.amount_raw,
-      decimals: tokenDecimals,
-      remainderRaw: attribution.rounding_remainder_raw,
-    })
-    const invoiceId = deterministicInvoiceId({
-      chainId: row.chain_id,
-      operatorWallet: row.operator_wallet,
-      txHash: row.tx_hash,
-    })
-    const metadata = {
-      operatorWallet: row.operator_wallet,
-      chainId: row.chain_id,
-      txHash: row.tx_hash,
-      timestamp: row.event_timestamp,
-      feeTypes: [
-        row.has_builder_fee ? 'BUILDER' : null,
-        row.has_affiliate_fee ? 'AFFILIATE' : null,
-      ].filter(Boolean),
-      grossKuestFeeRaw: row.amount_raw,
-      tokenDecimals,
-    }
-    const payload = {
-      operatorWallet: row.operator_wallet,
-      amountCents: converted.cents,
-      invoiceId,
-      metadata,
-    }
-    const now = nowIso()
-    const batchId = crypto.randomUUID()
-    const status = converted.cents > 0 ? 'pending' : 'below_minimum'
-    await db.batch([
-      db
-        .prepare(
-          `INSERT INTO affiliate_fee_batches (
-           id, invoice_id, operator_wallet, chain_id, tx_hash, event_timestamp,
-           amount_raw, token_decimals, amount_cents, remainder_in_raw, remainder_out_raw,
-           dub_payload_json, status, created_at, updated_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(invoice_id) DO NOTHING`,
-        )
-        .bind(
-          batchId,
-          invoiceId,
-          row.operator_wallet,
-          row.chain_id,
-          row.tx_hash,
-          row.event_timestamp,
-          row.amount_raw,
+    const key = `${row.chain_id}:${row.operator_wallet}`
+    grouped.set(key, [...(grouped.get(key) || []), row])
+  }
+
+  for (const operatorRows of grouped.values()) {
+    const firstRow = operatorRows[0]
+    const lease = await claimFeeBatchLease(db, firstRow)
+    if (!lease) continue
+    let remainderRaw = lease.roundingRemainderRaw
+    let grossFeeRaw = lease.grossFeeRaw
+    let grossFeeCents = lease.grossFeeCents
+    try {
+      for (const row of operatorRows) {
+        const invoiceId = deterministicInvoiceId({
+          chainId: row.chain_id,
+          operatorWallet: row.operator_wallet,
+          txHash: row.tx_hash,
+        })
+        const existing = await db
+          .prepare(`SELECT id FROM affiliate_fee_batches WHERE invoice_id = ?`)
+          .bind(invoiceId)
+          .first<{ id: string }>()
+        const now = nowIso()
+        if (existing) {
+          await db
+            .prepare(
+              `UPDATE affiliate_operator_fee_transactions SET status = 'batched', updated_at = ?
+                WHERE chain_id = ? AND operator_wallet = ? AND tx_hash = ?
+                  AND status = 'observed'`,
+            )
+            .bind(now, row.chain_id, row.operator_wallet, row.tx_hash)
+            .run()
+          continue
+        }
+        const converted = rawToCentsWithRemainder({
+          amountRaw: row.amount_raw,
+          decimals: tokenDecimals,
+          remainderRaw,
+        })
+        const nextGrossFeeRaw = (BigInt(grossFeeRaw) + BigInt(row.amount_raw)).toString()
+        const nextGrossFeeCents = grossFeeCents + converted.cents
+        const metadata = {
+          operatorWallet: row.operator_wallet,
+          chainId: row.chain_id,
+          txHash: row.tx_hash,
+          timestamp: row.event_timestamp,
+          feeTypes: [
+            row.has_builder_fee ? 'BUILDER' : null,
+            row.has_affiliate_fee ? 'AFFILIATE' : null,
+          ].filter(Boolean),
+          grossKuestFeeRaw: row.amount_raw,
           tokenDecimals,
-          converted.cents,
-          attribution.rounding_remainder_raw,
-          converted.remainderRaw,
-          JSON.stringify(payload),
-          status,
-          now,
-          now,
-        ),
-      db
-        .prepare(
-          `UPDATE affiliate_operator_fee_transactions SET status = 'batched', updated_at = ?
-          WHERE chain_id = ? AND operator_wallet = ? AND tx_hash = ? AND status = 'observed'`,
-        )
-        .bind(now, row.chain_id, row.operator_wallet, row.tx_hash),
-      db
-        .prepare(
-          `UPDATE affiliate_operator_attributions
-            SET rounding_remainder_raw = ?,
-                gross_fee_raw = ?, gross_fee_cents = ?, updated_at = ?
-          WHERE operator_wallet = ? AND chain_id = ? AND fee_processing_status = 'active'`,
-        )
-        .bind(
-          converted.remainderRaw,
-          (BigInt(attribution.gross_fee_raw) + BigInt(row.amount_raw)).toString(),
-          attribution.gross_fee_cents + converted.cents,
-          now,
-          row.operator_wallet,
-          row.chain_id,
-        ),
-    ])
+        }
+        const payload = {
+          operatorWallet: row.operator_wallet,
+          amountCents: converted.cents,
+          invoiceId,
+          metadata,
+        }
+        const status = converted.cents > 0 ? 'pending' : 'below_minimum'
+        await db.batch([
+          db
+            .prepare(
+              `INSERT INTO affiliate_fee_batches (
+               id, invoice_id, operator_wallet, chain_id, tx_hash, event_timestamp,
+               amount_raw, token_decimals, amount_cents, remainder_in_raw, remainder_out_raw,
+               dub_payload_json, status, created_at, updated_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            )
+            .bind(
+              crypto.randomUUID(),
+              invoiceId,
+              row.operator_wallet,
+              row.chain_id,
+              row.tx_hash,
+              row.event_timestamp,
+              row.amount_raw,
+              tokenDecimals,
+              converted.cents,
+              remainderRaw,
+              converted.remainderRaw,
+              JSON.stringify(payload),
+              status,
+              now,
+              now,
+            ),
+          db
+            .prepare(
+              `UPDATE affiliate_operator_fee_transactions SET status = 'batched', updated_at = ?
+                WHERE chain_id = ? AND operator_wallet = ? AND tx_hash = ?
+                  AND status = 'observed'`,
+            )
+            .bind(now, row.chain_id, row.operator_wallet, row.tx_hash),
+          db
+            .prepare(
+              `UPDATE affiliate_operator_attributions
+                  SET rounding_remainder_raw = ?, gross_fee_raw = ?, gross_fee_cents = ?,
+                      updated_at = ?
+                WHERE operator_wallet = ? AND chain_id = ? AND fee_processing_status = 'active'
+                  AND fee_batch_lease_id = ?`,
+            )
+            .bind(
+              converted.remainderRaw,
+              nextGrossFeeRaw,
+              nextGrossFeeCents,
+              now,
+              row.operator_wallet,
+              row.chain_id,
+              lease.leaseId,
+            ),
+        ])
+        remainderRaw = converted.remainderRaw
+        grossFeeRaw = nextGrossFeeRaw
+        grossFeeCents = nextGrossFeeCents
+      }
+    } finally {
+      await releaseFeeBatchLease(db, firstRow, lease.leaseId)
+    }
   }
 }
 
@@ -533,7 +592,12 @@ export async function runAffiliateCron(env: AffiliateWorkerEnv) {
   if (config.startBlock < 1)
     throw new Error('AFFILIATE_START_BLOCK must be explicitly configured above block zero.')
   const latest = await getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: 'latest' })
-  const safeBlockNumber = Math.max(config.startBlock, latest.blockNumber - config.confirmations)
+  const safeBlockNumber = confirmedSafeBlockNumber({
+    latestBlockNumber: latest.blockNumber,
+    confirmations: config.confirmations,
+    startBlock: config.startBlock,
+  })
+  if (safeBlockNumber == null) return
   const [startBlock, safeBlock] = await Promise.all([
     getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: config.startBlock }),
     getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: safeBlockNumber }),
@@ -565,9 +629,11 @@ export async function runAffiliateCron(env: AffiliateWorkerEnv) {
     })
   }
   const lastOperator = operatorPage.operators.at(-1)
-  if (lastOperator) {
-    await saveOperatorCursor(env.AFFILIATE_DB, operatorPage.stateKey, lastOperator.operator_wallet)
-  }
+  await saveOperatorCursor(
+    env.AFFILIATE_DB,
+    operatorPage.stateKey,
+    operatorPage.cycleComplete ? '' : (lastOperator?.operator_wallet ?? ''),
+  )
   await syncKuestHistory({
     db: env.AFFILIATE_DB,
     chainId: config.chainId,
@@ -577,13 +643,15 @@ export async function runAffiliateCron(env: AffiliateWorkerEnv) {
     safeTimestamp: safeBlock.timestamp,
     maxPages: config.maxHistoryPages,
   })
-  await quarantineAmbiguousTransactions(env.AFFILIATE_DB, config.chainId)
-  await createFeeBatches(
-    env.AFFILIATE_DB,
-    config.chainId,
-    config.tokenDecimals,
-    config.batchLimit * 4,
-  )
+  if (operatorPage.cycleComplete) {
+    await quarantineAmbiguousTransactions(env.AFFILIATE_DB, config.chainId)
+    await createFeeBatches(
+      env.AFFILIATE_DB,
+      config.chainId,
+      config.tokenDecimals,
+      config.batchLimit * 4,
+    )
+  }
 
   const dub = config.dryRun ? undefined : createDubTracker(config.dubApiKey)
   await deliverLeadOutbox({

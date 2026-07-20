@@ -1,8 +1,8 @@
 import { verifyTypedData, type Address, type Hex } from 'viem'
-import type { WalletControlProof } from '@/lib/launch-types'
+import type { WalletControlProof } from '../../lib/launch-types'
+import { isWalletProofFresh, WALLET_PROOF_MAX_AGE_SECONDS } from '../../lib/wallet-proof'
 
 const MESSAGE = 'This message attests that I control the given wallet'
-const MAX_PROOF_AGE_SECONDS = 24 * 60 * 60
 
 async function hashText(value: string) {
   const digest = new Uint8Array(
@@ -27,11 +27,7 @@ export async function verifyWalletControlProof(params: {
   if (params.proof.nonce !== '0') throw new Error('Wallet proof nonce is not supported.')
   const timestamp = Number(params.proof.timestamp)
   const now = params.nowSeconds ?? Math.floor(Date.now() / 1_000)
-  if (
-    !Number.isSafeInteger(timestamp) ||
-    timestamp > now + 300 ||
-    timestamp < now - MAX_PROOF_AGE_SECONDS
-  ) {
+  if (!isWalletProofFresh(params.proof, now)) {
     throw new Error('Wallet proof is expired or has an invalid timestamp.')
   }
   const valid = await verifyTypedData({
@@ -69,6 +65,6 @@ export async function verifyWalletControlProof(params: {
   return {
     address,
     proofHash: await hashText(canonical),
-    expiresAt: new Date((timestamp + MAX_PROOF_AGE_SECONDS) * 1_000).toISOString(),
+    expiresAt: new Date((timestamp + WALLET_PROOF_MAX_AGE_SECONDS) * 1_000).toISOString(),
   }
 }

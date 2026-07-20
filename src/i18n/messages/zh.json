@@ -563,5 +563,7 @@
   "m1UlGM": "周度交易量",
   "uEzk8y": "据 <link>Decrypt</link> 报道，周度交易量在周期顶点突破 20 亿美元。",
   "affiliateEmail": "电子邮箱",
-  "affiliateEmailPrivacy": "仅在存在推荐关系时，您的电子邮箱才会与我们的联盟服务商共享。"
+  "affiliateEmailPrivacy": "仅在存在推荐关系时，您的电子邮箱才会与我们的联盟服务商共享。",
+  "affiliateWalletProofExpired": "您的钱包授权已过期。请在启动前重新签名。",
+  "affiliateWalletProofRetry": "请重新签署钱包，然后再次尝试启动。"
 }

@@ -44,11 +44,12 @@ RESEND_FROM_EMAIL = "Kuest <hello@kuest.com>"
 SITE_URL = "https://kuest.com"
 
 [triggers]
-crons = ["*/5 * * * *"]
+crons = []
 
 [[d1_databases]]
 binding = "AFFILIATE_DB"
 database_name = "kuest-affiliates"
+database_id = "b73006c8-4337-497c-9a46-03e0858bd8c7"
 migrations_dir = "migrations"
 
 [secrets]

@@ -45,8 +45,10 @@ Important keys:
 - invoice ID is `chainId:operatorWallet:txHash`.
 
 History reads overlap the last processed timestamp so events sharing a timestamp are not lost.
-Conditional upserts avoid rewriting unchanged D1 rows. Dub delivery uses a 15-minute lease; after a
-crash it checks the invoice in Dub before retrying, while Dub also enforces invoice idempotency.
+Conditional upserts avoid rewriting unchanged D1 rows. A complete round-robin operator sweep must
+finish before new batches are created, so cross-operator transaction conflicts are quarantined first.
+Lead delivery and per-operator fee batching use 15-minute leases. After a sale-delivery crash, the
+Worker checks the invoice in Dub before retrying, while Dub also enforces invoice idempotency.
 
 ## Configuration
 
@@ -60,16 +62,16 @@ AFFILIATE_KUEST_FEE_RECEIVER=0x645E67CC15DAE4F312dc941fA190c52E7d598c67
 AFFILIATE_CHAIN_ID=80002
 AFFILIATE_CONFIRMATIONS=64
 AFFILIATE_TOKEN_DECIMALS=6
-AFFILIATE_START_BLOCK=0
+AFFILIATE_START_BLOCK=42753000
 AFFILIATE_DRY_RUN=true
 AFFILIATE_BATCH_LIMIT=25
 AFFILIATE_MAX_ATTEMPTS=8
 AFFILIATE_MAX_HISTORY_PAGES=20
 ```
 
-`AFFILIATE_START_BLOCK=0` is an invalid production sentinel and `AFFILIATE_DRY_RUN` defaults to
-enabled. The checked-in Wrangler configuration has `crons = []`. All three safeguards must be
-changed deliberately before real delivery.
+`AFFILIATE_START_BLOCK=0` remains an invalid sentinel in code. The checked-in Amoy configuration
+uses the explicit cut block `42753000`, keeps `AFFILIATE_DRY_RUN=true` and has `crons = []`. The Cron
+must stay disabled until the pinned D1 database has its migration applied.
 
 Only `DUB_API_KEY` is a secret:
 
@@ -84,13 +86,14 @@ The fee history endpoints are public read-only endpoints, so no data-api machine
 No `subgraph`, `data-api` or order-flow deployment is required for this integration. The existing
 `data-api` fee endpoints are the only fee source.
 
-1. Deploy Kuest with no Cron, `AFFILIATE_START_BLOCK=0` and `AFFILIATE_DRY_RUN=true`.
-2. Create the `kuest-affiliates` D1 database, update its ID in Wrangler, apply the migration and set
-   `DUB_API_KEY`.
+1. Deploy Kuest with no Cron and `AFFILIATE_DRY_RUN=true`. Before choosing a cut block, use
+   `AFFILIATE_START_BLOCK=0` as the invalid safety sentinel.
+2. Create the `kuest-affiliates` D1 database, pin its ID in Wrangler, apply the migration and set
+   `DUB_API_KEY`. Never enable the Cron while the migration is pending.
 3. Claim/settle any historical fees that must remain outside the program, wait for confirmation and
    record block `B`. Set `AFFILIATE_START_BLOCK=B+1`; the Worker resolves this block to a timestamp
    and permanently ignores older fee history.
-4. Add a five-minute Cron while keeping dry-run enabled:
+4. Add a five-minute Cron only after the migration is confirmed, while keeping dry-run enabled:
 
    ```toml
    [triggers]

@@ -7,13 +7,17 @@ CREATE TABLE affiliate_operator_attributions (
   first_project_id TEXT NOT NULL,
   dub_click_id TEXT,
   dub_customer_id TEXT,
-  attribution_status TEXT NOT NULL CHECK (attribution_status IN ('provisioning', 'unattributed', 'lead_pending', 'active', 'dead_letter')),
+  attribution_status TEXT NOT NULL CHECK (attribution_status IN ('provisioning', 'launch_failed', 'unattributed', 'lead_pending', 'lead_sending', 'active', 'dead_letter')),
   fee_processing_status TEXT NOT NULL DEFAULT 'active' CHECK (fee_processing_status IN ('active', 'manual_review')),
   lead_payload_json TEXT,
   lead_response_json TEXT,
   lead_attempts INTEGER NOT NULL DEFAULT 0,
   lead_next_attempt_at TEXT,
+  lead_lease_id TEXT,
+  lead_lease_until TEXT,
   lead_last_error TEXT,
+  fee_batch_lease_id TEXT,
+  fee_batch_lease_until TEXT,
   gross_fee_raw TEXT NOT NULL DEFAULT '0',
   gross_fee_cents INTEGER NOT NULL DEFAULT 0,
   rounding_remainder_raw TEXT NOT NULL DEFAULT '0',
@@ -23,7 +27,7 @@ CREATE TABLE affiliate_operator_attributions (
   UNIQUE (deposit_wallet, chain_id)
 );
 CREATE INDEX idx_affiliate_operator_lead_outbox
-  ON affiliate_operator_attributions (attribution_status, lead_next_attempt_at);
+  ON affiliate_operator_attributions (attribution_status, lead_next_attempt_at, lead_lease_until);
 CREATE INDEX idx_affiliate_operator_fee_processing
   ON affiliate_operator_attributions (fee_processing_status);
 

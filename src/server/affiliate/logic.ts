@@ -11,13 +11,15 @@ export function retryDelayMs(attempt: number, random = Math.random()) {
   return base + Math.floor(random * Math.max(1, base / 4))
 }
 
-export function compareDubCommission(
-  invoiceId: string,
-  saleCents: number,
-  commission: { invoiceId?: string | null; saleAmount?: number | null } | null,
-) {
-  if (commission?.invoiceId !== invoiceId) return 'missing' as const
-  if (commission.saleAmount != null && commission.saleAmount !== saleCents)
-    return 'mismatch' as const
-  return 'matched' as const
+export function retryAt(attempt: number, nowMs = Date.now(), random = Math.random()) {
+  return new Date(nowMs + retryDelayMs(attempt, random)).toISOString()
+}
+
+export function confirmedSafeBlockNumber(params: {
+  latestBlockNumber: number
+  confirmations: number
+  startBlock: number
+}) {
+  const safeBlockNumber = params.latestBlockNumber - params.confirmations
+  return safeBlockNumber >= params.startBlock ? safeBlockNumber : null
 }

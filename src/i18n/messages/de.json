@@ -563,5 +563,7 @@
   "m1UlGM": "Wöchentliches Volumen",
   "uEzk8y": "Das wöchentliche Volumen überstieg laut <link>Decrypt</link> auf dem Zyklushöchststand 2 Milliarden Dollar.",
   "affiliateEmail": "E-Mail",
-  "affiliateEmailPrivacy": "Deine E-Mail wird nur bei einer Empfehlung mit unserem Affiliate-Anbieter geteilt."
+  "affiliateEmailPrivacy": "Deine E-Mail wird nur bei einer Empfehlung mit unserem Affiliate-Anbieter geteilt.",
+  "affiliateWalletProofExpired": "Deine Wallet-Autorisierung ist abgelaufen. Signiere vor dem Start erneut.",
+  "affiliateWalletProofRetry": "Signiere deine Wallet erneut, bevor du den Start wiederholst."
 }

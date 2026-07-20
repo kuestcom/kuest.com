@@ -54,6 +54,7 @@ import {
 import { normalizeSiteUrl } from '@/lib/site-url'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+import { isWalletProofFresh } from '@/lib/wallet-proof'
 
 interface FormState {
   vercelAccessToken: string
@@ -343,7 +344,6 @@ function toPersistableFormState(form: FormState, githubState: GitHubConnectState
     supabaseRegion: form.supabaseRegion,
     supabaseResourceId: form.supabaseResourceId,
     contactEmail: form.contactEmail,
-    walletProof: form.walletProof,
     env: {
       KUEST_ADDRESS: form.env.KUEST_ADDRESS,
       KUEST_API_KEY: form.env.KUEST_API_KEY,
@@ -869,10 +869,7 @@ export default function LaunchpadForm({
             : previous.supabaseResourceId,
         contactEmail:
           typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
-        walletProof:
-          parsed.walletProof && typeof parsed.walletProof === 'object'
-            ? (parsed.walletProof as WalletControlProof)
-            : previous.walletProof,
+        walletProof: null,
         env: {
           ...previous.env,
           KUEST_ADDRESS:
@@ -1488,6 +1485,10 @@ export default function LaunchpadForm({
     setAutoSignAfterConnect(false)
   }
 
+  function clearWalletProof() {
+    setForm((previous) => ({ ...previous, walletProof: null }))
+  }
+
   function handleWalletDisconnect() {
     disconnect()
     clearGeneratedCredentials()
@@ -1816,6 +1817,12 @@ export default function LaunchpadForm({
 
   async function onSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault()
+    if (!form.walletProof || !isWalletProofFresh(form.walletProof, undefined, 60)) {
+      clearWalletProof()
+      setWalletError(t('Your wallet authorization expired. Sign again before launching.'))
+      setActiveStep(1)
+      return
+    }
     setIsLaunching(true)
     setRequestError(null)
     setResult(null)
@@ -1870,14 +1877,19 @@ export default function LaunchpadForm({
 
       if (!response.ok || !json.ok) {
         setRequestError(json.error ?? t('Launch failed.'))
+        setWalletError(t('Sign your wallet again before retrying the launch.'))
+        setActiveStep(1)
         stopTimelineAnimation(false)
       } else {
         stopTimelineAnimation(true)
       }
     } catch (error) {
       setRequestError(error instanceof Error ? error.message : t('Failed to call API.'))
+      setWalletError(t('Sign your wallet again before retrying the launch.'))
+      setActiveStep(1)
       stopTimelineAnimation(false)
     } finally {
+      clearWalletProof()
       setIsLaunching(false)
     }
   }

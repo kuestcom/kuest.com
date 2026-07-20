@@ -2,9 +2,9 @@ import { encodeFunctionResult, parseAbi } from 'viem'
 import { describe, expect, it, vi } from 'vite-plus/test'
 import { getAffiliateConfig } from './constants'
 import { readDubClickId } from './cookie'
-import { deterministicInvoiceId } from './logic'
+import { confirmedSafeBlockNumber, deterministicInvoiceId, retryAt } from './logic'
 import { rawToCentsWithRemainder } from './money'
-import { loadHistoryWindow } from './processor'
+import { loadHistoryWindow, operatorPageFromRows } from './processor'
 import { deriveCanonicalDepositWallet, fetchFeeHistoryPage } from './source'
 
 function json(value: unknown) {
@@ -58,6 +58,31 @@ describe('affiliate source and rollout safety', () => {
     })
     expect(page.items[0]).toMatchObject({ amount: '125000', feeType: 'KUEST' })
     expect(String(fetcher.mock.calls[0][0])).toContain('/fees/history?')
+  })
+
+  it('rejects a fee type that does not match the requested history stream', async () => {
+    const fetcher = vi.fn().mockResolvedValue(
+      json({
+        items: [
+          {
+            amount: '10',
+            feeType: 'AFFILIATE',
+            txHash: `0x${'a'.repeat(64)}`,
+            timestamp: 1_784_550_000,
+          },
+        ],
+        nextCursor: null,
+        hasMore: false,
+      }),
+    )
+    await expect(
+      fetchFeeHistoryPage({
+        baseUrl: 'https://data-api.kuest.com',
+        address: `0x${'1'.repeat(40)}`,
+        feeType: 'BUILDER',
+        fetcher,
+      }),
+    ).rejects.toThrow('unexpected fee type')
   })
 
   it('paginates until the permanent cut boundary without losing the boundary timestamp', async () => {
@@ -134,6 +159,38 @@ describe('affiliate source and rollout safety', () => {
       cents: 1,
       remainderRaw: '2500',
       scaleRawPerCent: '10000',
+    })
+    expect(() =>
+      rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: '-1' }),
+    ).toThrow('unsigned integer string')
+    expect(() =>
+      rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: 'invalid' }),
+    ).toThrow('unsigned integer string')
+  })
+
+  it('waits for the initial confirmation window and shares deterministic retry timing', () => {
+    expect(
+      confirmedSafeBlockNumber({ latestBlockNumber: 1_050, confirmations: 64, startBlock: 1_000 }),
+    ).toBeNull()
+    expect(
+      confirmedSafeBlockNumber({ latestBlockNumber: 1_064, confirmations: 64, startBlock: 1_000 }),
+    ).toBe(1_000)
+    expect(retryAt(2, 1_000, 0)).toBe(new Date(3_000).toISOString())
+  })
+
+  it('finishes a round-robin cycle without wrapping into an unscanned next cycle', () => {
+    const operator = (character: string) => ({
+      operator_wallet: `0x${character.repeat(40)}`,
+      deposit_wallet: `0x${character.repeat(40)}`,
+      chain_id: 80002,
+    })
+    expect(operatorPageFromRows([operator('1'), operator('2'), operator('3')], 2)).toEqual({
+      operators: [operator('1'), operator('2')],
+      cycleComplete: false,
+    })
+    expect(operatorPageFromRows([operator('3')], 2)).toEqual({
+      operators: [operator('3')],
+      cycleComplete: true,
     })
   })
 })

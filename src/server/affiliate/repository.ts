@@ -160,11 +160,27 @@ export async function completeOperatorAttribution(
           SET attribution_status = CASE WHEN dub_click_id IS NULL THEN 'unattributed' ELSE 'lead_pending' END,
               lead_next_attempt_at = CASE WHEN dub_click_id IS NULL THEN NULL ELSE ? END,
               updated_at = ?
-        WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'provisioning'`,
+        WHERE operator_wallet = ? AND chain_id = ?
+          AND attribution_status IN ('provisioning', 'launch_failed')`,
     )
     .bind(now, now, operatorWallet.toLowerCase(), chainId)
     .run()
   return result.meta.changes > 0
+}
+
+export async function markOperatorLaunchFailed(
+  db: D1Database,
+  operatorWallet: string,
+  chainId: number,
+) {
+  return db
+    .prepare(
+      `UPDATE affiliate_operator_attributions
+          SET attribution_status = 'launch_failed', updated_at = ?
+        WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'provisioning'`,
+    )
+    .bind(nowIso(), operatorWallet.toLowerCase(), chainId)
+    .run()
 }
 
 async function markDepositConflict(

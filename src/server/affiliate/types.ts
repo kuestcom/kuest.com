@@ -40,7 +40,7 @@ export interface DubTracker {
   }): Promise<unknown>
   findCommission(invoiceId: string): Promise<{
     invoiceId?: string | null
-    saleAmount?: number | null
+    amount?: number
     earnings?: number
   } | null>
 }

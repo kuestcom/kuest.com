@@ -563,5 +563,7 @@
   "m1UlGM": "Volume settimanale",
   "uEzk8y": "Il volume settimanale ha superato $2B al picco del ciclo, secondo <link>Decrypt</link>.",
   "affiliateEmail": "E-mail",
-  "affiliateEmailPrivacy": "La tua e-mail viene condivisa con il nostro fornitore di affiliazione solo in presenza di un referral."
+  "affiliateEmailPrivacy": "La tua e-mail viene condivisa con il nostro fornitore di affiliazione solo in presenza di un referral.",
+  "affiliateWalletProofExpired": "L’autorizzazione del wallet è scaduta. Firma di nuovo prima del lancio.",
+  "affiliateWalletProofRetry": "Firma di nuovo con il wallet prima di riprovare il lancio."
 }

@@ -28,6 +28,7 @@ import { deliverPendingLead } from '@/server/affiliate/lead'
 import {
   completeOperatorAttribution,
   failWalletAuthorization,
+  markOperatorLaunchFailed,
   persistOperatorAttribution,
   reserveWalletAuthorization,
 } from '@/server/affiliate/repository'
@@ -86,6 +87,7 @@ export async function POST(request: Request) {
   const affiliateEnv = cloudflareEnv as AffiliateWorkerEnv
   const affiliateConfig = getAffiliateConfig(affiliateEnv)
   let reservedProofHash: string | null = null
+  let verifiedOperatorWallet: string | null = null
   let attributionPersisted = false
 
   const rateLimit = checkRateLimit(
@@ -133,6 +135,7 @@ export async function POST(request: Request) {
       expiresAt: verifiedWallet.expiresAt,
     })
     reservedProofHash = verifiedWallet.proofHash
+    verifiedOperatorWallet = verifiedWallet.address
 
     const canonicalWallet = await deriveCanonicalDepositWallet({
       rpcUrl: affiliateConfig.rpcUrl,
@@ -318,9 +321,17 @@ export async function POST(request: Request) {
       durationMs,
     })
   } catch (error) {
-    if (reservedProofHash && !attributionPersisted) {
+    if (reservedProofHash) {
       try {
-        await failWalletAuthorization(affiliateEnv.AFFILIATE_DB, reservedProofHash)
+        if (attributionPersisted && verifiedOperatorWallet) {
+          await markOperatorLaunchFailed(
+            affiliateEnv.AFFILIATE_DB,
+            verifiedOperatorWallet,
+            affiliateConfig.chainId,
+          )
+        } else {
+          await failWalletAuthorization(affiliateEnv.AFFILIATE_DB, reservedProofHash)
+        }
       } catch {
         // Preserve the launch failure; the reservation expires and remains non-replayable.
       }

@@ -50,7 +50,11 @@ export async function fetchFeeHistoryPage(params: {
   if (params.cursor) url.searchParams.set('cursor', params.cursor)
   const response = await (params.fetcher || fetch)(url, { headers: { accept: 'application/json' } })
   if (!response.ok) throw new Error(`Fee history API failed with HTTP ${response.status}.`)
-  return validateFeeHistoryPage(await response.json())
+  const page = validateFeeHistoryPage(await response.json())
+  if (page.items.some((item) => item.feeType !== params.feeType)) {
+    throw new Error(`Data API returned an unexpected fee type for ${params.feeType} history.`)
+  }
+  return page
 }
 
 async function rpc<T>(

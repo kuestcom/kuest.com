@@ -563,5 +563,7 @@
   "m1UlGM": "Tygodniowy wolumen",
   "uEzk8y": "Tygodniowy wolumen przekroczył $2B na szczycie cyklu według <link>Decrypt</link>.",
   "affiliateEmail": "E-mail",
-  "affiliateEmailPrivacy": "Twój e-mail jest udostępniany naszemu dostawcy programu partnerskiego tylko w przypadku polecenia."
+  "affiliateEmailPrivacy": "Twój e-mail jest udostępniany naszemu dostawcy programu partnerskiego tylko w przypadku polecenia.",
+  "affiliateWalletProofExpired": "Autoryzacja portfela wygasła. Podpisz ponownie przed uruchomieniem.",
+  "affiliateWalletProofRetry": "Podpisz portfel ponownie przed kolejną próbą uruchomienia."
 }

@@ -563,5 +563,7 @@
   "m1UlGM": "Volume hebdomadaire",
   "uEzk8y": "Le volume hebdomadaire a dépassé 2 Mrd$ au pic du cycle, selon <link>Decrypt</link>.",
   "affiliateEmail": "E-mail",
-  "affiliateEmailPrivacy": "Votre e-mail est partagé avec notre prestataire d’affiliation uniquement en présence d’un parrainage."
+  "affiliateEmailPrivacy": "Votre e-mail est partagé avec notre prestataire d’affiliation uniquement en présence d’un parrainage.",
+  "affiliateWalletProofExpired": "L’autorisation de votre portefeuille a expiré. Signez à nouveau avant le lancement.",
+  "affiliateWalletProofRetry": "Signez à nouveau avec votre portefeuille avant de réessayer le lancement."
 }

@@ -563,5 +563,7 @@
   "m1UlGM": "Weekly volume",
   "uEzk8y": "Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>.",
   "affiliateEmail": "Email",
-  "affiliateEmailPrivacy": "Your email is shared with our affiliate provider only when a referral is present."
+  "affiliateEmailPrivacy": "Your email is shared with our affiliate provider only when a referral is present.",
+  "affiliateWalletProofExpired": "Your wallet authorization expired. Sign again before launching.",
+  "affiliateWalletProofRetry": "Sign your wallet again before retrying the launch."
 }

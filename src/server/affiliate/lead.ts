@@ -1,6 +1,6 @@
 import type { DubTracker } from './types'
 import { nowIso } from './repository'
-import { retryDelayMs } from './logic'
+import { retryAt } from './logic'
 
 type LeadRow = {
   operator_wallet: string
@@ -13,10 +13,6 @@ type LeadRow = {
   lead_attempts: number
 }
 
-function retryAt(attempt: number) {
-  return new Date(Date.now() + retryDelayMs(attempt)).toISOString()
-}
-
 export async function deliverPendingLead(params: {
   db: D1Database
   dub?: DubTracker
@@ -25,15 +21,46 @@ export async function deliverPendingLead(params: {
   maxAttempts: number
   dryRun?: boolean
 }) {
-  const row = await params.db
-    .prepare(
-      `SELECT operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
-            chain_id, dub_click_id, lead_attempts
-       FROM affiliate_operator_attributions
-      WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'lead_pending'`,
-    )
-    .bind(params.operatorWallet.toLowerCase(), params.chainId)
-    .first<LeadRow>()
+  if (!params.dryRun && !params.dub) {
+    throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
+  }
+  const now = nowIso()
+  const leaseId = crypto.randomUUID()
+  const leaseUntil = new Date(Date.now() + 15 * 60_000).toISOString()
+  const row = params.dryRun
+    ? await params.db
+        .prepare(
+          `SELECT operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
+                chain_id, dub_click_id, lead_attempts
+           FROM affiliate_operator_attributions
+          WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'lead_pending'`,
+        )
+        .bind(params.operatorWallet.toLowerCase(), params.chainId)
+        .first<LeadRow>()
+    : await params.db
+        .prepare(
+          `UPDATE affiliate_operator_attributions
+              SET attribution_status = 'lead_sending', lead_lease_id = ?, lead_lease_until = ?,
+                  lead_attempts = lead_attempts + 1, updated_at = ?
+            WHERE operator_wallet = ? AND chain_id = ?
+              AND (
+                (attribution_status = 'lead_pending'
+                  AND (lead_next_attempt_at IS NULL OR lead_next_attempt_at <= ?))
+                OR (attribution_status = 'lead_sending' AND lead_lease_until <= ?)
+              )
+          RETURNING operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
+                    chain_id, dub_click_id, lead_attempts`,
+        )
+        .bind(
+          leaseId,
+          leaseUntil,
+          now,
+          params.operatorWallet.toLowerCase(),
+          params.chainId,
+          now,
+          now,
+        )
+        .first<LeadRow>()
   if (!row) return false
   const request = {
     clickId: row.dub_click_id,
@@ -47,7 +74,6 @@ export async function deliverPendingLead(params: {
       firstProjectId: row.first_project_id,
     },
   }
-  const now = nowIso()
   const requestJson = JSON.stringify(request)
   if (params.dryRun) {
     await params.db
@@ -60,32 +86,33 @@ export async function deliverPendingLead(params: {
       .run()
     return false
   }
-  if (!params.dub) throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
-  const attempt = row.lead_attempts + 1
+  if (!params.dub) return false
+  const attempt = row.lead_attempts
   try {
     const response = await params.dub.trackLead(request)
-    const customer = (response as { customer?: { id?: string } } | null)?.customer
+    const customer = (response as { customer?: { externalId?: string | null } } | null)?.customer
     await params.db.batch([
       params.db
         .prepare(
           `UPDATE affiliate_operator_attributions
             SET attribution_status = 'active', dub_customer_id = ?, lead_payload_json = ?,
-                lead_response_json = ?, lead_attempts = ?, lead_last_error = NULL,
-                lead_next_attempt_at = NULL, updated_at = ?
-          WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'lead_pending'`,
+                lead_response_json = ?, lead_last_error = NULL, lead_next_attempt_at = NULL,
+                lead_lease_id = NULL, lead_lease_until = NULL, updated_at = ?
+          WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'lead_sending'
+            AND lead_lease_id = ?`,
         )
         .bind(
-          customer?.id || null,
+          customer?.externalId || null,
           requestJson,
           JSON.stringify(response),
-          attempt,
           now,
           row.operator_wallet,
           row.chain_id,
+          leaseId,
         ),
       params.db
         .prepare(
-          `INSERT INTO affiliate_delivery_attempts
+          `INSERT OR IGNORE INTO affiliate_delivery_attempts
            (id, target_type, target_id, attempt_number, request_json, response_json, created_at)
          VALUES (?, 'lead', ?, ?, ?, ?, ?)`,
         )
@@ -108,8 +135,10 @@ export async function deliverPendingLead(params: {
         .prepare(
           `UPDATE affiliate_operator_attributions
             SET attribution_status = ?, lead_payload_json = ?, lead_attempts = ?, lead_last_error = ?,
-                lead_next_attempt_at = ?, updated_at = ?
-          WHERE operator_wallet = ? AND chain_id = ?`,
+                lead_next_attempt_at = ?, lead_lease_id = NULL, lead_lease_until = NULL,
+                updated_at = ?
+          WHERE operator_wallet = ? AND chain_id = ? AND attribution_status = 'lead_sending'
+            AND lead_lease_id = ?`,
         )
         .bind(
           dead ? 'dead_letter' : 'lead_pending',
@@ -120,10 +149,11 @@ export async function deliverPendingLead(params: {
           now,
           row.operator_wallet,
           row.chain_id,
+          leaseId,
         ),
       params.db
         .prepare(
-          `INSERT INTO affiliate_delivery_attempts
+          `INSERT OR IGNORE INTO affiliate_delivery_attempts
            (id, target_type, target_id, attempt_number, request_json, error, retry_at, created_at)
          VALUES (?, 'lead', ?, ?, ?, ?, ?, ?)`,
         )
@@ -151,12 +181,15 @@ export async function deliverLeadOutbox(params: {
   const rows = await params.db
     .prepare(
       `SELECT operator_wallet, chain_id FROM affiliate_operator_attributions
-      WHERE attribution_status = 'lead_pending'
-        AND (lead_next_attempt_at IS NULL OR lead_next_attempt_at <= ?)
+      WHERE (
+          (attribution_status = 'lead_pending'
+            AND (lead_next_attempt_at IS NULL OR lead_next_attempt_at <= ?))
+          ${params.dryRun ? '' : "OR (attribution_status = 'lead_sending' AND lead_lease_until <= ?)"}
+        )
         ${params.dryRun ? 'AND lead_payload_json IS NULL' : ''}
       ORDER BY created_at LIMIT ?`,
     )
-    .bind(nowIso(), params.limit)
+    .bind(...(params.dryRun ? [nowIso(), params.limit] : [nowIso(), nowIso(), params.limit]))
     .all<{ operator_wallet: string; chain_id: number }>()
   for (const row of rows.results || []) {
     await deliverPendingLead({

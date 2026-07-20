@@ -15,7 +15,8 @@ export function rawToCentsWithRemainder(params: {
     throw new Error('Token decimals must be an integer between 2 and 36.')
   }
   const scale = 10n ** BigInt(params.decimals - 2)
-  const total = BigInt(integerString(params.amountRaw)) + BigInt(params.remainderRaw || '0')
+  const total =
+    BigInt(integerString(params.amountRaw)) + BigInt(integerString(params.remainderRaw || '0'))
   const cents = total / scale
   if (cents > BigInt(Number.MAX_SAFE_INTEGER)) {
     throw new Error('Dub sale amount exceeds JavaScript safe integer range.')
