@@ -7,6 +7,7 @@ export default function DubAnalytics() {
     <DubAnalyticsClient
       attributionModel="first-click"
       cookieOptions={{ expiresInDays: 90, path: '/', sameSite: 'lax', secure: true }}
+      domainsConfig={{ refer: 'go.kuest.com' }}
     />
   )
 }
