@@ -13,6 +13,12 @@ type LeadRow = {
   lead_attempts: number
 }
 
+function resolveLeadDelivery(dryRun: boolean | undefined, dub: DubTracker | undefined) {
+  if (dryRun) return { dryRun: true as const }
+  if (!dub) throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
+  return { dryRun: false as const, dub }
+}
+
 export async function deliverPendingLead(params: {
   db: D1Database
   dub?: DubTracker
@@ -21,13 +27,11 @@ export async function deliverPendingLead(params: {
   maxAttempts: number
   dryRun?: boolean
 }) {
-  if (!params.dryRun && !params.dub) {
-    throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
-  }
+  const delivery = resolveLeadDelivery(params.dryRun, params.dub)
   const now = nowIso()
   const leaseId = crypto.randomUUID()
   const leaseUntil = new Date(Date.now() + 15 * 60_000).toISOString()
-  const row = params.dryRun
+  const row = delivery.dryRun
     ? await params.db
         .prepare(
           `SELECT operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
@@ -75,7 +79,7 @@ export async function deliverPendingLead(params: {
     },
   }
   const requestJson = JSON.stringify(request)
-  if (params.dryRun) {
+  if (delivery.dryRun) {
     await params.db
       .prepare(
         `UPDATE affiliate_operator_attributions SET lead_payload_json = ?, updated_at = ?
@@ -86,10 +90,9 @@ export async function deliverPendingLead(params: {
       .run()
     return false
   }
-  if (!params.dub) return false
   const attempt = row.lead_attempts
   try {
-    const response = await params.dub.trackLead(request)
+    const response = await delivery.dub.trackLead(request)
     const customer = (response as { customer?: { externalId?: string | null } } | null)?.customer
     await params.db.batch([
       params.db

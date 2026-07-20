@@ -408,10 +408,10 @@ export async function createFeeBatches(
           db
             .prepare(
               `INSERT INTO affiliate_fee_batches (
-               id, invoice_id, operator_wallet, chain_id, tx_hash, event_timestamp,
+               id, invoice_id, operator_wallet, chain_id, tx_hash, batch_lease_id, event_timestamp,
                amount_raw, token_decimals, amount_cents, remainder_in_raw, remainder_out_raw,
                dub_payload_json, status, created_at, updated_at
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             )
             .bind(
               crypto.randomUUID(),
@@ -419,6 +419,7 @@ export async function createFeeBatches(
               row.operator_wallet,
               row.chain_id,
               row.tx_hash,
+              lease.leaseId,
               row.event_timestamp,
               row.amount_raw,
               tokenDecimals,

@@ -2357,6 +2357,15 @@ export default function LaunchpadForm({
             {walletError && (
               <p className="launch-status-note text-sm text-destructive">{walletError}</p>
             )}
+            {requestError && (
+              <div
+                className="
+                launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive
+              "
+              >
+                {requestError}
+              </div>
+            )}
           </div>
 
           <div className="launch-step-actions launch-step-footer launch-step1-actions mt-6">

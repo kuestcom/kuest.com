@@ -3,7 +3,7 @@ import { createFeeBatches } from './processor'
 
 type TestStatement = D1PreparedStatement & { query: string; values: unknown[] }
 
-function createBatchDb() {
+function createBatchDb(options: { invalidateLeaseBeforeBatch?: boolean } = {}) {
   const operatorWallet = `0x${'1'.repeat(40)}`
   const row = {
     operator_wallet: operatorWallet,
@@ -67,6 +67,9 @@ function createBatchDb() {
       const [insert, sourceUpdate, attributionUpdate] = statements as TestStatement[]
       const invoiceId = String(insert.values[1])
       if (batches.has(invoiceId)) throw new Error('UNIQUE constraint failed')
+      if (options.invalidateLeaseBeforeBatch) leaseId = 'reclaimed-lease'
+      if (leaseId !== insert.values[5])
+        throw new Error('Affiliate fee batch lease is no longer valid')
       if (leaseId !== attributionUpdate.values.at(-1)) throw new Error('Affiliate lease was lost')
       batches.add(invoiceId)
       sourceStatus = 'batched'
@@ -101,6 +104,23 @@ describe('affiliate fee batching', () => {
       remainderRaw: '2500',
       grossFeeRaw: '12500',
       grossFeeCents: 1,
+    })
+  })
+
+  it('rolls back every batch write when the lease was reclaimed before insertion', async () => {
+    const database = createBatchDb({ invalidateLeaseBeforeBatch: true })
+
+    await expect(createFeeBatches(database.db, 80002, 6, 100)).rejects.toThrow(
+      'lease is no longer valid',
+    )
+
+    const state = database.state()
+    expect(state.batches.size).toBe(0)
+    expect(state).toMatchObject({
+      sourceStatus: 'observed',
+      remainderRaw: '0',
+      grossFeeRaw: '0',
+      grossFeeCents: 0,
     })
   })
 })

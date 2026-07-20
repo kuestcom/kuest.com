@@ -88,6 +88,7 @@ CREATE TABLE affiliate_fee_batches (
   operator_wallet TEXT NOT NULL,
   chain_id INTEGER NOT NULL,
   tx_hash TEXT NOT NULL,
+  batch_lease_id TEXT NOT NULL,
   event_timestamp INTEGER NOT NULL,
   amount_raw TEXT NOT NULL,
   token_decimals INTEGER NOT NULL,
@@ -107,6 +108,22 @@ CREATE TABLE affiliate_fee_batches (
     REFERENCES affiliate_operator_attributions(operator_wallet, chain_id)
 );
 CREATE INDEX idx_affiliate_batch_outbox ON affiliate_fee_batches (status, next_attempt_at);
+
+CREATE TRIGGER affiliate_fee_batch_requires_valid_lease
+BEFORE INSERT ON affiliate_fee_batches
+FOR EACH ROW
+WHEN NOT EXISTS (
+  SELECT 1
+    FROM affiliate_operator_attributions
+   WHERE operator_wallet = NEW.operator_wallet
+     AND chain_id = NEW.chain_id
+     AND fee_processing_status = 'active'
+     AND fee_batch_lease_id = NEW.batch_lease_id
+     AND fee_batch_lease_until > NEW.created_at
+)
+BEGIN
+  SELECT RAISE(ABORT, 'affiliate fee batch lease is no longer valid');
+END;
 
 CREATE TABLE affiliate_delivery_attempts (
   id TEXT PRIMARY KEY,
