@@ -83,6 +83,27 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
   if (!raw.brandName || typeof raw.brandName !== 'string') {
     throw new LaunchError('brandName is required.', 'validation')
   }
+  const contactEmail =
+    typeof raw.contactEmail === 'string' ? raw.contactEmail.trim().toLowerCase() : ''
+  if (contactEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+    throw new LaunchError('A valid contactEmail is required.', 'validation')
+  }
+  const proof = raw.walletProof
+  if (
+    !proof ||
+    typeof proof !== 'object' ||
+    typeof proof.address !== 'string' ||
+    typeof proof.signature !== 'string' ||
+    !/^0x[0-9a-fA-F]{130}$/.test(proof.signature) ||
+    typeof proof.timestamp !== 'string' ||
+    !/^\d{1,20}$/.test(proof.timestamp) ||
+    typeof proof.nonce !== 'string' ||
+    !/^\d{1,40}$/.test(proof.nonce) ||
+    !Number.isSafeInteger(proof.chainId) ||
+    proof.chainId < 1
+  ) {
+    throw new LaunchError('A valid wallet control proof is required.', 'validation')
+  }
   if (!raw.gitRepo || typeof raw.gitRepo !== 'string') {
     throw new LaunchError('gitRepo is required.', 'validation')
   }
@@ -151,10 +172,14 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
 
   return {
     brandName: raw.brandName,
-    contactEmail:
-      typeof raw.contactEmail === 'string' && raw.contactEmail.trim()
-        ? raw.contactEmail.trim()
-        : undefined,
+    contactEmail,
+    walletProof: {
+      address: normalizeWalletAddress(proof.address, 'walletProof.address'),
+      signature: proof.signature as `0x${string}`,
+      timestamp: proof.timestamp,
+      nonce: proof.nonce,
+      chainId: proof.chainId,
+    },
     projectName:
       typeof raw.projectName === 'string' && raw.projectName.trim()
         ? raw.projectName.trim()

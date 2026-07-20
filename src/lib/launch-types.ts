@@ -18,7 +18,8 @@ export interface SupabaseLaunchInput {
 
 export interface LaunchRequestBody {
   brandName: string
-  contactEmail?: string
+  contactEmail: string
+  walletProof: WalletControlProof
   projectName?: string
   gitRepo: string
   gitBranch: string
@@ -31,6 +32,14 @@ export interface LaunchRequestBody {
   }
   supabase?: SupabaseLaunchInput
   env: Record<string, string>
+}
+
+export interface WalletControlProof {
+  address: string
+  signature: `0x${string}`
+  timestamp: string
+  nonce: string
+  chainId: number
 }
 
 export interface SupabaseProvisionResult {

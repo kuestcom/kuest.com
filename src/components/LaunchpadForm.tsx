@@ -9,6 +9,7 @@ import type {
   ReownConnectionStatusResponse,
   VercelConnectionStatusResponse,
   VercelDomainResponse,
+  WalletControlProof,
 } from '@/lib/launch-types'
 import { useWalletInfo } from '@reown/appkit/react'
 import {
@@ -53,6 +54,7 @@ import {
 import { normalizeSiteUrl } from '@/lib/site-url'
 import { createSupabaseClient } from '@/lib/supabase'
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+import { isWalletProofFresh } from '@/lib/wallet-proof'
 
 interface FormState {
   vercelAccessToken: string
@@ -65,6 +67,7 @@ interface FormState {
   supabaseRegion: string
   supabaseResourceId: string
   contactEmail: string
+  walletProof: WalletControlProof | null
   env: {
     KUEST_ADDRESS: string
     KUEST_API_KEY: string
@@ -275,6 +278,7 @@ function createDefaultForm(runtimeConfig: PublicRuntimeConfig): FormState {
     supabaseRegion: runtimeConfig.DEFAULT_SUPABASE_REGION || DEFAULT_SUPABASE_REGION,
     supabaseResourceId: SUPABASE_CREATE_NEW_OPTION,
     contactEmail: '',
+    walletProof: null,
     env: {
       KUEST_ADDRESS: '',
       KUEST_API_KEY: '',
@@ -794,7 +798,9 @@ export default function LaunchpadForm({
     Boolean(form.env.KUEST_ADDRESS) &&
     Boolean(form.env.KUEST_API_KEY) &&
     Boolean(form.env.KUEST_API_SECRET) &&
-    Boolean(form.env.KUEST_PASSPHRASE)
+    Boolean(form.env.KUEST_PASSPHRASE) &&
+    Boolean(form.walletProof) &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail.trim())
   const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected)
   const vercelOauthIdentity =
     oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
@@ -863,6 +869,7 @@ export default function LaunchpadForm({
             : previous.supabaseResourceId,
         contactEmail:
           typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
+        walletProof: null,
         env: {
           ...previous.env,
           KUEST_ADDRESS:
@@ -1412,9 +1419,11 @@ export default function LaunchpadForm({
     apiKey: string
     apiSecret: string
     passphrase: string
+    walletProof: WalletControlProof
   }) {
     setForm((previous) => ({
       ...previous,
+      walletProof: input.walletProof,
       env: {
         ...previous.env,
         KUEST_ADDRESS: input.address,
@@ -1461,6 +1470,7 @@ export default function LaunchpadForm({
   function clearGeneratedCredentials() {
     setForm((previous) => ({
       ...previous,
+      walletProof: null,
       env: {
         ...previous.env,
         KUEST_ADDRESS: '',
@@ -1473,6 +1483,10 @@ export default function LaunchpadForm({
     setWalletInfo(null)
     setWalletError(null)
     setAutoSignAfterConnect(false)
+  }
+
+  function clearWalletProof() {
+    setForm((previous) => ({ ...previous, walletProof: null }))
   }
 
   function handleWalletDisconnect() {
@@ -1803,6 +1817,12 @@ export default function LaunchpadForm({
 
   async function onSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault()
+    if (!form.walletProof || !isWalletProofFresh(form.walletProof, undefined, 60)) {
+      clearWalletProof()
+      setWalletError(t('Your wallet authorization expired. Sign again before launching.'))
+      setActiveStep(1)
+      return
+    }
     setIsLaunching(true)
     setRequestError(null)
     setResult(null)
@@ -1823,7 +1843,8 @@ export default function LaunchpadForm({
       env.SITE_URL = normalizeSiteUrl(env.SITE_URL)
       const payload = {
         brandName: form.brandName,
-        contactEmail: form.contactEmail.trim() || undefined,
+        contactEmail: form.contactEmail.trim(),
+        walletProof: form.walletProof,
         projectName: resolvedProjectSlug,
         gitRepo: form.gitRepo,
         gitBranch: form.gitBranch,
@@ -1856,14 +1877,19 @@ export default function LaunchpadForm({
 
       if (!response.ok || !json.ok) {
         setRequestError(json.error ?? t('Launch failed.'))
+        setWalletError(t('Sign your wallet again before retrying the launch.'))
+        setActiveStep(1)
         stopTimelineAnimation(false)
       } else {
         stopTimelineAnimation(true)
       }
     } catch (error) {
       setRequestError(error instanceof Error ? error.message : t('Failed to call API.'))
+      setWalletError(t('Sign your wallet again before retrying the launch.'))
+      setActiveStep(1)
       stopTimelineAnimation(false)
     } finally {
+      clearWalletProof()
       setIsLaunching(false)
     }
   }
@@ -2213,7 +2239,7 @@ export default function LaunchpadForm({
               />
             </label>
             <label className="launch-field">
-              <span>{t('Email (optional)')}</span>
+              <span>{t('Email')}</span>
               <input
                 type="email"
                 value={form.contactEmail}
@@ -2224,7 +2250,13 @@ export default function LaunchpadForm({
                     contactEmail: event.target.value,
                   }))
                 }
+                required
               />
+              <span className="text-sm text-muted-foreground">
+                {t(
+                  'Your email is shared with our affiliate provider only when a referral is present.',
+                )}
+              </span>
             </label>
           </div>
 
@@ -2324,6 +2356,15 @@ export default function LaunchpadForm({
             {walletInfo && <p className="launch-status-note text-sm text-primary">{walletInfo}</p>}
             {walletError && (
               <p className="launch-status-note text-sm text-destructive">{walletError}</p>
+            )}
+            {requestError && (
+              <div
+                className="
+                launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive
+              "
+              >
+                {requestError}
+              </div>
             )}
           </div>
 

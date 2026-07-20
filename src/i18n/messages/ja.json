@@ -561,5 +561,9 @@
   "FSPG53": "Kalshi 評価額",
   "IKYdr_": "<link>TechCrunch</link> によると、Kalshi は 110 億ドル評価で 10 億ドルを調達しました。",
   "m1UlGM": "週間出来高",
-  "uEzk8y": "<link>Decrypt</link> によると、サイクルピーク時に週間出来高は 20 億ドルを超えました。"
+  "uEzk8y": "<link>Decrypt</link> によると、サイクルピーク時に週間出来高は 20 億ドルを超えました。",
+  "affiliateEmail": "メールアドレス",
+  "affiliateEmailPrivacy": "紹介がある場合に限り、メールアドレスをアフィリエイト提供者と共有します。",
+  "affiliateWalletProofExpired": "ウォレット認証の有効期限が切れました。起動前にもう一度署名してください。",
+  "affiliateWalletProofRetry": "起動を再試行する前に、ウォレットでもう一度署名してください。"
 }

@@ -561,5 +561,9 @@
   "FSPG53": "Valoración de Kalshi",
   "IKYdr_": "Kalshi recaudó US$ 1B con una valoración de US$ 11B, según <link>TechCrunch</link>.",
   "m1UlGM": "Volumen semanal",
-  "uEzk8y": "El volumen semanal superó los 2.000 millones de dólares en el pico del ciclo, según <link>Decrypt</link>."
+  "uEzk8y": "El volumen semanal superó los 2.000 millones de dólares en el pico del ciclo, según <link>Decrypt</link>.",
+  "affiliateEmail": "Correo electrónico",
+  "affiliateEmailPrivacy": "Tu correo se comparte con nuestro proveedor de afiliados solo cuando existe una referencia.",
+  "affiliateWalletProofExpired": "La autorización de tu cartera expiró. Firma de nuevo antes de lanzar.",
+  "affiliateWalletProofRetry": "Firma tu cartera de nuevo antes de reintentar el lanzamiento."
 }

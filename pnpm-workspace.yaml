@@ -21,10 +21,10 @@ overrides:
   '@wagmi/connectors': 6.2.0
   '@wagmi/core': 2.22.1
   vite: 'catalog:'
-  vitest: 'catalog:'
+  vitest: 4.1.10
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vitest: npm:@voidzero-dev/vite-plus-test@^0.1.24
   vite-plus: latest
 minimumReleaseAgeExclude:
   - vite-plus

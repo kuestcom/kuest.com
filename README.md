@@ -31,6 +31,7 @@ Environment variables are read from the Cloudflare Worker runtime. Browser-safe 
 
 ```sh
 pnpm check
+pnpm test
 pnpm build
 pnpm preview
 ```
@@ -63,6 +64,18 @@ variables:
 - PROTOCOL_PITCH_DECK_TO_EMAIL
 - VERCEL_SUPABASE_REGION
 - VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX
+- AFFILIATE_DATA_API_URL
+- AFFILIATE_RPC_URL
+- AFFILIATE_DEPOSIT_WALLET_FACTORY
+- AFFILIATE_KUEST_FEE_RECEIVER
+- AFFILIATE_CHAIN_ID
+- AFFILIATE_CONFIRMATIONS
+- AFFILIATE_TOKEN_DECIMALS
+- AFFILIATE_START_BLOCK
+- AFFILIATE_DRY_RUN
+- AFFILIATE_BATCH_LIMIT
+- AFFILIATE_MAX_ATTEMPTS
+- AFFILIATE_MAX_HISTORY_PAGES
 - all `RATE_LIMIT_*` settings
 
 In that same **Settings → Variables and Secrets** section, add sensitive values with type
@@ -72,6 +85,7 @@ In that same **Settings → Variables and Secrets** section, add sensitive value
 - SUPABASE_OAUTH_CLIENT_SECRET
 - SUPABASE_SERVICE_ROLE_KEY
 - RESEND_API_KEY
+- DUB_API_KEY
 
 No application variable needs to be duplicated under Build Variables and Secrets. After changing
 a runtime variable, deploy the new Worker configuration. The Worker configuration has
@@ -83,6 +97,7 @@ pnpm wrangler secret put RESEND_API_KEY
 pnpm wrangler secret put VERCEL_OAUTH_CLIENT_SECRET
 pnpm wrangler secret put SUPABASE_OAUTH_CLIENT_SECRET
 pnpm wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+pnpm wrangler secret put DUB_API_KEY
 pnpm deploy
 ```
 
@@ -93,6 +108,13 @@ For Cloudflare Workers Builds, use:
 - Deploy command: `pnpm wrangler deploy`
 
 OAuth callback URLs must be configured as `https://<domain>/api/oauth/vercel/callback` and `https://<domain>/api/oauth/supabase/callback`.
+
+## Dub affiliates
+
+The business definition, deployment order, D1 migrations, Cron behavior, reconciliation and
+failure recovery are documented in [`docs/dub-affiliates.md`](docs/dub-affiliates.md).
+The checked-in production configuration is fail-closed: `AFFILIATE_START_BLOCK=0`,
+`AFFILIATE_DRY_RUN=true`, and no Cron Trigger. Follow the documented cutover before enabling it.
 
 ## Source layout
 

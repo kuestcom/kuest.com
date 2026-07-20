@@ -561,5 +561,9 @@
   "FSPG53": "Valuation da Kalshi",
   "IKYdr_": "A Kalshi captou US$ 1 bilhão com valuation de US$ 11 bilhões, segundo o <link>TechCrunch</link>.",
   "m1UlGM": "Volume semanal",
-  "uEzk8y": "O volume semanal ultrapassou US$ 2 bilhões no pico do ciclo, de acordo com o <link>Decrypt</link>."
+  "uEzk8y": "O volume semanal ultrapassou US$ 2 bilhões no pico do ciclo, de acordo com o <link>Decrypt</link>.",
+  "affiliateEmail": "E-mail",
+  "affiliateEmailPrivacy": "Seu e-mail é compartilhado com nosso provedor de afiliados somente quando há uma indicação.",
+  "affiliateWalletProofExpired": "A autorização da sua carteira expirou. Assine novamente antes de lançar.",
+  "affiliateWalletProofRetry": "Assine sua carteira novamente antes de tentar o lançamento outra vez."
 }

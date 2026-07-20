@@ -1,5 +1,5 @@
 name = "kuest-com"
-main = "@astrojs/cloudflare/entrypoints/server"
+main = "src/worker.ts"
 compatibility_date = "2026-07-10"
 compatibility_flags = ["nodejs_compat"]
 keep_vars = true
@@ -17,6 +17,18 @@ id = "40240d0e161c4646b11e7f78894ed4ed"
 binding = "IMAGES"
 
 [vars]
+AFFILIATE_BATCH_LIMIT = "25"
+AFFILIATE_CHAIN_ID = "80002"
+AFFILIATE_CONFIRMATIONS = "64"
+AFFILIATE_DATA_API_URL = "https://data-api.kuest.com"
+AFFILIATE_DEPOSIT_WALLET_FACTORY = "0x2CcdC6C5dDcd895aFcCD259F291de9b618A5cA6c"
+AFFILIATE_KUEST_FEE_RECEIVER = "0x645E67CC15DAE4F312dc941fA190c52E7d598c67"
+AFFILIATE_MAX_ATTEMPTS = "8"
+AFFILIATE_MAX_HISTORY_PAGES = "20"
+AFFILIATE_RPC_URL = "https://polygon-amoy.drpc.org"
+AFFILIATE_START_BLOCK = "42753000"
+AFFILIATE_DRY_RUN = "true"
+AFFILIATE_TOKEN_DECIMALS = "6"
 GITHUB_APP_URL = "https://github-app.kuest.com"
 KUEST_CHAIN_MODE = "amoy"
 PROTOCOL_PITCH_DECK_TO_EMAIL = "hello@kuest.com"
@@ -31,10 +43,20 @@ RATE_LIMIT_WINDOW_MS = "600000"
 RESEND_FROM_EMAIL = "Kuest <hello@kuest.com>"
 SITE_URL = "https://kuest.com"
 
+[triggers]
+crons = []
+
+[[d1_databases]]
+binding = "AFFILIATE_DB"
+database_name = "kuest-affiliates"
+database_id = "b73006c8-4337-497c-9a46-03e0858bd8c7"
+migrations_dir = "migrations"
+
 [secrets]
 required = [
   "REOWN_APPKIT_PROJECT_ID",
   "RESEND_API_KEY",
+  "DUB_API_KEY",
   "SUPABASE_ANON_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
   "SUPABASE_URL",
