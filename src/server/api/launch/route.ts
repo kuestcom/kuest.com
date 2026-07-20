@@ -1,4 +1,5 @@
 import type { LaunchResponseBody } from '@/lib/launch-types'
+import { env as cloudflareEnv } from 'cloudflare:workers'
 import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   createLogger,
@@ -20,6 +21,18 @@ import {
   provisionVercelProject,
   resolveProjectProductionUrl,
 } from '@/lib/vercel-api'
+import { getAffiliateConfig, type AffiliateWorkerEnv } from '@/server/affiliate/constants'
+import { readDubClickId } from '@/server/affiliate/cookie'
+import { createDubTracker } from '@/server/affiliate/dub'
+import { deliverPendingLead } from '@/server/affiliate/lead'
+import {
+  completeOperatorAttribution,
+  failWalletAuthorization,
+  persistOperatorAttribution,
+  reserveWalletAuthorization,
+} from '@/server/affiliate/repository'
+import { deriveCanonicalDepositWallet } from '@/server/affiliate/source'
+import { verifyWalletControlProof } from '@/server/affiliate/wallet-proof'
 
 function buildErrorResponse(error: unknown, status: number, body: Omit<LaunchResponseBody, 'ok'>) {
   const message = error instanceof Error ? error.message : 'Unknown error'
@@ -70,6 +83,10 @@ export async function POST(request: Request) {
   const startedAt = Date.now()
   const logs: LaunchResponseBody['logs'] = []
   const log = createLogger(logs)
+  const affiliateEnv = cloudflareEnv as AffiliateWorkerEnv
+  const affiliateConfig = getAffiliateConfig(affiliateEnv)
+  let reservedProofHash: string | null = null
+  let attributionPersisted = false
 
   const rateLimit = checkRateLimit(
     request,
@@ -103,6 +120,26 @@ export async function POST(request: Request) {
   try {
     const rawBody = (await request.json()) as unknown
     const payload = parseLaunchRequest(rawBody)
+    const verifiedWallet = await verifyWalletControlProof({
+      proof: payload.walletProof,
+      expectedWallet: payload.env.KUEST_ADDRESS,
+      expectedChainId: affiliateConfig.chainId,
+    })
+    await reserveWalletAuthorization({
+      db: affiliateEnv.AFFILIATE_DB,
+      proofHash: verifiedWallet.proofHash,
+      operatorWallet: verifiedWallet.address,
+      chainId: affiliateConfig.chainId,
+      expiresAt: verifiedWallet.expiresAt,
+    })
+    reservedProofHash = verifiedWallet.proofHash
+
+    const canonicalWallet = await deriveCanonicalDepositWallet({
+      rpcUrl: affiliateConfig.rpcUrl,
+      factory: affiliateConfig.depositWalletFactory,
+      operatorWallet: verifiedWallet.address,
+    })
+    const dubClickId = readDubClickId(request)
 
     const projectName = sanitizeProjectName(payload.projectName || payload.brandName)
     const gitRepo = ensureValidRepo(payload.gitRepo)
@@ -165,6 +202,47 @@ export async function POST(request: Request) {
       log,
     })
 
+    const attributionResult = await persistOperatorAttribution(affiliateEnv.AFFILIATE_DB, {
+      operatorWallet: verifiedWallet.address,
+      operatorEmail: payload.contactEmail,
+      operatorName: payload.brandName.trim(),
+      depositWallet: canonicalWallet.depositWallet,
+      chainId: affiliateConfig.chainId,
+      dubClickId,
+      proofHash: verifiedWallet.proofHash,
+      firstProjectId: vercel.projectId,
+    })
+    attributionPersisted = true
+    const attributedClickId = attributionResult.attribution?.dub_click_id ?? null
+
+    const finalizeAttribution = async () => {
+      await completeOperatorAttribution(
+        affiliateEnv.AFFILIATE_DB,
+        verifiedWallet.address,
+        affiliateConfig.chainId,
+      )
+      if (attributedClickId && affiliateConfig.dryRun) {
+        await deliverPendingLead({
+          db: affiliateEnv.AFFILIATE_DB,
+          operatorWallet: verifiedWallet.address,
+          chainId: affiliateConfig.chainId,
+          maxAttempts: affiliateConfig.maxAttempts,
+          dryRun: true,
+        })
+        log('affiliate', 'Affiliate lead payload saved in dry-run mode.')
+      } else if (attributedClickId && affiliateConfig.dubApiKey) {
+        await deliverPendingLead({
+          db: affiliateEnv.AFFILIATE_DB,
+          dub: createDubTracker(affiliateConfig.dubApiKey),
+          operatorWallet: verifiedWallet.address,
+          chainId: affiliateConfig.chainId,
+          maxAttempts: affiliateConfig.maxAttempts,
+        })
+      } else if (attributedClickId) {
+        log('affiliate', 'Affiliate lead queued because the Dub secret is unavailable.', 'warning')
+      }
+    }
+
     if (payload.databaseMode === 'vercel_supabase_integration') {
       const integrated = await connectSupabaseViaVercelIntegration({
         token: vercelToken,
@@ -203,6 +281,7 @@ export async function POST(request: Request) {
         url: projectUrl,
         apiKey: payload.env.KUEST_API_KEY,
       })
+      await finalizeAttribution()
 
       const durationMs = Date.now() - startedAt
       return Response.json({
@@ -224,6 +303,7 @@ export async function POST(request: Request) {
       url: vercel.projectUrl ?? '',
       apiKey: payload.env.KUEST_API_KEY,
     })
+    await finalizeAttribution()
 
     return Response.json({
       ok: true,
@@ -238,6 +318,13 @@ export async function POST(request: Request) {
       durationMs,
     })
   } catch (error) {
+    if (reservedProofHash && !attributionPersisted) {
+      try {
+        await failWalletAuthorization(affiliateEnv.AFFILIATE_DB, reservedProofHash)
+      } catch {
+        // Preserve the launch failure; the reservation expires and remains non-replayable.
+      }
+    }
     const durationMs = Date.now() - startedAt
     if (error instanceof LaunchError) {
       log(error.step, error.message, 'error')

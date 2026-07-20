@@ -1,4 +1,5 @@
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+import type { WalletControlProof } from '@/lib/launch-types'
 
 type KuestRuntimeConfig = Pick<PublicRuntimeConfig, 'CLOB_URL' | 'KUEST_CHAIN_MODE' | 'RELAYER_URL'>
 
@@ -23,9 +24,10 @@ export interface GeneratedKuestBundle {
   apiKey: string
   apiSecret: string
   passphrase: string
+  walletProof: WalletControlProof
 }
 
-type KuestKeyCredential = Omit<GeneratedKuestBundle, 'address'>
+type KuestKeyCredential = Pick<GeneratedKuestBundle, 'apiKey' | 'apiSecret' | 'passphrase'>
 
 export const DEFAULT_KUEST_KEY_NONCE = '0'
 
@@ -233,6 +235,13 @@ export async function mintKuestKeysFromSignature(
   return {
     address: input.address,
     ...created,
+    walletProof: {
+      address: input.address,
+      signature: input.signature as `0x${string}`,
+      timestamp: input.timestamp,
+      nonce: input.nonce,
+      chainId: getRequiredChainId(config),
+    },
   } satisfies GeneratedKuestBundle
 }
 
