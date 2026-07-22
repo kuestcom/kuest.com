@@ -30,6 +30,7 @@ export interface GeneratedKuestBundle {
 type KuestKeyCredential = Pick<GeneratedKuestBundle, 'apiKey' | 'apiSecret' | 'passphrase'>
 
 export const DEFAULT_KUEST_KEY_NONCE = '0'
+const KEY_SYNC_RETRY_DELAYS_MS = [0, 250, 750, 1500, 3000] as const
 
 export function getRequiredChainId(config: KuestRuntimeConfig) {
   return config.KUEST_CHAIN_MODE === 'polygon' ? 137 : 80002
@@ -188,43 +189,114 @@ async function deriveKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
   })
 }
 
-async function createOrDeriveKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
-  try {
-    return await requestKuestKey(baseUrl, input)
-  } catch (createError) {
-    try {
-      return await deriveKuestKey(baseUrl, input)
-    } catch {
-      throw createError
-    }
+function credentialsMatch(first: KuestKeyCredential, second: KuestKeyCredential) {
+  return (
+    first.apiKey === second.apiKey &&
+    first.apiSecret === second.apiSecret &&
+    first.passphrase === second.passphrase
+  )
+}
+
+async function deriveKuestCredentials(
+  targets: string[],
+  input: CreateKuestKeyInput,
+): Promise<{
+  credential: KuestKeyCredential | null
+  complete: boolean
+  mismatch: boolean
+  error: unknown
+}> {
+  const results = await Promise.allSettled(targets.map((baseUrl) => deriveKuestKey(baseUrl, input)))
+  const credentials = results.flatMap((result) =>
+    result.status === 'fulfilled' ? [result.value] : [],
+  )
+  const [credential, ...rest] = credentials
+
+  return {
+    credential: credential ?? null,
+    complete: credentials.length === targets.length,
+    mismatch: Boolean(credential && rest.some((item) => !credentialsMatch(credential, item))),
+    error: results.find((result) => result.status === 'rejected')?.reason,
   }
 }
 
-function assertMatchingKuestCredentials(credentials: KuestKeyCredential[]) {
-  const [first, ...rest] = credentials
-  if (!first) {
-    throw new Error('Failed to generate API key.')
+function wait(delayMs: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, delayMs)
+  })
+}
+
+async function waitForSynchronizedKuestCredentials(
+  targets: string[],
+  input: CreateKuestKeyInput,
+  expected?: KuestKeyCredential,
+) {
+  let lastError: unknown
+  let sawMismatch = false
+  let sawExpectedMismatch = false
+
+  for (const delayMs of KEY_SYNC_RETRY_DELAYS_MS) {
+    if (delayMs > 0) {
+      await wait(delayMs)
+    }
+
+    const derived = await deriveKuestCredentials(targets, input)
+    lastError = derived.error
+    sawMismatch ||= derived.mismatch
+    if (derived.complete && !derived.mismatch && derived.credential) {
+      if (!expected || credentialsMatch(expected, derived.credential)) {
+        return derived.credential
+      }
+      sawExpectedMismatch = true
+    }
   }
 
-  const mismatch = rest.find(
-    (credential) =>
-      credential.apiKey !== first.apiKey ||
-      credential.apiSecret !== first.apiSecret ||
-      credential.passphrase !== first.passphrase,
+  if (sawMismatch || sawExpectedMismatch) {
+    throw new Error('Kuest services returned mismatched API credentials after synchronization.')
+  }
+
+  throw new Error(
+    getErrorMessage(
+      lastError,
+      'Kuest credentials are still synchronizing. Wait a moment and try again.',
+    ),
   )
-  if (mismatch) {
-    throw new Error('Kuest services returned mismatched API credentials.')
-  }
-
-  return first
 }
 
 async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeConfig) {
   const targets = getKuestBaseUrls(config)
-  const credentials = await Promise.all(
-    targets.map((baseUrl) => createOrDeriveKuestKey(baseUrl, input)),
-  )
-  return assertMatchingKuestCredentials(credentials)
+  const existing = await deriveKuestCredentials(targets, input)
+  if (existing.complete && !existing.mismatch && existing.credential) {
+    return existing.credential
+  }
+  if (existing.credential) {
+    return waitForSynchronizedKuestCredentials(targets, input)
+  }
+
+  const primaryTarget = targets[0]
+  if (!primaryTarget) {
+    throw new Error('Kuest API URL is not configured.')
+  }
+
+  let created: KuestKeyCredential
+  try {
+    created = await requestKuestKey(primaryTarget, input)
+  } catch (createError) {
+    try {
+      const recovered = await deriveKuestCredentials(targets, input)
+      if (recovered.complete && !recovered.mismatch && recovered.credential) {
+        return recovered.credential
+      }
+      if (recovered.credential) {
+        return await waitForSynchronizedKuestCredentials(targets, input)
+      }
+    } catch {
+      // Preserve the creation error because it best explains why key generation failed.
+    }
+    throw createError
+  }
+
+  return waitForSynchronizedKuestCredentials(targets, input, created)
 }
 
 export async function mintKuestKeysFromSignature(

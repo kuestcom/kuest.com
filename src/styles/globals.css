@@ -510,6 +510,41 @@
   transform: translateY(0);
 }
 
+.launch-wallet-action-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.launch-wallet-action-tooltip-bubble {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 0.55rem);
+  width: max-content;
+  max-width: min(18rem, calc(100vw - 2rem));
+  padding: 0.55rem 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
+  border-radius: 0.7rem;
+  background: var(--background);
+  color: var(--muted-foreground);
+  box-shadow: 0 8px 26px rgb(0 0 0 / 28%);
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity 0.14s ease,
+    transform 0.14s ease;
+  z-index: 35;
+}
+
+.launch-wallet-action-tooltip:hover .launch-wallet-action-tooltip-bubble,
+.launch-wallet-action-tooltip:focus-visible .launch-wallet-action-tooltip-bubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .launch-field input,
 .launch-field select,
 .launch-field textarea {
@@ -2390,7 +2425,8 @@
   .launch-cta,
   .launch-discord-link,
   .launch-choice-button,
-  .launch-language-trigger {
+  .launch-language-trigger,
+  .launch-wallet-action-tooltip-bubble {
     transition: none;
   }
 }

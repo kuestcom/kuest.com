@@ -31,7 +31,7 @@ import {
 } from 'lucide-react'
 import { useExtracted, useLocale } from '@/i18n'
 import Image from '@/compat/Image'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
 import { useAppKit } from '@/hooks/useAppKit'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
@@ -687,6 +687,7 @@ export default function LaunchpadForm({
   runtimeConfig: PublicRuntimeConfig
 }) {
   const t = useExtracted()
+  const walletPrerequisiteTooltipId = useId()
   const copy = LAUNCHPAD_COPY[locale]
   const account = useAccount()
   const { disconnect, status: disconnectStatus } = useDisconnect()
@@ -779,6 +780,7 @@ export default function LaunchpadForm({
   const handleConnectOrSignRef = useRef<
     ((_options?: { autoProgress?: boolean }) => Promise<void>) | null
   >(null)
+  const walletFlowInFlightRef = useRef(false)
 
   useEffect(() => {
     // @ts-expect-error ignore
@@ -793,6 +795,9 @@ export default function LaunchpadForm({
   const isConnected = account.status === 'connected' && Boolean(account.address)
   const onRequiredChain =
     isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false
+  const hasValidContactEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail.trim())
+  const walletPrerequisitesReady = Boolean(form.brandName.trim()) && hasValidContactEmail
+  const walletPrerequisiteMessage = t('Enter the company name and email to continue.')
 
   const step1Complete =
     Boolean(form.env.KUEST_ADDRESS) &&
@@ -800,7 +805,7 @@ export default function LaunchpadForm({
     Boolean(form.env.KUEST_API_SECRET) &&
     Boolean(form.env.KUEST_PASSPHRASE) &&
     Boolean(form.walletProof) &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail.trim())
+    hasValidContactEmail
   const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected)
   const vercelOauthIdentity =
     oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
@@ -1567,10 +1572,23 @@ export default function LaunchpadForm({
   }
 
   async function handleConnectOrSign(options?: { autoProgress?: boolean }) {
+    if (!walletPrerequisitesReady) {
+      setWalletError(walletPrerequisiteMessage)
+      return
+    }
+
     const autoProgress = options?.autoProgress ?? false
 
     if (!isAppKitReady) {
-      await handleGenerateWithInjectedWallet()
+      if (walletFlowInFlightRef.current) {
+        return
+      }
+      walletFlowInFlightRef.current = true
+      try {
+        await handleGenerateWithInjectedWallet()
+      } finally {
+        walletFlowInFlightRef.current = false
+      }
       return
     }
 
@@ -1583,119 +1601,126 @@ export default function LaunchpadForm({
         await openAppKit()
       } catch (error) {
         setConnectPromptOpen(false)
-        throw error
+        setWalletInfo(null)
+        setWalletError(
+          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+        )
       }
       return
     }
 
-    if (!onRequiredChain) {
-      setWalletActionLoading(true)
-      setWalletInfo(t('Switching to {network}...', { network: REQUIRED_CHAIN_LABEL }))
-      try {
-        await handleEnsureRequiredNetwork()
+    if (walletFlowInFlightRef.current) {
+      return
+    }
+    walletFlowInFlightRef.current = true
+
+    try {
+      if (!onRequiredChain) {
+        setWalletActionLoading(true)
+        setWalletInfo(t('Switching to {network}...', { network: REQUIRED_CHAIN_LABEL }))
+        try {
+          await handleEnsureRequiredNetwork()
+        } finally {
+          setWalletActionLoading(false)
+        }
         if (!autoProgress) {
           setWalletInfo(
             t('{network} is active. Click Sign to continue.', { network: REQUIRED_CHAIN_LABEL }),
           )
+          return
         }
+      }
+
+      if (!account.address || account.chainId === undefined) {
+        throw new Error(t('Wallet connection is not ready.'))
+      }
+
+      const timestamp = Math.floor(Date.now() / 1000).toString()
+
+      setWalletActionLoading(true)
+      setSignPromptOpen(true)
+      setWalletInfo(t('Approve one signature to generate credentials.'))
+
+      try {
+        const signature = await signTypedDataAsync({
+          domain: {
+            name: 'ClobAuthDomain',
+            version: '1',
+            chainId: REQUIRED_CHAIN_ID,
+          },
+          types: {
+            ClobAuth: [
+              { name: 'address', type: 'address' },
+              { name: 'timestamp', type: 'string' },
+              { name: 'nonce', type: 'uint256' },
+              { name: 'message', type: 'string' },
+            ],
+          },
+          primaryType: 'ClobAuth',
+          message: {
+            address: account.address,
+            timestamp,
+            nonce: BigInt(DEFAULT_KUEST_KEY_NONCE),
+            message: 'This message attests that I control the given wallet',
+          },
+        })
+
+        setWalletInfo(t('Minting Kuest credentials...'))
+        const generated = await mintKuestKeysFromSignature(
+          {
+            address: account.address,
+            signature,
+            timestamp,
+            nonce: DEFAULT_KUEST_KEY_NONCE,
+          },
+          runtimeConfig,
+        )
+
+        const advancedToStep2 = applyGeneratedCredentials(generated)
+        void saveContactEmailForKey(generated.apiKey)
+        if (advancedToStep2) {
+          setWalletInfo(null)
+        } else {
+          setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
+        }
+      } catch (error) {
+        setWalletInfo(null)
+        setWalletError(
+          error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
+        )
       } finally {
+        setSignPromptOpen(false)
         setWalletActionLoading(false)
       }
-      if (!autoProgress) {
-        return
-      }
-    }
-
-    if (!account.address || account.chainId === undefined) {
-      throw new Error(t('Wallet connection is not ready.'))
-    }
-
-    const timestamp = Math.floor(Date.now() / 1000).toString()
-
-    setWalletActionLoading(true)
-    setSignPromptOpen(true)
-    setWalletInfo(t('Approve one signature to generate credentials.'))
-
-    try {
-      const signature = await signTypedDataAsync({
-        domain: {
-          name: 'ClobAuthDomain',
-          version: '1',
-          chainId: account.chainId,
-        },
-        types: {
-          ClobAuth: [
-            { name: 'address', type: 'address' },
-            { name: 'timestamp', type: 'string' },
-            { name: 'nonce', type: 'uint256' },
-            { name: 'message', type: 'string' },
-          ],
-        },
-        primaryType: 'ClobAuth',
-        message: {
-          address: account.address,
-          timestamp,
-          nonce: BigInt(DEFAULT_KUEST_KEY_NONCE),
-          message: 'This message attests that I control the given wallet',
-        },
-      })
-
-      setWalletInfo(t('Minting Kuest credentials...'))
-      const generated = await mintKuestKeysFromSignature(
-        {
-          address: account.address,
-          signature,
-          timestamp,
-          nonce: DEFAULT_KUEST_KEY_NONCE,
-        },
-        runtimeConfig,
-      )
-
-      const advancedToStep2 = applyGeneratedCredentials(generated)
-      void saveContactEmailForKey(generated.apiKey)
-      if (advancedToStep2) {
-        setWalletInfo(null)
-      } else {
-        setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
-      }
     } catch (error) {
+      setWalletInfo(null)
       setWalletError(
-        error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
+        error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
       )
     } finally {
-      setSignPromptOpen(false)
-      setWalletActionLoading(false)
+      walletFlowInFlightRef.current = false
     }
   }
 
   handleConnectOrSignRef.current = handleConnectOrSign
 
   useEffect(() => {
-    if (!autoSignAfterConnect || !isConnected || step1Complete || walletActionLoading) {
+    if (!autoSignAfterConnect || !isConnected || step1Complete || !walletPrerequisitesReady) {
       return
     }
 
-    let cancelled = false
     void (async () => {
       try {
         await handleConnectOrSignRef.current?.({ autoProgress: true })
       } catch (error) {
-        if (!cancelled) {
-          setWalletError(
-            error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
-          )
-        }
+        setWalletError(
+          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+        )
       } finally {
-        if (!cancelled) {
-          setAutoSignAfterConnect(false)
-        }
+        setAutoSignAfterConnect(false)
       }
     })()
-
-    return () => {
-      cancelled = true
-    }
-  }, [t, autoSignAfterConnect, isConnected, step1Complete, walletActionLoading])
+  }, [t, autoSignAfterConnect, isConnected, step1Complete, walletPrerequisitesReady])
 
   function startTimelineAnimation() {
     if (timelineIntervalRef.current) {
@@ -2252,11 +2277,6 @@ export default function LaunchpadForm({
                 }
                 required
               />
-              <span className="text-sm text-muted-foreground">
-                {t(
-                  'Your email is shared with our affiliate provider only when a referral is present.',
-                )}
-              </span>
             </label>
           </div>
 
@@ -2316,26 +2336,48 @@ export default function LaunchpadForm({
               </div>
             ) : (
               <div className="launch-step1-wallet-actions mt-4 flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  className="launch-cta launch-cta-compact"
-                  onClick={() => {
-                    if (!step1Complete && isAppKitReady && !isConnected) {
-                      setAutoSignAfterConnect(true)
-                    }
-                    void handleConnectOrSign()
-                  }}
-                  disabled={walletActionLoading}
+                <span
+                  className="launch-wallet-action-tooltip"
+                  role={walletPrerequisitesReady ? undefined : 'group'}
+                  aria-label={walletPrerequisitesReady ? undefined : step1PrimaryLabel}
+                  aria-describedby={
+                    walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
+                  }
+                  tabIndex={walletPrerequisitesReady ? undefined : 0}
                 >
-                  {walletActionLoading ? (
-                    <span className="inline-flex items-center gap-2">
-                      <Loader2Icon className="size-4 animate-spin" />
-                      {t('Working...')}
+                  <button
+                    type="button"
+                    className="launch-cta launch-cta-compact"
+                    aria-describedby={
+                      walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
+                    }
+                    onClick={() => {
+                      if (!step1Complete && isAppKitReady && !isConnected) {
+                        setAutoSignAfterConnect(true)
+                      }
+                      void handleConnectOrSign()
+                    }}
+                    disabled={walletActionLoading || !walletPrerequisitesReady}
+                  >
+                    {walletActionLoading ? (
+                      <span className="inline-flex items-center gap-2">
+                        <Loader2Icon className="size-4 animate-spin" />
+                        {t('Working...')}
+                      </span>
+                    ) : (
+                      step1PrimaryLabel
+                    )}
+                  </button>
+                  {!walletPrerequisitesReady && (
+                    <span
+                      id={walletPrerequisiteTooltipId}
+                      role="tooltip"
+                      className="launch-wallet-action-tooltip-bubble"
+                    >
+                      {walletPrerequisiteMessage}
                     </span>
-                  ) : (
-                    step1PrimaryLabel
                   )}
-                </button>
+                </span>
 
                 {isConnected && account.address && (
                   <button
