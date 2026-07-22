@@ -37,6 +37,7 @@ function getRequestUrl(input: string | URL | Request) {
 }
 
 afterEach(() => {
+  vi.useRealTimers()
   vi.unstubAllGlobals()
 })
 
@@ -114,5 +115,26 @@ describe('Kuest wallet key generation', () => {
       apiKey: credentials.apiKey,
     })
     expect(relayerDeriveAttemptsAfterCreation).toBe(2)
+  })
+
+  it('reports a mismatch when every service stays on credentials different from the created key', async () => {
+    vi.useFakeTimers()
+    let created = false
+    const fetchMock = vi.fn(async (_input: string | URL | Request, init?: RequestInit) => {
+      const method = init?.method ?? 'GET'
+
+      if (method === 'POST') {
+        created = true
+        return jsonResponse(credentials)
+      }
+      return created ? jsonResponse(staleCredentials) : jsonResponse({ error: 'not found' }, 404)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const expectation = expect(mintKuestKeysFromSignature(input, config)).rejects.toThrow(
+      'mismatched API credentials',
+    )
+    await vi.runAllTimersAsync()
+    await expectation
   })
 })

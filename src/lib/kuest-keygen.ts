@@ -233,6 +233,7 @@ async function waitForSynchronizedKuestCredentials(
 ) {
   let lastError: unknown
   let sawMismatch = false
+  let sawExpectedMismatch = false
 
   for (const delayMs of KEY_SYNC_RETRY_DELAYS_MS) {
     if (delayMs > 0) {
@@ -242,17 +243,15 @@ async function waitForSynchronizedKuestCredentials(
     const derived = await deriveKuestCredentials(targets, input)
     lastError = derived.error
     sawMismatch ||= derived.mismatch
-    if (
-      derived.complete &&
-      !derived.mismatch &&
-      derived.credential &&
-      (!expected || credentialsMatch(expected, derived.credential))
-    ) {
-      return derived.credential
+    if (derived.complete && !derived.mismatch && derived.credential) {
+      if (!expected || credentialsMatch(expected, derived.credential)) {
+        return derived.credential
+      }
+      sawExpectedMismatch = true
     }
   }
 
-  if (sawMismatch) {
+  if (sawMismatch || sawExpectedMismatch) {
     throw new Error('Kuest services returned mismatched API credentials after synchronization.')
   }
 

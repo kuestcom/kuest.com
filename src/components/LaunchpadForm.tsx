@@ -1601,6 +1601,7 @@ export default function LaunchpadForm({
         await openAppKit()
       } catch (error) {
         setConnectPromptOpen(false)
+        setWalletInfo(null)
         setWalletError(
           error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
         )
@@ -1683,6 +1684,7 @@ export default function LaunchpadForm({
           setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
         }
       } catch (error) {
+        setWalletInfo(null)
         setWalletError(
           error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
         )
@@ -1691,6 +1693,7 @@ export default function LaunchpadForm({
         setWalletActionLoading(false)
       }
     } catch (error) {
+      setWalletInfo(null)
       setWalletError(
         error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
       )
