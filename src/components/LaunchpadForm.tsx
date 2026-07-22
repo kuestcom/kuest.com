@@ -31,7 +31,7 @@ import {
 } from 'lucide-react'
 import { useExtracted, useLocale } from '@/i18n'
 import Image from '@/compat/Image'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
 import { useAppKit } from '@/hooks/useAppKit'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
@@ -687,6 +687,7 @@ export default function LaunchpadForm({
   runtimeConfig: PublicRuntimeConfig
 }) {
   const t = useExtracted()
+  const walletPrerequisiteTooltipId = useId()
   const copy = LAUNCHPAD_COPY[locale]
   const account = useAccount()
   const { disconnect, status: disconnectStatus } = useDisconnect()
@@ -1600,7 +1601,9 @@ export default function LaunchpadForm({
         await openAppKit()
       } catch (error) {
         setConnectPromptOpen(false)
-        throw error
+        setWalletError(
+          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+        )
       }
       return
     }
@@ -1687,6 +1690,10 @@ export default function LaunchpadForm({
         setSignPromptOpen(false)
         setWalletActionLoading(false)
       }
+    } catch (error) {
+      setWalletError(
+        error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+      )
     } finally {
       walletFlowInFlightRef.current = false
     }
@@ -1699,23 +1706,17 @@ export default function LaunchpadForm({
       return
     }
 
-    setAutoSignAfterConnect(false)
-    let cancelled = false
     void (async () => {
       try {
         await handleConnectOrSignRef.current?.({ autoProgress: true })
       } catch (error) {
-        if (!cancelled) {
-          setWalletError(
-            error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
-          )
-        }
+        setWalletError(
+          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
+        )
+      } finally {
+        setAutoSignAfterConnect(false)
       }
     })()
-
-    return () => {
-      cancelled = true
-    }
   }, [t, autoSignAfterConnect, isConnected, step1Complete, walletPrerequisitesReady])
 
   function startTimelineAnimation() {
@@ -2334,12 +2335,19 @@ export default function LaunchpadForm({
               <div className="launch-step1-wallet-actions mt-4 flex flex-wrap items-center gap-3">
                 <span
                   className="launch-wallet-action-tooltip"
-                  data-tooltip={walletPrerequisitesReady ? undefined : walletPrerequisiteMessage}
+                  role={walletPrerequisitesReady ? undefined : 'group'}
+                  aria-label={walletPrerequisitesReady ? undefined : step1PrimaryLabel}
+                  aria-describedby={
+                    walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
+                  }
                   tabIndex={walletPrerequisitesReady ? undefined : 0}
                 >
                   <button
                     type="button"
                     className="launch-cta launch-cta-compact"
+                    aria-describedby={
+                      walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
+                    }
                     onClick={() => {
                       if (!step1Complete && isAppKitReady && !isConnected) {
                         setAutoSignAfterConnect(true)
@@ -2357,6 +2365,15 @@ export default function LaunchpadForm({
                       step1PrimaryLabel
                     )}
                   </button>
+                  {!walletPrerequisitesReady && (
+                    <span
+                      id={walletPrerequisiteTooltipId}
+                      role="tooltip"
+                      className="launch-wallet-action-tooltip-bubble"
+                    >
+                      {walletPrerequisiteMessage}
+                    </span>
+                  )}
                 </span>
 
                 {isConnected && account.address && (

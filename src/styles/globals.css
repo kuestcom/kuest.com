@@ -515,7 +515,7 @@
   display: inline-flex;
 }
 
-.launch-wallet-action-tooltip[data-tooltip]::after {
+.launch-wallet-action-tooltip-bubble {
   position: absolute;
   left: 0;
   bottom: calc(100% + 0.55rem);
@@ -527,7 +527,6 @@
   background: var(--background);
   color: var(--muted-foreground);
   box-shadow: 0 8px 26px rgb(0 0 0 / 28%);
-  content: attr(data-tooltip);
   font-size: 0.74rem;
   font-weight: 500;
   line-height: 1.35;
@@ -540,8 +539,8 @@
   z-index: 35;
 }
 
-.launch-wallet-action-tooltip[data-tooltip]:hover::after,
-.launch-wallet-action-tooltip[data-tooltip]:focus-visible::after {
+.launch-wallet-action-tooltip:hover .launch-wallet-action-tooltip-bubble,
+.launch-wallet-action-tooltip:focus-visible .launch-wallet-action-tooltip-bubble {
   opacity: 1;
   transform: translateY(0);
 }
@@ -2426,7 +2425,8 @@
   .launch-cta,
   .launch-discord-link,
   .launch-choice-button,
-  .launch-language-trigger {
+  .launch-language-trigger,
+  .launch-wallet-action-tooltip-bubble {
     transition: none;
   }
 }

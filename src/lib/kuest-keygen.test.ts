@@ -19,6 +19,11 @@ const credentials = {
   secret: 'api-secret',
   passphrase: 'passphrase',
 }
+const staleCredentials = {
+  apiKey: 'stale-api-key',
+  secret: 'stale-api-secret',
+  passphrase: 'stale-passphrase',
+}
 
 function jsonResponse(body: unknown, status = 200) {
   return Response.json(body, { status })
@@ -81,7 +86,7 @@ describe('Kuest wallet key generation', () => {
     expect(postRequests).toBe(0)
   })
 
-  it('retries relayer derivation while a newly created key is propagating', async () => {
+  it('retries a stale relayer credential while a newly created key is propagating', async () => {
     let created = false
     let relayerDeriveAttemptsAfterCreation = 0
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
@@ -98,7 +103,7 @@ describe('Kuest wallet key generation', () => {
       if (url.origin === 'https://relayer.example.com') {
         relayerDeriveAttemptsAfterCreation += 1
         if (relayerDeriveAttemptsAfterCreation === 1) {
-          return jsonResponse({ error: 'not synchronized' }, 503)
+          return jsonResponse(staleCredentials)
         }
       }
       return jsonResponse(credentials)
