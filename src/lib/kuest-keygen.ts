@@ -265,30 +265,27 @@ async function waitForSynchronizedKuestCredentials(
 
 async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeConfig) {
   const targets = getKuestBaseUrls(config)
-  const existing = await deriveKuestCredentials(targets, input)
-  if (existing.complete && !existing.mismatch && existing.credential) {
-    return existing.credential
-  }
-  if (existing.credential) {
-    return waitForSynchronizedKuestCredentials(targets, input)
-  }
-
   const primaryTarget = targets[0]
   if (!primaryTarget) {
     throw new Error('Kuest API URL is not configured.')
   }
+  const secondaryTargets = targets.slice(1)
 
   let created: KuestKeyCredential
   try {
     created = await requestKuestKey(primaryTarget, input)
   } catch (createError) {
+    if (!secondaryTargets.length) {
+      throw createError
+    }
+
     try {
-      const recovered = await deriveKuestCredentials(targets, input)
+      const recovered = await deriveKuestCredentials(secondaryTargets, input)
       if (recovered.complete && !recovered.mismatch && recovered.credential) {
         return recovered.credential
       }
       if (recovered.credential) {
-        return await waitForSynchronizedKuestCredentials(targets, input)
+        return await waitForSynchronizedKuestCredentials(secondaryTargets, input)
       }
     } catch {
       // Preserve the creation error because it best explains why key generation failed.
@@ -296,7 +293,11 @@ async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeCo
     throw createError
   }
 
-  return waitForSynchronizedKuestCredentials(targets, input, created)
+  if (!secondaryTargets.length) {
+    return created
+  }
+
+  return waitForSynchronizedKuestCredentials(secondaryTargets, input, created)
 }
 
 export async function mintKuestKeysFromSignature(

@@ -42,14 +42,15 @@ afterEach(() => {
 })
 
 describe('Kuest wallet key generation', () => {
-  it('creates a new wallet key only on the primary CLOB service and derives it everywhere', async () => {
+  it('issues on CLOB before deriving from the relayer so the signature is not replayed', async () => {
     let created = false
-    const postUrls: string[] = []
+    const requests: string[] = []
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = getRequestUrl(input)
       const method = init?.method ?? 'GET'
+      requests.push(`${method} ${url}`)
 
       if (method === 'POST') {
-        postUrls.push(getRequestUrl(input))
         created = true
         return jsonResponse(credentials)
       }
@@ -62,7 +63,10 @@ describe('Kuest wallet key generation', () => {
 
     const result = await mintKuestKeysFromSignature(input, config)
 
-    expect(postUrls).toEqual(['https://clob.example.com/auth/api-key'])
+    expect(requests).toEqual([
+      'POST https://clob.example.com/auth/api-key',
+      'GET https://relayer.example.com/auth/derive-api-key',
+    ])
     expect(result).toMatchObject({
       address: input.address,
       apiKey: credentials.apiKey,
@@ -71,20 +75,21 @@ describe('Kuest wallet key generation', () => {
     })
   })
 
-  it('reuses synchronized credentials without creating another key', async () => {
-    let postRequests = 0
-    const fetchMock = vi.fn(async (_input: string | URL | Request, init?: RequestInit) => {
-      if (init?.method === 'POST') {
-        postRequests += 1
-      }
+  it('uses the idempotent issue endpoint when credentials already exist', async () => {
+    const requests: string[] = []
+    const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const method = init?.method ?? 'GET'
+      requests.push(`${method} ${getRequestUrl(input)}`)
       return jsonResponse(credentials)
     })
     vi.stubGlobal('fetch', fetchMock)
 
     await mintKuestKeysFromSignature(input, config)
 
-    expect(fetchMock).toHaveBeenCalledTimes(2)
-    expect(postRequests).toBe(0)
+    expect(requests).toEqual([
+      'POST https://clob.example.com/auth/api-key',
+      'GET https://relayer.example.com/auth/derive-api-key',
+    ])
   })
 
   it('retries a stale relayer credential while a newly created key is propagating', async () => {
