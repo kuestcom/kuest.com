@@ -270,34 +270,35 @@ async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeCo
     throw new Error('Kuest API URL is not configured.')
   }
   const secondaryTargets = targets.slice(1)
-
-  let created: KuestKeyCredential
-  try {
-    created = await requestKuestKey(primaryTarget, input)
-  } catch (createError) {
-    if (!secondaryTargets.length) {
-      throw createError
-    }
-
-    try {
-      const recovered = await deriveKuestCredentials(secondaryTargets, input)
-      if (recovered.complete && !recovered.mismatch && recovered.credential) {
-        return recovered.credential
-      }
-      if (recovered.credential) {
-        return await waitForSynchronizedKuestCredentials(secondaryTargets, input)
-      }
-    } catch {
-      // Preserve the creation error because it best explains why key generation failed.
-    }
-    throw createError
-  }
+  const created = await requestKuestKey(primaryTarget, input)
 
   if (!secondaryTargets.length) {
     return created
   }
 
-  return waitForSynchronizedKuestCredentials(secondaryTargets, input, created)
+  const secondaryResults = await Promise.allSettled(
+    secondaryTargets.map((target) => requestKuestKey(target, input)),
+  )
+  const failedTargets: string[] = []
+
+  for (const [index, result] of secondaryResults.entries()) {
+    if (result.status === 'rejected') {
+      const target = secondaryTargets[index]
+      if (target) {
+        failedTargets.push(target)
+      }
+      continue
+    }
+    if (!credentialsMatch(created, result.value)) {
+      throw new Error('Kuest services returned mismatched API credentials after synchronization.')
+    }
+  }
+
+  if (!failedTargets.length) {
+    return created
+  }
+
+  return waitForSynchronizedKuestCredentials(failedTargets, input, created)
 }
 
 export async function mintKuestKeysFromSignature(
