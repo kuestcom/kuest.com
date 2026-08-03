@@ -1,5 +1,7 @@
-import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronDown } from 'lucide-react'
+
+import type { SupportedLocale } from '@/i18n/locales'
+
 import Image from '@/compat/Image'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
@@ -29,8 +31,7 @@ export default function LanguageControl({
   labelId: string
   ariaLabel: string
 }) {
-  const currentLanguage =
-    LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0]
+  const currentLanguage = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0]
   const limitToAvailable = Array.isArray(availableLocales) && availableLocales.length > 0
 
   return (
@@ -77,13 +78,7 @@ export default function LanguageControl({
               data-available={isAvailable ? 'true' : 'false'}
             >
               <span className="site-language-option-row">
-                <Image
-                  className="site-language-flag"
-                  src={option.flagSrc}
-                  alt={option.label}
-                  width={18}
-                  height={12}
-                />
+                <Image className="site-language-flag" src={option.flagSrc} alt={option.label} width={18} height={12} />
                 <span>{option.label}</span>
               </span>
             </a>

@@ -1,9 +1,12 @@
 'use client'
 
 import type { CSSProperties } from 'react'
-import type { ShowcaseNiche } from '@/lib/marketing-shared-data'
-import Image from '@/compat/Image'
+
 import { useEffect, useState } from 'react'
+
+import type { ShowcaseNiche } from '@/lib/marketing-shared-data'
+
+import Image from '@/compat/Image'
 import ShowcaseIcon from '@/components/ShowcaseIcon'
 
 export default function NicheShowcase({
@@ -106,10 +109,7 @@ export default function NicheShowcase({
                   <div key={`${card.title}-${row.label}`} className="prediction-showcase-row">
                     <span className="prediction-showcase-row-label">{row.label}</span>
                     <span className="prediction-showcase-row-track">
-                      <span
-                        className="prediction-showcase-row-fill"
-                        style={{ width: `${row.pct}%` }}
-                      />
+                      <span className="prediction-showcase-row-fill" style={{ width: `${row.pct}%` }} />
                     </span>
                     <span className="prediction-showcase-row-pct">{row.pct}%</span>
                   </div>

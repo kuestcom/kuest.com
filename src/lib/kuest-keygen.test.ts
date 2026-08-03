@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
+
 import { mintKuestKeysFromSignature } from './kuest-keygen'
 
 const config = {
@@ -114,14 +115,10 @@ describe('Kuest wallet key generation', () => {
   it('reports a mismatch when the relayer issues credentials different from the CLOB', async () => {
     const fetchMock = vi.fn(async (input: string | URL | Request) => {
       const url = new URL(getRequestUrl(input))
-      return url.origin === 'https://clob.example.com'
-        ? jsonResponse(credentials)
-        : jsonResponse(staleCredentials)
+      return url.origin === 'https://clob.example.com' ? jsonResponse(credentials) : jsonResponse(staleCredentials)
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    await expect(mintKuestKeysFromSignature(input, config)).rejects.toThrow(
-      'mismatched API credentials',
-    )
+    await expect(mintKuestKeysFromSignature(input, config)).rejects.toThrow('mismatched API credentials')
   })
 })

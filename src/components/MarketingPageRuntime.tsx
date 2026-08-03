@@ -1,7 +1,8 @@
 'use client'
 
-import { usePathname } from '@/compat/navigation'
 import { useEffect } from 'react'
+
+import { usePathname } from '@/compat/navigation'
 
 interface AttentionScrollNode<T extends HTMLElement> {
   node: T
@@ -79,8 +80,7 @@ export default function MarketingPageRuntime({
     }
 
     const prefersReducedMotion =
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (prefersReducedMotion || typeof IntersectionObserver !== 'function') {
       timelines.forEach((timeline) => timeline.classList.add('is-revealed'))
@@ -111,8 +111,8 @@ export default function MarketingPageRuntime({
   }, [pathname])
 
   useEffect(() => {
-    const panels = Array.from(document.querySelectorAll<HTMLElement>('.panel-wrap')).filter(
-      (panel) => Boolean(panel.id),
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('.panel-wrap')).filter((panel) =>
+      Boolean(panel.id),
     )
     const dots = Array.from(document.querySelectorAll<HTMLElement>('.tl-dot'))
 
@@ -175,9 +175,7 @@ export default function MarketingPageRuntime({
 
   useEffect(() => {
     const section = document.getElementById('p1-scroll')
-    const steps = section
-      ? Array.from(section.querySelectorAll<HTMLElement>('[data-attention-step]'))
-      : []
+    const steps = section ? Array.from(section.querySelectorAll<HTMLElement>('[data-attention-step]')) : []
     const sticky = section?.querySelector<HTMLElement>('.panel-sticky')
 
     if (!section || !sticky || !steps.length) {
@@ -207,9 +205,7 @@ export default function MarketingPageRuntime({
     function parseRgbTriplet(value: string, fallback: [number, number, number]) {
       const parts = String(value).trim().split(/\s+/).map(Number).filter(Number.isFinite)
 
-      return parts.length === 3
-        ? ([parts[0], parts[1], parts[2]] as [number, number, number])
-        : fallback
+      return parts.length === 3 ? ([parts[0], parts[1], parts[2]] as [number, number, number]) : fallback
     }
 
     function readPalette() {
@@ -225,9 +221,7 @@ export default function MarketingPageRuntime({
       line.setAttribute('aria-label', text)
       line.textContent = ''
 
-      const segments = segmenter
-        ? Array.from(segmenter.segment(text), (part) => part.segment)
-        : text.split(/(\s+)/)
+      const segments = segmenter ? Array.from(segmenter.segment(text), (part) => part.segment) : text.split(/(\s+)/)
       const words: AttentionScrollNode<HTMLSpanElement>[] = []
       let previousWasWhitespace = false
 
@@ -242,11 +236,7 @@ export default function MarketingPageRuntime({
           return
         }
 
-        if (
-          ATTENTION_PUNCTUATION_TOKEN_RE.test(segment) &&
-          !previousWasWhitespace &&
-          words.length
-        ) {
+        if (ATTENTION_PUNCTUATION_TOKEN_RE.test(segment) && !previousWasWhitespace && words.length) {
           // @ts-expect-error ignore
           words.at(-1).node.textContent += segment
           previousWasWhitespace = false
@@ -268,13 +258,10 @@ export default function MarketingPageRuntime({
       if (step.dataset.attentionStep === 'brands') {
         return {
           type: 'brands',
-          brands: Array.from(
-            step.querySelectorAll<HTMLElement>('.attention-scroll-brand'),
-            (brand) => ({
-              node: brand,
-              offsetTop: 0,
-            }),
-          ),
+          brands: Array.from(step.querySelectorAll<HTMLElement>('.attention-scroll-brand'), (brand) => ({
+            node: brand,
+            offsetTop: 0,
+          })),
         }
       }
 
@@ -323,18 +310,14 @@ export default function MarketingPageRuntime({
       const firstCenter = firstBlock.offsetTop + firstBlock.offsetHeight / 2
       const lastCenter = lastBlock.offsetTop + lastBlock.offsetHeight / 2
       const contentTravel = Math.max(lastCenter - firstCenter, 1)
-      const travelFactor = isEnterprisePage
-        ? ENTERPRISE_ATTENTION_SCROLL_TRAVEL_FACTOR
-        : ATTENTION_SCROLL_TRAVEL_FACTOR
+      const travelFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_TRAVEL_FACTOR : ATTENTION_SCROLL_TRAVEL_FACTOR
       const minTravelFactor = isEnterprisePage
         ? ENTERPRISE_ATTENTION_SCROLL_MIN_TRAVEL_FACTOR
         : ATTENTION_SCROLL_MIN_TRAVEL_FACTOR
       const maxTravelFactor = isEnterprisePage
         ? ENTERPRISE_ATTENTION_SCROLL_MAX_TRAVEL_FACTOR
         : ATTENTION_SCROLL_MAX_TRAVEL_FACTOR
-      const holdFactor = isEnterprisePage
-        ? ENTERPRISE_ATTENTION_SCROLL_HOLD_FACTOR
-        : ATTENTION_SCROLL_HOLD_FACTOR
+      const holdFactor = isEnterprisePage ? ENTERPRISE_ATTENTION_SCROLL_HOLD_FACTOR : ATTENTION_SCROLL_HOLD_FACTOR
       const travel = clamp(
         contentTravel * travelFactor,
         window.innerHeight * minTravelFactor,
@@ -375,8 +358,7 @@ export default function MarketingPageRuntime({
 
       ticking = false
       const trackProgress = clamp((window.scrollY - layout.sectionTop) / layout.travel, 0, 1)
-      const dockRect =
-        dockNav && dockNav.classList.contains('is-visible') ? dockNav.getBoundingClientRect() : null
+      const dockRect = dockNav && dockNav.classList.contains('is-visible') ? dockNav.getBoundingClientRect() : null
       const stickyTop = sticky.getBoundingClientRect().top
       const copyBaseTop = stickyTop + layout.copyOffsetTop
       const anchorY = dockRect ? dockRect.top - 16 : window.innerHeight * 0.8
@@ -466,12 +448,8 @@ export default function MarketingPageRuntime({
         return
       }
 
-      const reachedContent = nextSection
-        ? nextSection.getBoundingClientRect().top <= window.innerHeight * 0.72
-        : true
-      const reachedFinal = finalSection
-        ? finalSection.getBoundingClientRect().top <= window.innerHeight * 0.9
-        : false
+      const reachedContent = nextSection ? nextSection.getBoundingClientRect().top <= window.innerHeight * 0.72 : true
+      const reachedFinal = finalSection ? finalSection.getBoundingClientRect().top <= window.innerHeight * 0.9 : false
       const showDock = reachedContent && !reachedFinal
 
       if (heroNav) {
@@ -492,9 +470,7 @@ export default function MarketingPageRuntime({
   }, [finalSectionId, nextSectionId, pathname])
 
   useEffect(() => {
-    const controls = Array.from(
-      document.querySelectorAll<HTMLElement>('.site-language-control'),
-    ).filter(
+    const controls = Array.from(document.querySelectorAll<HTMLElement>('.site-language-control')).filter(
       (control) =>
         Boolean(control.querySelector('.site-language-trigger')) &&
         Boolean(control.querySelector('.site-language-menu')),

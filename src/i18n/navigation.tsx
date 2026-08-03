@@ -1,5 +1,7 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
+
 import type { SupportedLocale } from './locales'
+
 import { useI18n } from './index'
 
 export function getPathname({ href, locale }: { href: string; locale: SupportedLocale }) {

@@ -8,12 +8,9 @@
     "check": "astro check && vp check",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "test": "vp test",
-    "typecheck": "astro check",
     "db:migrations:local": "wrangler d1 migrations apply kuest-affiliates --local",
     "db:migrations:remote": "wrangler d1 migrations apply kuest-affiliates --remote",
-    "deploy": "astro build && wrangler deploy",
-    "astro": "astro",
+    "deploy": "pnpm build && wrangler deploy",
     "prepare": "vp config"
   },
   "dependencies": {

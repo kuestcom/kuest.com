@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+
 import { AlertTriangleIcon, InfoIcon, LightbulbIcon, XCircleIcon } from 'lucide-react'
 
 type CalloutType = 'info' | 'tip' | 'warning' | 'error'

@@ -1,4 +1,5 @@
 import type { OAuthSession, OAuthUser } from '@/lib/oauth'
+
 import { LaunchError } from '@/lib/launch-utils'
 import { secondsToExpiresAt } from '@/lib/oauth'
 import { getServerRuntimeConfig } from '@/lib/server-env'
@@ -28,8 +29,7 @@ interface VercelTeamResponse {
 }
 
 function ensureVercelOAuthEnv() {
-  const { VERCEL_OAUTH_CLIENT_ID: clientId, VERCEL_OAUTH_CLIENT_SECRET: clientSecret } =
-    getServerRuntimeConfig()
+  const { VERCEL_OAUTH_CLIENT_ID: clientId, VERCEL_OAUTH_CLIENT_SECRET: clientSecret } = getServerRuntimeConfig()
   if (!clientId || !clientSecret) {
     throw new LaunchError('Missing VERCEL_OAUTH_CLIENT_ID or VERCEL_OAUTH_CLIENT_SECRET.', 'oauth')
   }
@@ -49,11 +49,7 @@ async function parseJsonResponse<T>(response: Response, step: string) {
   return (await response.json()) as T
 }
 
-export function buildVercelAuthorizeUrl(params: {
-  redirectUri: string
-  state: string
-  codeChallenge: string
-}) {
+export function buildVercelAuthorizeUrl(params: { redirectUri: string; state: string; codeChallenge: string }) {
   const { clientId } = ensureVercelOAuthEnv()
   const query = new URLSearchParams({
     response_type: 'code',
@@ -66,11 +62,7 @@ export function buildVercelAuthorizeUrl(params: {
   return `${VERCEL_AUTHORIZE_URL}?${query.toString()}`
 }
 
-export async function exchangeVercelCode(params: {
-  code: string
-  redirectUri: string
-  codeVerifier: string
-}) {
+export async function exchangeVercelCode(params: { code: string; redirectUri: string; codeVerifier: string }) {
   const { clientId, clientSecret } = ensureVercelOAuthEnv()
   const body = new URLSearchParams({
     grant_type: 'authorization_code',
@@ -148,10 +140,7 @@ export async function fetchVercelTeams(accessToken: string) {
   }))
 }
 
-export function buildVercelSession(params: {
-  token: VercelTokenResponse
-  user?: OAuthUser
-}): OAuthSession {
+export function buildVercelSession(params: { token: VercelTokenResponse; user?: OAuthUser }): OAuthSession {
   return {
     accessToken: params.token.access_token,
     refreshToken: params.token.refresh_token,

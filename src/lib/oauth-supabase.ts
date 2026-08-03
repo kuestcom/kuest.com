@@ -1,4 +1,5 @@
 import type { OAuthSession, OAuthUser } from '@/lib/oauth'
+
 import { LaunchError } from '@/lib/launch-utils'
 import { basicAuthHeader, secondsToExpiresAt } from '@/lib/oauth'
 import { getServerRuntimeConfig } from '@/lib/server-env'
@@ -26,13 +27,9 @@ interface SupabaseOrg {
 }
 
 function ensureSupabaseOAuthEnv() {
-  const { SUPABASE_OAUTH_CLIENT_ID: clientId, SUPABASE_OAUTH_CLIENT_SECRET: clientSecret } =
-    getServerRuntimeConfig()
+  const { SUPABASE_OAUTH_CLIENT_ID: clientId, SUPABASE_OAUTH_CLIENT_SECRET: clientSecret } = getServerRuntimeConfig()
   if (!clientId || !clientSecret) {
-    throw new LaunchError(
-      'Missing SUPABASE_OAUTH_CLIENT_ID or SUPABASE_OAUTH_CLIENT_SECRET.',
-      'oauth',
-    )
+    throw new LaunchError('Missing SUPABASE_OAUTH_CLIENT_ID or SUPABASE_OAUTH_CLIENT_SECRET.', 'oauth')
   }
   return { clientId, clientSecret }
 }
@@ -54,11 +51,7 @@ async function parseJsonResponse<T>(response: Response, step: string) {
   return (await response.json()) as T
 }
 
-export function buildSupabaseAuthorizeUrl(params: {
-  redirectUri: string
-  state: string
-  codeChallenge: string
-}) {
+export function buildSupabaseAuthorizeUrl(params: { redirectUri: string; state: string; codeChallenge: string }) {
   const { clientId } = ensureSupabaseOAuthEnv()
   const query = new URLSearchParams({
     response_type: 'code',
@@ -76,11 +69,7 @@ export function buildSupabaseAuthorizeUrl(params: {
   return `${SUPABASE_AUTHORIZE_URL}?${query.toString()}`
 }
 
-export async function exchangeSupabaseCode(params: {
-  code: string
-  redirectUri: string
-  codeVerifier: string
-}) {
+export async function exchangeSupabaseCode(params: { code: string; redirectUri: string; codeVerifier: string }) {
   const { clientId, clientSecret } = ensureSupabaseOAuthEnv()
   const body = new URLSearchParams({
     grant_type: 'authorization_code',
@@ -158,10 +147,7 @@ export async function fetchSupabaseOrganizations(accessToken: string) {
   }))
 }
 
-export function buildSupabaseSession(params: {
-  token: SupabaseTokenResponse
-  user?: OAuthUser
-}): OAuthSession {
+export function buildSupabaseSession(params: { token: SupabaseTokenResponse; user?: OAuthUser }): OAuthSession {
   return {
     accessToken: params.token.access_token,
     refreshToken: params.token.refresh_token,

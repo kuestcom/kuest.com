@@ -1,4 +1,5 @@
 import type { SupportedLocale } from '@/i18n/locales'
+
 import { DEFAULT_LOCALE } from '@/i18n/locales'
 
 export const DEMO_ORIGIN = 'https://demo.kuest.com'

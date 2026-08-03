@@ -10,9 +10,7 @@ function updateThemeColor(mode: ThemeMode) {
     return
   }
 
-  const accent = getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-accent')
-    .trim()
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim()
   const fallback = mode === 'dark' ? '#CDFF00' : '#0e1117'
   themeMeta.setAttribute('content', accent || fallback)
 }

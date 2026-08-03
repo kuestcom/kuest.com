@@ -1,9 +1,11 @@
 'use client'
 
 import type { SyntheticEvent } from 'react'
+
 import { ChevronRightIcon } from 'lucide-react'
-import { useExtracted } from '@/i18n'
 import { useEffect, useId, useState } from 'react'
+
+import { useExtracted } from '@/i18n'
 
 export default function ProtocolPitchDeckModal() {
   const t = useExtracted()
@@ -139,12 +141,7 @@ export default function ProtocolPitchDeckModal() {
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
       >
-        <button
-          type="button"
-          className="protocol-deck-modal-close"
-          aria-label={t('Close modal')}
-          onClick={closeModal}
-        >
+        <button type="button" className="protocol-deck-modal-close" aria-label={t('Close modal')} onClick={closeModal}>
           ×
         </button>
         <div className="protocol-deck-modal-kicker">{t('REQUEST DECK')}</div>
@@ -191,21 +188,11 @@ export default function ProtocolPitchDeckModal() {
           </div>
 
           <div className="protocol-deck-actions">
-            <button
-              type="button"
-              className="btn-cta btn-cta-secondary protocol-deck-action"
-              onClick={closeModal}
-            >
+            <button type="button" className="btn-cta btn-cta-secondary protocol-deck-action" onClick={closeModal}>
               <span className="cta-label">{t('Cancel')}</span>
             </button>
-            <button
-              type="submit"
-              className="btn-cta btn-cta-primary protocol-deck-action"
-              disabled={isSubmitting}
-            >
-              <span className="cta-label">
-                {isSubmitting ? t('Sending...') : t('Send request')}
-              </span>
+            <button type="submit" className="btn-cta btn-cta-primary protocol-deck-action" disabled={isSubmitting}>
+              <span className="cta-label">{isSubmitting ? t('Sending...') : t('Send request')}</span>
               <ChevronRightIcon />
             </button>
           </div>

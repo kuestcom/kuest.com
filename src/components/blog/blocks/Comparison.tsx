@@ -1,10 +1,4 @@
-export default function Comparison({
-  columns,
-  rows,
-}: {
-  columns: string[]
-  rows: (string | number)[][]
-}) {
+export default function Comparison({ columns, rows }: { columns: string[]; rows: (string | number)[][] }) {
   return (
     <div className="blog-comparison">
       <table>

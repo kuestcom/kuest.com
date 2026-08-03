@@ -86,12 +86,7 @@ export default function BlogPagination({
           )
         }
         return (
-          <button
-            key={token}
-            type="button"
-            className="blog-pagination-page"
-            onClick={() => onPageChange(token)}
-          >
+          <button key={token} type="button" className="blog-pagination-page" onClick={() => onPageChange(token)}>
             {token}
           </button>
         )

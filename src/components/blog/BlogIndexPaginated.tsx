@@ -1,7 +1,9 @@
 'use client'
 
-import type { BlogPostSummary } from '@/lib/blog/content'
 import { useCallback, useMemo, useRef, useState } from 'react'
+
+import type { BlogPostSummary } from '@/lib/blog/content'
+
 import BlogIndexCard from './BlogIndexCard'
 import BlogPagination from './BlogPagination'
 

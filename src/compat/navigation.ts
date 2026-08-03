@@ -1,6 +1,10 @@
 import { useSyncExternalStore } from 'react'
 
-const subscribe = () => () => undefined
+function subscribe() {
+  return function unsubscribe() {
+    return undefined
+  }
+}
 
 export function usePathname() {
   return useSyncExternalStore(

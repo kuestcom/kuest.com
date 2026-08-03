@@ -1,9 +1,13 @@
 import { Dub } from 'dub'
-import { DUB_CURRENCY, DUB_LEAD_EVENT, DUB_PAYMENT_PROCESSOR, DUB_SALE_EVENT } from './constants'
+
 import type { DubTracker } from './types'
 
+import { DUB_CURRENCY, DUB_LEAD_EVENT, DUB_PAYMENT_PROCESSOR, DUB_SALE_EVENT } from './constants'
+
 export function createDubTracker(apiKey: string): DubTracker {
-  if (!apiKey) throw new Error('DUB_API_KEY is not configured.')
+  if (!apiKey) {
+    throw new Error('DUB_API_KEY is not configured.')
+  }
   const dub = new Dub({ token: apiKey })
   return {
     trackLead(input) {
@@ -31,7 +35,9 @@ export function createDubTracker(apiKey: string): DubTracker {
     },
     async findCommission(invoiceId) {
       const pages = await dub.commissions.list({ invoiceId, pageSize: 1 })
-      for await (const page of pages) return page.result[0] || null
+      for await (const page of pages) {
+        return page.result[0] || null
+      }
       return null
     },
   }

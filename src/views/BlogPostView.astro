@@ -17,9 +17,9 @@ import { createMdxComponents } from '@/mdx-components'
 
 const { locale, slug } = Astro.props as { locale: SupportedLocale; slug: string }
 const post = getPost(slug, locale)
-if (!post) throw new Error(`Unknown blog post: ${locale}/${slug}`)
+if (!post) {throw new Error(`Unknown blog post: ${locale}/${slug}`)}
 const Content = getPostContent(locale, post.contentSlug)
-if (!Content) throw new Error(`Missing MDX module: ${locale}/${post.contentSlug}`)
+if (!Content) {throw new Error(`Missing MDX module: ${locale}/${post.contentSlug}`)}
 const t = createTranslator(locale)
 const site = new URL(getPublicRuntimeConfig().SITE_URL)
 const coverSrc = getPostCoverSrc(post)

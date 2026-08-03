@@ -1,4 +1,5 @@
 import type { OAuthStatusResponse } from '@/lib/launch-types'
+
 import { getValidSupabaseSession, getValidVercelSession } from '@/lib/oauth-session'
 
 function toProviderState(session: Awaited<ReturnType<typeof getValidVercelSession>>) {

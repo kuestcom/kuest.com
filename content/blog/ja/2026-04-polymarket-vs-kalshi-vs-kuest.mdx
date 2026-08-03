@@ -101,12 +101,7 @@ Kuestではないもの：
       '0.0% (no per-trade fee)',
       'Operator-set, typically 0.5–1.5%',
     ],
-    [
-      '隠れたコスト',
-      'Spread (~30–60 bps)',
-      'Spread + market-data tier',
-      'Spread (~20–60 bps on shared book)',
-    ],
+    ['隠れたコスト', 'Spread (~30–60 bps)', 'Spread + market-data tier', 'Spread (~20–60 bps on shared book)'],
     ['メイカーリベート', 'No', 'No', 'No (shared book design)'],
     ['運営者取り分', 'Not applicable (single venue)', 'Not applicable', '100% of operator fee'],
     [
@@ -138,24 +133,14 @@ Kuestデプロイで運営者手数料をどう設定するかは、<a href="/bl
       'UMA-based with explicit rules and public dispute process',
     ],
     ['地理的利用可否', 'Global except US', 'US only', 'Configurable per operator'],
-    [
-      'KYC要件',
-      'None (wallet-only)',
-      'Full US-regulated KYC',
-      'Operator-defined (wallet-only or external KYC layer)',
-    ],
+    ['KYC要件', 'None (wallet-only)', 'Full US-regulated KYC', 'Operator-defined (wallet-only or external KYC layer)'],
     [
       '市場作成',
       'Permissionless (admin curation)',
       'Pre-approved by exchange',
       'Operator-managed within protocol limits',
     ],
-    [
-      'カストディモデル',
-      'Self-custody',
-      'Regulated banking partner',
-      'Configurable: self or regulated',
-    ],
+    ['カストディモデル', 'Self-custody', 'Regulated banking partner', 'Configurable: self or regulated'],
     [
       'ローンチ時の板の深さ',
       'Existing (mature venue)',
@@ -201,8 +186,7 @@ PolymarketとKalshiは会場です。そこで起きる取引の顧客関係を�
 運営者にとっての戦略的な問いは「どの会場と取引するか」ではありません。それはトレーダーの問いです。「インフラを作るのか、会場を運営するのか」です。答えが「会場を運営する」（配信力を持つほぼすべての運営者がそう）なら、Kuestが道です。PolymarketとKalshiは運営者インフラ事業をしていないからです。
 
 <Callout type="info" title="この違いが戦略的に重要な理由">
-  比較を「Kuest vs
-  Polymarket」と扱う運営者は、存在しない競争に最適化しようとします。正しい比較は「Kuest vs
+  比較を「Kuest vs Polymarket」と扱う運営者は、存在しない競争に最適化しようとします。正しい比較は「Kuest vs
   自分で作る」です。これは
   <a href="/blog/2026-04-build-vs-license-prediction-market">構築 vs ライセンスの記事</a>
   で扱った比較です。Polymarketはトレーダーが執行を比較する会場かもしれません。Kuestは、あなたがインフラではなくオーディエンスで競争できるようにするインフラです。

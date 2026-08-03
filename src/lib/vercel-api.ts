@@ -1,4 +1,5 @@
 import type { VercelDomainResponse, VercelProvisionResult } from '@/lib/launch-types'
+
 import { DEFAULT_SUPABASE_REGION } from '@/lib/deployment-regions'
 import { LaunchError } from '@/lib/launch-utils'
 import { getServerRuntimeConfig } from '@/lib/server-env'
@@ -224,22 +225,12 @@ function isDeploymentReadyStateTerminal(readyState?: string) {
 }
 
 async function getDeploymentById(params: { token: string; teamId?: string; deploymentId: string }) {
-  const path = withTeamId(
-    `/v13/deployments/${encodeURIComponent(params.deploymentId)}`,
-    params.teamId,
-  )
+  const path = withTeamId(`/v13/deployments/${encodeURIComponent(params.deploymentId)}`, params.teamId)
   return await vercelRequest<VercelDeployment>(params.token, path)
 }
 
-async function listDeploymentAliases(params: {
-  token: string
-  teamId?: string
-  deploymentId: string
-}) {
-  const path = withTeamId(
-    `/v2/deployments/${encodeURIComponent(params.deploymentId)}/aliases`,
-    params.teamId,
-  )
+async function listDeploymentAliases(params: { token: string; teamId?: string; deploymentId: string }) {
+  const path = withTeamId(`/v2/deployments/${encodeURIComponent(params.deploymentId)}/aliases`, params.teamId)
   const response = await vercelRequest<VercelDeploymentAliasesResponse>(params.token, path)
   if (!Array.isArray(response.aliases)) {
     return [] as string[]
@@ -308,10 +299,7 @@ async function resolveDeploymentPublicUrl(params: {
     pickPreferredPublicUrl(collectNormalizedUrls(...aliases, ...(deployment.alias ?? [])))
 
   return {
-    publicUrl:
-      publicUrl ??
-      normalizeDeploymentUrl(deployment.url) ??
-      normalizeDeploymentUrl(params.fallbackUrl),
+    publicUrl: publicUrl ?? normalizeDeploymentUrl(deployment.url) ?? normalizeDeploymentUrl(params.fallbackUrl),
   }
 }
 
@@ -343,11 +331,7 @@ async function listProjectDomains(params: {
   return response.domains ?? []
 }
 
-export async function resolveProjectProductionUrl(params: {
-  token: string
-  teamId?: string
-  projectIdOrName: string
-}) {
+export async function resolveProjectProductionUrl(params: { token: string; teamId?: string; projectIdOrName: string }) {
   for (let attempt = 0; attempt < 6; attempt += 1) {
     try {
       const domains = await listProjectDomains({
@@ -361,9 +345,7 @@ export async function resolveProjectProductionUrl(params: {
 
       const publicUrl = pickPreferredPublicUrl(
         collectNormalizedUrls(
-          ...domains
-            .filter((domain) => !domain.redirect)
-            .map((domain) => normalizeDeploymentUrl(domain.name)),
+          ...domains.filter((domain) => !domain.redirect).map((domain) => normalizeDeploymentUrl(domain.name)),
         ),
       )
 
@@ -382,10 +364,7 @@ export async function resolveProjectProductionUrl(params: {
   return undefined
 }
 
-function normalizeProjectDomainResponse(
-  input: unknown,
-  fallbackDomain: string,
-): VercelDomainResponse {
+function normalizeProjectDomainResponse(input: unknown, fallbackDomain: string): VercelDomainResponse {
   if (!input || typeof input !== 'object') {
     return {
       name: fallbackDomain,
@@ -395,9 +374,7 @@ function normalizeProjectDomainResponse(
   }
 
   const source =
-    'domain' in input && (input as { domain?: unknown }).domain
-      ? (input as { domain?: unknown }).domain
-      : input
+    'domain' in input && (input as { domain?: unknown }).domain ? (input as { domain?: unknown }).domain : input
   if (!source || typeof source !== 'object') {
     return {
       name: fallbackDomain,
@@ -449,10 +426,7 @@ function mergeUniqueStrings(...lists: Array<string[] | undefined>) {
   return Array.from(merged)
 }
 
-function mergeDomainResponse(
-  base: VercelDomainResponse,
-  patch: Partial<VercelDomainResponse>,
-): VercelDomainResponse {
+function mergeDomainResponse(base: VercelDomainResponse, patch: Partial<VercelDomainResponse>): VercelDomainResponse {
   return {
     name: patch.name ?? base.name,
     verified: patch.verified ?? base.verified,
@@ -491,11 +465,7 @@ async function vercelRequest<T>(token: string, path: string, init: RequestInit =
 
   if (!response.ok) {
     const payload = parseBody()
-    throw new LaunchError(
-      `Vercel API request failed (${response.status}) at ${path}.`,
-      'vercel',
-      payload,
-    )
+    throw new LaunchError(`Vercel API request failed (${response.status}) at ${path}.`, 'vercel', payload)
   }
 
   if (response.status === 204 || !rawBody.trim()) {
@@ -543,8 +513,7 @@ function normalizeLookupValue(value?: string | number) {
 function namespaceMatchesRepoOwner(namespace: VercelGitNamespace, owner: string) {
   const normalizedOwner = normalizeLookupValue(owner)
   return (
-    normalizeLookupValue(namespace.slug) === normalizedOwner ||
-    normalizeLookupValue(namespace.name) === normalizedOwner
+    normalizeLookupValue(namespace.slug) === normalizedOwner || normalizeLookupValue(namespace.name) === normalizedOwner
   )
 }
 
@@ -560,8 +529,7 @@ function repoMatchesParts(
     normalizeLookupValue(repo.namespace) === normalizedOwner ||
     normalizeLookupValue(repo.owner.name) === normalizedOwner
   const nameMatches =
-    normalizeLookupValue(repo.slug) === normalizedName ||
-    normalizeLookupValue(repo.name) === normalizedName
+    normalizeLookupValue(repo.slug) === normalizedName || normalizeLookupValue(repo.name) === normalizedName
 
   return urlMatches || (ownerMatches && nameMatches)
 }
@@ -705,15 +673,8 @@ function withSupabaseIntegrationHint(error: unknown, teamId?: string): never {
   throw new LaunchError(`Unable to load Supabase from Vercel. ${hint}`, error.step, error.details)
 }
 
-async function fetchProjectRepoId(params: {
-  token: string
-  teamId?: string
-  projectIdOrName: string
-}) {
-  const path = withTeamId(
-    `/v10/projects/${encodeURIComponent(params.projectIdOrName)}`,
-    params.teamId,
-  )
+async function fetchProjectRepoId(params: { token: string; teamId?: string; projectIdOrName: string }) {
+  const path = withTeamId(`/v10/projects/${encodeURIComponent(params.projectIdOrName)}`, params.teamId)
   const data = await vercelRequest<unknown>(params.token, path)
   if (!data || typeof data !== 'object') {
     return undefined
@@ -769,10 +730,7 @@ async function updateProjectFunctionRegion(params: {
   projectIdOrName: string
   vercelRegion: string
 }) {
-  const path = withTeamId(
-    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}`,
-    params.teamId,
-  )
+  const path = withTeamId(`/v9/projects/${encodeURIComponent(params.projectIdOrName)}`, params.teamId)
   await vercelRequest<VercelProject>(params.token, path, {
     method: 'PATCH',
     body: JSON.stringify({
@@ -868,14 +826,11 @@ export async function inspectVercelConnection(params: {
   }
 
   const matchingNamespace =
-    readyGithubNamespaces.find((namespace) =>
-      namespaceMatchesRepoOwner(namespace, repoParts.owner),
-    ) ?? (readyGithubNamespaces.length === 1 ? readyGithubNamespaces[0] : undefined)
+    readyGithubNamespaces.find((namespace) => namespaceMatchesRepoOwner(namespace, repoParts.owner)) ??
+    (readyGithubNamespaces.length === 1 ? readyGithubNamespaces[0] : undefined)
 
   if (!matchingNamespace) {
-    const reauthNamespace = githubNamespaces.find((namespace) =>
-      namespaceMatchesRepoOwner(namespace, repoParts.owner),
-    )
+    const reauthNamespace = githubNamespaces.find((namespace) => namespaceMatchesRepoOwner(namespace, repoParts.owner))
     return {
       identity,
       githubImportReady: false,
@@ -1033,10 +988,7 @@ export async function provisionVercelProject(params: {
       }
       project = existingProject
       reusedExisting = true
-      params.log(
-        'vercel',
-        `Project ${params.projectName} already exists. Reusing ${existingProject.id}.`,
-      )
+      params.log('vercel', `Project ${params.projectName} already exists. Reusing ${existingProject.id}.`)
     } else {
       params.log('vercel', 'Primary import payload failed. Retrying with minimal payload...')
 
@@ -1051,9 +1003,7 @@ export async function provisionVercelProject(params: {
               repo: params.gitRepo,
               productionBranch: params.gitBranch,
             },
-            ...(params.vercelRegion
-              ? { serverlessFunctionRegion: params.vercelRegion }
-              : undefined),
+            ...(params.vercelRegion ? { serverlessFunctionRegion: params.vercelRegion } : undefined),
           }),
         })
       } catch (retryError) {
@@ -1073,10 +1023,7 @@ export async function provisionVercelProject(params: {
         }
         project = existingProject
         reusedExisting = true
-        params.log(
-          'vercel',
-          `Project ${params.projectName} already exists. Reusing ${existingProject.id}.`,
-        )
+        params.log('vercel', `Project ${params.projectName} already exists. Reusing ${existingProject.id}.`)
       }
 
       if (!reusedExisting) {
@@ -1124,10 +1071,7 @@ export async function provisionVercelProject(params: {
       deploymentUrl = deployment.url
       params.log('vercel', `Production deployment triggered: ${deployment.id}.`)
     } catch {
-      params.log(
-        'vercel',
-        'Deployment trigger endpoint failed. The Git import should still start build automatically.',
-      )
+      params.log('vercel', 'Deployment trigger endpoint failed. The Git import should still start build automatically.')
     }
   }
 
@@ -1174,10 +1118,7 @@ export async function connectSupabaseViaVercelIntegration(params: {
   })
 
   if (!products.length) {
-    throw new LaunchError(
-      'Supabase integration has no products available for provisioning.',
-      'vercel-integration',
-    )
+    throw new LaunchError('Supabase integration has no products available for provisioning.', 'vercel-integration')
   }
 
   const chosenProduct = pickSupabaseProduct(products)
@@ -1200,28 +1141,19 @@ export async function connectSupabaseViaVercelIntegration(params: {
       })
     } catch (error) {
       if (error instanceof LaunchError) {
-        params.log(
-          'vercel-integration',
-          `Warning: failed to list existing Supabase resources: ${error.message}`,
-        )
+        params.log('vercel-integration', `Warning: failed to list existing Supabase resources: ${error.message}`)
         if (error.details) {
           params.log('vercel-integration', `Details: ${JSON.stringify(error.details)}`)
         }
       }
-      params.log(
-        'vercel-integration',
-        'Warning: listing resources is unavailable. Continuing with create flow.',
-      )
+      params.log('vercel-integration', 'Warning: listing resources is unavailable. Continuing with create flow.')
       return [] as VercelIntegrationResource[]
     }
   }
 
   if (params.existingResourceId) {
     const selectedResourceId = params.existingResourceId.trim()
-    params.log(
-      'vercel-integration',
-      `Using selected existing Supabase database: ${selectedResourceId}.`,
-    )
+    params.log('vercel-integration', `Using selected existing Supabase database: ${selectedResourceId}.`)
     await connectIntegrationResourceToProject({
       token: params.token,
       teamId: params.teamId,
@@ -1305,12 +1237,7 @@ export async function connectSupabaseViaVercelIntegration(params: {
   )
   const publicEnvVarPrefixCandidates = Array.from(
     new Set(
-      [
-        params.supabasePublicEnvVarPrefix,
-        VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX,
-        'NEXT_PUBLIC_',
-        'NEXT_PUBLIC',
-      ]
+      [params.supabasePublicEnvVarPrefix, VERCEL_SUPABASE_PUBLIC_ENV_VAR_PREFIX, 'NEXT_PUBLIC_', 'NEXT_PUBLIC']
         .map((value) => value?.trim())
         .filter((value): value is string => Boolean(value)),
     ),
@@ -1425,8 +1352,7 @@ export async function connectSupabaseViaVercelIntegration(params: {
     )
   }
 
-  const directResourceId =
-    createdStore.resourceId || createdStore.store?.id || createdStore.store?.externalResourceId
+  const directResourceId = createdStore.resourceId || createdStore.store?.id || createdStore.store?.externalResourceId
   const dashboardUrl = createdStore.store?.dashboardUrl
 
   let resourceId = directResourceId
@@ -1448,10 +1374,7 @@ export async function connectSupabaseViaVercelIntegration(params: {
     )
   }
 
-  params.log(
-    'vercel-integration',
-    `Connecting resource ${resourceId} to project ${params.projectId}...`,
-  )
+  params.log('vercel-integration', `Connecting resource ${resourceId} to project ${params.projectId}...`)
   await connectIntegrationResourceToProject({
     token: params.token,
     teamId: params.teamId,
@@ -1509,9 +1432,7 @@ export async function createProjectDeployment(params: {
         name: params.projectName,
         target: 'production',
         project: projectReference,
-        ...(params.vercelRegion
-          ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
-          : undefined),
+        ...(params.vercelRegion ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } } : undefined),
       }),
     })
     const resolved = await resolveDeploymentPublicUrl({
@@ -1537,9 +1458,7 @@ export async function createProjectDeployment(params: {
           name: params.projectName,
           target: 'production',
           project: projectReference,
-          ...(params.vercelRegion
-            ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
-            : undefined),
+          ...(params.vercelRegion ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } } : undefined),
           gitSource: {
             type: 'github',
             repo: params.gitRepo,
@@ -1580,9 +1499,7 @@ export async function createProjectDeployment(params: {
           name: params.projectName,
           target: 'production',
           project: projectReference,
-          ...(params.vercelRegion
-            ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } }
-            : undefined),
+          ...(params.vercelRegion ? { projectSettings: { serverlessFunctionRegion: params.vercelRegion } } : undefined),
           gitSource: {
             type: 'github',
             repo: params.gitRepo,
@@ -1611,10 +1528,7 @@ export async function addProjectDomain(params: {
   projectIdOrName: string
   domain: string
 }) {
-  const path = withTeamId(
-    `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/domains`,
-    params.teamId,
-  )
+  const path = withTeamId(`/v10/projects/${encodeURIComponent(params.projectIdOrName)}/domains`, params.teamId)
 
   const payload = await vercelRequest<unknown>(params.token, path, {
     method: 'POST',
@@ -1658,9 +1572,7 @@ export async function verifyProjectDomain(params: {
   }
 
   const path = withTeamId(
-    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
-      params.domain,
-    )}/verify`,
+    `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(params.domain)}/verify`,
     params.teamId,
   )
 
@@ -1733,15 +1645,11 @@ async function fetchProjectDomainDetails(params: {
 }) {
   const candidatePaths = [
     withTeamId(
-      `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
-        params.domain,
-      )}`,
+      `/v10/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(params.domain)}`,
       params.teamId,
     ),
     withTeamId(
-      `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(
-        params.domain,
-      )}`,
+      `/v9/projects/${encodeURIComponent(params.projectIdOrName)}/domains/${encodeURIComponent(params.domain)}`,
       params.teamId,
     ),
   ]
@@ -1823,8 +1731,7 @@ async function findSupabaseConfiguration(params: { token: string; teamId?: strin
   })
 
   const configurations = normalizeConfigurationsResponse(response)
-  const directMatch =
-    configurations.find((configuration) => isSupabaseLikeConfiguration(configuration)) ?? null
+  const directMatch = configurations.find((configuration) => isSupabaseLikeConfiguration(configuration)) ?? null
   if (directMatch) {
     return directMatch
   }
@@ -1946,10 +1853,7 @@ async function resolveSupabaseScope(params: {
   if (matches.length === 1) {
     const [singleMatch] = matches
     const teamLabel = formatTeamLabel(singleMatch.team)
-    params.log(
-      'preflight',
-      `Supabase integration found in team ${teamLabel}. Using this team automatically.`,
-    )
+    params.log('preflight', `Supabase integration found in team ${teamLabel}. Using this team automatically.`)
     return {
       teamId: singleMatch.team.id,
       configuration: singleMatch.configuration,
@@ -1957,9 +1861,7 @@ async function resolveSupabaseScope(params: {
   }
 
   if (matches.length > 1) {
-    const options = matches
-      .map(({ team }) => `${formatTeamLabel(team)} (id: ${team.id})`)
-      .join('; ')
+    const options = matches.map(({ team }) => `${formatTeamLabel(team)} (id: ${team.id})`).join('; ')
     throw new LaunchError(
       `Supabase integration was found in multiple teams. Fill "Vercel target team id" with one of: ${options}.`,
       'preflight',
@@ -1998,21 +1900,12 @@ function isSupabaseLikeConfiguration(configuration: VercelIntegrationConfigurati
   return signature.includes('supabase')
 }
 
-async function listIntegrationProducts(params: {
-  token: string
-  teamId?: string
-  integrationConfigurationId: string
-}) {
+async function listIntegrationProducts(params: { token: string; teamId?: string; integrationConfigurationId: string }) {
   const path = withTeamId(
-    `/v1/integrations/configuration/${encodeURIComponent(
-      params.integrationConfigurationId,
-    )}/products`,
+    `/v1/integrations/configuration/${encodeURIComponent(params.integrationConfigurationId)}/products`,
     params.teamId,
   )
-  const response = await vercelRequest<{ products?: VercelIntegrationProduct[] }>(
-    params.token,
-    path,
-  )
+  const response = await vercelRequest<{ products?: VercelIntegrationProduct[] }>(params.token, path)
   return response.products ?? []
 }
 
@@ -2049,9 +1942,7 @@ function pickReusableSupabaseResource(resources: VercelIntegrationResource[], pr
     return byExactName
   }
 
-  const byContains =
-    resources.find((resource) => resource.name?.toLowerCase().includes(normalizedProjectName)) ??
-    null
+  const byContains = resources.find((resource) => resource.name?.toLowerCase().includes(normalizedProjectName)) ?? null
   if (byContains) {
     return byContains
   }
@@ -2078,9 +1969,9 @@ function createStoreNameCandidates(projectName: string) {
   const stamp = Date.now().toString(36)
   const entropy = Math.random().toString(36).slice(2, 6)
 
-  return Array.from(
-    new Set([base, normalize(`${base}-${stamp}`), normalize(`${base}-${stamp}-${entropy}`)]),
-  ).filter(Boolean)
+  return Array.from(new Set([base, normalize(`${base}-${stamp}`), normalize(`${base}-${stamp}-${entropy}`)])).filter(
+    Boolean,
+  )
 }
 
 function pickSupabaseProduct(products: VercelIntegrationProduct[]) {
@@ -2134,15 +2025,9 @@ async function listIntegrationResources(params: {
     : ''
 
   const paths = [
-    withTeamId(
-      `/v1/installations/${encodedConfigurationId}/resources${productQuery}`,
-      params.teamId,
-    ),
+    withTeamId(`/v1/installations/${encodedConfigurationId}/resources${productQuery}`, params.teamId),
     withTeamId(`/v1/installations/${encodedConfigurationId}/resources`, params.teamId),
-    withTeamId(
-      `/v1/integrations/installations/${encodedConfigurationId}/resources${productQuery}`,
-      params.teamId,
-    ),
+    withTeamId(`/v1/integrations/installations/${encodedConfigurationId}/resources${productQuery}`, params.teamId),
     withTeamId(`/v1/integrations/installations/${encodedConfigurationId}/resources`, params.teamId),
   ]
 
@@ -2169,10 +2054,7 @@ async function listIntegrationResources(params: {
     token: params.token,
     teamId: params.teamId,
   })
-  const resourcesFromStores = mapStoresToIntegrationResources(
-    stores,
-    params.integrationConfigurationId,
-  )
+  const resourcesFromStores = mapStoresToIntegrationResources(stores, params.integrationConfigurationId)
   if (resourcesFromStores.length > 0) {
     return resourcesFromStores
   }
@@ -2239,13 +2121,9 @@ function normalizeStorageStoresResponse(input: unknown) {
   return [] as VercelStorageStore[]
 }
 
-function mapStoresToIntegrationResources(
-  stores: VercelStorageStore[],
-  integrationConfigurationId: string,
-) {
+function mapStoresToIntegrationResources(stores: VercelStorageStore[], integrationConfigurationId: string) {
   const relevant = stores.filter((store) => {
-    const integrationKey =
-      store.integrationConfigurationId || store.installationId || store.integrationId
+    const integrationKey = store.integrationConfigurationId || store.installationId || store.integrationId
     if (!integrationKey) {
       return false
     }
@@ -2289,9 +2167,7 @@ async function connectIntegrationResourceToProject(params: {
   }
 
   const legacyPath = withTeamId(
-    `/v1/projects/${encodeURIComponent(params.projectId)}/connect/${encodeURIComponent(
-      params.resourceId,
-    )}`,
+    `/v1/projects/${encodeURIComponent(params.projectId)}/connect/${encodeURIComponent(params.resourceId)}`,
     params.teamId,
   )
   await vercelRequest(params.token, legacyPath, {

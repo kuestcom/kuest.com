@@ -1,5 +1,5 @@
-import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 import type { WalletControlProof } from '@/lib/launch-types'
+import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 
 type KuestRuntimeConfig = Pick<PublicRuntimeConfig, 'CLOB_URL' | 'KUEST_CHAIN_MODE' | 'RELAYER_URL'>
 
@@ -37,9 +37,7 @@ export function getRequiredChainId(config: KuestRuntimeConfig) {
 }
 
 export function getRequiredChainLabel(config: KuestRuntimeConfig) {
-  return config.KUEST_CHAIN_MODE === 'polygon'
-    ? 'Polygon Mainnet (137)'
-    : 'Polygon Amoy Testnet (80002)'
+  return config.KUEST_CHAIN_MODE === 'polygon' ? 'Polygon Mainnet (137)' : 'Polygon Amoy Testnet (80002)'
 }
 
 const AMOY_CHAIN_HEX = '0x13882'
@@ -70,9 +68,7 @@ function getInjectedProvider(): Eip1193Provider | null {
 
   const providers = maybeWindow.ethereum?.providers
   if (Array.isArray(providers) && providers.length) {
-    const firstValid = providers.find(
-      (provider) => provider && typeof provider.request === 'function',
-    )
+    const firstValid = providers.find((provider) => provider && typeof provider.request === 'function')
     if (firstValid) {
       return firstValid
     }
@@ -133,15 +129,11 @@ function normalizeKeyBundle(payload: unknown) {
     throw new Error('Unexpected response when minting API key.')
   }
   const record = payload as Record<string, unknown>
-  const data =
-    record.data && typeof record.data === 'object'
-      ? (record.data as Record<string, unknown>)
-      : record
+  const data = record.data && typeof record.data === 'object' ? (record.data as Record<string, unknown>) : record
 
   const apiKey = typeof data.apiKey === 'string' && data.apiKey ? data.apiKey : undefined
   const apiSecret = typeof data.secret === 'string' && data.secret ? data.secret : undefined
-  const passphrase =
-    typeof data.passphrase === 'string' && data.passphrase ? data.passphrase : undefined
+  const passphrase = typeof data.passphrase === 'string' && data.passphrase ? data.passphrase : undefined
 
   if (!apiKey || !apiSecret || !passphrase) {
     throw new Error('Kuest did not return API credentials.')
@@ -191,9 +183,7 @@ async function deriveKuestKey(baseUrl: string, input: CreateKuestKeyInput) {
 
 function credentialsMatch(first: KuestKeyCredential, second: KuestKeyCredential) {
   return (
-    first.apiKey === second.apiKey &&
-    first.apiSecret === second.apiSecret &&
-    first.passphrase === second.passphrase
+    first.apiKey === second.apiKey && first.apiSecret === second.apiSecret && first.passphrase === second.passphrase
   )
 }
 
@@ -207,9 +197,7 @@ async function deriveKuestCredentials(
   error: unknown
 }> {
   const results = await Promise.allSettled(targets.map((baseUrl) => deriveKuestKey(baseUrl, input)))
-  const credentials = results.flatMap((result) =>
-    result.status === 'fulfilled' ? [result.value] : [],
-  )
+  const credentials = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []))
   const [credential, ...rest] = credentials
 
   return {
@@ -255,12 +243,7 @@ async function waitForSynchronizedKuestCredentials(
     throw new Error('Kuest services returned mismatched API credentials after synchronization.')
   }
 
-  throw new Error(
-    getErrorMessage(
-      lastError,
-      'Kuest credentials are still synchronizing. Wait a moment and try again.',
-    ),
-  )
+  throw new Error(getErrorMessage(lastError, 'Kuest credentials are still synchronizing. Wait a moment and try again.'))
 }
 
 async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeConfig) {
@@ -276,9 +259,7 @@ async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeCo
     return created
   }
 
-  const secondaryResults = await Promise.allSettled(
-    secondaryTargets.map((target) => requestKuestKey(target, input)),
-  )
+  const secondaryResults = await Promise.allSettled(secondaryTargets.map((target) => requestKuestKey(target, input)))
   const failedTargets: string[] = []
 
   for (const [index, result] of secondaryResults.entries()) {
@@ -301,10 +282,7 @@ async function createKuestKey(input: CreateKuestKeyInput, config: KuestRuntimeCo
   return waitForSynchronizedKuestCredentials(failedTargets, input, created)
 }
 
-export async function mintKuestKeysFromSignature(
-  input: CreateKuestKeyInput,
-  config: KuestRuntimeConfig,
-) {
+export async function mintKuestKeysFromSignature(input: CreateKuestKeyInput, config: KuestRuntimeConfig) {
   const created = await createKuestKey(input, config)
   return {
     address: input.address,
@@ -319,10 +297,7 @@ export async function mintKuestKeysFromSignature(
   } satisfies GeneratedKuestBundle
 }
 
-export async function ensureRequiredNetworkViaProvider(
-  provider: Eip1193Provider,
-  config: KuestRuntimeConfig,
-) {
+export async function ensureRequiredNetworkViaProvider(provider: Eip1193Provider, config: KuestRuntimeConfig) {
   const requiredChainId = getRequiredChainId(config)
   const requiredChainLabel = getRequiredChainLabel(config)
   const chainHexRaw = await provider.request({ method: 'eth_chainId' })

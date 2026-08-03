@@ -1,7 +1,8 @@
 import { Buffer } from 'node:buffer'
 import { createHash, randomBytes } from 'node:crypto'
-import { getRequestCookies } from '@/server/request-context'
+
 import { LaunchError } from '@/lib/launch-utils'
+import { getRequestCookies } from '@/server/request-context'
 
 export interface OAuthUser {
   email?: string
@@ -127,11 +128,7 @@ export async function ensureOAuthStateValid(params: { cookieName: string; state?
 
 export function secondsToExpiresAt(expiresIn?: number | string) {
   const seconds =
-    typeof expiresIn === 'number'
-      ? expiresIn
-      : typeof expiresIn === 'string'
-        ? Number(expiresIn)
-        : undefined
+    typeof expiresIn === 'number' ? expiresIn : typeof expiresIn === 'string' ? Number(expiresIn) : undefined
   if (!seconds || Number.isNaN(seconds)) {
     return undefined
   }

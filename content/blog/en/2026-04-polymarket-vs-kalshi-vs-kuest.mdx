@@ -218,12 +218,7 @@ they're playing different positions in the stack.
       '0.0% (no per-trade fee)',
       'Operator-set, typically 0.5–1.5%',
     ],
-    [
-      'Hidden costs',
-      'Spread (~30–60 bps)',
-      'Spread + market-data tier',
-      'Spread (~20–60 bps on shared book)',
-    ],
+    ['Hidden costs', 'Spread (~30–60 bps)', 'Spread + market-data tier', 'Spread (~20–60 bps on shared book)'],
     ['Maker rebate', 'No', 'No', 'No (shared book design)'],
     ['Operator share', 'Not applicable (single venue)', 'Not applicable', '100% of operator fee'],
     [
@@ -254,12 +249,7 @@ care about:
 <Comparison
   columns={['Feature', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
-    [
-      'Settlement asset',
-      'USDC on-chain',
-      'USD bank custody',
-      'USDC on-chain (operator may layer fiat)',
-    ],
+    ['Settlement asset', 'USDC on-chain', 'USD bank custody', 'USDC on-chain (operator may layer fiat)'],
     [
       'Resolution model',
       'UMA Optimistic Oracle',
@@ -279,12 +269,7 @@ care about:
       'Pre-approved by exchange',
       'Operator-managed within protocol limits',
     ],
-    [
-      'Custody model',
-      'Self-custody',
-      'Regulated banking partner',
-      'Configurable: self or regulated',
-    ],
+    ['Custody model', 'Self-custody', 'Regulated banking partner', 'Configurable: self or regulated'],
     [
       'Order-book depth on launch',
       'Existing (mature venue)',
@@ -375,12 +360,11 @@ distribution), then Kuest is the path because Polymarket and
 Kalshi are not in the operator-infrastructure business.
 
 <Callout type="info" title="Why this distinction matters strategically">
-  Operators who treat the comparison as "Kuest vs Polymarket" end up trying to optimize for a
-  competition that doesn't exist. The right comparison is "Kuest vs build it yourself," which is the
-  comparison we covered in{' '}
-  <a href="/blog/2026-04-build-vs-license-prediction-market">the build-vs-license post</a>.
-  Polymarket is the venue your traders might compare execution against; Kuest is the infrastructure
-  that lets you compete on audience instead of on infrastructure.
+  Operators who treat the comparison as "Kuest vs Polymarket" end up trying to optimize for a competition that doesn't
+  exist. The right comparison is "Kuest vs build it yourself," which is the comparison we covered in{' '}
+  <a href="/blog/2026-04-build-vs-license-prediction-market">the build-vs-license post</a>. Polymarket is the venue your
+  traders might compare execution against; Kuest is the infrastructure that lets you compete on audience instead of on
+  infrastructure.
 </Callout>
 
 ## Use cases that fit each combination

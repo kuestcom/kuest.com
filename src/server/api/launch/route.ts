@@ -1,5 +1,7 @@
-import type { LaunchResponseBody } from '@/lib/launch-types'
 import { env as cloudflareEnv } from 'cloudflare:workers'
+
+import type { LaunchResponseBody } from '@/lib/launch-types'
+
 import { registerDomainSnapshot } from '@/lib/domain-register'
 import {
   createLogger,
@@ -11,8 +13,8 @@ import {
 } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
-import { normalizeSiteUrl } from '@/lib/site-url'
 import { getServerRuntimeConfig } from '@/lib/server-env'
+import { normalizeSiteUrl } from '@/lib/site-url'
 import {
   connectSupabaseViaVercelIntegration,
   createProjectDeployment,
@@ -72,10 +74,7 @@ async function registerLaunchDomainSnapshot(params: { url: string; apiKey?: stri
       apiKey: params.apiKey,
     })
   } catch (error) {
-    console.warn(
-      '[domain-register] Failed to register launch domain.',
-      error instanceof Error ? error.message : error,
-    )
+    console.warn('[domain-register] Failed to register launch domain.', error instanceof Error ? error.message : error)
   }
 }
 
@@ -100,11 +99,7 @@ export async function POST(request: Request) {
   )
   if (!rateLimit.allowed) {
     const durationMs = Date.now() - startedAt
-    log(
-      'rate_limit',
-      `Too many launch attempts from this IP. Retry in about ${rateLimit.retryAfterSec}s.`,
-      'warning',
-    )
+    log('rate_limit', `Too many launch attempts from this IP. Retry in about ${rateLimit.retryAfterSec}s.`, 'warning')
     return Response.json(
       {
         ok: false,
@@ -153,10 +148,7 @@ export async function POST(request: Request) {
 
     const vercelToken = payload.tokens?.vercel || vercelSession?.accessToken || ''
 
-    log(
-      'validation',
-      `Input accepted. Repo: ${gitRepo}#${gitBranch}. Database mode: ${payload.databaseMode}.`,
-    )
+    log('validation', `Input accepted. Repo: ${gitRepo}#${gitBranch}. Database mode: ${payload.databaseMode}.`)
     log('validation', `Vercel token: ${masked(vercelToken)}.`)
 
     if (!vercelToken) {
@@ -167,10 +159,7 @@ export async function POST(request: Request) {
     }
 
     if (payload.databaseMode !== 'vercel_supabase_integration') {
-      throw new LaunchError(
-        'Only vercel_supabase_integration is enabled in this launchpad instance.',
-        'validation',
-      )
+      throw new LaunchError('Only vercel_supabase_integration is enabled in this launchpad instance.', 'validation')
     }
 
     let supabaseDashboardUrl: string | undefined
@@ -218,12 +207,8 @@ export async function POST(request: Request) {
     attributionPersisted = true
     const attributedClickId = attributionResult.attribution?.dub_click_id ?? null
 
-    const finalizeAttribution = async () => {
-      await completeOperatorAttribution(
-        affiliateEnv.AFFILIATE_DB,
-        verifiedWallet.address,
-        affiliateConfig.chainId,
-      )
+    async function finalizeAttribution() {
+      await completeOperatorAttribution(affiliateEnv.AFFILIATE_DB, verifiedWallet.address, affiliateConfig.chainId)
       if (attributedClickId && affiliateConfig.dryRun) {
         await deliverPendingLead({
           db: affiliateEnv.AFFILIATE_DB,
@@ -324,11 +309,7 @@ export async function POST(request: Request) {
     if (reservedProofHash) {
       try {
         if (attributionPersisted && verifiedOperatorWallet) {
-          await markOperatorLaunchFailed(
-            affiliateEnv.AFFILIATE_DB,
-            verifiedOperatorWallet,
-            affiliateConfig.chainId,
-          )
+          await markOperatorLaunchFailed(affiliateEnv.AFFILIATE_DB, verifiedOperatorWallet, affiliateConfig.chainId)
         } else {
           await failWalletAuthorization(affiliateEnv.AFFILIATE_DB, reservedProofHash)
         }

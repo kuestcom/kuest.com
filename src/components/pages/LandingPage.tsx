@@ -1,14 +1,7 @@
+import { BotIcon, ChevronRightIcon, FlameIcon, Globe2Icon, Share2Icon, ShieldCheckIcon, TrophyIcon } from 'lucide-react'
+
 import type { SupportedLocale } from '@/i18n/locales'
-import {
-  BotIcon,
-  ChevronRightIcon,
-  FlameIcon,
-  Globe2Icon,
-  Share2Icon,
-  ShieldCheckIcon,
-  TrophyIcon,
-} from 'lucide-react'
-import { createTranslator, I18nProvider } from '@/i18n'
+
 import Image from '@/compat/Image'
 import Script from '@/compat/Script'
 import HeroMarketStage from '@/components/HeroMarketStage'
@@ -23,6 +16,7 @@ import SitePreview from '@/components/SitePreview'
 import SourceModal from '@/components/SourceModal'
 import ThemeToggle from '@/components/ThemeToggle'
 import TimelineSpine from '@/components/TimelineSpine'
+import { createTranslator, I18nProvider } from '@/i18n'
 import { getPathname, Link } from '@/i18n/navigation'
 import {
   buildEmbedPreviewBootstrapScript,
@@ -127,14 +121,7 @@ const LANDING_NICHE_STATIC = [
   },
 ] as const
 
-const FEATURE_ICONS = [
-  Globe2Icon,
-  FlameIcon,
-  TrophyIcon,
-  Share2Icon,
-  BotIcon,
-  ShieldCheckIcon,
-] as const
+const FEATURE_ICONS = [Globe2Icon, FlameIcon, TrophyIcon, Share2Icon, BotIcon, ShieldCheckIcon] as const
 
 const EARLY_ACCESS_AVATAR_SRCS = [
   'https://avatars.githubusercontent.com/u/1?v=4',
@@ -294,8 +281,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
           }
         }
 
-        const rowLabels: string[] =
-          translatedCard && 'rows' in translatedCard ? (translatedCard.rows ?? []) : []
+        const rowLabels: string[] = translatedCard && 'rows' in translatedCard ? (translatedCard.rows ?? []) : []
 
         return {
           ...base,
@@ -452,11 +438,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
         'The codebase is open source under the <license>Kuest MIT+Commons license</license>. Forks for branding, frontend changes, and custom UX are welcome. Production deployments, however, must use Kuest infrastructure. Running an independent trading stack requires a separate <contact>commercial agreement</contact>.',
         {
           license: (chunks) => (
-            <a
-              href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE"
-              target="_blank"
-              rel="noopener"
-            >
+            <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">
               {chunks}
             </a>
           ),
@@ -469,10 +451,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
 
   return (
     <>
-      <Script
-        id="landing-embed-preview"
-        dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
-      />
+      <Script id="landing-embed-preview" dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }} />
       <Script
         id="landing-structured-data"
         type="application/ld+json"
@@ -563,12 +542,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                   <div className="hero-kicker mb-5! animate-none! gap-3! opacity-100!">
                     {t('The Shopify for Prediction Markets')}
                   </div>
-                  <h1
-                    className="
-                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter
-                    text-white
-                  "
-                  >
+                  <h1 className="hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter text-white">
                     <span className="hero-title-line">{t('Your own Polymarket')}</span>
                     <span className="hero-title-line">
                       {renderLandingHeroLine2(locale, t('Live in 15 minutes. Free'))}
@@ -587,7 +561,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                       <ChevronRightIcon />
                     </a>
                   </div>
-                  <div className="hero-copy-proof text-faint font-mono text-[11px] tracking-[.16em] uppercase">
+                  <div className="hero-copy-proof font-mono text-[11px] tracking-[.16em] text-faint uppercase">
                     {t('Free launch • No code • Live in minutes')}
                   </div>
                 </div>
@@ -617,10 +591,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
         <section className="panel-wrap attention-scroll-panel" id="p1-scroll">
           <div className="panel-sticky">
             <div className="panel-inner attention-scroll-shell">
-              <div
-                className="attention-scroll-copy"
-                aria-label={t('Attention shifts create windows of opportunity')}
-              >
+              <div className="attention-scroll-copy" aria-label={t('Attention shifts create windows of opportunity')}>
                 <div className="attention-scroll-block">
                   <p className="attention-scroll-line" data-attention-step="line">
                     {t('For years, money followed attention.')}
@@ -631,10 +602,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                   <p className="attention-scroll-line" data-attention-step="line">
                     {t('Each wave opened a window — and closed right after.')}
                   </p>
-                  <p
-                    className="attention-scroll-line attention-scroll-line-pivot"
-                    data-attention-step="line"
-                  >
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     {t('Did you get in early, or arrive when it was already saturated?')}
                   </p>
                 </div>
@@ -642,11 +610,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                   <p className="attention-scroll-line" data-attention-step="line">
                     {t('Today, two platforms control a market worth billions.')}
                   </p>
-                  <div
-                    className="attention-scroll-brand-row"
-                    data-attention-step="brands"
-                    aria-hidden="true"
-                  >
+                  <div className="attention-scroll-brand-row" data-attention-step="brands" aria-hidden="true">
                     <div className="attention-scroll-brand">
                       <Image
                         src="/assets/images/polymarket-logo.svg"
@@ -676,19 +640,13 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                   </p>
                 </div>
                 <div className="attention-scroll-block">
-                  <p
-                    className="attention-scroll-line attention-scroll-line-lead"
-                    data-attention-step="line"
-                  >
+                  <p className="attention-scroll-line attention-scroll-line-lead" data-attention-step="line">
                     {t('You can choose:')}
                   </p>
                   <p className="attention-scroll-line" data-attention-step="line">
                     {t('be one more trader trying to call the next prediction —')}
                   </p>
-                  <p
-                    className="attention-scroll-line attention-scroll-line-pivot"
-                    data-attention-step="line"
-                  >
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     {t('or build the house where everyone else plays.')}
                   </p>
                 </div>
@@ -708,12 +666,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                   </article>
                 ))}
               </div>
-              <div
-                className="
-                r mt-6! flex flex-col items-center justify-center gap-3 border-t border-white/6 pt-5!
-                lg:flex-row
-              "
-              >
+              <div className="r mt-6! flex flex-col items-center justify-center gap-3 border-t border-white/6 pt-5! lg:flex-row">
                 <div className="flex">
                   {EARLY_ACCESS_AVATAR_SRCS.map((src, index) => (
                     <Image
@@ -728,7 +681,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                     />
                   ))}
                 </div>
-                <span className="text-faint font-mono text-[11px] tracking-[.12em] uppercase">
+                <span className="font-mono text-[11px] tracking-[.12em] text-faint uppercase">
                   {t('Joined by 100+ operators in early access')}
                 </span>
               </div>
@@ -765,10 +718,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                 <div className="solution-body">
                   <div className="solution-copy-lead">
                     <div className="bt">
-                      {renderSolutionCopyContent(
-                        solutionTitleLines.slice(1),
-                        solutionSubtitleLines,
-                      )}
+                      {renderSolutionCopyContent(solutionTitleLines.slice(1), solutionSubtitleLines)}
                     </div>
                   </div>
                   <div className="solution-proof-pane">
@@ -800,9 +750,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                           : 'solution-timeline-step-bottom solution-timeline-step-left'
                       }`}
                     >
-                      {index % 2 === 0 ? (
-                        <div className="solution-timeline-side" aria-hidden="true" />
-                      ) : null}
+                      {index % 2 === 0 ? <div className="solution-timeline-side" aria-hidden="true" /> : null}
                       <div className="solution-timeline-node" aria-hidden="true">
                         <span>{index + 1}</span>
                       </div>
@@ -810,9 +758,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
                         <h3 className="solution-timeline-title">{point.title}</h3>
                         <p className="solution-timeline-text">{point.copy}</p>
                       </div>
-                      {index % 2 === 1 ? (
-                        <div className="solution-timeline-side" aria-hidden="true" />
-                      ) : null}
+                      {index % 2 === 1 ? <div className="solution-timeline-side" aria-hidden="true" /> : null}
                     </article>
                   ))}
                   <div className="solution-timeline-cta">
@@ -971,13 +917,7 @@ function LandingPageContent({ locale, siteUrl }: { locale: SupportedLocale; site
   )
 }
 
-export default function LandingPage({
-  locale,
-  siteUrl,
-}: {
-  locale: SupportedLocale
-  siteUrl: string
-}) {
+export default function LandingPage({ locale, siteUrl }: { locale: SupportedLocale; siteUrl: string }) {
   return (
     <I18nProvider locale={locale}>
       <LandingPageContent locale={locale} siteUrl={siteUrl} />
@@ -1002,9 +942,7 @@ function renderLandingHeroLine2(locale: SupportedLocale, value: string) {
   return (
     <>
       {beforeText}
-      <span className="hero-title-accent">
-        {value.slice(matchIndex, matchIndex + accentText.length)}
-      </span>
+      <span className="hero-title-accent">{value.slice(matchIndex, matchIndex + accentText.length)}</span>
       {value.slice(matchIndex + accentText.length)}
     </>
   )
@@ -1039,8 +977,7 @@ function renderSolutionCopyContent(titleRest: string[], subtitleLines: string[])
 
         const idx = line.search(/[.!?]["']?\s+/)
 
-        const sentenceBreakMatch =
-          idx !== -1 ? [line, line.slice(0, idx + 1), line.slice(idx).trimStart()] : null
+        const sentenceBreakMatch = idx !== -1 ? [line, line.slice(0, idx + 1), line.slice(idx).trimStart()] : null
 
         if (!sentenceBreakMatch) {
           return (

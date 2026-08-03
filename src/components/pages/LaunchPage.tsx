@@ -1,18 +1,13 @@
 import type { SupportedLocale } from '@/i18n/locales'
-import { createTranslator, I18nProvider } from '@/i18n'
-import KuestMark from '@/components/KuestMark'
-import LaunchpadForm from '@/components/LaunchpadForm'
-import { AppProviders } from '@/providers/AppProviders'
-import { Link } from '@/i18n/navigation'
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 
-function LaunchPageContent({
-  locale,
-  runtimeConfig,
-}: {
-  locale: SupportedLocale
-  runtimeConfig: PublicRuntimeConfig
-}) {
+import KuestMark from '@/components/KuestMark'
+import LaunchpadForm from '@/components/LaunchpadForm'
+import { createTranslator, I18nProvider } from '@/i18n'
+import { Link } from '@/i18n/navigation'
+import { AppProviders } from '@/providers/AppProviders'
+
+function LaunchPageContent({ locale, runtimeConfig }: { locale: SupportedLocale; runtimeConfig: PublicRuntimeConfig }) {
   const t = createTranslator(locale)
 
   return (

@@ -1,5 +1,7 @@
-import type { LaunchLogEntry, LaunchLogLevel, LaunchRequestBody } from '@/lib/launch-types'
 import { randomBytes } from 'node:crypto'
+
+import type { LaunchLogEntry, LaunchLogLevel, LaunchRequestBody } from '@/lib/launch-types'
+
 import { isSupabaseRegion, isVercelRegion } from '@/lib/deployment-regions'
 import { normalizeSiteUrl } from '@/lib/site-url'
 
@@ -33,10 +35,7 @@ export function sanitizeProjectName(projectName: string) {
     .replace(/-{2,}/g, '-')
     .replace(/^-+|-+$/g, '')
   if (!base) {
-    throw new LaunchError(
-      'Project name generated an empty slug. Use letters and numbers.',
-      'validation',
-    )
+    throw new LaunchError('Project name generated an empty slug. Use letters and numbers.', 'validation')
   }
   return base.slice(0, 96)
 }
@@ -83,8 +82,7 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
   if (!raw.brandName || typeof raw.brandName !== 'string') {
     throw new LaunchError('brandName is required.', 'validation')
   }
-  const contactEmail =
-    typeof raw.contactEmail === 'string' ? raw.contactEmail.trim().toLowerCase() : ''
+  const contactEmail = typeof raw.contactEmail === 'string' ? raw.contactEmail.trim().toLowerCase() : ''
   if (contactEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
     throw new LaunchError('A valid contactEmail is required.', 'validation')
   }
@@ -112,9 +110,7 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
   }
   if (
     !raw.databaseMode ||
-    !['vercel_supabase_integration', 'supabase_direct', 'external_postgres'].includes(
-      raw.databaseMode,
-    )
+    !['vercel_supabase_integration', 'supabase_direct', 'external_postgres'].includes(raw.databaseMode)
   ) {
     throw new LaunchError(
       'databaseMode must be vercel_supabase_integration, supabase_direct, or external_postgres.',
@@ -125,21 +121,17 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
     throw new LaunchError('env block is required.', 'validation')
   }
 
-  const vercelRegion =
-    typeof raw.vercelRegion === 'string' ? raw.vercelRegion.trim().toLowerCase() : ''
+  const vercelRegion = typeof raw.vercelRegion === 'string' ? raw.vercelRegion.trim().toLowerCase() : ''
   if (vercelRegion && !isVercelRegion(vercelRegion)) {
     throw new LaunchError('vercelRegion must be a valid Vercel region id.', 'validation')
   }
 
-  const supabaseRegion =
-    typeof raw.supabase?.region === 'string' ? raw.supabase.region.trim().toLowerCase() : ''
+  const supabaseRegion = typeof raw.supabase?.region === 'string' ? raw.supabase.region.trim().toLowerCase() : ''
   if (supabaseRegion && !isSupabaseRegion(supabaseRegion)) {
     throw new LaunchError('supabase.region must be a valid Supabase region id.', 'validation')
   }
 
-  const envObject = Object.fromEntries(
-    Object.entries(raw.env).map(([key, value]) => [key, String(value ?? '').trim()]),
-  )
+  const envObject = Object.fromEntries(Object.entries(raw.env).map(([key, value]) => [key, String(value ?? '').trim()]))
 
   if (envObject.SITE_URL) {
     envObject.SITE_URL = normalizeSiteUrl(envObject.SITE_URL)
@@ -180,27 +172,16 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
       nonce: proof.nonce,
       chainId: proof.chainId,
     },
-    projectName:
-      typeof raw.projectName === 'string' && raw.projectName.trim()
-        ? raw.projectName.trim()
-        : undefined,
+    projectName: typeof raw.projectName === 'string' && raw.projectName.trim() ? raw.projectName.trim() : undefined,
     gitRepo: raw.gitRepo,
     gitBranch: raw.gitBranch,
     databaseMode: raw.databaseMode,
-    vercelTeamId:
-      typeof raw.vercelTeamId === 'string' && raw.vercelTeamId.trim()
-        ? raw.vercelTeamId.trim()
-        : undefined,
+    vercelTeamId: typeof raw.vercelTeamId === 'string' && raw.vercelTeamId.trim() ? raw.vercelTeamId.trim() : undefined,
     vercelRegion: vercelRegion || undefined,
     tokens: {
-      vercel:
-        typeof raw.tokens?.vercel === 'string' && raw.tokens.vercel.trim()
-          ? raw.tokens.vercel.trim()
-          : undefined,
+      vercel: typeof raw.tokens?.vercel === 'string' && raw.tokens.vercel.trim() ? raw.tokens.vercel.trim() : undefined,
       supabase:
-        typeof raw.tokens?.supabase === 'string' && raw.tokens.supabase.trim()
-          ? raw.tokens.supabase.trim()
-          : undefined,
+        typeof raw.tokens?.supabase === 'string' && raw.tokens.supabase.trim() ? raw.tokens.supabase.trim() : undefined,
     },
     supabase: raw.supabase
       ? {
@@ -210,13 +191,11 @@ export function parseLaunchRequest(input: unknown): LaunchRequestBody {
               : undefined,
           region: supabaseRegion || undefined,
           databasePassword:
-            typeof raw.supabase.databasePassword === 'string' &&
-            raw.supabase.databasePassword.trim()
+            typeof raw.supabase.databasePassword === 'string' && raw.supabase.databasePassword.trim()
               ? raw.supabase.databasePassword.trim()
               : undefined,
           existingResourceId:
-            typeof raw.supabase.existingResourceId === 'string' &&
-            raw.supabase.existingResourceId.trim()
+            typeof raw.supabase.existingResourceId === 'string' && raw.supabase.existingResourceId.trim()
               ? raw.supabase.existingResourceId.trim()
               : undefined,
         }

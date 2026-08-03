@@ -1,5 +1,7 @@
-import type { BlogPost, BlogPostSummary } from '@/lib/blog/content'
 import { ArrowLeftIcon } from 'lucide-react'
+
+import type { BlogPost, BlogPostSummary } from '@/lib/blog/content'
+
 import Image from '@/compat/Image'
 import { Link } from '@/i18n/navigation'
 
@@ -50,13 +52,7 @@ export default function BlogPostHero({
       <div className="blog-post-meta">
         <span className="blog-post-author">
           {author.avatar ? (
-            <Image
-              src={author.avatar}
-              alt=""
-              width={28}
-              height={28}
-              className="blog-post-author-avatar"
-            />
+            <Image src={author.avatar} alt="" width={28} height={28} className="blog-post-author-avatar" />
           ) : (
             <span aria-hidden="true" className="blog-post-author-initials">
               {initials}
@@ -75,13 +71,7 @@ export default function BlogPostHero({
       </div>
 
       <figure className="blog-post-cover">
-        <Image
-          src={coverSrc}
-          alt={post.frontmatter.title}
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 720px"
-        />
+        <Image src={coverSrc} alt={post.frontmatter.title} fill priority sizes="(max-width: 768px) 100vw, 720px" />
       </figure>
     </header>
   )

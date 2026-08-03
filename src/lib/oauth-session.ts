@@ -26,9 +26,7 @@ export async function getValidVercelSession() {
     const nextSession = {
       accessToken: refreshed.access_token,
       refreshToken: refreshed.refresh_token ?? session.refreshToken,
-      expiresAt: refreshed.expires_in
-        ? Date.now() + Number(refreshed.expires_in) * 1000
-        : session.expiresAt,
+      expiresAt: refreshed.expires_in ? Date.now() + Number(refreshed.expires_in) * 1000 : session.expiresAt,
       user: session.user,
     }
     await setOAuthSession(OAUTH_COOKIE_NAMES.vercelSession, nextSession)
@@ -56,9 +54,7 @@ export async function getValidSupabaseSession() {
     const nextSession = {
       accessToken: refreshed.access_token,
       refreshToken: refreshed.refresh_token ?? session.refreshToken,
-      expiresAt: refreshed.expires_in
-        ? Date.now() + Number(refreshed.expires_in) * 1000
-        : session.expiresAt,
+      expiresAt: refreshed.expires_in ? Date.now() + Number(refreshed.expires_in) * 1000 : session.expiresAt,
       user: session.user,
     }
     await setOAuthSession(OAUTH_COOKIE_NAMES.supabaseSession, nextSession)

@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vite-plus/test'
+
+import type { DubTracker } from './types'
+
 import { deliverPendingLead } from './lead'
 import { completeOperatorAttribution, markOperatorLaunchFailed } from './repository'
-import type { DubTracker } from './types'
 
 type Statement = { query: string; values: unknown[] }
 
@@ -12,14 +14,18 @@ function createLeadDb() {
   let attempts = 0
   let dubCustomerId: string | null = null
 
-  const statement = (query: string, values: unknown[] = []): D1PreparedStatement =>
-    ({
+  function statement(query: string, values: unknown[] = []): D1PreparedStatement {
+    return {
       query,
       values,
       bind: (...nextValues: unknown[]) => statement(query, nextValues),
       async first() {
-        if (!query.includes('RETURNING operator_wallet')) return null
-        if (status !== 'lead_pending') return null
+        if (!query.includes('RETURNING operator_wallet')) {
+          return null
+        }
+        if (status !== 'lead_pending') {
+          return null
+        }
         status = 'lead_sending'
         leaseId = String(values[0])
         attempts += 1
@@ -40,7 +46,8 @@ function createLeadDb() {
       async all() {
         return { success: true, results: [], meta: { changes: 0 } }
       },
-    }) as D1PreparedStatement
+    } as D1PreparedStatement
+  }
 
   const db = {
     prepare: (query: string) => statement(query),

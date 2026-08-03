@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import type { ShowcaseIconName } from '@/lib/marketing-shared-data'
+
 import {
   Activity,
   BarChart2,
@@ -21,6 +21,8 @@ import {
   Users,
   Zap,
 } from 'lucide-react'
+
+import type { ShowcaseIconName } from '@/lib/marketing-shared-data'
 
 const showcaseIconMap: Record<ShowcaseIconName, ComponentType<{ className?: string }>> = {
   activity: Activity,

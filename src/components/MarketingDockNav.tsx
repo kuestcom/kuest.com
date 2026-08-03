@@ -1,10 +1,12 @@
-import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronRightIcon } from 'lucide-react'
-import { createTranslator, I18nProvider } from '@/i18n'
+
+import type { SupportedLocale } from '@/i18n/locales'
+
 import DockMenuControl from '@/components/DockMenuControl'
 import KuestMark from '@/components/KuestMark'
 import LanguageControl from '@/components/LanguageControl'
 import ThemeToggle from '@/components/ThemeToggle'
+import { createTranslator, I18nProvider } from '@/i18n'
 
 export type MarketingActiveSection = 'home' | 'enterprise' | 'protocol' | 'blog'
 

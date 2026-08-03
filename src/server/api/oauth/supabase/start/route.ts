@@ -1,11 +1,6 @@
-import {
-  createPkcePair,
-  OAUTH_COOKIE_NAMES,
-  randomStateToken,
-  setTemporaryOAuthState,
-} from '@/lib/oauth'
-import { redirectResponse } from '@/server/response'
+import { createPkcePair, OAUTH_COOKIE_NAMES, randomStateToken, setTemporaryOAuthState } from '@/lib/oauth'
 import { buildSupabaseAuthorizeUrl } from '@/lib/oauth-supabase'
+import { redirectResponse } from '@/server/response'
 
 function buildRedirectUri(request: Request) {
   const url = new URL(request.url)
@@ -43,8 +38,6 @@ export async function GET(request: Request) {
     return redirectResponse(authorizeUrl)
   } catch (error) {
     const message = error instanceof Error ? error.message : 'OAuth start failed.'
-    return redirectResponse(
-      new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
-    )
+    return redirectResponse(new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin))
   }
 }

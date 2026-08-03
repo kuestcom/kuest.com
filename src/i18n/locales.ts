@@ -1,16 +1,4 @@
-export const SUPPORTED_LOCALES = [
-  'en',
-  'de',
-  'es',
-  'pt',
-  'fr',
-  'ja',
-  'zh',
-  'ar',
-  'ru',
-  'it',
-  'pl',
-] as const
+export const SUPPORTED_LOCALES = ['en', 'de', 'es', 'pt', 'fr', 'ja', 'zh', 'ar', 'ru', 'it', 'pl'] as const
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 

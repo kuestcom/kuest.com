@@ -1,16 +1,7 @@
 'use client'
 
 import type { SyntheticEvent } from 'react'
-import type { SupportedLocale } from '@/i18n/locales'
-import type {
-  LaunchLogEntry,
-  LaunchResponseBody,
-  OAuthStatusResponse,
-  ReownConnectionStatusResponse,
-  VercelConnectionStatusResponse,
-  VercelDomainResponse,
-  WalletControlProof,
-} from '@/lib/launch-types'
+
 import { useWalletInfo } from '@reown/appkit/react'
 import {
   AlertTriangleIcon,
@@ -29,13 +20,32 @@ import {
   WalletIcon,
   XIcon,
 } from 'lucide-react'
-import { useExtracted, useLocale } from '@/i18n'
-import Image from '@/compat/Image'
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useAccount, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi'
+
+import type { SupportedLocale } from '@/i18n/locales'
+import type {
+  LaunchLogEntry,
+  LaunchResponseBody,
+  OAuthStatusResponse,
+  ReownConnectionStatusResponse,
+  VercelConnectionStatusResponse,
+  VercelDomainResponse,
+  WalletControlProof,
+} from '@/lib/launch-types'
+import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+
+import Image from '@/compat/Image'
 import { useAppKit } from '@/hooks/useAppKit'
+import { useExtracted, useLocale } from '@/i18n'
 import { LANGUAGE_OPTIONS } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
+import {
+  DEFAULT_SUPABASE_REGION,
+  DEFAULT_VERCEL_REGION,
+  SUPABASE_REGIONS,
+  VERCEL_REGIONS,
+} from '@/lib/deployment-regions'
 import {
   DEFAULT_KUEST_KEY_NONCE,
   ensureRequiredNetworkViaProvider,
@@ -45,15 +55,8 @@ import {
   mintKuestKeysFromSignature,
   readInjectedProvider,
 } from '@/lib/kuest-keygen'
-import {
-  DEFAULT_SUPABASE_REGION,
-  DEFAULT_VERCEL_REGION,
-  SUPABASE_REGIONS,
-  VERCEL_REGIONS,
-} from '@/lib/deployment-regions'
 import { normalizeSiteUrl } from '@/lib/site-url'
 import { createSupabaseClient } from '@/lib/supabase'
-import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 import { isWalletProofFresh } from '@/lib/wallet-proof'
 
 interface FormState {
@@ -475,26 +478,13 @@ function ActionPrompt({
   }
 
   return (
-    <div
-      className="
-      launch-action-modal fixed inset-0 z-80 flex items-center justify-center bg-background/85 px-4 py-6
-      backdrop-blur-md
-    "
-    >
-      <div
-        className="
-        launch-action-modal-card relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6
-        text-center shadow-2xl
-      "
-      >
+    <div className="launch-action-modal fixed inset-0 z-80 flex items-center justify-center bg-background/85 px-4 py-6 backdrop-blur-md">
+      <div className="launch-action-modal-card relative w-full max-w-sm rounded-2xl border border-border/70 bg-background p-6 text-center shadow-2xl">
         {allowClose && onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="
-              absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition
-              hover:bg-muted/60 hover:text-foreground
-            "
+            className="absolute top-4 right-4 rounded-md border border-border p-2 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
             aria-label={t('Close waiting modal')}
           >
             <XIcon className="size-4" />
@@ -508,12 +498,7 @@ function ActionPrompt({
 
         <div className="launch-action-modal-visual mt-5 flex justify-center">
           <div className="relative size-36 overflow-hidden rounded-[30px] bg-background text-primary">
-            <div
-              className="
-              pointer-events-none absolute inset-0 animate-[spin_1500ms_linear_infinite]
-              bg-[conic-gradient(from_0deg,transparent_0deg,transparent_288deg,currentColor_320deg,currentColor_350deg,transparent_360deg)]
-            "
-            />
+            <div className="pointer-events-none absolute inset-0 animate-[spin_1500ms_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_288deg,currentColor_320deg,currentColor_350deg,transparent_360deg)]" />
             <div className="absolute inset-0.75 rounded-[26px] bg-background" />
             <div className="relative flex size-full items-center justify-center">
               <div className="flex size-[88%] items-center justify-center">
@@ -527,11 +512,7 @@ function ActionPrompt({
           </div>
         </div>
 
-        <div
-          className="
-          launch-action-modal-status mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground
-        "
-        >
+        <div className="launch-action-modal-status mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
           <Loader2Icon className="size-4 animate-spin text-primary" />
           <span>{t('Waiting for wallet approval...')}</span>
         </div>
@@ -540,11 +521,7 @@ function ActionPrompt({
   )
 }
 
-function ActionPromptWalletIcon({
-  className = 'size-16',
-  rounded = true,
-  fit = 'cover',
-}: ActionPromptWalletIconProps) {
+function ActionPromptWalletIcon({ className = 'size-16', rounded = true, fit = 'cover' }: ActionPromptWalletIconProps) {
   const t = useExtracted()
   const { walletInfo } = useWalletInfo()
   const [failedIconUrl, setFailedIconUrl] = useState<string | null>(null)
@@ -585,8 +562,7 @@ function StepFooterLanguageControl() {
   const locale = useLocale()
   const [open, setOpen] = useState(false)
   const controlRef = useRef<HTMLDivElement | null>(null)
-  const currentLocaleOption =
-    LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0]
+  const currentLocaleOption = LANGUAGE_OPTIONS.find((option) => option.code === locale) ?? LANGUAGE_OPTIONS[0]
 
   useEffect(() => {
     if (!open) {
@@ -642,11 +618,7 @@ function StepFooterLanguageControl() {
             <ChevronDownIcon className="size-3.5" />
           </span>
         </button>
-        <div
-          className="launch-language-menu"
-          role="listbox"
-          aria-label={t('Change launch app language')}
-        >
+        <div className="launch-language-menu" role="listbox" aria-label={t('Change launch app language')}>
           {LANGUAGE_OPTIONS.map((option) => {
             const isSelected = option.code === locale
 
@@ -703,9 +675,7 @@ export default function LaunchpadForm({
   const [activeStep, setActiveStep] = useState<LaunchStep>(1)
   const [step2AdvancedOpen, setStep2AdvancedOpen] = useState(false)
   const [isVercelTokenInputFocused, setIsVercelTokenInputFocused] = useState(false)
-  const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(
-    DEFAULT_VERCEL_AUTH_METHOD,
-  )
+  const [vercelAuthMethod, setVercelAuthMethod] = useState<VercelAuthMethod>(DEFAULT_VERCEL_AUTH_METHOD)
   const [githubRepoUrl, setGithubRepoUrl] = useState('')
   const [githubSyncEnabled, setGithubSyncEnabled] = useState(false)
   const [githubError, setGithubError] = useState<string | null>(null)
@@ -713,9 +683,7 @@ export default function LaunchpadForm({
   const [oauthStatus, setOauthStatus] = useState<OAuthStatusResponse | null>(null)
   const [oauthStatusLoading, setOauthStatusLoading] = useState(false)
   const [oauthStatusError, setOauthStatusError] = useState<string | null>(null)
-  const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(
-    null,
-  )
+  const [vercelConnection, setVercelConnection] = useState<VercelConnectionStatusResponse | null>(null)
   const [vercelConnectionError, setVercelConnectionError] = useState<string | null>(null)
   const [vercelConnectionLoading, setVercelConnectionLoading] = useState(false)
   const [vercelGitHubConnectClicks, setVercelGitHubConnectClicks] = useState(0)
@@ -777,9 +745,7 @@ export default function LaunchpadForm({
   const timelineIntervalRef = useRef<number | null>(null)
   const timelineIndexRef = useRef(0)
   const latestReownProjectIdRef = useRef('')
-  const handleConnectOrSignRef = useRef<
-    ((_options?: { autoProgress?: boolean }) => Promise<void>) | null
-  >(null)
+  const handleConnectOrSignRef = useRef<((_options?: { autoProgress?: boolean }) => Promise<void>) | null>(null)
   const walletFlowInFlightRef = useRef(false)
 
   useEffect(() => {
@@ -793,8 +759,7 @@ export default function LaunchpadForm({
   }, [TIMELINE])
 
   const isConnected = account.status === 'connected' && Boolean(account.address)
-  const onRequiredChain =
-    isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false
+  const onRequiredChain = isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false
   const hasValidContactEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail.trim())
   const walletPrerequisitesReady = Boolean(form.brandName.trim()) && hasValidContactEmail
   const walletPrerequisiteMessage = t('Enter the company name and email to continue.')
@@ -807,8 +772,7 @@ export default function LaunchpadForm({
     Boolean(form.walletProof) &&
     hasValidContactEmail
   const vercelOauthConnected = Boolean(oauthStatus?.vercel.connected)
-  const vercelOauthIdentity =
-    oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
+  const vercelOauthIdentity = oauthStatus?.vercel.email || oauthStatus?.vercel.login || oauthStatus?.vercel.name || ''
   const vercelConnectionReady = Boolean(vercelConnection?.connected)
   const vercelConnectionIdentity = vercelConnection?.identity?.trim() || ''
   const vercelGitImportReady = Boolean(vercelConnection?.githubImportReady)
@@ -855,62 +819,40 @@ export default function LaunchpadForm({
         ...previous,
         brandName: typeof parsed.brandName === 'string' ? parsed.brandName : previous.brandName,
         projectSlugOverride:
-          typeof parsed.projectSlugOverride === 'string'
-            ? parsed.projectSlugOverride
-            : previous.projectSlugOverride,
+          typeof parsed.projectSlugOverride === 'string' ? parsed.projectSlugOverride : previous.projectSlugOverride,
         gitRepo: typeof parsed.gitRepo === 'string' ? parsed.gitRepo : previous.gitRepo,
         gitBranch: typeof parsed.gitBranch === 'string' ? parsed.gitBranch : previous.gitBranch,
-        vercelTeamId:
-          typeof parsed.vercelTeamId === 'string' ? parsed.vercelTeamId : previous.vercelTeamId,
-        vercelRegion:
-          typeof parsed.vercelRegion === 'string' ? parsed.vercelRegion : previous.vercelRegion,
-        supabaseRegion:
-          typeof parsed.supabaseRegion === 'string'
-            ? parsed.supabaseRegion
-            : previous.supabaseRegion,
+        vercelTeamId: typeof parsed.vercelTeamId === 'string' ? parsed.vercelTeamId : previous.vercelTeamId,
+        vercelRegion: typeof parsed.vercelRegion === 'string' ? parsed.vercelRegion : previous.vercelRegion,
+        supabaseRegion: typeof parsed.supabaseRegion === 'string' ? parsed.supabaseRegion : previous.supabaseRegion,
         supabaseResourceId:
-          typeof parsed.supabaseResourceId === 'string'
-            ? parsed.supabaseResourceId
-            : previous.supabaseResourceId,
-        contactEmail:
-          typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
+          typeof parsed.supabaseResourceId === 'string' ? parsed.supabaseResourceId : previous.supabaseResourceId,
+        contactEmail: typeof parsed.contactEmail === 'string' ? parsed.contactEmail : previous.contactEmail,
         walletProof: null,
         env: {
           ...previous.env,
           KUEST_ADDRESS:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.KUEST_ADDRESS === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.KUEST_ADDRESS === 'string'
               ? parsed.env.KUEST_ADDRESS
               : previous.env.KUEST_ADDRESS,
           KUEST_API_KEY:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.KUEST_API_KEY === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.KUEST_API_KEY === 'string'
               ? parsed.env.KUEST_API_KEY
               : previous.env.KUEST_API_KEY,
           KUEST_API_SECRET:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.KUEST_API_SECRET === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.KUEST_API_SECRET === 'string'
               ? parsed.env.KUEST_API_SECRET
               : previous.env.KUEST_API_SECRET,
           KUEST_PASSPHRASE:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.KUEST_PASSPHRASE === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.KUEST_PASSPHRASE === 'string'
               ? parsed.env.KUEST_PASSPHRASE
               : previous.env.KUEST_PASSPHRASE,
           ADMIN_WALLETS:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.ADMIN_WALLETS === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.ADMIN_WALLETS === 'string'
               ? parsed.env.ADMIN_WALLETS
               : previous.env.ADMIN_WALLETS,
           REOWN_APPKIT_PROJECT_ID:
-            parsed.env &&
-            typeof parsed.env === 'object' &&
-            typeof parsed.env.REOWN_APPKIT_PROJECT_ID === 'string'
+            parsed.env && typeof parsed.env === 'object' && typeof parsed.env.REOWN_APPKIT_PROJECT_ID === 'string'
               ? parsed.env.REOWN_APPKIT_PROJECT_ID
               : previous.env.REOWN_APPKIT_PROJECT_ID,
           SITE_URL:
@@ -956,9 +898,7 @@ export default function LaunchpadForm({
         setOauthStatusError(null)
       }
     } catch (error) {
-      setOauthStatusError(
-        error instanceof Error ? error.message : t('Unable to check OAuth connection status.'),
-      )
+      setOauthStatusError(error instanceof Error ? error.message : t('Unable to check OAuth connection status.'))
     } finally {
       setOauthStatusLoading(false)
     }
@@ -973,9 +913,7 @@ export default function LaunchpadForm({
       if (requiresToken && !token) {
         setVercelConnection(null)
         setVercelConnectionLoading(false)
-        setVercelConnectionError(
-          options?.silent ? null : t('Paste your Vercel Access Token first.'),
-        )
+        setVercelConnectionError(options?.silent ? null : t('Paste your Vercel Access Token first.'))
         return
       }
 
@@ -1027,14 +965,7 @@ export default function LaunchpadForm({
         setVercelConnectionLoading(false)
       }
     },
-    [
-      t,
-      form.vercelAccessToken,
-      form.gitRepo,
-      form.vercelTeamId,
-      vercelAuthMethod,
-      vercelOauthConnected,
-    ],
+    [t, form.vercelAccessToken, form.gitRepo, form.vercelTeamId, vercelAuthMethod, vercelOauthConnected],
   )
 
   const refreshReownConnection = useCallback(async (projectId: string) => {
@@ -1068,9 +999,7 @@ export default function LaunchpadForm({
 
       if (!response.ok || !json.valid) {
         setReownConnection(null)
-        setReownConnectionError(
-          json.error ?? 'We could not verify this Reown Project ID. Check it and try again.',
-        )
+        setReownConnectionError(json.error ?? 'We could not verify this Reown Project ID. Check it and try again.')
         return
       }
 
@@ -1083,9 +1012,7 @@ export default function LaunchpadForm({
 
       setReownConnection(null)
       setReownConnectionError(
-        error instanceof Error
-          ? error.message
-          : 'We could not verify this Reown Project ID. Check it and try again.',
+        error instanceof Error ? error.message : 'We could not verify this Reown Project ID. Check it and try again.',
       )
     } finally {
       if (latestReownProjectIdRef.current === normalizedProjectId) {
@@ -1249,9 +1176,7 @@ export default function LaunchpadForm({
       }))
       await refreshOAuthStatus()
     } catch (error) {
-      setOauthStatusError(
-        error instanceof Error ? error.message : t('Failed to disconnect Vercel OAuth.'),
-      )
+      setOauthStatusError(error instanceof Error ? error.message : t('Failed to disconnect Vercel OAuth.'))
     }
   }, [t, refreshOAuthStatus])
 
@@ -1353,17 +1278,13 @@ export default function LaunchpadForm({
         if (!response.ok) {
           setSupabaseResourcesError(json.error ?? t('Failed to list Supabase databases.'))
         } else if (!resources.length) {
-          setSupabaseResourcesError(
-            t('No existing database found. You can still create a new one.'),
-          )
+          setSupabaseResourcesError(t('No existing database found. You can still create a new one.'))
         } else {
           setSupabaseResourcesError(null)
         }
       } catch (error) {
         setSupabaseResources([])
-        setSupabaseResourcesError(
-          error instanceof Error ? error.message : t('Failed to list Supabase databases.'),
-        )
+        setSupabaseResourcesError(error instanceof Error ? error.message : t('Failed to list Supabase databases.'))
       } finally {
         setIsLoadingSupabaseResources(false)
       }
@@ -1465,10 +1386,7 @@ export default function LaunchpadForm({
       }
     } catch (error) {
       // Email save is optional and must never block key generation.
-      console.warn(
-        '[launch] Optional email save failed:',
-        error instanceof Error ? error.message : error,
-      )
+      console.warn('[launch] Optional email save failed:', error instanceof Error ? error.message : error)
     }
   }
 
@@ -1531,11 +1449,7 @@ export default function LaunchpadForm({
         setWalletInfo(t('Wallet connected. Enter your site name to continue.'))
       }
     } catch (error) {
-      setWalletError(
-        error instanceof Error
-          ? error.message
-          : t('Failed to generate credentials with browser wallet.'),
-      )
+      setWalletError(error instanceof Error ? error.message : t('Failed to generate credentials with browser wallet.'))
     } finally {
       setWalletActionLoading(false)
     }
@@ -1552,9 +1466,7 @@ export default function LaunchpadForm({
     if (!switchChain) {
       const provider = readInjectedProvider()
       if (!provider) {
-        throw new Error(
-          t('Switch to {network} in your wallet settings.', { network: REQUIRED_CHAIN_LABEL }),
-        )
+        throw new Error(t('Switch to {network} in your wallet settings.', { network: REQUIRED_CHAIN_LABEL }))
       }
       await ensureRequiredNetworkViaProvider(provider, runtimeConfig)
       return
@@ -1602,9 +1514,7 @@ export default function LaunchpadForm({
       } catch (error) {
         setConnectPromptOpen(false)
         setWalletInfo(null)
-        setWalletError(
-          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
-        )
+        setWalletError(error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'))
       }
       return
     }
@@ -1624,9 +1534,7 @@ export default function LaunchpadForm({
           setWalletActionLoading(false)
         }
         if (!autoProgress) {
-          setWalletInfo(
-            t('{network} is active. Click Sign to continue.', { network: REQUIRED_CHAIN_LABEL }),
-          )
+          setWalletInfo(t('{network} is active. Click Sign to continue.', { network: REQUIRED_CHAIN_LABEL }))
           return
         }
       }
@@ -1685,18 +1593,14 @@ export default function LaunchpadForm({
         }
       } catch (error) {
         setWalletInfo(null)
-        setWalletError(
-          error instanceof Error ? error.message : t('Unable to sign and generate keys.'),
-        )
+        setWalletError(error instanceof Error ? error.message : t('Unable to sign and generate keys.'))
       } finally {
         setSignPromptOpen(false)
         setWalletActionLoading(false)
       }
     } catch (error) {
       setWalletInfo(null)
-      setWalletError(
-        error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
-      )
+      setWalletError(error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'))
     } finally {
       walletFlowInFlightRef.current = false
     }
@@ -1713,9 +1617,7 @@ export default function LaunchpadForm({
       try {
         await handleConnectOrSignRef.current?.({ autoProgress: true })
       } catch (error) {
-        setWalletError(
-          error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'),
-        )
+        setWalletError(error instanceof Error ? error.message : t('Unable to continue wallet signing flow.'))
       } finally {
         setAutoSignAfterConnect(false)
       }
@@ -1829,15 +1731,7 @@ export default function LaunchpadForm({
         setDomainActionLoading(null)
       }
     },
-    [
-      t,
-      customDomain,
-      form.vercelAccessToken,
-      form.vercelTeamId,
-      resolvedProjectSlug,
-      result,
-      vercelAuthMethod,
-    ],
+    [t, customDomain, form.vercelAccessToken, form.vercelTeamId, resolvedProjectSlug, result, vercelAuthMethod],
   )
 
   async function onSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
@@ -1859,8 +1753,7 @@ export default function LaunchpadForm({
     startTimelineAnimation()
 
     try {
-      const resolvedVercelToken =
-        vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : undefined
+      const resolvedVercelToken = vercelAuthMethod === 'token' ? form.vercelAccessToken.trim() : undefined
       const env = {
         ...form.env,
         ...parseExtraEnv(form.extraEnvText),
@@ -1879,9 +1772,7 @@ export default function LaunchpadForm({
         supabase: {
           region: form.supabaseRegion.trim() || undefined,
           existingResourceId:
-            form.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION
-              ? form.supabaseResourceId
-              : undefined,
+            form.supabaseResourceId !== SUPABASE_CREATE_NEW_OPTION ? form.supabaseResourceId : undefined,
         },
         tokens: {
           vercel: resolvedVercelToken,
@@ -1922,23 +1813,18 @@ export default function LaunchpadForm({
   const step2GitHubReady = Boolean(form.gitRepo.trim())
   const step3TokenReady = vercelAuthMethod === 'token' && vercelConnectionReady
   const step3VercelAuthReady =
-    vercelAuthMethod === 'oauth'
-      ? vercelOauthConnected && vercelConnectionReady
-      : vercelConnectionReady
+    vercelAuthMethod === 'oauth' ? vercelOauthConnected && vercelConnectionReady : vercelConnectionReady
   const step3VercelReady = step3VercelAuthReady && vercelGitImportReady
   const step3ReownReady = reownConnectionReady
   const step3DatabaseReady = step3VercelAuthReady && Boolean(form.supabaseResourceId.trim())
-  const step2ConnectionsReady =
-    step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
+  const step2ConnectionsReady = step2GitHubReady && step3VercelReady && step3ReownReady && step3DatabaseReady
   const githubStatusText = form.gitRepo.trim() ? form.gitRepo : ''
-  const vercelGitImportRequiredHint =
-    result?.ok === false && result.hints?.vercelGitImportRequired === true
+  const vercelGitImportRequiredHint = result?.ok === false && result.hints?.vercelGitImportRequired === true
   const vercelStatusText = step3VercelAuthReady
     ? vercelConnectionIdentity || vercelOauthIdentity || maskToken(form.vercelAccessToken)
     : ''
   const showVercelGitHubButton = step2GitHubReady && step3VercelAuthReady && !vercelGitImportReady
-  const showVercelGitHubStep =
-    step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
+  const showVercelGitHubStep = step2GitHubReady && (step3VercelAuthReady || vercelGitImportRequiredHint)
   const showVercelAuthenticationSettingsLink =
     vercelGitHubConnectClicks >= VERCEL_GITHUB_CONNECT_LINK_THRESHOLD ||
     vercelGitHubRefreshClicks >= VERCEL_GITHUB_REFRESH_LINK_THRESHOLD
@@ -1967,11 +1853,8 @@ export default function LaunchpadForm({
 
   const storedStep1Address = form.env.KUEST_ADDRESS.trim()
   const connectedAddressMatchesStep1 =
-    !isConnected ||
-    !account.address ||
-    storedStep1Address.toLowerCase() === account.address.toLowerCase()
-  const showSignedWalletState =
-    step1Complete && Boolean(storedStep1Address) && connectedAddressMatchesStep1
+    !isConnected || !account.address || storedStep1Address.toLowerCase() === account.address.toLowerCase()
+  const showSignedWalletState = step1Complete && Boolean(storedStep1Address) && connectedAddressMatchesStep1
   const brandNameReady = Boolean(form.brandName.trim())
   const step1PrimaryLabel = !isAppKitReady
     ? t('Use browser wallet')
@@ -1988,9 +1871,7 @@ export default function LaunchpadForm({
   const launchSiteName = form.brandName.trim() || result?.projectName || resolvedProjectSlug
   const launchProjectUrl = result?.projectUrl || computedSiteUrl
   const discordSupportLabel = t('Join our Discord for support')
-  const customDomainAllowlistUrl = domainState?.name
-    ? `https://*.${normalizeCustomDomain(domainState.name)}`
-    : ''
+  const customDomainAllowlistUrl = domainState?.name ? `https://*.${normalizeCustomDomain(domainState.name)}` : ''
 
   return (
     <form onSubmit={onSubmit} className="launch-shell">
@@ -2028,12 +1909,7 @@ export default function LaunchpadForm({
                       siteUrl: launchProjectUrl,
                       site: (chunks) => <code className="launch-success-url">{chunks}</code>,
                       link: (chunks) => (
-                        <a
-                          className="launch-link"
-                          href={REOWN_DASHBOARD_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
+                        <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
                           {chunks}
                         </a>
                       ),
@@ -2055,12 +1931,7 @@ export default function LaunchpadForm({
                 <span>{discordSupportLabel}</span>
               </a>
 
-              <a
-                className="launch-cta launch-success-link"
-                href={launchProjectUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="launch-cta launch-success-link" href={launchProjectUrl} target="_blank" rel="noreferrer">
                 <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
                 <ArrowRightIcon className="size-4" />
               </a>
@@ -2069,14 +1940,8 @@ export default function LaunchpadForm({
             <div className="launch-subcard launch-success-domain rounded-xl border border-border/70 p-4!">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-sm font-semibold text-foreground">
-                    {t('Custom domain (optional)')}
-                  </h4>
-                  <InfoTip
-                    text={t(
-                      'Use your own domain after deploy. Add it first, then verify DNS records.',
-                    )}
-                  />
+                  <h4 className="text-sm font-semibold text-foreground">{t('Custom domain (optional)')}</h4>
+                  <InfoTip text={t('Use your own domain after deploy. Add it first, then verify DNS records.')} />
                 </div>
                 {domainState && (
                   <span
@@ -2122,12 +1987,7 @@ export default function LaunchpadForm({
                   <p className="text-xs text-muted-foreground">
                     {t.rich('You can also add your domain in the <link>Vercel dashboard</link>.', {
                       link: (chunks) => (
-                        <a
-                          className="launch-link"
-                          href={VERCEL_DASHBOARD_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
+                        <a className="launch-link" href={VERCEL_DASHBOARD_URL} target="_blank" rel="noreferrer">
                           {chunks}
                         </a>
                       ),
@@ -2142,12 +2002,7 @@ export default function LaunchpadForm({
                     {
                       domainUrl: customDomainAllowlistUrl,
                       link: (chunks) => (
-                        <a
-                          className="launch-link"
-                          href={REOWN_DASHBOARD_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
+                        <a className="launch-link" href={REOWN_DASHBOARD_URL} target="_blank" rel="noreferrer">
                           {chunks}
                         </a>
                       ),
@@ -2156,14 +2011,8 @@ export default function LaunchpadForm({
                 </p>
               )}
               {domainState && domainState.nameservers && domainState.nameservers.length > 0 && (
-                <div
-                  className="
-                  launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
-                "
-                >
-                  <p className="font-semibold text-foreground">
-                    {t('Nameservers to set at your registrar:')}
-                  </p>
+                <div className="launch-subcard mt-3 rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground">
+                  <p className="font-semibold text-foreground">{t('Nameservers to set at your registrar:')}</p>
                   <div className="mt-1 space-y-1">
                     {domainState.nameservers.map((nameServer) => (
                       <p key={nameServer} className="font-mono text-[11px]/4">
@@ -2178,13 +2027,10 @@ export default function LaunchpadForm({
                   {domainState.verification.map((record, index) => (
                     <div
                       key={`${record.type ?? 'record'}-${record.domain ?? 'domain'}-${index}`}
-                      className="
-                        launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground
-                      "
+                      className="launch-subcard rounded-lg border border-border/70 px-3 py-2 text-xs text-muted-foreground"
                     >
                       <span className="font-semibold text-foreground">{record.type || 'DNS'}:</span>{' '}
-                      {record.domain || '@'} {'->'}{' '}
-                      {record.value || t('check Vercel DNS instructions')}
+                      {record.domain || '@'} {'->'} {record.value || t('check Vercel DNS instructions')}
                     </div>
                   ))}
                 </div>
@@ -2226,13 +2072,7 @@ export default function LaunchpadForm({
                   setActiveStep(3)
                 }
               }}
-              disabled={
-                step.number === 2
-                  ? !canContinueStep2
-                  : step.number === 3
-                    ? !canContinueStep3
-                    : false
-              }
+              disabled={step.number === 2 ? !canContinueStep2 : step.number === 3 ? !canContinueStep3 : false}
             >
               <span className="launch-step-index">{step.number}</span>
               <span className="launch-step-title">{step.title}</span>
@@ -2284,41 +2124,28 @@ export default function LaunchpadForm({
             <div className="launch-step1-wallet-header mb-2 flex items-center gap-2">
               <h3 className="text-sm font-semibold text-foreground">{t('Admin wallet')}</h3>
               <InfoTip
-                text={t(
-                  'One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.',
-                )}
+                text={t('One wallet signature creates your Kuest CLOB credentials. This wallet becomes the admin.')}
               />
             </div>
             {!isConnected && (
               <div className="launch-step1-wallet-copy">
                 <p className="text-xs text-muted-foreground">
                   {t('For the simplest setup, use')}{' '}
-                  <a
-                    className="launch-link"
-                    href="https://metamask.io/download"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a className="launch-link" href="https://metamask.io/download" target="_blank" rel="noreferrer">
                     <span className="hidden sm:inline!">{t('MetaMask browser extension')}</span>
                     <span className="sm:hidden">{t('MetaMask app')}</span>
                   </a>
                   . {t('No balance required, no funds moved, no gas fees.')}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {t(
-                    'We try to switch to Polygon Amoy automatically and add the network when needed.',
-                  )}
+                  {t('We try to switch to Polygon Amoy automatically and add the network when needed.')}
                 </p>
               </div>
             )}
 
             {showSignedWalletState ? (
               <div className="launch-step1-wallet-actions mt-4 flex flex-wrap items-center justify-between gap-3">
-                <div
-                  className="
-                      launch-step1-wallet-badge flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5
-                    "
-                >
+                <div className="launch-step1-wallet-badge flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5">
                   <ActionPromptWalletIcon className="size-8" rounded={false} fit="contain" />
                   <p className="text-sm font-semibold text-foreground">{step1WalletLabel}</p>
                 </div>
@@ -2340,17 +2167,13 @@ export default function LaunchpadForm({
                   className="launch-wallet-action-tooltip"
                   role={walletPrerequisitesReady ? undefined : 'group'}
                   aria-label={walletPrerequisitesReady ? undefined : step1PrimaryLabel}
-                  aria-describedby={
-                    walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
-                  }
+                  aria-describedby={walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId}
                   tabIndex={walletPrerequisitesReady ? undefined : 0}
                 >
                   <button
                     type="button"
                     className="launch-cta launch-cta-compact"
-                    aria-describedby={
-                      walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId
-                    }
+                    aria-describedby={walletPrerequisitesReady ? undefined : walletPrerequisiteTooltipId}
                     onClick={() => {
                       if (!step1Complete && isAppKitReady && !isConnected) {
                         setAutoSignAfterConnect(true)
@@ -2396,15 +2219,9 @@ export default function LaunchpadForm({
               <p className="launch-status-note text-sm text-destructive">{appKitError}</p>
             )}
             {walletInfo && <p className="launch-status-note text-sm text-primary">{walletInfo}</p>}
-            {walletError && (
-              <p className="launch-status-note text-sm text-destructive">{walletError}</p>
-            )}
+            {walletError && <p className="launch-status-note text-sm text-destructive">{walletError}</p>}
             {requestError && (
-              <div
-                className="
-                launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive
-              "
-              >
+              <div className="launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive">
                 {requestError}
               </div>
             )}
@@ -2456,12 +2273,7 @@ export default function LaunchpadForm({
               <div className="mt-4">
                 {step2GitHubReady ? (
                   <div className="launch-field">
-                    <input
-                      value={githubStatusText}
-                      readOnly
-                      disabled
-                      className="launch-github-status-input"
-                    />
+                    <input value={githubStatusText} readOnly disabled className="launch-github-status-input" />
                   </div>
                 ) : (
                   <button
@@ -2483,9 +2295,7 @@ export default function LaunchpadForm({
               </div>
 
               {githubError && (
-                <p className="launch-helper-text mt-3 text-xs font-medium text-destructive">
-                  {githubError}
-                </p>
+                <p className="launch-helper-text mt-3 text-xs font-medium text-destructive">{githubError}</p>
               )}
             </div>
             <div className="launch-panel-card launch-step2-card rounded-2xl border border-border/70 px-5 py-4">
@@ -2557,11 +2367,7 @@ export default function LaunchpadForm({
                       </div>
                     ) : (
                       <div className="launch-auth-state flex flex-wrap items-center gap-2">
-                        <span
-                          className="
-                                  inline-flex size-7 items-center justify-center rounded-md border border-black bg-black
-                                "
-                        >
+                        <span className="inline-flex size-7 items-center justify-center rounded-md border border-black bg-black">
                           <Image
                             src="/assets/images/vercel.svg"
                             alt="Vercel"
@@ -2575,9 +2381,7 @@ export default function LaunchpadForm({
                             {vercelOauthIdentity || t('Connected account')}
                           </span>
                         ) : (
-                          <span className="text-xs text-muted-foreground">
-                            {t('Not connected')}
-                          </span>
+                          <span className="text-xs text-muted-foreground">{t('Not connected')}</span>
                         )}
 
                         {vercelOauthConnected ? (
@@ -2676,18 +2480,12 @@ export default function LaunchpadForm({
                 <div className="launch-connection-step">
                   <div className="launch-connection-step-header">
                     <span className="launch-connection-step-index">2</span>
-                    <span className="launch-connection-step-label">
-                      {t('Connect Vercel to GitHub')}
-                    </span>
+                    <span className="launch-connection-step-label">{t('Connect Vercel to GitHub')}</span>
                     {vercelGitImportReady && <CircleCheckIcon className="size-4 text-primary" />}
                   </div>
                   {showVercelGitHubButton && (
                     <div className="launch-stack space-y-2">
-                      <button
-                        type="button"
-                        className="launch-mini-button"
-                        onClick={startVercelGitHubConnect}
-                      >
+                      <button type="button" className="launch-mini-button" onClick={startVercelGitHubConnect}>
                         {t('Connect Vercel to GitHub')}
                       </button>
                       <button
@@ -2728,14 +2526,10 @@ export default function LaunchpadForm({
                 </div>
               )}
               {vercelConnectionError && (
-                <p className="launch-helper-text text-xs font-medium text-destructive">
-                  {vercelConnectionError}
-                </p>
+                <p className="launch-helper-text text-xs font-medium text-destructive">{vercelConnectionError}</p>
               )}
               {oauthStatusError && (
-                <p className="launch-helper-text text-xs font-medium text-destructive">
-                  {oauthStatusError}
-                </p>
+                <p className="launch-helper-text text-xs font-medium text-destructive">{oauthStatusError}</p>
               )}
             </div>
 
@@ -2774,23 +2568,14 @@ export default function LaunchpadForm({
                 />
               </label>
               {reownConnectionLoading && form.env.REOWN_APPKIT_PROJECT_ID.trim() && (
-                <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
-                  {t('Checking...')}
-                </p>
+                <p className="launch-helper-text mt-2 text-xs text-muted-foreground">{t('Checking...')}</p>
               )}
               {reownConnectionError && (
-                <p className="launch-helper-text mt-2 text-xs font-medium text-destructive">
-                  {reownConnectionError}
-                </p>
+                <p className="launch-helper-text mt-2 text-xs font-medium text-destructive">{reownConnectionError}</p>
               )}
               <p className="launch-helper-text mt-2 text-xs text-muted-foreground">
                 {t('Get it at')}{' '}
-                <a
-                  className="launch-link"
-                  href="https://cloud.reown.com"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="launch-link" href="https://cloud.reown.com" target="_blank" rel="noreferrer">
                   cloud.reown.com
                 </a>{' '}
                 {t('→ create/select project → copy Project ID.')}
@@ -2847,9 +2632,7 @@ export default function LaunchpadForm({
                 </button>
               </div>
               {supabaseResourcesError && (
-                <p className="launch-helper-text text-xs font-medium text-primary/90">
-                  {supabaseResourcesError}
-                </p>
+                <p className="launch-helper-text text-xs font-medium text-primary/90">{supabaseResourcesError}</p>
               )}
             </div>
           </div>
@@ -2857,16 +2640,11 @@ export default function LaunchpadForm({
           <div className="launch-panel-card launch-step2-advanced mt-5 rounded-2xl border border-border/70 px-5 py-4">
             <button
               type="button"
-              className="
-                launch-step2-advanced-toggle flex w-full items-center justify-between text-left text-sm font-medium
-                text-foreground
-              "
+              className="launch-step2-advanced-toggle flex w-full items-center justify-between text-left text-sm font-medium text-foreground"
               onClick={() => setStep2AdvancedOpen((previous) => !previous)}
             >
               <span>{t('Advanced options')}</span>
-              <ChevronDownIcon
-                className={`size-4 transition-transform ${step2AdvancedOpen ? 'rotate-180' : ''}`}
-              />
+              <ChevronDownIcon className={`size-4 transition-transform ${step2AdvancedOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {step2AdvancedOpen && (
@@ -3078,11 +2856,7 @@ export default function LaunchpadForm({
             <StepFooterBrand />
             <div className="launch-step-footer-control launch-binary-nav">
               <span className="launch-binary-label">{t('Continue')}</span>
-              <button
-                type="button"
-                className="launch-choice-button launch-choice-no"
-                onClick={() => setActiveStep(1)}
-              >
+              <button type="button" className="launch-choice-button launch-choice-no" onClick={() => setActiveStep(1)}>
                 <ArrowLeftIcon className="size-3.5" />
                 {t('No')}
               </button>
@@ -3107,10 +2881,7 @@ export default function LaunchpadForm({
           <div className="launch-panel-card launch-step3-card mt-5 rounded-2xl border border-border/70 p-5">
             <div className="launch-timeline-list space-y-3">
               {timeline.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="launch-timeline-entry flex items-center gap-3 text-sm"
-                >
+                <div key={entry.id} className="launch-timeline-entry flex items-center gap-3 text-sm">
                   <span
                     className={`launch-timeline-dot ${
                       entry.status === 'done'
@@ -3175,11 +2946,7 @@ export default function LaunchpadForm({
           </div>
 
           {requestError && (
-            <div
-              className="
-              launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive
-            "
-            >
+            <div className="launch-step3-error mt-5 rounded-xl border border-destructive/45 p-4 text-sm text-destructive">
               {requestError}
             </div>
           )}

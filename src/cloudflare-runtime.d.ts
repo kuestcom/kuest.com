@@ -30,11 +30,7 @@ interface ScheduledController {
 
 type ExportedHandler<TEnv> = {
   fetch?: (request: Request, env: TEnv, ctx: ExecutionContext) => Response | Promise<Response>
-  scheduled?: (
-    controller: ScheduledController,
-    env: TEnv,
-    ctx: ExecutionContext,
-  ) => void | Promise<void>
+  scheduled?: (controller: ScheduledController, env: TEnv, ctx: ExecutionContext) => void | Promise<void>
 }
 
 declare module 'cloudflare:workers' {

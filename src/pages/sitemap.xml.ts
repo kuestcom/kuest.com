@@ -1,4 +1,3 @@
-import type { APIRoute } from 'astro'
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@/i18n/locales'
 import { getPathname } from '@/i18n/navigation'
 import { listPostSitemapEntries } from '@/lib/blog/content'
@@ -36,14 +35,12 @@ function entry(
   return `<url><loc>${xml(new URL(defaultPath, origin).toString())}</loc>${links}<xhtml:link rel="alternate" hreflang="x-default" href="${xml(new URL(defaultPath, origin).toString())}"/>${lastModified ? `<lastmod>${lastModified.toISOString()}</lastmod>` : ''}<changefreq>${frequency}</changefreq><priority>${priority}</priority></url>`
 }
 
-export const GET: APIRoute = () => {
+export function GET() {
   const origin = new URL(getPublicRuntimeConfig().SITE_URL)
   const staticEntries = STATIC_ROUTES.map((route) =>
     entry(
       origin,
-      Object.fromEntries(
-        SUPPORTED_LOCALES.map((locale) => [locale, getPathname({ href: route.path, locale })]),
-      ),
+      Object.fromEntries(SUPPORTED_LOCALES.map((locale) => [locale, getPathname({ href: route.path, locale })])),
       undefined,
       route.frequency,
       route.priority,

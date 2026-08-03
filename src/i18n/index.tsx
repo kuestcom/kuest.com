@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
-import type { SupportedLocale } from './locales'
+
 import { createContext, createElement, Fragment, useContext } from 'react'
+
+import type { SupportedLocale } from './locales'
+
 import ar from './messages/ar.json'
 import de from './messages/de.json'
 import en from './messages/en.json'
@@ -34,7 +37,7 @@ function interpolate(message: string, values?: Values) {
 
 export function createTranslator(locale: SupportedLocale): Translator {
   const localeMessages = messages[locale] as Record<string, string>
-  const translate = (message: string, values?: Values) => {
+  function translate(message: string, values?: Values) {
     const key = englishKeyByMessage.get(message)
     return interpolate((key && localeMessages[key]) || message, values)
   }
@@ -73,18 +76,8 @@ const I18nContext = createContext<I18nValue>({
   t: createTranslator('en'),
 })
 
-export function I18nProvider({
-  locale,
-  children,
-}: {
-  locale: SupportedLocale
-  children: ReactNode
-}) {
-  return (
-    <I18nContext.Provider value={{ locale, t: createTranslator(locale) }}>
-      {children}
-    </I18nContext.Provider>
-  )
+export function I18nProvider({ locale, children }: { locale: SupportedLocale; children: ReactNode }) {
+  return <I18nContext.Provider value={{ locale, t: createTranslator(locale) }}>{children}</I18nContext.Provider>
 }
 
 export function useExtracted() {

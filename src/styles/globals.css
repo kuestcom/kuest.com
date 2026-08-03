@@ -264,21 +264,9 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at top center,
-      color-mix(in oklab, var(--primary) 14%, transparent) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 14% 18%,
-      color-mix(in oklab, var(--foreground) 5%, transparent) 0%,
-      transparent 24%
-    ),
-    radial-gradient(
-      circle at 86% 10%,
-      color-mix(in oklab, var(--primary) 8%, transparent) 0%,
-      transparent 22%
-    ),
+    radial-gradient(circle at top center, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 40%),
+    radial-gradient(circle at 14% 18%, color-mix(in oklab, var(--foreground) 5%, transparent) 0%, transparent 24%),
+    radial-gradient(circle at 86% 10%, color-mix(in oklab, var(--primary) 8%, transparent) 0%, transparent 22%),
     linear-gradient(
       180deg,
       color-mix(in oklab, var(--background) 96%, transparent) 0%,
@@ -293,16 +281,8 @@
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(
-      90deg,
-      color-mix(in oklab, var(--border) 72%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--border) 56%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 72%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--border) 56%, transparent) 1px, transparent 1px);
   background-size: 128px 128px;
   mask-image: radial-gradient(circle at center, black 0%, black 56%, transparent 88%);
   opacity: 0.24;
@@ -1482,8 +1462,7 @@
   margin-inline: auto;
   border: 1px solid var(--border-medium);
   border-radius: 32px;
-  background:
-    linear-gradient(180deg, var(--surface-overlay-soft), transparent), var(--surface-backdrop);
+  background: linear-gradient(180deg, var(--surface-overlay-soft), transparent), var(--surface-backdrop);
   box-shadow: var(--shadow-card);
   overflow: hidden;
 }
@@ -1576,9 +1555,7 @@
 
 .launch-panel-card,
 .launch-step1-wallet {
-  background:
-    linear-gradient(180deg, var(--surface-overlay-muted), var(--surface-overlay-subtle)),
-    var(--color-bg1);
+  background: linear-gradient(180deg, var(--surface-overlay-muted), var(--surface-overlay-subtle)), var(--color-bg1);
   box-shadow: var(--shadow-soft);
   min-width: 0;
   max-width: 100%;
@@ -2232,11 +2209,7 @@
   border: 1px solid color-mix(in srgb, #5865f2 52%, var(--border-medium));
   border-radius: 999px;
   background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, #5865f2 24%, transparent),
-      color-mix(in srgb, #5865f2 9%, transparent)
-    ),
+    linear-gradient(180deg, color-mix(in srgb, #5865f2 24%, transparent), color-mix(in srgb, #5865f2 9%, transparent)),
     var(--surface-overlay-muted);
   color: white;
   font-size: 0.93rem;
@@ -2256,11 +2229,7 @@
   outline: none;
   border-color: color-mix(in srgb, #5865f2 78%, white);
   background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, #5865f2 36%, transparent),
-      color-mix(in srgb, #5865f2 15%, transparent)
-    ),
+    linear-gradient(180deg, color-mix(in srgb, #5865f2 36%, transparent), color-mix(in srgb, #5865f2 15%, transparent)),
     var(--surface-overlay-muted);
   color: white;
   box-shadow: 0 0 42px color-mix(in srgb, #5865f2 28%, transparent);
@@ -2496,11 +2465,7 @@
   --map-theme-filter: brightness(0) invert(1);
   --attention-stroke: rgb(var(--text-rgb) / 0.18);
   --hero-heading-gradient: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
-  --hero-mesh-gloss: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.76) 0%,
-    rgba(255, 255, 255, 0.18) 100%
-  );
+  --hero-mesh-gloss: linear-gradient(to bottom, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.18) 100%);
   --cta-heading-gradient: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.6) 100%);
   --faq-answer-color: rgba(255, 255, 255, 0.98);
   --btn-solid-border: rgba(255, 255, 255, 0.72);
@@ -2527,11 +2492,7 @@
   --menu-option-hover: var(--accent-interaction-bg);
   --menu-option-selected-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
   --menu-option-selected-text: var(--text);
-  --preview-shell-bg: linear-gradient(
-    180deg,
-    var(--surface-overlay-soft),
-    var(--surface-overlay-subtle)
-  );
+  --preview-shell-bg: linear-gradient(180deg, var(--surface-overlay-soft), var(--surface-overlay-subtle));
   --preview-shell-shadow: 0 40px 120px rgba(0, 0, 0, 0.38);
   --preview-head-bg: rgba(19, 23, 32, 0.94);
   --preview-dot-neutral: rgba(255, 255, 255, 0.28);
@@ -2541,8 +2502,7 @@
   --preview-mobile-shell-bg:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
     linear-gradient(180deg, rgba(19, 23, 32, 0.98) 0%, rgba(19, 23, 32, 0.92) 100%);
-  --preview-mobile-shell-shadow:
-    0 40px 120px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --preview-mobile-shell-shadow: 0 40px 120px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --preview-mobile-toolbar-bg: rgba(19, 23, 32, 0.86);
   --preview-mobile-toolbar-shadow: 0 16px 40px rgba(0, 0, 0, 0.34);
   --preview-mobile-url-bg: rgba(255, 255, 255, 0.04);
@@ -2559,13 +2519,7 @@
   --proof-card-link: rgba(255, 255, 255, 0.92);
   --proof-card-link-decoration: rgba(255, 255, 255, 0.28);
   --proof-card-link-hover-decoration: rgba(255, 255, 255, 0.82);
-  --section-rule: linear-gradient(
-    90deg,
-    transparent 0,
-    var(--border2) 14%,
-    var(--border2) 86%,
-    transparent 100%
-  );
+  --section-rule: linear-gradient(90deg, transparent 0, var(--border2) 14%, var(--border2) 86%, transparent 100%);
   --loading-surface-bg: var(--surface-panel-accent);
   --mono: 'Geist Mono', ui-monospace, monospace;
   --sans: 'Open Sauce One', 'Inter', sans-serif;
@@ -2611,11 +2565,7 @@ html[data-theme-mode='light'] {
   --shadow-card: 0 16px 34px rgba(14, 17, 23, 0.14);
   --shadow-modal: 0 40px 140px rgba(14, 17, 23, 0.14);
   --hero-heading-gradient: linear-gradient(135deg, #0e1117 0%, rgba(14, 17, 23, 0.68) 100%);
-  --hero-mesh-gloss: linear-gradient(
-    to bottom,
-    rgba(14, 17, 23, 0.82) 0%,
-    rgba(14, 17, 23, 0.22) 100%
-  );
+  --hero-mesh-gloss: linear-gradient(to bottom, rgba(14, 17, 23, 0.82) 0%, rgba(14, 17, 23, 0.22) 100%);
   --cta-heading-gradient: linear-gradient(135deg, #0e1117 0%, rgba(14, 17, 23, 0.6) 100%);
   --faq-answer-color: rgba(14, 17, 23, 0.92);
   --btn-solid-border: rgba(14, 17, 23, 0.72);
@@ -2641,8 +2591,7 @@ html[data-theme-mode='light'] {
   --preview-mobile-shell-bg:
     linear-gradient(180deg, rgba(14, 17, 23, 0.04), rgba(14, 17, 23, 0.02)),
     linear-gradient(180deg, rgba(247, 248, 251, 0.98) 0%, rgba(239, 243, 248, 0.95) 100%);
-  --preview-mobile-shell-shadow:
-    0 32px 86px rgba(14, 17, 23, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --preview-mobile-shell-shadow: 0 32px 86px rgba(14, 17, 23, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.72);
   --preview-mobile-toolbar-bg: rgba(247, 248, 251, 0.88);
   --preview-mobile-toolbar-shadow: 0 16px 40px rgba(14, 17, 23, 0.14);
   --preview-mobile-url-bg: rgba(14, 17, 23, 0.04);
@@ -3329,8 +3278,8 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
   display: inline-block;
   white-space: nowrap;
   background:
-    url(/assets/images/hero-text-mesh.svg), url(/assets/images/hero-text-mesh.svg),
-    var(--hero-mesh-gloss), var(--color-bg);
+    url(/assets/images/hero-text-mesh.svg), url(/assets/images/hero-text-mesh.svg), var(--hero-mesh-gloss),
+    var(--color-bg);
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
@@ -3608,8 +3557,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
   display: grid;
   gap: 10px;
   border: 1px solid var(--border-strong);
-  background:
-    linear-gradient(180deg, var(--surface-overlay-soft), transparent), var(--surface-backdrop);
+  background: linear-gradient(180deg, var(--surface-overlay-soft), transparent), var(--surface-backdrop);
   color: var(--color-text);
   box-shadow: var(--shadow-card);
   opacity: 0;
@@ -3664,8 +3612,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
 .hero-market-card:hover .hero-market-tooltip {
   opacity: 1;
   visibility: visible;
-  transform: translate(var(--hero-tooltip-shift-x), 0) rotate(calc(var(--hero-market-rotate) * -1))
-    scale(1);
+  transform: translate(var(--hero-tooltip-shift-x), 0) rotate(calc(var(--hero-market-rotate) * -1)) scale(1);
 }
 .hero-market-card:hover {
   z-index: 16;
@@ -5827,9 +5774,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
   gap: 10px;
   max-width: none;
   padding-top: 0;
-  padding-left: calc(
-    var(--solution-timeline-node-left) + var(--solution-timeline-node-size) + 16px
-  );
+  padding-left: calc(var(--solution-timeline-node-left) + var(--solution-timeline-node-size) + 16px);
 }
 .solution-timeline-step-top .solution-timeline-copy {
   left: calc(var(--solution-timeline-node-left) + var(--solution-timeline-node-size) + 16px);
@@ -6853,11 +6798,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
       color-mix(in srgb, var(--color-accent) 8%, transparent),
       color-mix(in srgb, var(--color-accent) 4%, transparent)
     ),
-    radial-gradient(
-      circle at top,
-      color-mix(in srgb, var(--color-accent) 12%, transparent),
-      transparent 65%
-    );
+    radial-gradient(circle at top, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 65%);
   color: var(--color-accent);
 }
 .audience-row-icon svg,
@@ -7549,11 +7490,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
   z-index: 1;
   height: var(--fee-track-height);
   border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    var(--green) 0 var(--fill-pct),
-    var(--fee-rail-color) var(--fill-pct) 100%
-  );
+  background: linear-gradient(90deg, var(--green) 0 var(--fill-pct), var(--fee-rail-color) var(--fill-pct) 100%);
   pointer-events: none;
   transform: translateY(-50%);
 }
@@ -7607,10 +7544,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
 .calc-scale-dot {
   position: absolute;
   top: 50%;
-  left: calc(
-    (100% - var(--fee-thumb-size)) * (var(--pos) / var(--fee-step-count)) +
-      (var(--fee-thumb-size) / 2)
-  );
+  left: calc((100% - var(--fee-thumb-size)) * (var(--pos) / var(--fee-step-count)) + (var(--fee-thumb-size) / 2));
   width: var(--fee-dot-size);
   height: var(--fee-dot-size);
   border-radius: 999px;
@@ -7634,10 +7568,7 @@ html:not([data-theme-mode='light']) .theme-toggle-icon-dark {
 .calc-scale-item {
   position: absolute;
   top: 0;
-  left: calc(
-    (100% - var(--fee-thumb-size)) * (var(--pos) / var(--fee-step-count)) +
-      (var(--fee-thumb-size) / 2)
-  );
+  left: calc((100% - var(--fee-thumb-size)) * (var(--pos) / var(--fee-step-count)) + (var(--fee-thumb-size) / 2));
   width: max-content;
   text-align: center;
   transform: translateX(-50%);

@@ -18,12 +18,7 @@ export default function Stat({
       <div className="blog-stat-value">{value}</div>
       <div className="blog-stat-label">{label}</div>
       {safeSourceHref && sourceLabel ? (
-        <a
-          href={safeSourceHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="blog-stat-source"
-        >
+        <a href={safeSourceHref} target="_blank" rel="noopener noreferrer" className="blog-stat-source">
           <span aria-hidden="true">↗</span>
           {sourceLabel}
         </a>

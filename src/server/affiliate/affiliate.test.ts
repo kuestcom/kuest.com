@@ -1,5 +1,6 @@
 import { encodeFunctionResult, parseAbi } from 'viem'
 import { describe, expect, it, vi } from 'vite-plus/test'
+
 import { getAffiliateConfig } from './constants'
 import { readDubClickId } from './cookie'
 import { confirmedSafeBlockNumber, deterministicInvoiceId, retryAt } from './logic'
@@ -86,7 +87,9 @@ describe('affiliate source and rollout safety', () => {
   })
 
   it('paginates until the permanent cut boundary without losing the boundary timestamp', async () => {
-    const hash = (character: string) => `0x${character.repeat(64)}`
+    function hash(character: string) {
+      return `0x${character.repeat(64)}`
+    }
     const fetcher = vi
       .fn()
       .mockResolvedValueOnce(
@@ -160,30 +163,28 @@ describe('affiliate source and rollout safety', () => {
       remainderRaw: '2500',
       scaleRawPerCent: '10000',
     })
-    expect(() =>
-      rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: '-1' }),
-    ).toThrow('unsigned integer string')
-    expect(() =>
-      rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: 'invalid' }),
-    ).toThrow('unsigned integer string')
+    expect(() => rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: '-1' })).toThrow(
+      'unsigned integer string',
+    )
+    expect(() => rawToCentsWithRemainder({ amountRaw: '12500', decimals: 6, remainderRaw: 'invalid' })).toThrow(
+      'unsigned integer string',
+    )
   })
 
   it('waits for the initial confirmation window and shares deterministic retry timing', () => {
-    expect(
-      confirmedSafeBlockNumber({ latestBlockNumber: 1_050, confirmations: 64, startBlock: 1_000 }),
-    ).toBeNull()
-    expect(
-      confirmedSafeBlockNumber({ latestBlockNumber: 1_064, confirmations: 64, startBlock: 1_000 }),
-    ).toBe(1_000)
+    expect(confirmedSafeBlockNumber({ latestBlockNumber: 1_050, confirmations: 64, startBlock: 1_000 })).toBeNull()
+    expect(confirmedSafeBlockNumber({ latestBlockNumber: 1_064, confirmations: 64, startBlock: 1_000 })).toBe(1_000)
     expect(retryAt(2, 1_000, 0)).toBe(new Date(3_000).toISOString())
   })
 
   it('finishes a round-robin cycle without wrapping into an unscanned next cycle', () => {
-    const operator = (character: string) => ({
-      operator_wallet: `0x${character.repeat(40)}`,
-      deposit_wallet: `0x${character.repeat(40)}`,
-      chain_id: 80002,
-    })
+    function operator(character: string) {
+      return {
+        operator_wallet: `0x${character.repeat(40)}`,
+        deposit_wallet: `0x${character.repeat(40)}`,
+        chain_id: 80002,
+      }
+    }
     expect(operatorPageFromRows([operator('1'), operator('2'), operator('3')], 2)).toEqual({
       operators: [operator('1'), operator('2')],
       cycleComplete: false,

@@ -1,7 +1,11 @@
-import type { BlogFrontmatter } from './frontmatter'
-import type { SupportedLocale } from '@/i18n/locales'
 import { parse as parseYaml } from 'yaml'
+
+import type { SupportedLocale } from '@/i18n/locales'
+
 import { SUPPORTED_LOCALES } from '@/i18n/locales'
+
+import type { BlogFrontmatter } from './frontmatter'
+
 import { parseFrontmatter } from './frontmatter'
 import { computeReadingTime } from './reading-time'
 
@@ -126,9 +130,9 @@ function loadPosts(): BlogPost[] {
     return {
       ...post,
       availableLocales: siblings.map((item) => item.locale).toSorted(),
-      localizedSlugs: Object.fromEntries(
-        siblings.map((item) => [item.locale, item.slug]),
-      ) as Partial<Record<SupportedLocale, string>>,
+      localizedSlugs: Object.fromEntries(siblings.map((item) => [item.locale, item.slug])) as Partial<
+        Record<SupportedLocale, string>
+      >,
     }
   })
 }
@@ -136,10 +140,7 @@ function loadPosts(): BlogPost[] {
 const allPosts = loadPosts()
 
 function isPublished(post: { frontmatter: BlogFrontmatter }): boolean {
-  return (
-    !post.frontmatter.draft &&
-    (import.meta.env.DEV || post.frontmatter.publishedAt.getTime() <= Date.now())
-  )
+  return !post.frontmatter.draft && (import.meta.env.DEV || post.frontmatter.publishedAt.getTime() <= Date.now())
 }
 
 export function getPost(slug: string, locale: SupportedLocale): BlogPost | null {
@@ -152,13 +153,11 @@ export function getPost(slug: string, locale: SupportedLocale): BlogPost | null 
     localePosts.find((entry) => entry.contentSlug === slug || entry.contentSlug === decoded) ??
     localePosts.find(
       (entry) =>
-        normalizeSlugForLookup(entry.slug) === normalized ||
-        normalizeSlugForLookup(entry.contentSlug) === normalized,
+        normalizeSlugForLookup(entry.slug) === normalized || normalizeSlugForLookup(entry.contentSlug) === normalized,
     ) ??
     localePosts.find(
       (entry) =>
-        normalizeAsciiSlugForLookup(entry.slug) === ascii ||
-        normalizeAsciiSlugForLookup(entry.contentSlug) === ascii,
+        normalizeAsciiSlugForLookup(entry.slug) === ascii || normalizeAsciiSlugForLookup(entry.contentSlug) === ascii,
     )
 
   return post && isPublished(post) ? post : null

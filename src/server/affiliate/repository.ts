@@ -19,16 +19,11 @@ export async function reserveWalletAuthorization(params: {
        VALUES (?, ?, ?, 'reserved', ?, ?, ?)
        ON CONFLICT(proof_hash) DO NOTHING`,
     )
-    .bind(
-      params.proofHash,
-      params.operatorWallet.toLowerCase(),
-      params.chainId,
-      params.expiresAt,
-      now,
-      now,
-    )
+    .bind(params.proofHash, params.operatorWallet.toLowerCase(), params.chainId, params.expiresAt, now, now)
     .run()
-  if (!result.meta.changes) throw new Error('Wallet authorization was already used.')
+  if (!result.meta.changes) {
+    throw new Error('Wallet authorization was already used.')
+  }
 }
 
 export async function failWalletAuthorization(db: D1Database, proofHash: string) {
@@ -41,11 +36,7 @@ export async function failWalletAuthorization(db: D1Database, proofHash: string)
     .run()
 }
 
-export async function getOperatorAttribution(
-  db: D1Database,
-  operatorWallet: string,
-  chainId: number,
-) {
+export async function getOperatorAttribution(db: D1Database, operatorWallet: string, chainId: number) {
   return db
     .prepare(
       `SELECT operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
@@ -72,13 +63,7 @@ export async function persistOperatorAttribution(db: D1Database, input: Operator
   const existing = await getOperatorAttribution(db, wallet, input.chainId)
   if (existing) {
     if (existing.deposit_wallet !== depositWallet) {
-      await markDepositConflict(
-        db,
-        wallet,
-        input.chainId,
-        depositWallet,
-        'operator_deposit_changed',
-      )
+      await markDepositConflict(db, wallet, input.chainId, depositWallet, 'operator_deposit_changed')
       throw new Error('The operator deposit wallet changed and requires manual review.')
     }
     await consumeWalletAuthorization(db, input.proofHash)
@@ -93,13 +78,7 @@ export async function persistOperatorAttribution(db: D1Database, input: Operator
     .bind(depositWallet, input.chainId, wallet)
     .first<{ operator_wallet: string }>()
   if (conflict) {
-    await markDepositConflict(
-      db,
-      conflict.operator_wallet,
-      input.chainId,
-      depositWallet,
-      'deposit_operator_conflict',
-    )
+    await markDepositConflict(db, conflict.operator_wallet, input.chainId, depositWallet, 'deposit_operator_conflict')
     throw new Error('This deposit wallet belongs to another operator and requires manual review.')
   }
 
@@ -145,14 +124,12 @@ export async function consumeWalletAuthorization(db: D1Database, proofHash: stri
     )
     .bind(nowIso(), proofHash)
     .run()
-  if (!result.meta.changes) throw new Error('Wallet authorization reservation was lost.')
+  if (!result.meta.changes) {
+    throw new Error('Wallet authorization reservation was lost.')
+  }
 }
 
-export async function completeOperatorAttribution(
-  db: D1Database,
-  operatorWallet: string,
-  chainId: number,
-) {
+export async function completeOperatorAttribution(db: D1Database, operatorWallet: string, chainId: number) {
   const now = nowIso()
   const result = await db
     .prepare(
@@ -168,11 +145,7 @@ export async function completeOperatorAttribution(
   return result.meta.changes > 0
 }
 
-export async function markOperatorLaunchFailed(
-  db: D1Database,
-  operatorWallet: string,
-  chainId: number,
-) {
+export async function markOperatorLaunchFailed(db: D1Database, operatorWallet: string, chainId: number) {
   return db
     .prepare(
       `UPDATE affiliate_operator_attributions

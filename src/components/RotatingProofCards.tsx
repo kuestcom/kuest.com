@@ -1,7 +1,8 @@
 'use client'
 
-import { useExtracted } from '@/i18n'
 import { useEffect, useState } from 'react'
+
+import { useExtracted } from '@/i18n'
 
 export default function RotatingProofCards() {
   const t = useExtracted()
@@ -9,21 +10,18 @@ export default function RotatingProofCards() {
     {
       label: t('2025 volume'),
       value: '$63.5B',
-      sub: t.rich(
-        'Prediction market volume hit $63.5B in 2025, according to <link>CertiK</link>.',
-        {
-          link: (chunks) => (
-            <a
-              href="https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf"
-              className="source-link"
-              data-source-outlet="CertiK Research"
-              data-source-title="2025 Skynet Prediction Markets Report"
-            >
-              {chunks}
-            </a>
-          ),
-        },
-      ),
+      sub: t.rich('Prediction market volume hit $63.5B in 2025, according to <link>CertiK</link>.', {
+        link: (chunks) => (
+          <a
+            href="https://indd.adobe.com/view/publication/c5e0e901-0d7d-471b-80be-ec82d0d88048/xjq4/publication-web-resources/pdf/2025_Skynet_Prediction_Markets_Report_.pdf"
+            className="source-link"
+            data-source-outlet="CertiK Research"
+            data-source-title="2025 Skynet Prediction Markets Report"
+          >
+            {chunks}
+          </a>
+        ),
+      }),
     },
     {
       label: t('Polymarket talks'),
@@ -60,21 +58,18 @@ export default function RotatingProofCards() {
     {
       label: t('Weekly volume'),
       value: '$2B',
-      sub: t.rich(
-        'Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>.',
-        {
-          link: (chunks) => (
-            <a
-              href="https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume"
-              className="source-link"
-              data-source-outlet="Decrypt"
-              data-source-title="Prediction Market Trading Volume Hits All-Time High"
-            >
-              {chunks}
-            </a>
-          ),
-        },
-      ),
+      sub: t.rich('Weekly volume moved past $2B at the cycle peak, according to <link>Decrypt</link>.', {
+        link: (chunks) => (
+          <a
+            href="https://decrypt.co/345033/prediction-markets-all-time-high-trading-volume"
+            className="source-link"
+            data-source-outlet="Decrypt"
+            data-source-title="Prediction Market Trading Volume Hits All-Time High"
+          >
+            {chunks}
+          </a>
+        ),
+      }),
     },
   ]
 

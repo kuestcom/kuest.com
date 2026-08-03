@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
 import { getServerRuntimeConfig } from '@/lib/server-env'
 
@@ -56,11 +57,8 @@ export async function POST(request: Request) {
   }
 
   const rawCompanyName =
-    payload && typeof payload === 'object' && 'companyName' in payload
-      ? payload.companyName
-      : undefined
-  const rawEmail =
-    payload && typeof payload === 'object' && 'email' in payload ? payload.email : undefined
+    payload && typeof payload === 'object' && 'companyName' in payload ? payload.companyName : undefined
+  const rawEmail = payload && typeof payload === 'object' && 'email' in payload ? payload.email : undefined
   const companyName = typeof rawCompanyName === 'string' ? rawCompanyName.trim() : ''
   const email = typeof rawEmail === 'string' ? rawEmail.trim() : ''
 
@@ -95,12 +93,7 @@ export async function POST(request: Request) {
       to: [toEmail],
       replyTo: email,
       subject: `Kuest Protocol deck request — ${companyName}`,
-      text: [
-        'New pitch deck request from /protocol',
-        '',
-        `Company: ${companyName}`,
-        `Email: ${email}`,
-      ].join('\n'),
+      text: ['New pitch deck request from /protocol', '', `Company: ${companyName}`, `Email: ${email}`].join('\n'),
       html: [
         '<h1>New pitch deck request</h1>',
         '<p>Request submitted from the <strong>/protocol</strong> page.</p>',

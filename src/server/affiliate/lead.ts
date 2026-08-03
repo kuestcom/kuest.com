@@ -1,6 +1,7 @@
 import type { DubTracker } from './types'
-import { nowIso } from './repository'
+
 import { retryAt } from './logic'
+import { nowIso } from './repository'
 
 type LeadRow = {
   operator_wallet: string
@@ -14,8 +15,12 @@ type LeadRow = {
 }
 
 function resolveLeadDelivery(dryRun: boolean | undefined, dub: DubTracker | undefined) {
-  if (dryRun) return { dryRun: true as const }
-  if (!dub) throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
+  if (dryRun) {
+    return { dryRun: true as const }
+  }
+  if (!dub) {
+    throw new Error('Dub tracker is required when affiliate dry-run is disabled.')
+  }
   return { dryRun: false as const, dub }
 }
 
@@ -55,17 +60,11 @@ export async function deliverPendingLead(params: {
           RETURNING operator_wallet, operator_email, operator_name, deposit_wallet, first_project_id,
                     chain_id, dub_click_id, lead_attempts`,
         )
-        .bind(
-          leaseId,
-          leaseUntil,
-          now,
-          params.operatorWallet.toLowerCase(),
-          params.chainId,
-          now,
-          now,
-        )
+        .bind(leaseId, leaseUntil, now, params.operatorWallet.toLowerCase(), params.chainId, now, now)
         .first<LeadRow>()
-  if (!row) return false
+  if (!row) {
+    return false
+  }
   const request = {
     clickId: row.dub_click_id,
     operatorWallet: row.operator_wallet,
@@ -160,15 +159,7 @@ export async function deliverPendingLead(params: {
            (id, target_type, target_id, attempt_number, request_json, error, retry_at, created_at)
          VALUES (?, 'lead', ?, ?, ?, ?, ?, ?)`,
         )
-        .bind(
-          crypto.randomUUID(),
-          `${row.chain_id}:${row.operator_wallet}`,
-          attempt,
-          requestJson,
-          message,
-          next,
-          now,
-        ),
+        .bind(crypto.randomUUID(), `${row.chain_id}:${row.operator_wallet}`, attempt, requestJson, message, next, now),
     ])
     return false
   }

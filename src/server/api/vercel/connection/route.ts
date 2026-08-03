@@ -1,8 +1,8 @@
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
-import { inspectVercelConnection } from '@/lib/vercel-api'
 import { getServerRuntimeConfig } from '@/lib/server-env'
+import { inspectVercelConnection } from '@/lib/vercel-api'
 
 interface RequestBody {
   token?: string

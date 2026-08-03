@@ -2,8 +2,8 @@ import { registerDomainSnapshot } from '@/lib/domain-register'
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
-import { addProjectDomain, verifyProjectDomain } from '@/lib/vercel-api'
 import { getServerRuntimeConfig } from '@/lib/server-env'
+import { addProjectDomain, verifyProjectDomain } from '@/lib/vercel-api'
 
 interface RequestBody {
   token?: string
@@ -73,8 +73,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const teamId =
-      typeof body.teamId === 'string' && body.teamId.trim() ? body.teamId.trim() : undefined
+    const teamId = typeof body.teamId === 'string' && body.teamId.trim() ? body.teamId.trim() : undefined
     const projectRef =
       (typeof body.projectId === 'string' && body.projectId.trim()) ||
       (typeof body.projectName === 'string' && body.projectName.trim()) ||

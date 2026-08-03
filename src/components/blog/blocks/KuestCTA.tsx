@@ -1,4 +1,5 @@
 import { ChevronRightIcon } from 'lucide-react'
+
 import { Link } from '@/i18n/navigation'
 import { toSafeHref } from '@/lib/url-safety'
 
@@ -10,9 +11,7 @@ interface CtaLink {
 function isStaticOrApiPath(path: string): boolean {
   return (
     path.startsWith('/api/') ||
-    /\/[^/?#]+\.(?:avif|gif|ico|jpe?g|png|svg|webp|css|js|map|txt|xml|json|pdf|woff2?|ttf|eot)(?:[?#]|$)/i.test(
-      path,
-    )
+    /\/[^/?#]+\.(?:avif|gif|ico|jpe?g|png|svg|webp|css|js|map|txt|xml|json|pdf|woff2?|ttf|eot)(?:[?#]|$)/i.test(path)
   )
 }
 

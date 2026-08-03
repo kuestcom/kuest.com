@@ -1,6 +1,8 @@
 import { privateKeyToAccount } from 'viem/accounts'
 import { describe, expect, it } from 'vite-plus/test'
+
 import type { WalletControlProof } from '../../lib/launch-types'
+
 import { isWalletProofFresh, WALLET_PROOF_MAX_AGE_SECONDS } from '../../lib/wallet-proof'
 import { verifyWalletControlProof } from './wallet-proof'
 
@@ -50,9 +52,7 @@ describe('wallet control proof', () => {
     })
     expect(first.address).toBe(account.address.toLowerCase())
     expect(first.proofHash).toBe(second.proofHash)
-    expect(first.expiresAt).toBe(
-      new Date((now + WALLET_PROOF_MAX_AGE_SECONDS) * 1_000).toISOString(),
-    )
+    expect(first.expiresAt).toBe(new Date((now + WALLET_PROOF_MAX_AGE_SECONDS) * 1_000).toISOString())
   })
 
   it('rejects expired, future, wrong-wallet, wrong-chain and unsupported nonce proofs', async () => {

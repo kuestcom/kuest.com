@@ -1,10 +1,5 @@
 import { LaunchError } from '@/lib/launch-utils'
-import {
-  clearCookie,
-  ensureOAuthStateValid,
-  OAUTH_COOKIE_NAMES,
-  setOAuthSession,
-} from '@/lib/oauth'
+import { clearCookie, ensureOAuthStateValid, OAUTH_COOKIE_NAMES, setOAuthSession } from '@/lib/oauth'
 import { buildVercelSession, exchangeVercelCode, fetchVercelUser } from '@/lib/oauth-vercel'
 import { redirectResponse } from '@/server/response'
 
@@ -18,8 +13,7 @@ export async function GET(request: Request) {
   try {
     const providerError = requestUrl.searchParams.get('error')
     const providerErrorDescription =
-      requestUrl.searchParams.get('error_description') ||
-      requestUrl.searchParams.get('errorMessage')
+      requestUrl.searchParams.get('error_description') || requestUrl.searchParams.get('errorMessage')
     if (providerError) {
       const suffix = providerErrorDescription ? `: ${providerErrorDescription}` : ''
       throw new LaunchError(`Vercel OAuth error (${providerError})${suffix}`, 'oauth')
@@ -28,10 +22,7 @@ export async function GET(request: Request) {
     const code = requestUrl.searchParams.get('code')
     const state = requestUrl.searchParams.get('state')
     if (!code) {
-      throw new LaunchError(
-        'Missing OAuth code in callback. Confirm callback URL and OAuth app settings.',
-        'oauth',
-      )
+      throw new LaunchError('Missing OAuth code in callback. Confirm callback URL and OAuth app settings.', 'oauth')
     }
 
     const savedState = await ensureOAuthStateValid({
@@ -56,8 +47,6 @@ export async function GET(request: Request) {
   } catch (error) {
     await clearCookie(OAUTH_COOKIE_NAMES.vercelState)
     const message = error instanceof Error ? error.message : 'OAuth callback failed.'
-    return redirectResponse(
-      new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin),
-    )
+    return redirectResponse(new URL(`/launch?oauth_error=${encodeURIComponent(message)}`, requestUrl.origin))
   }
 }

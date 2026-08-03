@@ -98,7 +98,7 @@ const usesOpenSauceOne = !['ar', 'ja', 'ru', 'zh'].includes(locale)
       gtag('config', 'G-S0S2K7EQE4');
 
       function loadGoogleTag() {
-        if (document.querySelector('script[data-kuest-google-tag]')) return;
+        if (document.querySelector('script[data-kuest-google-tag]')) {return;}
         const script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-S0S2K7EQE4';

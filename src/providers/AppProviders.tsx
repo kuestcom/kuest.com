@@ -1,10 +1,13 @@
 'use client'
 
 import type { ReactNode } from 'react'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
-import AppKitProvider from '@/providers/AppKitProvider'
+
 import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+
+import AppKitProvider from '@/providers/AppKitProvider'
 
 interface AppProvidersProps {
   children: ReactNode

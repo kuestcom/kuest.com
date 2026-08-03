@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
-import { normalizeSiteUrl } from '@/lib/site-url'
+
 import { getServerRuntimeConfig } from '@/lib/server-env'
+import { normalizeSiteUrl } from '@/lib/site-url'
 
 const KEY_EMAILS_TABLE = 'key_emails'
 const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1'])
@@ -29,11 +30,7 @@ function normalizeApiKey(value: string | null | undefined) {
 
 function isLocalHostname(hostname: string) {
   const normalized = hostname.toLowerCase()
-  return (
-    LOCAL_HOSTNAMES.has(normalized) ||
-    normalized.endsWith('.localhost') ||
-    normalized.endsWith('.local')
-  )
+  return LOCAL_HOSTNAMES.has(normalized) || normalized.endsWith('.localhost') || normalized.endsWith('.local')
 }
 
 function normalizeRegisteredUrl(input: string) {
@@ -74,9 +71,7 @@ function createDomainRegisterClient() {
   })
 }
 
-export async function registerDomainSnapshot(
-  input: DomainRegistrationInput,
-): Promise<DomainRegistrationResult> {
+export async function registerDomainSnapshot(input: DomainRegistrationInput): Promise<DomainRegistrationResult> {
   const normalized = normalizeRegisteredUrl(input.url)
   if (!normalized) {
     return {

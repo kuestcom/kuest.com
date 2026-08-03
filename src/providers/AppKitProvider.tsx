@@ -2,13 +2,16 @@
 
 import type { AppKit } from '@reown/appkit'
 import type { ReactNode } from 'react'
+
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react'
 import { useEffect, useState } from 'react'
 import { WagmiProvider } from 'wagmi'
+
+import type { PublicRuntimeConfig } from '@/lib/runtime-config'
+
 import { AppKitContext, defaultAppKitValue } from '@/hooks/useAppKit'
 import { createAppKitRuntime } from '@/lib/appkit'
 import { IS_BROWSER } from '@/lib/constants'
-import type { PublicRuntimeConfig } from '@/lib/runtime-config'
 
 let hasInitializedAppKit = false
 let appKitInstance: AppKit | null = null

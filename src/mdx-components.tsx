@@ -1,5 +1,7 @@
 import type { MDXComponents } from 'mdx/types'
+
 import type { SupportedLocale } from '@/i18n/locales'
+
 import Image from '@/compat/Image'
 import Callout from '@/components/blog/blocks/Callout'
 import Comparison from '@/components/blog/blocks/Comparison'
@@ -13,9 +15,13 @@ import { toSafeHref } from '@/lib/url-safety'
 export function createMdxComponents(locale: SupportedLocale): MDXComponents {
   return {
     a: ({ href, children, ...rest }) => {
-      if (typeof href !== 'string') return <a {...rest}>{children}</a>
+      if (typeof href !== 'string') {
+        return <a {...rest}>{children}</a>
+      }
       const safeHref = toSafeHref(href)
-      if (!safeHref) return <>{children}</>
+      if (!safeHref) {
+        return <>{children}</>
+      }
       if (/^(?:https?:|mailto:|tel:)/i.test(safeHref)) {
         return (
           <a href={safeHref} target="_blank" rel="noopener noreferrer" {...rest}>
@@ -39,7 +45,9 @@ export function createMdxComponents(locale: SupportedLocale): MDXComponents {
     },
     img: ({ src, alt, width, height }) => {
       const resolvedSrc = typeof src === 'string' ? src : ''
-      if (!resolvedSrc) return null
+      if (!resolvedSrc) {
+        return null
+      }
       return (
         <figure>
           <Image

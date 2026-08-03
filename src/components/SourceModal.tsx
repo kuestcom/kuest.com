@@ -128,12 +128,7 @@ export default function SourceModal({
         aria-label={backLabel}
         onClick={() => setSource(null)}
       />
-      <div
-        className="source-modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="sourceModalTitle"
-      >
+      <div className="source-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="sourceModalTitle">
         <button
           type="button"
           className="source-modal-close"
@@ -152,10 +147,7 @@ export default function SourceModal({
         <div className="source-modal-url" id="sourceModalUrl">
           {source?.domain || 'source-url.com'}
         </div>
-        <div
-          className={`source-modal-frame-wrap ${isLoading ? 'is-loading' : ''}`}
-          id="sourceModalFrameWrap"
-        >
+        <div className={`source-modal-frame-wrap ${isLoading ? 'is-loading' : ''}`} id="sourceModalFrameWrap">
           <div className="source-modal-frame-loading" id="sourceModalLoading">
             {loading}
           </div>
@@ -183,12 +175,7 @@ export default function SourceModal({
           >
             {externalLabel}
           </a>
-          <button
-            type="button"
-            className="btn-cta btn-cta-secondary"
-            data-source-close
-            onClick={() => setSource(null)}
-          >
+          <button type="button" className="btn-cta btn-cta-secondary" data-source-close onClick={() => setSource(null)}>
             {backLabel}
           </button>
         </div>

@@ -45,46 +45,23 @@ export default function DockMenuControl({
           <span className="site-nav-trigger-line" />
         </span>
       </button>
-      <div
-        id="dockSiteNavMenu"
-        className="site-language-menu site-nav-menu"
-        role="menu"
-        aria-label={menuAriaLabel}
-      >
+      <div id="dockSiteNavMenu" className="site-language-menu site-nav-menu" role="menu" aria-label={menuAriaLabel}>
         {active === 'home' ? (
-          <span
-            className="site-language-option site-nav-option is-disabled"
-            role="menuitem"
-            aria-disabled="true"
-          >
+          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
             {homeLabel}
           </span>
         ) : (
-          <Link
-            href={homeHref}
-            className="site-language-option site-nav-option"
-            role="menuitem"
-            aria-label={homeLabel}
-          >
+          <Link href={homeHref} className="site-language-option site-nav-option" role="menuitem" aria-label={homeLabel}>
             {homeLabel}
           </Link>
         )}
         {active === 'home' && demoHref && demoLabel ? (
-          <a
-            href={demoHref}
-            className="site-language-option site-nav-option"
-            role="menuitem"
-            aria-label={demoLabel}
-          >
+          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem" aria-label={demoLabel}>
             {demoLabel}
           </a>
         ) : null}
         {active === 'enterprise' ? (
-          <span
-            className="site-language-option site-nav-option is-disabled"
-            role="menuitem"
-            aria-disabled="true"
-          >
+          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
             {enterpriseLabel}
           </span>
         ) : (
@@ -98,21 +75,12 @@ export default function DockMenuControl({
           </Link>
         )}
         {active === 'enterprise' && demoHref && demoLabel ? (
-          <a
-            href={demoHref}
-            className="site-language-option site-nav-option"
-            role="menuitem"
-            aria-label={demoLabel}
-          >
+          <a href={demoHref} className="site-language-option site-nav-option" role="menuitem" aria-label={demoLabel}>
             {demoLabel}
           </a>
         ) : null}
         {active === 'protocol' ? (
-          <span
-            className="site-language-option site-nav-option is-disabled"
-            role="menuitem"
-            aria-disabled="true"
-          >
+          <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
             {protocolLabel}
           </span>
         ) : (
@@ -127,11 +95,7 @@ export default function DockMenuControl({
         )}
         {blogHref && blogLabel ? (
           active === 'blog' ? (
-            <span
-              className="site-language-option site-nav-option is-disabled"
-              role="menuitem"
-              aria-disabled="true"
-            >
+            <span className="site-language-option site-nav-option is-disabled" role="menuitem" aria-disabled="true">
               {blogLabel}
             </span>
           ) : (

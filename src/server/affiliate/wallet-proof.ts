@@ -1,13 +1,13 @@
 import { verifyTypedData, type Address, type Hex } from 'viem'
+
 import type { WalletControlProof } from '../../lib/launch-types'
+
 import { isWalletProofFresh, WALLET_PROOF_MAX_AGE_SECONDS } from '../../lib/wallet-proof'
 
 const MESSAGE = 'This message attests that I control the given wallet'
 
 async function hashText(value: string) {
-  const digest = new Uint8Array(
-    await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)),
-  )
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))
   return `sha256:${Array.from(digest, (byte) => byte.toString(16).padStart(2, '0')).join('')}`
 }
 
@@ -24,7 +24,9 @@ export async function verifyWalletControlProof(params: {
   if (params.proof.chainId !== params.expectedChainId) {
     throw new Error('Wallet proof chain does not match the configured launch chain.')
   }
-  if (params.proof.nonce !== '0') throw new Error('Wallet proof nonce is not supported.')
+  if (params.proof.nonce !== '0') {
+    throw new Error('Wallet proof nonce is not supported.')
+  }
   const timestamp = Number(params.proof.timestamp)
   const now = params.nowSeconds ?? Math.floor(Date.now() / 1_000)
   if (!isWalletProofFresh(params.proof, now)) {
@@ -54,7 +56,9 @@ export async function verifyWalletControlProof(params: {
     },
     signature: params.proof.signature as Hex,
   })
-  if (!valid) throw new Error('Wallet control signature is invalid.')
+  if (!valid) {
+    throw new Error('Wallet control signature is invalid.')
+  }
   const canonical = JSON.stringify({
     address,
     signature: params.proof.signature.toLowerCase(),

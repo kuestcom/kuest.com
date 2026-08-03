@@ -1,11 +1,12 @@
+import type { DubTracker, FeeHistoryItem, FeeType } from './types'
+
+import { getAffiliateConfig, type AffiliateWorkerEnv } from './constants'
 import { createDubTracker } from './dub'
 import { deliverLeadOutbox } from './lead'
 import { confirmedSafeBlockNumber, deterministicInvoiceId, retryAt } from './logic'
 import { rawToCentsWithRemainder } from './money'
 import { nowIso } from './repository'
 import { fetchFeeHistoryPage, getBlockTimestamp } from './source'
-import { getAffiliateConfig, type AffiliateWorkerEnv } from './constants'
-import type { DubTracker, FeeHistoryItem, FeeType } from './types'
 
 type OperatorRow = {
   operator_wallet: string
@@ -103,11 +104,16 @@ export async function loadHistoryWindow(params: {
       fetcher: params.fetcher,
     })
     for (const item of page.items) {
-      if (item.timestamp < params.minimumTimestamp) reachedBoundary = true
-      if (item.timestamp >= params.minimumTimestamp && item.timestamp <= params.safeTimestamp)
+      if (item.timestamp < params.minimumTimestamp) {
+        reachedBoundary = true
+      }
+      if (item.timestamp >= params.minimumTimestamp && item.timestamp <= params.safeTimestamp) {
         items.push(item)
+      }
     }
-    if (!page.hasMore || !page.nextCursor || reachedBoundary) return items
+    if (!page.hasMore || !page.nextCursor || reachedBoundary) {
+      return items
+    }
     cursor = page.nextCursor
   }
   throw new Error(`Fee history backlog exceeded ${params.maxPages * 100} ${params.feeType} events.`)
@@ -133,7 +139,9 @@ async function syncOperatorHistory(params: {
     maxPages: params.maxPages,
   })
   const grouped = new Map<string, FeeHistoryItem[]>()
-  for (const item of items) grouped.set(item.txHash, [...(grouped.get(item.txHash) || []), item])
+  for (const item of items) {
+    grouped.set(item.txHash, [...(grouped.get(item.txHash) || []), item])
+  }
   const now = nowIso()
   const statements = Array.from(grouped.entries()).map(([txHash, rows]) => {
     const timestamp = Math.max(...rows.map((row) => row.timestamp))
@@ -171,7 +179,9 @@ async function syncOperatorHistory(params: {
     await params.db.batch(statements.slice(offset, offset + 100))
   }
   const highest = items.reduce((value, item) => Math.max(value, item.timestamp), checkpoint)
-  if (highest > checkpoint) await writeCheckpoint(params.db, streamKey, highest)
+  if (highest > checkpoint) {
+    await writeCheckpoint(params.db, streamKey, highest)
+  }
 }
 
 async function syncKuestHistory(params: {
@@ -194,7 +204,9 @@ async function syncKuestHistory(params: {
     maxPages: params.maxPages,
   })
   const grouped = new Map<string, FeeHistoryItem[]>()
-  for (const item of items) grouped.set(item.txHash, [...(grouped.get(item.txHash) || []), item])
+  for (const item of items) {
+    grouped.set(item.txHash, [...(grouped.get(item.txHash) || []), item])
+  }
   const now = nowIso()
   const statements = Array.from(grouped.entries()).map(([txHash, rows]) => {
     const amount = rows.reduce((sum, row) => sum + BigInt(row.amount), 0n).toString()
@@ -217,7 +229,9 @@ async function syncKuestHistory(params: {
     await params.db.batch(statements.slice(offset, offset + 100))
   }
   const highest = items.reduce((value, item) => Math.max(value, item.timestamp), checkpoint)
-  if (highest > checkpoint) await writeCheckpoint(params.db, streamKey, highest)
+  if (highest > checkpoint) {
+    await writeCheckpoint(params.db, streamKey, highest)
+  }
 }
 
 async function quarantineAmbiguousTransactions(db: D1Database, chainId: number) {
@@ -316,12 +330,7 @@ async function releaseFeeBatchLease(db: D1Database, row: MatchRow, leaseId: stri
     .run()
 }
 
-export async function createFeeBatches(
-  db: D1Database,
-  chainId: number,
-  tokenDecimals: number,
-  limit: number,
-) {
+export async function createFeeBatches(db: D1Database, chainId: number, tokenDecimals: number, limit: number) {
   const rows = await db
     .prepare(
       `SELECT operator_fee.operator_wallet, operator_fee.chain_id, operator_fee.tx_hash,
@@ -351,7 +360,9 @@ export async function createFeeBatches(
   for (const operatorRows of grouped.values()) {
     const firstRow = operatorRows[0]
     const lease = await claimFeeBatchLease(db, firstRow)
-    if (!lease) continue
+    if (!lease) {
+      continue
+    }
     let remainderRaw = lease.roundingRemainderRaw
     let grossFeeRaw = lease.grossFeeRaw
     let grossFeeCents = lease.grossFeeCents
@@ -390,10 +401,9 @@ export async function createFeeBatches(
           chainId: row.chain_id,
           txHash: row.tx_hash,
           timestamp: row.event_timestamp,
-          feeTypes: [
-            row.has_builder_fee ? 'BUILDER' : null,
-            row.has_affiliate_fee ? 'AFFILIATE' : null,
-          ].filter(Boolean),
+          feeTypes: [row.has_builder_fee ? 'BUILDER' : null, row.has_affiliate_fee ? 'AFFILIATE' : null].filter(
+            Boolean,
+          ),
           grossKuestFeeRaw: row.amount_raw,
           tokenDecimals,
         }
@@ -481,12 +491,7 @@ async function prepareDryRunBatches(db: D1Database, limit: number) {
     .run()
 }
 
-async function deliverSales(params: {
-  db: D1Database
-  dub: DubTracker
-  limit: number
-  maxAttempts: number
-}) {
+async function deliverSales(params: { db: D1Database; dub: DubTracker; limit: number; maxAttempts: number }) {
   const rows = await params.db
     .prepare(
       `SELECT batch.id, batch.invoice_id, batch.operator_wallet, batch.chain_id,
@@ -522,7 +527,9 @@ async function deliverSales(params: {
       )
       .bind(leaseUntil, nowIso(), row.id, nowIso())
       .run()
-    if (!claimed.meta.changes) continue
+    if (!claimed.meta.changes) {
+      continue
+    }
     const attempt = row.attempts + 1
     const request = JSON.parse(row.dub_payload_json) as {
       operatorWallet: string
@@ -554,14 +561,7 @@ async function deliverSales(params: {
              (id, target_type, target_id, attempt_number, request_json, response_json, created_at)
            VALUES (?, 'sale', ?, ?, ?, ?, ?)`,
           )
-          .bind(
-            crypto.randomUUID(),
-            row.id,
-            attempt,
-            row.dub_payload_json,
-            JSON.stringify(response),
-            now,
-          ),
+          .bind(crypto.randomUUID(), row.id, attempt, row.dub_payload_json, JSON.stringify(response), now),
       ])
     } catch (error) {
       const message = error instanceof Error ? error.message.slice(0, 1_000) : 'Dub sale failed.'
@@ -590,24 +590,23 @@ async function deliverSales(params: {
 
 export async function runAffiliateCron(env: AffiliateWorkerEnv) {
   const config = getAffiliateConfig(env)
-  if (config.startBlock < 1)
+  if (config.startBlock < 1) {
     throw new Error('AFFILIATE_START_BLOCK must be explicitly configured above block zero.')
+  }
   const latest = await getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: 'latest' })
   const safeBlockNumber = confirmedSafeBlockNumber({
     latestBlockNumber: latest.blockNumber,
     confirmations: config.confirmations,
     startBlock: config.startBlock,
   })
-  if (safeBlockNumber == null) return
+  if (safeBlockNumber == null) {
+    return
+  }
   const [startBlock, safeBlock] = await Promise.all([
     getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: config.startBlock }),
     getBlockTimestamp({ rpcUrl: config.rpcUrl, blockNumber: safeBlockNumber }),
   ])
-  const operatorPage = await listOperatorsRoundRobin(
-    env.AFFILIATE_DB,
-    config.chainId,
-    config.batchLimit,
-  )
+  const operatorPage = await listOperatorsRoundRobin(env.AFFILIATE_DB, config.chainId, config.batchLimit)
 
   for (const operator of operatorPage.operators) {
     await syncOperatorHistory({
@@ -646,12 +645,7 @@ export async function runAffiliateCron(env: AffiliateWorkerEnv) {
   })
   if (operatorPage.cycleComplete) {
     await quarantineAmbiguousTransactions(env.AFFILIATE_DB, config.chainId)
-    await createFeeBatches(
-      env.AFFILIATE_DB,
-      config.chainId,
-      config.tokenDecimals,
-      config.batchLimit * 4,
-    )
+    await createFeeBatches(env.AFFILIATE_DB, config.chainId, config.tokenDecimals, config.batchLimit * 4)
   }
 
   const dub = config.dryRun ? undefined : createDubTracker(config.dubApiKey)

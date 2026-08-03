@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+
 import { runWithRequestContext } from './request-context'
 
 type LegacyHandler = (request: Request) => Response | Promise<Response>

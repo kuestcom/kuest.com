@@ -1,8 +1,4 @@
-export function deterministicInvoiceId(params: {
-  chainId: number
-  operatorWallet: string
-  txHash: string
-}) {
+export function deterministicInvoiceId(params: { chainId: number; operatorWallet: string; txHash: string }) {
   return `${params.chainId}:${params.operatorWallet.toLowerCase()}:${params.txHash.toLowerCase()}`
 }
 

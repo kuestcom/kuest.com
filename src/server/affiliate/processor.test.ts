@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test'
+
 import { createFeeBatches } from './processor'
 
 type TestStatement = D1PreparedStatement & { query: string; values: unknown[] }
@@ -21,8 +22,8 @@ function createBatchDb(options: { invalidateLeaseBeforeBatch?: boolean } = {}) {
   let grossFeeCents = 0
   const batches = new Set<string>()
 
-  const statement = (query: string, values: unknown[] = []): TestStatement =>
-    ({
+  function statement(query: string, values: unknown[] = []): TestStatement {
+    return {
       query,
       values,
       bind: (...nextValues: unknown[]) => statement(query, nextValues),
@@ -38,7 +39,9 @@ function createBatchDb(options: { invalidateLeaseBeforeBatch?: boolean } = {}) {
       },
       async first() {
         if (query.includes('RETURNING rounding_remainder_raw')) {
-          if (leaseId) return null
+          if (leaseId) {
+            return null
+          }
           leaseId = String(values[0])
           return {
             rounding_remainder_raw: remainderRaw,
@@ -56,21 +59,31 @@ function createBatchDb(options: { invalidateLeaseBeforeBatch?: boolean } = {}) {
           leaseId = null
           return { success: true, results: [], meta: { changes: 1 } }
         }
-        if (query.includes("SET status = 'batched'")) sourceStatus = 'batched'
+        if (query.includes("SET status = 'batched'")) {
+          sourceStatus = 'batched'
+        }
         return { success: true, results: [], meta: { changes: 1 } }
       },
-    }) as TestStatement
+    } as TestStatement
+  }
 
   const db = {
     prepare: (query: string) => statement(query),
     async batch(statements: D1PreparedStatement[]) {
       const [insert, sourceUpdate, attributionUpdate] = statements as TestStatement[]
       const invoiceId = String(insert.values[1])
-      if (batches.has(invoiceId)) throw new Error('UNIQUE constraint failed')
-      if (options.invalidateLeaseBeforeBatch) leaseId = 'reclaimed-lease'
-      if (leaseId !== insert.values[5])
+      if (batches.has(invoiceId)) {
+        throw new Error('UNIQUE constraint failed')
+      }
+      if (options.invalidateLeaseBeforeBatch) {
+        leaseId = 'reclaimed-lease'
+      }
+      if (leaseId !== insert.values[5]) {
         throw new Error('Affiliate fee batch lease is no longer valid')
-      if (leaseId !== attributionUpdate.values.at(-1)) throw new Error('Affiliate lease was lost')
+      }
+      if (leaseId !== attributionUpdate.values.at(-1)) {
+        throw new Error('Affiliate lease was lost')
+      }
       batches.add(invoiceId)
       sourceStatus = 'batched'
       remainderRaw = String(attributionUpdate.values[0])
@@ -91,10 +104,7 @@ describe('affiliate fee batching', () => {
   it('serializes concurrent batches per operator and updates carried totals once', async () => {
     const database = createBatchDb()
 
-    await Promise.all([
-      createFeeBatches(database.db, 80002, 6, 100),
-      createFeeBatches(database.db, 80002, 6, 100),
-    ])
+    await Promise.all([createFeeBatches(database.db, 80002, 6, 100), createFeeBatches(database.db, 80002, 6, 100)])
 
     const state = database.state()
     expect(state.batches.size).toBe(1)
@@ -110,9 +120,7 @@ describe('affiliate fee batching', () => {
   it('rolls back every batch write when the lease was reclaimed before insertion', async () => {
     const database = createBatchDb({ invalidateLeaseBeforeBatch: true })
 
-    await expect(createFeeBatches(database.db, 80002, 6, 100)).rejects.toThrow(
-      'lease is no longer valid',
-    )
+    await expect(createFeeBatches(database.db, 80002, 6, 100)).rejects.toThrow('lease is no longer valid')
 
     const state = database.state()
     expect(state.batches.size).toBe(0)

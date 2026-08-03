@@ -1,7 +1,8 @@
-import type { ShowcaseIconName, ShowcaseNiche } from '@/lib/marketing-shared-data'
-import type { SupportedLocale } from '@/i18n/locales'
 import { ChevronRightIcon } from 'lucide-react'
-import { createTranslator, I18nProvider } from '@/i18n'
+
+import type { SupportedLocale } from '@/i18n/locales'
+import type { ShowcaseIconName, ShowcaseNiche } from '@/lib/marketing-shared-data'
+
 import Image from '@/compat/Image'
 import Script from '@/compat/Script'
 import HeroMarketStage from '@/components/HeroMarketStage'
@@ -16,17 +17,12 @@ import SitePreview from '@/components/SitePreview'
 import SourceModal from '@/components/SourceModal'
 import ThemeToggle from '@/components/ThemeToggle'
 import TimelineSpine from '@/components/TimelineSpine'
+import { createTranslator, I18nProvider } from '@/i18n'
 import { CONTACT_HREF } from '@/lib/constants'
-import {
-  buildEmbedPreviewBootstrapScript,
-  getDemoEmbedSrc,
-  getDemoHref,
-  getDemoLabel,
-} from '@/lib/marketing-content'
+import { buildEmbedPreviewBootstrapScript, getDemoEmbedSrc, getDemoHref, getDemoLabel } from '@/lib/marketing-content'
 
 const THE_BLOCK_HREF = 'https://www.theblock.co/post/392755'
-const PYMNTS_HREF =
-  'https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/'
+const PYMNTS_HREF = 'https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/'
 const SIMILARWEB_HREF = 'https://www.similarweb.com/website/polymarket.com/'
 const COINDESK_HREF =
   'https://www.coindesk.com/business/2026/03/07/kalshi-polymarket-seeking-usd20-billion-valuations-in-fundraising-talks-wsj'
@@ -354,9 +350,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
 
   const faqItems = [
     {
-      q: t(
-        'What exactly is a prediction market - and how is it different from a betting platform?',
-      ),
+      q: t('What exactly is a prediction market - and how is it different from a betting platform?'),
       a: t(
         'A prediction market is a live order book where participants buy and sell positions on the outcome of real-world events — using the same binary contract mechanics as financial derivatives. Unlike sports betting, where the house sets odds and takes the other side, a prediction market is peer-to-peer: prices are set by supply and demand in real time. The platform operator earns a fee on each trade, not on who wins. This distinction matters legally, commercially, and reputationally: operators are not the counterparty, and the model is structurally closer to an exchange than a bookmaker.',
       ),
@@ -403,11 +397,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
         "Smart contracts are derived from Polymarket's CLOB architecture — the stack that has processed billions in verified volume — audited by OpenZeppelin, the institutional standard for on-chain infrastructure. Settlement uses UMA-based resolution rails for transparent, verifiable outcomes. The codebase is open source under the <license>Kuest MIT+Commons license</license> for full auditability. Custom compliance configurations and enterprise infrastructure agreements are available — <contact>contact us</contact> to discuss your regulatory environment.",
         {
           license: (chunks) => (
-            <a
-              href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE"
-              target="_blank"
-              rel="noopener"
-            >
+            <a href="https://github.com/kuestcom/prediction-market/blob/main/LICENSE" target="_blank" rel="noopener">
               {chunks}
             </a>
           ),
@@ -419,10 +409,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
 
   return (
     <>
-      <Script
-        id="enterprise-embed-preview"
-        dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }}
-      />
+      <Script id="enterprise-embed-preview" dangerouslySetInnerHTML={{ __html: buildEmbedPreviewBootstrapScript() }} />
 
       <TimelineSpine count={8} />
 
@@ -484,12 +471,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                   <div className="hero-kicker mb-5! animate-none! gap-3! opacity-100!">
                     {t('White-Label Prediction Market Infrastructure')}
                   </div>
-                  <h1
-                    className="
-                    hero-title enterprise-hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold
-                    tracking-tighter text-white
-                  "
-                  >
+                  <h1 className="hero-title enterprise-hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter text-white">
                     <span className="hero-title-line">{t('A new financial instrument')}</span>
                     <span className="hero-title-line">
                       {t('is forming')}
@@ -514,7 +496,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                       <ChevronRightIcon />
                     </a>
                   </div>
-                  <div className="hero-copy-proof text-faint font-mono text-[11px] tracking-[.16em] uppercase">
+                  <div className="hero-copy-proof font-mono text-[11px] tracking-[.16em] text-faint uppercase">
                     {t('$18B combined monthly volume - OpenZeppelin audited - White-label ready')}
                   </div>
                 </div>
@@ -544,10 +526,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
         <section className="panel-wrap attention-scroll-panel" id="p1-scroll">
           <div className="panel-sticky">
             <div className="panel-inner attention-scroll-shell">
-              <div
-                className="attention-scroll-copy"
-                aria-label={t('The opportunity in prediction markets')}
-              >
+              <div className="attention-scroll-copy" aria-label={t('The opportunity in prediction markets')}>
                 <div className="attention-scroll-block">
                   <p className="attention-scroll-line" data-attention-step="line">
                     {t('Your clients are already trading on Polymarket.')}
@@ -556,30 +535,17 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                     {t('Elections. Interest rates. Bitcoin prices. Economic outcomes.')}
                   </p>
                   <p className="attention-scroll-line" data-attention-step="line">
-                    {t(
-                      "They're doing it on a US-based platform. Outside your ecosystem. Paying fees to someone else.",
-                    )}
+                    {t("They're doing it on a US-based platform. Outside your ecosystem. Paying fees to someone else.")}
                   </p>
-                  <p
-                    className="attention-scroll-line attention-scroll-line-pivot"
-                    data-attention-step="line"
-                  >
-                    {t(
-                      "You have no visibility into it. No revenue from it. And it's growing fast.",
-                    )}
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
+                    {t("You have no visibility into it. No revenue from it. And it's growing fast.")}
                   </p>
                 </div>
                 <div className="attention-scroll-block attention-scroll-block-map">
                   <p className="attention-scroll-line" data-attention-step="line">
-                    {t(
-                      'Polymarket and Kalshi now process over $18 billion in monthly trading volume.',
-                    )}
+                    {t('Polymarket and Kalshi now process over $18 billion in monthly trading volume.')}
                   </p>
-                  <div
-                    className="attention-scroll-brand-row"
-                    data-attention-step="brands"
-                    aria-hidden="true"
-                  >
+                  <div className="attention-scroll-brand-row" data-attention-step="brands" aria-hidden="true">
                     <div className="attention-scroll-brand">
                       <Image
                         src="/assets/images/polymarket-logo.svg"
@@ -607,23 +573,15 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                   </p>
                 </div>
                 <div className="attention-scroll-block">
-                  <p
-                    className="attention-scroll-line attention-scroll-line-lead"
-                    data-attention-step="line"
-                  >
+                  <p className="attention-scroll-line attention-scroll-line-lead" data-attention-step="line">
                     {t(
                       "XP International - Brazil's largest brokerage - just partnered with Kalshi to fix exactly this.",
                     )}
                   </p>
                   <p className="attention-scroll-line" data-attention-step="line">
-                    {t(
-                      'They saw the volume flowing out of their ecosystem and decided to own the infrastructure.',
-                    )}
+                    {t('They saw the volume flowing out of their ecosystem and decided to own the infrastructure.')}
                   </p>
-                  <p
-                    className="attention-scroll-line attention-scroll-line-pivot"
-                    data-attention-step="line"
-                  >
+                  <p className="attention-scroll-line attention-scroll-line-pivot" data-attention-step="line">
                     {t("You don't need to wait for Kalshi to call you.")}
                   </p>
                 </div>
@@ -644,12 +602,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                     <div className="mn-num">{stat.value}</div>
                     <div className="mn-label">{stat.label}</div>
                     <div className="mn-sub">
-                      <a
-                        href={stat.sourceHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="source-link"
-                      >
+                      <a href={stat.sourceHref} target="_blank" rel="noopener noreferrer" className="source-link">
                         {stat.sourceLabel}
                       </a>
                     </div>
@@ -674,11 +627,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                   )}
                 </p>
               </div>
-              <NicheShowcase
-                niches={niches as ShowcaseNiche[]}
-                yesLabel={t('Yes')}
-                noLabel={t('No')}
-              />
+              <NicheShowcase niches={niches as ShowcaseNiche[]} yesLabel={t('Yes')} noLabel={t('No')} />
             </div>
           </div>
         </section>
@@ -688,9 +637,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
             <div className="panel-inner max-w-295 grid-cols-1 gap-10">
               <div className="solution-flow-stage enterprise-solution-flow-stage r">
                 <div className="solution-flow-head enterprise-solution-flow-head">
-                  <h2 className="sh">
-                    {t('From signed agreement to live platform — in days, not quarters.')}
-                  </h2>
+                  <h2 className="sh">{t('From signed agreement to live platform — in days, not quarters.')}</h2>
                   <div className="solution-copy-lead enterprise-solution-flow-copy">
                     <p className="bt">
                       {t(
@@ -712,9 +659,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                           : 'solution-timeline-step-bottom solution-timeline-step-left'
                       }`}
                     >
-                      {index % 2 === 0 ? (
-                        <div className="solution-timeline-side" aria-hidden="true" />
-                      ) : null}
+                      {index % 2 === 0 ? <div className="solution-timeline-side" aria-hidden="true" /> : null}
                       <div className="solution-timeline-node" aria-hidden="true">
                         <span>{index + 1}</span>
                       </div>
@@ -722,18 +667,12 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                         <h3 className="solution-timeline-title">{point.title}</h3>
                         <p className="solution-timeline-text">{point.copy}</p>
                       </div>
-                      {index % 2 === 1 ? (
-                        <div className="solution-timeline-side" aria-hidden="true" />
-                      ) : null}
+                      {index % 2 === 1 ? <div className="solution-timeline-side" aria-hidden="true" /> : null}
                     </article>
                   ))}
                   <div className="solution-timeline-cta">
                     <div className="solution-cta-block solution-cta-block-inline">
-                      <a
-                        href={CONTACT_HREF}
-                        className="btn-cta btn-cta-primary"
-                        id="solutionCtaBtn"
-                      >
+                      <a href={CONTACT_HREF} className="btn-cta btn-cta-primary" id="solutionCtaBtn">
                         <span className="cta-label">{t('Contact us')}</span>
                         <ChevronRightIcon />
                       </a>
@@ -753,9 +692,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
             <div className="panel-inner max-w-295 grid-cols-1 gap-10">
               <div className="r text-center">
                 <div className="slbl justify-center">{t("WHAT'S ALREADY OPERATIONAL")}</div>
-                <h2 className="sh">
-                  {t('The full trading stack. No engineering sprint required.')}
-                </h2>
+                <h2 className="sh">{t('The full trading stack. No engineering sprint required.')}</h2>
                 <p className="bt section-copy-center">
                   {t(
                     'Everything your institution would need to build from scratch - already live, already audited, ready to deploy under your brand.',
@@ -786,9 +723,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
             <div className="panel-inner preview-section site-demo-section max-w-[95vw]! grid-cols-1 gap-10">
               <div className="site-demo-copy">
                 <div className="site-demo-copy-inner">
-                  <h2 className="sh text-balance!">
-                    {t('This is the product your clients will interact with.')}
-                  </h2>
+                  <h2 className="sh text-balance!">{t('This is the product your clients will interact with.')}</h2>
                   <p className="bt">
                     {t(
                       'A fully functional demo running live markets mirrored from Polymarket. Your deployment would carry your domain, your brand, your chosen event categories - and your fee on every transaction your clients execute.',
@@ -845,9 +780,7 @@ function EnterprisePageContent({ locale }: { locale: SupportedLocale }) {
                 )}
               </h2>
               <p className="cta-sub">
-                {t(
-                  'The infrastructure is ready. First mover advantage in prediction markets closes fast.',
-                )}
+                {t('The infrastructure is ready. First mover advantage in prediction markets closes fast.')}
               </p>
               <div className="cta-btns">
                 <a href={CONTACT_HREF} className="btn-cta btn-cta-primary">

@@ -30,8 +30,7 @@ combinação em vez de escolher entre elas.
 Se você está mais cedo na sua avaliação, o
 
 <a href="/blog/2026-03-what-are-prediction-markets">primer sobre mercados de previsão</a>
-cobre o básico, o
-<a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
+cobre o básico, o<a href="/blog/2026-03-prediction-market-land-grab">post sobre a oportunidade de mercado</a>
 explica por que vale a pena entrar nesta categoria, e a
 <a href="/blog/2026-04-build-vs-license-prediction-market">análise build vs licenciar</a>
 trata da decisão central que está por trás de toda esta comparação.
@@ -96,10 +95,7 @@ O que funciona extremamente bem na Polymarket:
   limpa de 99,8 % ou mais. O caminho de disputa é bem definido e
   foi testado em campo por volume adversarial. Cobrimos toda a
   mecânica em
-  <a href="/blog/2026-04-resolution-and-the-settlement-layer">
-    nossa análise aprofundada da resolução
-  </a>
-  .
+  <a href="/blog/2026-04-resolution-and-the-settlement-layer">nossa análise aprofundada da resolução</a>.
 - **Acesso permissionless.** Qualquer pessoa com uma carteira e USDC
   pode operar na Polymarket. A plataforma não restringe o acesso por
   jurisdição via KYC; opera fora do perímetro regulado dos EUA e se
@@ -243,12 +239,7 @@ porque estão jogando posições diferentes na pilha.
       'Spread (~20–60 bps no livro compartilhado)',
     ],
     ['Rebate ao maker', 'Não', 'Não', 'Não (design de livro compartilhado)'],
-    [
-      'Participação do operador',
-      'Não se aplica (venue única)',
-      'Não se aplica',
-      '100 % da taxa do operador',
-    ],
+    ['Participação do operador', 'Não se aplica (venue única)', 'Não se aplica', '100 % da taxa do operador'],
     [
       'Receita do protocolo',
       'A Polymarket retém sua margem de venue',
@@ -280,12 +271,7 @@ costumam se importar:
 <Comparison
   columns={['Funcionalidade', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
-    [
-      'Ativo de liquidação',
-      'USDC on-chain',
-      'Custódia bancária em USD',
-      'USDC on-chain (operador pode sobrepor fiat)',
-    ],
+    ['Ativo de liquidação', 'USDC on-chain', 'Custódia bancária em USD', 'USDC on-chain (operador pode sobrepor fiat)'],
     [
       'Modelo de resolução',
       'UMA Optimistic Oracle',
@@ -305,12 +291,7 @@ costumam se importar:
       'Pré-aprovada pela exchange',
       'Gerenciada pelo operador dentro dos limites do protocolo',
     ],
-    [
-      'Modelo de custódia',
-      'Auto-custódia',
-      'Parceiro bancário regulado',
-      'Configurável: própria ou regulada',
-    ],
+    ['Modelo de custódia', 'Auto-custódia', 'Parceiro bancário regulado', 'Configurável: própria ou regulada'],
     [
       'Profundidade do livro de ordens no lançamento',
       'Existente (venue madura)',
@@ -409,12 +390,11 @@ então a Kuest é o caminho, porque a Polymarket e a Kalshi não estão
 no negócio de infraestrutura para operadores.
 
 <Callout type="info" title="Por que essa distinção é estrategicamente importante">
-  Operadores que tratam a comparação como "Kuest vs Polymarket" acabam tentando otimizar para uma
-  competição que não existe. A comparação correta é "Kuest vs construir você mesmo", que é a que
-  cobrimos no
-  <a href="/blog/2026-04-build-vs-license-prediction-market">post de build vs licenciar</a>. A
-  Polymarket é a venue contra cuja execução seus traders podem comparar; a Kuest é a infraestrutura
-  que permite que você compita em público em vez de competir em infraestrutura.
+  Operadores que tratam a comparação como "Kuest vs Polymarket" acabam tentando otimizar para uma competição que não
+  existe. A comparação correta é "Kuest vs construir você mesmo", que é a que cobrimos no
+  <a href="/blog/2026-04-build-vs-license-prediction-market">post de build vs licenciar</a>. A Polymarket é a venue
+  contra cuja execução seus traders podem comparar; a Kuest é a infraestrutura que permite que você compita em público
+  em vez de competir em infraestrutura.
 </Callout>
 
 ## Casos de uso que se encaixam em cada combinação

@@ -1,8 +1,8 @@
 import { LaunchError } from '@/lib/launch-utils'
 import { getValidVercelSession } from '@/lib/oauth-session'
 import { buildRateLimitHeaders, checkRateLimit, getRateLimitConfig } from '@/lib/rate-limit'
-import { listSupabaseIntegrationResources } from '@/lib/vercel-api'
 import { getServerRuntimeConfig } from '@/lib/server-env'
+import { listSupabaseIntegrationResources } from '@/lib/vercel-api'
 
 interface RequestBody {
   token?: string
@@ -35,8 +35,7 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as RequestBody
     const rawToken = typeof body.token === 'string' ? body.token.trim() : ''
-    const teamId =
-      typeof body.teamId === 'string' && body.teamId.trim() ? body.teamId.trim() : undefined
+    const teamId = typeof body.teamId === 'string' && body.teamId.trim() ? body.teamId.trim() : undefined
     const session = rawToken ? null : await getValidVercelSession()
     const token = rawToken || session?.accessToken || ''
 

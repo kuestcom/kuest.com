@@ -1,4 +1,5 @@
 import type { SupabaseProvisionResult } from '@/lib/launch-types'
+
 import { generateSecureToken, LaunchError } from '@/lib/launch-utils'
 
 const SUPABASE_API_BASE = 'https://api.supabase.com/v1'
@@ -37,11 +38,7 @@ async function supabaseRequest<T>(token: string, path: string, init: RequestInit
     } catch {
       payload = await response.text()
     }
-    throw new LaunchError(
-      `Supabase API request failed (${response.status}) at ${path}.`,
-      'supabase',
-      payload,
-    )
+    throw new LaunchError(`Supabase API request failed (${response.status}) at ${path}.`, 'supabase', payload)
   }
 
   if (response.status === 204) {
@@ -75,28 +72,17 @@ export async function provisionSupabaseProject(params: {
 
   const projectRef = created.id
   if (!projectRef) {
-    throw new LaunchError(
-      'Supabase project creation response did not include project id.',
-      'supabase',
-      created,
-    )
+    throw new LaunchError('Supabase project creation response did not include project id.', 'supabase', created)
   }
 
   params.log('supabase', `Project created: ${projectRef}. Waiting until healthy...`)
   const projectStatus = await waitForProjectHealthy(params.token, projectRef, params.log)
 
   params.log('supabase', 'Fetching service role key...')
-  const keys = await supabaseRequest<SupabaseApiKey[]>(
-    params.token,
-    `/projects/${projectRef}/api-keys`,
-  )
+  const keys = await supabaseRequest<SupabaseApiKey[]>(params.token, `/projects/${projectRef}/api-keys`)
   const serviceRole = keys.find((key) => key.name === 'service_role')
   if (!serviceRole?.api_key) {
-    throw new LaunchError(
-      'Could not find service_role API key in Supabase project.',
-      'supabase',
-      keys,
-    )
+    throw new LaunchError('Could not find service_role API key in Supabase project.', 'supabase', keys)
   }
 
   const supabaseUrl = `https://${projectRef}.supabase.co`
@@ -135,8 +121,5 @@ async function waitForProjectHealthy(
     await new Promise((resolve) => setTimeout(resolve, 7000))
   }
 
-  throw new LaunchError(
-    `Supabase project did not become healthy in time. Last status: ${lastStatus}`,
-    'supabase',
-  )
+  throw new LaunchError(`Supabase project did not become healthy in time. Last status: ${lastStatus}`, 'supabase')
 }

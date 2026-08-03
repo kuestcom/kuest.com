@@ -1,4 +1,5 @@
 import { handle } from '@astrojs/cloudflare/handler'
+
 import { runAffiliateCron } from '@/server/affiliate/processor'
 
 export default {

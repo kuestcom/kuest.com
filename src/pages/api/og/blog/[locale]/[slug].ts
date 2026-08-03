@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+
 import { getPost, isSupportedLocale } from '@/lib/blog/content'
 
 function escapeXml(value: string) {
@@ -8,7 +9,7 @@ function escapeXml(value: string) {
   )
 }
 
-export const GET: APIRoute = ({ params }) => {
+export function GET({ params }: Parameters<APIRoute>[0]) {
   const locale = params.locale ?? ''
   const slug = params.slug ?? ''
   const post = isSupportedLocale(locale) ? getPost(slug, locale) : null

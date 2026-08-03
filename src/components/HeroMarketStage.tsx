@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
+
 import Image from '@/compat/Image'
 import { HERO_MARKET_SCENES } from '@/lib/marketing-shared-data'
-import { useEffect, useState } from 'react'
 
 export default function HeroMarketStage({
   titles,
@@ -17,7 +18,7 @@ export default function HeroMarketStage({
     let idleCallbackId: number | undefined
     let timeoutId: ReturnType<typeof setTimeout> | undefined
 
-    const revealDeferredScenes = () => {
+    function revealDeferredScenes() {
       if ('requestIdleCallback' in window) {
         idleCallbackId = window.requestIdleCallback(() => setShowDeferredScenes(true), {
           timeout: 2500,
@@ -35,8 +36,12 @@ export default function HeroMarketStage({
 
     return () => {
       window.removeEventListener('load', revealDeferredScenes)
-      if (idleCallbackId !== undefined) window.cancelIdleCallback(idleCallbackId)
-      if (timeoutId !== undefined) clearTimeout(timeoutId)
+      if (idleCallbackId !== undefined) {
+        window.cancelIdleCallback(idleCallbackId)
+      }
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
     }
   }, [])
 
@@ -46,10 +51,8 @@ export default function HeroMarketStage({
         <div key={scene.sceneClassName} className={scene.sceneClassName}>
           {scene.cards.map((card, cardIndex) => {
             const titleIndex =
-              HERO_MARKET_SCENES.slice(0, sceneIndex).reduce(
-                (total, entry) => total + entry.cards.length,
-                0,
-              ) + cardIndex
+              HERO_MARKET_SCENES.slice(0, sceneIndex).reduce((total, entry) => total + entry.cards.length, 0) +
+              cardIndex
             const title = titles[titleIndex] ?? ''
             const expandSide = 'expandSide' in card ? card.expandSide : undefined
             const shouldRenderImage = sceneIndex === 0 || showDeferredScenes
@@ -78,12 +81,8 @@ export default function HeroMarketStage({
                     <div className="protocol-hero-card-panel" aria-hidden="true">
                       <div className="protocol-hero-card-title">{title}</div>
                       <div className="protocol-hero-card-actions">
-                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-yes">
-                          {yesLabel}
-                        </span>
-                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-no">
-                          {noLabel}
-                        </span>
+                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-yes">{yesLabel}</span>
+                        <span className="hero-market-tooltip-btn hero-market-tooltip-btn-no">{noLabel}</span>
                       </div>
                     </div>
                   ) : null}

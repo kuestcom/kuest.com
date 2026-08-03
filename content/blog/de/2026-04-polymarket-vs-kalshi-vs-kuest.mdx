@@ -236,19 +236,9 @@ bespielen.
       '0,0 % (keine Gebühr pro Trade)',
       'Vom Betreiber festgelegt, typischerweise 0,5–1,5 %',
     ],
-    [
-      'Versteckte Kosten',
-      'Spread (~30–60 bps)',
-      'Spread + Marktdaten-Tier',
-      'Spread (~20–60 bps im geteilten Buch)',
-    ],
+    ['Versteckte Kosten', 'Spread (~30–60 bps)', 'Spread + Marktdaten-Tier', 'Spread (~20–60 bps im geteilten Buch)'],
     ['Maker-Rabatt', 'Nein', 'Nein', 'Nein (Design des geteilten Buchs)'],
-    [
-      'Betreiberanteil',
-      'Nicht zutreffend (einzelne Venue)',
-      'Nicht zutreffend',
-      '100 % der Betreibergebühr',
-    ],
+    ['Betreiberanteil', 'Nicht zutreffend (einzelne Venue)', 'Nicht zutreffend', '100 % der Betreibergebühr'],
     [
       'Protokollanteil',
       'Polymarket behält seine Venue-Marge',
@@ -279,12 +269,7 @@ Ein granularerer Vergleich über die Dimensionen, die Betreibern
 <Comparison
   columns={['Feature', 'Polymarket', 'Kalshi', 'Kuest']}
   rows={[
-    [
-      'Settlement-Asset',
-      'USDC On-Chain',
-      'USD Bankenverwahrung',
-      'USDC On-Chain (Betreiber kann Fiat überlagern)',
-    ],
+    ['Settlement-Asset', 'USDC On-Chain', 'USD Bankenverwahrung', 'USDC On-Chain (Betreiber kann Fiat überlagern)'],
     [
       'Auflösungsmodell',
       'UMA Optimistic Oracle',
@@ -304,12 +289,7 @@ Ein granularerer Vergleich über die Dimensionen, die Betreibern
       'Vorab durch Börse genehmigt',
       'Vom Betreiber innerhalb der Protokollgrenzen verwaltet',
     ],
-    [
-      'Verwahrungsmodell',
-      'Self-Custody',
-      'Regulierter Bankpartner',
-      'Konfigurierbar: selbst oder reguliert',
-    ],
+    ['Verwahrungsmodell', 'Self-Custody', 'Regulierter Bankpartner', 'Konfigurierbar: selbst oder reguliert'],
     [
       'Orderbuch-Tiefe beim Start',
       'Bestehend (etablierte Venue)',
@@ -404,13 +384,11 @@ Distribution der Fall ist), dann ist Kuest der Weg, weil Polymarket
 und Kalshi nicht im Geschäft mit Betreiber-Infrastruktur sind.
 
 <Callout type="info" title="Warum diese Unterscheidung strategisch wichtig ist">
-  Betreiber, die den Vergleich als „Kuest vs. Polymarket" behandeln, versuchen am Ende, für einen
-  Wettbewerb zu optimieren, den es nicht gibt. Der richtige Vergleich lautet „Kuest vs. Selbstbau"
-  und ist der, den wir im
+  Betreiber, die den Vergleich als „Kuest vs. Polymarket" behandeln, versuchen am Ende, für einen Wettbewerb zu
+  optimieren, den es nicht gibt. Der richtige Vergleich lautet „Kuest vs. Selbstbau" und ist der, den wir im
   <a href="/blog/2026-04-build-vs-license-prediction-market">Build-vs.-Lizenz-Beitrag</a>
-  behandelt haben. Polymarket ist die Venue, mit deren Ausführung Ihre Trader vergleichen könnten;
-  Kuest ist die Infrastruktur, die es Ihnen erlaubt, über Publikum statt über Infrastruktur zu
-  konkurrieren.
+  behandelt haben. Polymarket ist die Venue, mit deren Ausführung Ihre Trader vergleichen könnten; Kuest ist die
+  Infrastruktur, die es Ihnen erlaubt, über Publikum statt über Infrastruktur zu konkurrieren.
 </Callout>
 
 ## Anwendungsfälle, die zu jeder Kombination passen

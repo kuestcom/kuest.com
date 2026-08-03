@@ -1,5 +1,7 @@
-import type { BlogPostSummary } from '@/lib/blog/content'
 import { ArrowRightIcon } from 'lucide-react'
+
+import type { BlogPostSummary } from '@/lib/blog/content'
+
 import { Link } from '@/i18n/navigation'
 
 export default function BlogPostFooter({

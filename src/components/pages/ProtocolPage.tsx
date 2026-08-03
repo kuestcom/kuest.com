@@ -1,15 +1,7 @@
+import { Banknote, Bot, Building2, Check, ChevronRightIcon, Clock3, Globe2, Newspaper } from 'lucide-react'
+
 import type { SupportedLocale } from '@/i18n/locales'
-import {
-  Banknote,
-  Bot,
-  Building2,
-  Check,
-  ChevronRightIcon,
-  Clock3,
-  Globe2,
-  Newspaper,
-} from 'lucide-react'
-import { createTranslator, I18nProvider } from '@/i18n'
+
 import Image from '@/compat/Image'
 import Script from '@/compat/Script'
 import HeroMarketStage from '@/components/HeroMarketStage'
@@ -21,6 +13,7 @@ import ProtocolPitchDeckModal from '@/components/ProtocolPitchDeckModal'
 import SiteFooter from '@/components/SiteFooter'
 import ThemeToggle from '@/components/ThemeToggle'
 import TimelineSpine from '@/components/TimelineSpine'
+import { createTranslator, I18nProvider } from '@/i18n'
 import { getPathname } from '@/i18n/navigation'
 import { CONTACT_HREF } from '@/lib/constants'
 import { getDemoHref, serializeJsonForHtmlScript } from '@/lib/marketing-content'
@@ -91,8 +84,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
       value: '200x',
       label: t('Kalshi trading volume growth in the past 12 months'),
       sourceLabel: t('Source: PYMNTS / Kalshi press release'),
-      sourceHref:
-        'https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/',
+      sourceHref: 'https://www.pymnts.com/partnerships/2026/kalshi-begins-global-expansion-with-xp-deal-brazil/',
     },
     {
       value: '$20B',
@@ -342,19 +334,11 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                       />
                     </div>
                   </div>
-                  <div className="hero-kicker protocol-hero-kicker">
-                    {t('KUEST PROTOCOL · SEED ROUND OPEN')}
-                  </div>
-                  <h1
-                    className="
-                    hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter
-                    text-white
-                  "
-                  >
+                  <div className="hero-kicker protocol-hero-kicker">{t('KUEST PROTOCOL · SEED ROUND OPEN')}</div>
+                  <h1 className="hero-title font-sans text-[clamp(46px,6.2vw,88px)] leading-[0.94] font-bold tracking-tighter text-white">
                     <span className="hero-title-line">{t('Polymarket proved the model.')}</span>
                     <span className="hero-title-line">
-                      {t("We're turning it into")}{' '}
-                      <span className="hero-title-accent">{t('infrastructure.')}</span>
+                      {t("We're turning it into")} <span className="hero-title-accent">{t('infrastructure.')}</span>
                     </span>
                   </h1>
                 </div>
@@ -365,11 +349,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                     )}
                   </p>
                   <div className="hero-copy-actions protocol-action-row">
-                    <button
-                      type="button"
-                      className="btn-cta btn-cta-primary"
-                      data-protocol-deck-open
-                    >
+                    <button type="button" className="btn-cta btn-cta-primary" data-protocol-deck-open>
                       <span className="cta-label">{t('View pitch deck')}</span>
                       <ChevronRightIcon />
                     </button>
@@ -378,7 +358,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                       <ChevronRightIcon />
                     </a>
                   </div>
-                  <div className="hero-copy-proof text-faint font-mono text-[11px] tracking-[.16em] uppercase">
+                  <div className="hero-copy-proof font-mono text-[11px] tracking-[.16em] text-faint uppercase">
                     {t('MVP OPERATIONAL · SEED ROUND OPEN · OPEN SOURCE')}
                   </div>
                 </div>
@@ -411,9 +391,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
               <div className="r">
                 <div className="slbl justify-center">{t('THE OPPORTUNITY')}</div>
                 <h2 className="sh">
-                  {t(
-                    "A $20 billion industry forming in real time - and 95% of the world hasn't accessed it yet.",
-                  )}
+                  {t("A $20 billion industry forming in real time - and 95% of the world hasn't accessed it yet.")}
                 </h2>
               </div>
               <div className="r rd market-proof-grid">
@@ -423,12 +401,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                       <div className="mn-label">{stat.label}</div>
                       <div className="mn-num">{stat.value}</div>
                       <div className="mn-sub">
-                        <a
-                          href={stat.sourceHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="source-link"
-                        >
+                        <a href={stat.sourceHref} target="_blank" rel="noopener noreferrer" className="source-link">
                           {stat.sourceLabel}
                         </a>
                       </div>
@@ -452,9 +425,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
             <div className="panel-inner protocol-copy-shell">
               <div className="r protocol-copy-head">
                 <div className="slbl">{t('WHY NOW')}</div>
-                <h2 className="sh">
-                  {t('The XP + Kalshi deal just confirmed what we already built for.')}
-                </h2>
+                <h2 className="sh">{t('The XP + Kalshi deal just confirmed what we already built for.')}</h2>
               </div>
               <div className="r rd protocol-rich-text protocol-rich-text-wide">
                 {whyNowLead ? <p>{whyNowLead}</p> : null}
@@ -495,9 +466,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                 />
               </div>
               <div className="r rd3 protocol-rich-text">
-                <p>
-                  {t("That's exactly what Kuest enables - at protocol scale, not deal by deal.")}
-                </p>
+                <p>{t("That's exactly what Kuest enables - at protocol scale, not deal by deal.")}</p>
               </div>
             </div>
           </div>
@@ -509,9 +478,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
               <div className="r quote-stage-head protocol-heading-wide">
                 <div className="slbl justify-center">{t('THE PROTOCOL')}</div>
                 <h2 className="sh">
-                  {t(
-                    'We are not a prediction market. We are the infrastructure that launches them.',
-                  )}
+                  {t('We are not a prediction market. We are the infrastructure that launches them.')}
                 </h2>
               </div>
               <div className="r rd steps-grid">
@@ -547,12 +514,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                 {architectureLead ? <p>{architectureLead}</p> : null}
                 {architectureLead ? (
                   <div className="protocol-inline-logo protocol-inline-logo-polymarket">
-                    <Image
-                      src="/assets/images/polymarket-logo.svg"
-                      alt="Polymarket"
-                      width={128}
-                      height={23}
-                    />
+                    <Image src="/assets/images/polymarket-logo.svg" alt="Polymarket" width={128} height={23} />
                   </div>
                 ) : null}
                 {architectureRest.map((paragraph) => (
@@ -613,9 +575,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
             <div className="panel-inner audience-stage protocol-audience-stage">
               <div className="r audience-stage-head">
                 <div className="slbl">{t("WHO WE'RE LOOKING FOR")}</div>
-                <h2 className="sh">
-                  {t('Three types of partners. All necessary. All complementary.')}
-                </h2>
+                <h2 className="sh">{t('Three types of partners. All necessary. All complementary.')}</h2>
               </div>
               <div className="r rd audience-rows">
                 {partnersCards.map((card, index) => {
@@ -656,9 +616,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                     <Newspaper size={14} />
                     {t('Application layer')}
                   </div>
-                  <h3 className="path-h">
-                    {t('Platform companies optimize for destination traffic.')}
-                  </h3>
+                  <h3 className="path-h">{t('Platform companies optimize for destination traffic.')}</h3>
                   <p className="path-p">
                     {t(
                       'Polymarket and Kalshi win by concentrating users, protecting brand, and deepening liquidity on their own venues.',
@@ -677,9 +635,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                     <Globe2 size={14} />
                     {t('Protocol layer')}
                   </div>
-                  <h3 className="path-h">
-                    {t('Infrastructure companies optimize for operator scale.')}
-                  </h3>
+                  <h3 className="path-h">{t('Infrastructure companies optimize for operator scale.')}</h3>
                   <p className="path-p">
                     {t(
                       'Kuest wins by letting thousands of operators launch markets that share liquidity while Kuest runs the underlying stack.',
@@ -710,9 +666,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
             <div className="panel-inner protocol-section-center">
               <div className="r quote-stage-head protocol-heading-wide">
                 <div className="slbl justify-center">{t('WHERE WE ARE TODAY')}</div>
-                <h2 className="sh">
-                  {t('MVP live. Protocol operational. Looking for the right partners to scale.')}
-                </h2>
+                <h2 className="sh">{t('MVP live. Protocol operational. Looking for the right partners to scale.')}</h2>
               </div>
               <div className="r rd audience-rows protocol-status-rows">
                 {statusItems.map((item) => (
@@ -756,12 +710,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
                   <span className="cta-label">{t('Contact the team')}</span>
                   <ChevronRightIcon />
                 </a>
-                <a
-                  href={demoHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cta btn-cta-secondary"
-                >
+                <a href={demoHref} target="_blank" rel="noopener noreferrer" className="btn-cta btn-cta-secondary">
                   <span className="cta-label">{t('View live demo')}</span>
                   <ChevronRightIcon />
                 </a>
@@ -786,13 +735,7 @@ function ProtocolPageContent({ locale, siteUrl }: { locale: SupportedLocale; sit
   )
 }
 
-export default function ProtocolPage({
-  locale,
-  siteUrl,
-}: {
-  locale: SupportedLocale
-  siteUrl: string
-}) {
+export default function ProtocolPage({ locale, siteUrl }: { locale: SupportedLocale; siteUrl: string }) {
   return (
     <I18nProvider locale={locale}>
       <ProtocolPageContent locale={locale} siteUrl={siteUrl} />
@@ -817,14 +760,10 @@ function ProtocolQuoteCard({
   centered?: boolean
   hideAttribution?: boolean
 }) {
-  const titleClassName = `prediction-showcase-title protocol-quote-card-title${
-    quote.length > 110 ? ' is-long' : ''
-  }`
+  const titleClassName = `prediction-showcase-title protocol-quote-card-title${quote.length > 110 ? ' is-long' : ''}`
 
   return (
-    <article
-      className={`prediction-showcase-card protocol-quote-card${centered ? 'is-centered' : ''}`}
-    >
+    <article className={`prediction-showcase-card protocol-quote-card${centered ? 'is-centered' : ''}`}>
       <div
         className={`prediction-showcase-thumb protocol-quote-card-thumb${
           media.kind === 'kuest-mark' ? 'is-kuest-mark' : ''
@@ -842,16 +781,9 @@ function ProtocolQuoteCard({
       <h3 className={titleClassName}>{quote}</h3>
       {!hideAttribution || (sourceLabel && sourceHref) ? (
         <div className="protocol-quote-card-meta">
-          {!hideAttribution ? (
-            <div className="protocol-quote-card-attribution">{attribution}</div>
-          ) : null}
+          {!hideAttribution ? <div className="protocol-quote-card-attribution">{attribution}</div> : null}
           {sourceLabel && sourceHref ? (
-            <a
-              href={sourceHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="protocol-quote-card-source"
-            >
+            <a href={sourceHref} target="_blank" rel="noopener noreferrer" className="protocol-quote-card-source">
               {sourceLabel}
             </a>
           ) : null}
