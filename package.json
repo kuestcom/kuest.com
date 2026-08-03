@@ -26,8 +26,6 @@
     "@reown/appkit-adapter-wagmi": "1.8.23",
     "@supabase/supabase-js": "2.110.8",
     "@tanstack/react-query": "5.101.4",
-    "@wagmi/connectors": "8.0.25",
-    "@wagmi/core": "3.6.4",
     "astro": "7.1.3",
     "dub": "0.73.1",
     "lucide-react": "1.27.0",
@@ -37,7 +35,7 @@
     "resend": "6.18.0",
     "tailwindcss": "4.3.3",
     "viem": "2.55.8",
-    "wagmi": "3.7.4",
+    "wagmi": "2.19.5",
     "yaml": "2.9.0",
     "zod": "4.4.3"
   },
@@ -49,12 +47,12 @@
     "@types/node": "26.1.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
-    "typescript": "7.0.2",
+    "typescript": "6.0.3",
     "vite-plus": "catalog:",
-    "wrangler": "4.114.0"
+    "wrangler": "4.118.0"
   },
   "engines": {
     "node": "24.x"
   },
-  "packageManager": "pnpm@11.9.0"
+  "packageManager": "pnpm@11.20.0"
 }
