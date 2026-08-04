@@ -7,12 +7,10 @@ import {
   AlertTriangleIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
-  CalendarDaysIcon,
   CheckIcon,
   ChevronDownIcon,
   CircleCheckIcon,
   CircleIcon,
-  ClockIcon,
   InfoIcon,
   Loader2Icon,
   RefreshCwIcon,
@@ -144,6 +142,14 @@ const VERCEL_AUTHENTICATION_SETTINGS_URL = 'https://vercel.com/account/settings/
 const REOWN_DASHBOARD_URL = 'https://dashboard.reown.com/'
 const VERCEL_DASHBOARD_URL = 'https://vercel.com/dashboard'
 const DISCORD_URL = 'https://discord.gg/kuest'
+const LAUNCH_COUNTDOWN_SECONDS = 15 * 60
+
+function formatCountdown(seconds: number) {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+
+  return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+}
 
 const LAUNCHPAD_COPY: Record<
   SupportedLocale,
@@ -706,11 +712,13 @@ export default function LaunchpadForm({
 
   const [isLaunching, setIsLaunching] = useState(false)
   const [result, setResult] = useState<LaunchResponseBody | null>(null)
+  const hasSuccessfulDeployment = result?.ok === true
   const [requestError, setRequestError] = useState<string | null>(null)
   const [customDomain, setCustomDomain] = useState('')
   const [domainActionLoading, setDomainActionLoading] = useState<'add' | 'verify' | null>(null)
   const [domainActionError, setDomainActionError] = useState<string | null>(null)
   const [domainState, setDomainState] = useState<VercelDomainResponse | null>(null)
+  const [launchCountdownSeconds, setLaunchCountdownSeconds] = useState(LAUNCH_COUNTDOWN_SECONDS)
 
   const TIMELINE = useMemo(
     () => [
@@ -744,6 +752,7 @@ export default function LaunchpadForm({
 
   const timelineIntervalRef = useRef<number | null>(null)
   const timelineIndexRef = useRef(0)
+  const launchReadyAtRef = useRef<number | null>(null)
   const latestReownProjectIdRef = useRef('')
   const handleConnectOrSignRef = useRef<((_options?: { autoProgress?: boolean }) => Promise<void>) | null>(null)
   const walletFlowInFlightRef = useRef(false)
@@ -757,6 +766,28 @@ export default function LaunchpadForm({
       })),
     )
   }, [TIMELINE])
+
+  useEffect(() => {
+    if (!hasSuccessfulDeployment) {
+      launchReadyAtRef.current = null
+      setLaunchCountdownSeconds(LAUNCH_COUNTDOWN_SECONDS)
+      return
+    }
+
+    if (launchReadyAtRef.current === null) {
+      launchReadyAtRef.current = Date.now() + LAUNCH_COUNTDOWN_SECONDS * 1000
+    }
+
+    function updateCountdown() {
+      const remaining = Math.max(0, Math.ceil((launchReadyAtRef.current! - Date.now()) / 1000))
+      setLaunchCountdownSeconds(remaining)
+    }
+
+    updateCountdown()
+    const interval = window.setInterval(updateCountdown, 1000)
+
+    return () => window.clearInterval(interval)
+  }, [hasSuccessfulDeployment])
 
   const isConnected = account.status === 'connected' && Boolean(account.address)
   const onRequiredChain = isConnected && account.chainId !== undefined ? account.chainId === REQUIRED_CHAIN_ID : false
@@ -1828,8 +1859,6 @@ export default function LaunchpadForm({
   const showVercelAuthenticationSettingsLink =
     vercelGitHubConnectClicks >= VERCEL_GITHUB_CONNECT_LINK_THRESHOLD ||
     vercelGitHubRefreshClicks >= VERCEL_GITHUB_REFRESH_LINK_THRESHOLD
-  const hasSuccessfulDeployment = result?.ok === true
-
   const stepItems = [
     {
       number: 1,
@@ -1885,19 +1914,17 @@ export default function LaunchpadForm({
               <h2>{t('{siteName} configured successfully', { siteName: launchSiteName })}</h2>
             </div>
 
+            <div className="launch-countdown" role="timer" aria-live="polite">
+              <span className="launch-countdown-label">{t('Your market is launching')}</span>
+              <strong className="launch-countdown-time">{formatCountdown(launchCountdownSeconds)}</strong>
+              <span className="launch-countdown-detail">
+                {launchCountdownSeconds > 0
+                  ? t('Your site will be ready in up to 15 minutes.')
+                  : t('Your site is ready.')}
+              </span>
+            </div>
+
             <ul className="launch-success-list">
-              <li>
-                <span className="launch-success-list-icon" aria-hidden="true">
-                  <ClockIcon className="size-4" />
-                </span>
-                <span>{t('Vercel takes about 7 minutes to deploy your site')}</span>
-              </li>
-              <li>
-                <span className="launch-success-list-icon" aria-hidden="true">
-                  <CalendarDaysIcon className="size-4" />
-                </span>
-                <span>{t('Markets can appear within 15 minutes.')}</span>
-              </li>
               <li>
                 <span className="launch-success-list-icon is-attention" aria-hidden="true">
                   <AlertTriangleIcon className="size-4" />
@@ -1931,10 +1958,12 @@ export default function LaunchpadForm({
                 <span>{discordSupportLabel}</span>
               </a>
 
-              <a className="launch-cta launch-success-link" href={launchProjectUrl} target="_blank" rel="noreferrer">
-                <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
-                <ArrowRightIcon className="size-4" />
-              </a>
+              {launchCountdownSeconds === 0 && (
+                <a className="launch-cta launch-success-link" href={launchProjectUrl} target="_blank" rel="noreferrer">
+                  <span>{t('Go to {siteUrl}', { siteUrl: launchProjectUrl })}</span>
+                  <ArrowRightIcon className="size-4" />
+                </a>
+              )}
             </div>
 
             <div className="launch-subcard launch-success-domain rounded-xl border border-border/70 p-4!">

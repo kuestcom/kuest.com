@@ -772,16 +772,25 @@
 }
 
 .launch-step1-island .launch-field input,
+.launch-step1-island .launch-field select,
 .launch-step2-island .launch-field input,
+.launch-step2-island .launch-field select,
 .launch-step2-island .launch-field textarea,
 .launch-step2-island .launch-inline-control,
 .launch-step3-island .launch-field input,
+.launch-step3-island .launch-field select,
 .launch-step3-island .launch-inline-control {
-  min-height: 3.2rem;
+  min-height: 3.5rem;
   border-radius: 1rem;
   padding: 0.9rem 1rem;
   font-size: 1rem;
   background: color-mix(in oklab, var(--card) 58%, transparent);
+}
+
+.launch-shell .launch-field select,
+.launch-shell select.launch-inline-control {
+  height: 3.5rem;
+  border-radius: 18px;
 }
 
 .launch-step2-island .launch-field textarea {
@@ -1829,6 +1838,18 @@
   box-shadow: 0 0 0 1px var(--accent-interaction-ring);
 }
 
+.launch-shell .launch-field select,
+.launch-shell select.launch-inline-control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 3rem;
+  border-radius: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%2396a0b5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
 .launch-github-status-input:disabled {
   opacity: 1;
   cursor: default;
@@ -2131,6 +2152,41 @@
   line-height: 1.04;
   font-weight: 700;
   letter-spacing: 0;
+}
+
+.launch-countdown {
+  width: min(100%, 25rem);
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--accent-interaction-border);
+  border-radius: 1.25rem;
+  background: var(--surface-overlay-muted);
+}
+
+.launch-countdown-label,
+.launch-countdown-detail {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.launch-countdown-time {
+  color: var(--launch-brand-accent);
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 8vw, 4.25rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.launch-countdown-detail {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
 }
 
 .launch-success-list {
